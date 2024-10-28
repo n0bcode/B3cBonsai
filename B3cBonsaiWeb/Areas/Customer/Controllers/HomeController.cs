@@ -18,10 +18,41 @@ namespace B3cBonsaiWeb.Controllers
             return View();
         }
 
+
+        #region//Other View
         public IActionResult Privacy()
         {
             return View();
         }
+        public IActionResult AboutUs()
+        {
+            return View();
+        }
+        public IActionResult ContactUs()
+        {
+            return View();
+        }
+
+        public IActionResult FAQ() { 
+            return View();
+        }
+
+        public IActionResult Terms() {
+            return View();
+        }
+        public IActionResult ReturnPolicy()
+        {
+            return View();
+        }
+        public IActionResult Error404()
+        {
+            return View();
+        }
+        public IActionResult ComingSoon()
+        {
+            return View();
+        }
+        #endregion
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
