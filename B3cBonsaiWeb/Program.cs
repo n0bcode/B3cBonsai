@@ -1,4 +1,4 @@
-namespace B3cBonsaiWeb
+﻿namespace B3cBonsaiWeb
 {
     public class Program
     {
@@ -17,6 +17,11 @@ namespace B3cBonsaiWeb
                 app.UseExceptionHandler("/Home/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Customer/Home/Error404");
+                app.UseStatusCodePagesWithReExecute("/Error/{0}");
             }
 
             app.UseHttpsRedirection();
