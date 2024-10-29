@@ -1,6 +1,9 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+@model IEnumerable<Object>
+
+@if (Model != null) {
 <!-- breadcrumb start -->
 <section class="breadcrumb-area">
     <div class="container">
@@ -254,7 +257,7 @@
                                         <input type="text" name="discount" placeholder="Discount code">
                                     </div>
                                     <div class="proceed-to-checkout">
-                                        <a href="checkout-style1.html" class="btn btn-style2">Checkout</a>
+                                        <a href="/Customer/Payment/Index" class="btn btn-style2">Checkout</a>
                                     </div>
                                     <div class="cart-payment-icon">
                                         <ul class="payment-icon">
@@ -315,7 +318,7 @@
                                                 </a>
                                             </div>
                                             <div class="product-action">
-                                                <a href="wishlist-product.html" class="wishlist">
+                                                <a href="/Customer/Wishlist/Index" class="wishlist">
                                                     <span class="tooltip-text">Wishlist</span>
                                                     <span class="pro-action-icon"><i class="feather-heart"></i></span>
                                                 </a>
@@ -363,7 +366,7 @@
                                                         <span class="tooltip-text">Add to cart</span>
                                                         <span class="pro-action-icon"><i class="feather-shopping-bag"></i></span>
                                                     </a>
-                                                    <a href="wishlist-product.html" class="wishlist">
+                                                    <a href="/Customer/Wishlist/Index" class="wishlist">
                                                         <span class="tooltip-text">Wishlist</span>
                                                         <span class="pro-action-icon"><i class="feather-heart"></i></span>
                                                     </a>
@@ -391,7 +394,7 @@
                                                 </a>
                                             </div>
                                             <div class="product-action">
-                                                <a href="wishlist-product.html" class="wishlist">
+                                                <a href="/Customer/Wishlist/Index" class="wishlist">
                                                     <span class="tooltip-text">Wishlist</span>
                                                     <span class="pro-action-icon"><i class="feather-heart"></i></span>
                                                 </a>
@@ -439,7 +442,7 @@
                                                         <span class="tooltip-text">Add to cart</span>
                                                         <span class="pro-action-icon"><i class="feather-shopping-bag"></i></span>
                                                     </a>
-                                                    <a href="wishlist-product.html" class="wishlist">
+                                                    <a href="/Customer/Wishlist/Index" class="wishlist">
                                                         <span class="tooltip-text">Wishlist</span>
                                                         <span class="pro-action-icon"><i class="feather-heart"></i></span>
                                                     </a>
@@ -467,7 +470,7 @@
                                                 </a>
                                             </div>
                                             <div class="product-action">
-                                                <a href="wishlist-product.html" class="wishlist">
+                                                <a href="/Customer/Wishlist/Index" class="wishlist">
                                                     <span class="tooltip-text">Wishlist</span>
                                                     <span class="pro-action-icon"><i class="feather-heart"></i></span>
                                                 </a>
@@ -515,7 +518,7 @@
                                                         <span class="tooltip-text">Add to cart</span>
                                                         <span class="pro-action-icon"><i class="feather-shopping-bag"></i></span>
                                                     </a>
-                                                    <a href="wishlist-product.html" class="wishlist">
+                                                    <a href="/Customer/Wishlist/Index" class="wishlist">
                                                         <span class="tooltip-text">Wishlist</span>
                                                         <span class="pro-action-icon"><i class="feather-heart"></i></span>
                                                     </a>
@@ -543,7 +546,7 @@
                                                 </a>
                                             </div>
                                             <div class="product-action">
-                                                <a href="wishlist-product.html" class="wishlist">
+                                                <a href="/Customer/Wishlist/Index" class="wishlist">
                                                     <span class="tooltip-text">Wishlist</span>
                                                     <span class="pro-action-icon"><i class="feather-heart"></i></span>
                                                 </a>
@@ -591,7 +594,7 @@
                                                         <span class="tooltip-text">Add to cart</span>
                                                         <span class="pro-action-icon"><i class="feather-shopping-bag"></i></span>
                                                     </a>
-                                                    <a href="wishlist-product.html" class="wishlist">
+                                                    <a href="/Customer/Wishlist/Index" class="wishlist">
                                                         <span class="tooltip-text">Wishlist</span>
                                                         <span class="pro-action-icon"><i class="feather-heart"></i></span>
                                                     </a>
@@ -619,7 +622,7 @@
                                                 </a>
                                             </div>
                                             <div class="product-action">
-                                                <a href="wishlist-product.html" class="wishlist">
+                                                <a href="/Customer/Wishlist/Index" class="wishlist">
                                                     <span class="tooltip-text">Wishlist</span>
                                                     <span class="pro-action-icon"><i class="feather-heart"></i></span>
                                                 </a>
@@ -667,7 +670,7 @@
                                                         <span class="tooltip-text">Add to cart</span>
                                                         <span class="pro-action-icon"><i class="feather-shopping-bag"></i></span>
                                                     </a>
-                                                    <a href="wishlist-product.html" class="wishlist">
+                                                    <a href="/Customer/Wishlist/Index" class="wishlist">
                                                         <span class="tooltip-text">Wishlist</span>
                                                         <span class="pro-action-icon"><i class="feather-heart"></i></span>
                                                     </a>
@@ -695,7 +698,7 @@
                                                 </a>
                                             </div>
                                             <div class="product-action">
-                                                <a href="wishlist-product.html" class="wishlist">
+                                                <a href="/Customer/Wishlist/Index" class="wishlist">
                                                     <span class="tooltip-text">Wishlist</span>
                                                     <span class="pro-action-icon"><i class="feather-heart"></i></span>
                                                 </a>
@@ -743,7 +746,7 @@
                                                         <span class="tooltip-text">Add to cart</span>
                                                         <span class="pro-action-icon"><i class="feather-shopping-bag"></i></span>
                                                     </a>
-                                                    <a href="wishlist-product.html" class="wishlist">
+                                                    <a href="/Customer/Wishlist/Index" class="wishlist">
                                                         <span class="tooltip-text">Wishlist</span>
                                                         <span class="pro-action-icon"><i class="feather-heart"></i></span>
                                                     </a>
@@ -771,7 +774,7 @@
                                                 </a>
                                             </div>
                                             <div class="product-action">
-                                                <a href="wishlist-product.html" class="wishlist">
+                                                <a href="/Customer/Wishlist/Index" class="wishlist">
                                                     <span class="tooltip-text">Wishlist</span>
                                                     <span class="pro-action-icon"><i class="feather-heart"></i></span>
                                                 </a>
@@ -819,7 +822,7 @@
                                                         <span class="tooltip-text">Add to cart</span>
                                                         <span class="pro-action-icon"><i class="feather-shopping-bag"></i></span>
                                                     </a>
-                                                    <a href="wishlist-product.html" class="wishlist">
+                                                    <a href="/Customer/Wishlist/Index" class="wishlist">
                                                         <span class="tooltip-text">Wishlist</span>
                                                         <span class="pro-action-icon"><i class="feather-heart"></i></span>
                                                     </a>
@@ -847,7 +850,7 @@
                                                 </a>
                                             </div>
                                             <div class="product-action">
-                                                <a href="wishlist-product.html" class="wishlist">
+                                                <a href="/Customer/Wishlist/Index" class="wishlist">
                                                     <span class="tooltip-text">Wishlist</span>
                                                     <span class="pro-action-icon"><i class="feather-heart"></i></span>
                                                 </a>
@@ -894,7 +897,7 @@
                                                         <span class="tooltip-text">Add to cart</span>
                                                         <span class="pro-action-icon"><i class="feather-shopping-bag"></i></span>
                                                     </a>
-                                                    <a href="wishlist-product.html" class="wishlist">
+                                                    <a href="/Customer/Wishlist/Index" class="wishlist">
                                                         <span class="tooltip-text">Wishlist</span>
                                                         <span class="pro-action-icon"><i class="feather-heart"></i></span>
                                                     </a>
@@ -922,7 +925,7 @@
                                                 </a>
                                             </div>
                                             <div class="product-action">
-                                                <a href="wishlist-product.html" class="wishlist">
+                                                <a href="/Customer/Wishlist/Index" class="wishlist">
                                                     <span class="tooltip-text">Wishlist</span>
                                                     <span class="pro-action-icon"><i class="feather-heart"></i></span>
                                                 </a>
@@ -970,7 +973,7 @@
                                                         <span class="tooltip-text">Add to cart</span>
                                                         <span class="pro-action-icon"><i class="feather-shopping-bag"></i></span>
                                                     </a>
-                                                    <a href="wishlist-product.html" class="wishlist">
+                                                    <a href="/Customer/Wishlist/Index" class="wishlist">
                                                         <span class="tooltip-text">Wishlist</span>
                                                         <span class="pro-action-icon"><i class="feather-heart"></i></span>
                                                     </a>
@@ -999,5 +1002,922 @@
         </div>
     </div>
 </section>
-<!-- product end -->
+    <!-- product end -->
+} else
+{
+
+    <!-- offer-text start -->
+    <section class="offer-text-area">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="offer-text">
+                        <ul class="offer-text-ul desktop-offer-text">
+                            <li class="offer-text-li">
+                                <div class="offer-text-item">
+                                    <p>Call : <a href="tel:+001234567890" title="tel:+00 123 456 7890">+00 123 456 7890</a></p>
+                                </div>
+                            </li>
+                            <li class="offer-text-li show">
+                                <div class="offer-text-item">
+                                    <p>Free shipping + 30-day happiness</p>
+                                </div>
+                            </li>
+                            <li class="offer-text-li">
+                                <div class="offer-text-item">
+                                    <p>Hurry up. If it’s gone, then you will be.</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- offer-text end -->
+    <!-- breadcrumb start -->
+    <section class="breadcrumb-area">
+        <div class="container">
+            <div class="col">
+                <div class="row">
+                    <div class="breadcrumb-index">
+                        <!-- breadcrumb-list start -->
+                        <ul class="breadcrumb-ul">
+                            <li class="breadcrumb-li">
+                                <a class="breadcrumb-link" href="/">Home</a>
+                            </li>
+                            <li class="breadcrumb-li">
+                                <span class="breadcrumb-text">Your shopping cart empty</span>
+                            </li>
+                        </ul>
+                        <!-- breadcrumb-list end -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- breadcrumb end -->
+    <section class="cart-page section-pt">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="empty-cart-page">
+                        <div class="section-capture">
+                            <div class="section-title">
+                                <h2><span>Cart empty</span></h2>
+                                <p>Sorry your cart has currently no more products, click on 'here' given below for continue browsing.</p>
+                                <p>Continue browsing
+                                    <a asp-area="Customer" asp-controller="ClientCustomer" asp-action="Index">here</a>.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- product start -->
+    <section class="product-tab section-pt">
+        <div class="collection-category">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col">
+                        <div class="section-capture tab">
+                            <div class="section-title">
+                                <h2><span>Popular product</span></h2>
+                            </div>
+                        </div>
+                        <div class="collection-wrap">
+                            <div class="collection-slider swiper" id="new-product">
+                                <div class="swiper-wrapper">
+                                    <div class="swiper-slide">
+                                        <div class="single-product-wrap">
+                                            <div class="product-image banner-hover">
+                                                <a href="product-template.html" class="pro-img">
+                                                    <img src="~/customer/img/product/home1-pro-1.jpg" class="img-fluid img1 mobile-img1" alt="p1">
+                                                    <img src="~/customer/img/product/home1-pro-2.jpg" class="img-fluid img2 mobile-img2" alt="p2">
+                                                </a>
+                                                <div class="product-action product-cart-btn">
+                                                    <a href="#add-to-cart" class="add-to-cart">
+                                                        <span class="cart-title">
+                                                            <span class="add-c-title">
+                                                                <span class="tooltip-text">Add to cart</span>
+                                                                <span class="cart-icon"><i class="feather-shopping-bag"></i></span>
+                                                                <span class="add-title">Add to cart</span>
+                                                            </span>
+                                                        </span>
+                                                    </a>
+                                                </div>
+                                                <div class="product-action">
+                                                    <a href="/Customer/Wishlist/Index" class="wishlist">
+                                                        <span class="tooltip-text">Wishlist</span>
+                                                        <span class="pro-action-icon"><i class="feather-heart"></i></span>
+                                                    </a>
+                                                    <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview">
+                                                        <span class="tooltip-text">Quickview</span>
+                                                        <span class="pro-action-icon"><i class="feather-eye"></i></span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="product-caption">
+                                                <div class="product-content">
+                                                    <div class="product-title">
+                                                        <div class="pro-title-price">
+                                                            <h6><a href="product-template.html">Strelitzia nicolai</a></h6>
+                                                            <div class="product-price">
+                                                                <div class="price-box">
+                                                                    <span class="new-price">Rs. 44.00</span>
+                                                                    <span class="old-price">Rs. 49.00</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="product-name">
+                                                            <a class="product-type" asp-area="Customer" asp-controller="ClientCustomer" asp-action="Index">Strelitzia</a>
+                                                            <a class="product-vendor" asp-area="Customer" asp-controller="ClientCustomer" asp-action="Index">Panno</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="product-ratting">
+                                                        <span class="pro-ratting">
+                                                            <i class="fa-regular fa-star"></i>
+                                                            <i class="fa-regular fa-star"></i>
+                                                            <i class="fa-regular fa-star"></i>
+                                                            <i class="fa-regular fa-star"></i>
+                                                            <i class="fa-regular fa-star"></i>
+                                                        </span>
+                                                    </div>
+                                                    <div class="product-description">
+                                                        <p>The purpose of lorem ipsum is to create a natural looking block of text (sentence, paragraph, page, etc.) that doesn't distract from the layout. A practice not without controversy, laying out pages with meaningless filler...</p>
+                                                    </div>
+                                                    <div class="product-action">
+                                                        <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview">
+                                                            <span class="tooltip-text">Quickview</span>
+                                                            <span class="pro-action-icon"><i class="feather-eye"></i></span>
+                                                        </a>
+                                                        <a href="#add-to-cart" class="add-to-cart" data-bs-toggle="modal" data-bs-target="#add-to-cart">
+                                                            <span class="tooltip-text">Add to cart</span>
+                                                            <span class="pro-action-icon"><i class="feather-shopping-bag"></i></span>
+                                                        </a>
+                                                        <a href="/Customer/Wishlist/Index" class="wishlist">
+                                                            <span class="tooltip-text">Wishlist</span>
+                                                            <span class="pro-action-icon"><i class="feather-heart"></i></span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="swiper-slide">
+                                        <div class="single-product-wrap">
+                                            <div class="product-image banner-hover">
+                                                <a href="product-template.html" class="pro-img">
+                                                    <img src="~/customer/img/product/home1-pro-3.jpg" class="img-fluid img1 mobile-img1" alt="p1">
+                                                    <img src="~/customer/img/product/home1-pro-4.jpg" class="img-fluid img2 mobile-img2" alt="p2">
+                                                </a>
+                                                <div class="product-action product-cart-btn">
+                                                    <a href="#add-to-cart" class="add-to-cart">
+                                                        <span class="cart-title">
+                                                            <span class="add-c-title">
+                                                                <span class="tooltip-text">Add to cart</span>
+                                                                <span class="cart-icon"><i class="feather-shopping-bag"></i></span>
+                                                                <span class="add-title">Add to cart</span>
+                                                            </span>
+                                                        </span>
+                                                    </a>
+                                                </div>
+                                                <div class="product-action">
+                                                    <a href="/Customer/Wishlist/Index" class="wishlist">
+                                                        <span class="tooltip-text">Wishlist</span>
+                                                        <span class="pro-action-icon"><i class="feather-heart"></i></span>
+                                                    </a>
+                                                    <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview">
+                                                        <span class="tooltip-text">Quickview</span>
+                                                        <span class="pro-action-icon"><i class="feather-eye"></i></span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="product-caption">
+                                                <div class="product-content">
+                                                    <div class="product-title">
+                                                        <div class="pro-title-price">
+                                                            <h6><a href="product-template.html">Aloe vera plant</a></h6>
+                                                            <div class="product-price">
+                                                                <div class="price-box">
+                                                                    <span class="new-price">Rs. 61.00</span>
+                                                                    <span class="old-price">Rs. 69.00</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="product-name">
+                                                            <a class="product-type" asp-area="Customer" asp-controller="ClientCustomer" asp-action="Index">Aloe vera</a>
+                                                            <a class="product-vendor" asp-area="Customer" asp-controller="ClientCustomer" asp-action="Index">Panno</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="product-ratting">
+                                                        <span class="pro-ratting">
+                                                            <i class="fa-regular fa-star"></i>
+                                                            <i class="fa-regular fa-star"></i>
+                                                            <i class="fa-regular fa-star"></i>
+                                                            <i class="fa-regular fa-star"></i>
+                                                            <i class="fa-regular fa-star"></i>
+                                                        </span>
+                                                    </div>
+                                                    <div class="product-description">
+                                                        <p>The purpose of lorem ipsum is to create a natural looking block of text (sentence, paragraph, page, etc.) that doesn't distract from the layout. A practice not without controversy, laying out pages with meaningless filler...</p>
+                                                    </div>
+                                                    <div class="product-action">
+                                                        <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview">
+                                                            <span class="tooltip-text">Quickview</span>
+                                                            <span class="pro-action-icon"><i class="feather-eye"></i></span>
+                                                        </a>
+                                                        <a href="#add-to-cart" class="add-to-cart" data-bs-toggle="modal" data-bs-target="#add-to-cart">
+                                                            <span class="tooltip-text">Add to cart</span>
+                                                            <span class="pro-action-icon"><i class="feather-shopping-bag"></i></span>
+                                                        </a>
+                                                        <a href="/Customer/Wishlist/Index" class="wishlist">
+                                                            <span class="tooltip-text">Wishlist</span>
+                                                            <span class="pro-action-icon"><i class="feather-heart"></i></span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="swiper-slide">
+                                        <div class="single-product-wrap">
+                                            <div class="product-image banner-hover">
+                                                <a href="product-template.html" class="pro-img">
+                                                    <img src="~/customer/img/product/home1-pro-5.jpg" class="img-fluid img1 mobile-img1" alt="p1">
+                                                    <img src="~/customer/img/product/home1-pro-6.jpg" class="img-fluid img2 mobile-img2" alt="p2">
+                                                </a>
+                                                <div class="product-action product-cart-btn">
+                                                    <a href="#add-to-cart" class="add-to-cart">
+                                                        <span class="cart-title">
+                                                            <span class="add-c-title">
+                                                                <span class="tooltip-text">Add to cart</span>
+                                                                <span class="cart-icon"><i class="feather-shopping-bag"></i></span>
+                                                                <span class="add-title">Add to cart</span>
+                                                            </span>
+                                                        </span>
+                                                    </a>
+                                                </div>
+                                                <div class="product-action">
+                                                    <a href="/Customer/Wishlist/Index" class="wishlist">
+                                                        <span class="tooltip-text">Wishlist</span>
+                                                        <span class="pro-action-icon"><i class="feather-heart"></i></span>
+                                                    </a>
+                                                    <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview">
+                                                        <span class="tooltip-text">Quickview</span>
+                                                        <span class="pro-action-icon"><i class="feather-eye"></i></span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="product-caption">
+                                                <div class="product-content">
+                                                    <div class="product-title">
+                                                        <div class="pro-title-price">
+                                                            <h6><a href="product-template.html">Chinese evergreen</a></h6>
+                                                            <div class="product-price">
+                                                                <div class="price-box">
+                                                                    <span class="new-price">Rs. 24.00</span>
+                                                                    <span class="old-price">Rs. 29.00</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="product-name">
+                                                            <a class="product-type" asp-area="Customer" asp-controller="ClientCustomer" asp-action="Index">Evergreen</a>
+                                                            <a class="product-vendor" asp-area="Customer" asp-controller="ClientCustomer" asp-action="Index">Panno</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="product-ratting">
+                                                        <span class="pro-ratting">
+                                                            <i class="fa-regular fa-star"></i>
+                                                            <i class="fa-regular fa-star"></i>
+                                                            <i class="fa-regular fa-star"></i>
+                                                            <i class="fa-regular fa-star"></i>
+                                                            <i class="fa-regular fa-star"></i>
+                                                        </span>
+                                                    </div>
+                                                    <div class="product-description">
+                                                        <p>The purpose of lorem ipsum is to create a natural looking block of text (sentence, paragraph, page, etc.) that doesn't distract from the layout. A practice not without controversy, laying out pages with meaningless filler...</p>
+                                                    </div>
+                                                    <div class="product-action">
+                                                        <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview">
+                                                            <span class="tooltip-text">Quickview</span>
+                                                            <span class="pro-action-icon"><i class="feather-eye"></i></span>
+                                                        </a>
+                                                        <a href="#add-to-cart" class="add-to-cart" data-bs-toggle="modal" data-bs-target="#add-to-cart">
+                                                            <span class="tooltip-text">Add to cart</span>
+                                                            <span class="pro-action-icon"><i class="feather-shopping-bag"></i></span>
+                                                        </a>
+                                                        <a href="/Customer/Wishlist/Index" class="wishlist">
+                                                            <span class="tooltip-text">Wishlist</span>
+                                                            <span class="pro-action-icon"><i class="feather-heart"></i></span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="swiper-slide">
+                                        <div class="single-product-wrap">
+                                            <div class="product-image banner-hover">
+                                                <a href="product-template.html" class="pro-img">
+                                                    <img src="~/customer/img/product/home1-pro-7.jpg" class="img-fluid img1 mobile-img1" alt="p1">
+                                                    <img src="~/customer/img/product/home1-pro-8.jpg" class="img-fluid img2 mobile-img2" alt="p2">
+                                                </a>
+                                                <div class="product-action product-cart-btn">
+                                                    <a href="#add-to-cart" class="add-to-cart">
+                                                        <span class="cart-title">
+                                                            <span class="add-c-title">
+                                                                <span class="tooltip-text">Add to cart</span>
+                                                                <span class="cart-icon"><i class="feather-shopping-bag"></i></span>
+                                                                <span class="add-title">Add to cart</span>
+                                                            </span>
+                                                        </span>
+                                                    </a>
+                                                </div>
+                                                <div class="product-action">
+                                                    <a href="/Customer/Wishlist/Index" class="wishlist">
+                                                        <span class="tooltip-text">Wishlist</span>
+                                                        <span class="pro-action-icon"><i class="feather-heart"></i></span>
+                                                    </a>
+                                                    <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview">
+                                                        <span class="tooltip-text">Quickview</span>
+                                                        <span class="pro-action-icon"><i class="feather-eye"></i></span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="product-caption">
+                                                <div class="product-content">
+                                                    <div class="product-title">
+                                                        <div class="pro-title-price">
+                                                            <h6><a href="product-template.html">Wheat grass</a></h6>
+                                                            <div class="product-price">
+                                                                <div class="price-box">
+                                                                    <span class="new-price">Rs. 21.00</span>
+                                                                    <span class="old-price">Rs. 25.00</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="product-name">
+                                                            <a class="product-type" asp-area="Customer" asp-controller="ClientCustomer" asp-action="Index">Grass</a>
+                                                            <a class="product-vendor" asp-area="Customer" asp-controller="ClientCustomer" asp-action="Index">Panno</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="product-ratting">
+                                                        <span class="pro-ratting">
+                                                            <i class="fa-regular fa-star"></i>
+                                                            <i class="fa-regular fa-star"></i>
+                                                            <i class="fa-regular fa-star"></i>
+                                                            <i class="fa-regular fa-star"></i>
+                                                            <i class="fa-regular fa-star"></i>
+                                                        </span>
+                                                    </div>
+                                                    <div class="product-description">
+                                                        <p>The purpose of lorem ipsum is to create a natural looking block of text (sentence, paragraph, page, etc.) that doesn't distract from the layout. A practice not without controversy, laying out pages with meaningless filler...</p>
+                                                    </div>
+                                                    <div class="product-action">
+                                                        <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview">
+                                                            <span class="tooltip-text">Quickview</span>
+                                                            <span class="pro-action-icon"><i class="feather-eye"></i></span>
+                                                        </a>
+                                                        <a href="#add-to-cart" class="add-to-cart" data-bs-toggle="modal" data-bs-target="#add-to-cart">
+                                                            <span class="tooltip-text">Add to cart</span>
+                                                            <span class="pro-action-icon"><i class="feather-shopping-bag"></i></span>
+                                                        </a>
+                                                        <a href="/Customer/Wishlist/Index" class="wishlist">
+                                                            <span class="tooltip-text">Wishlist</span>
+                                                            <span class="pro-action-icon"><i class="feather-heart"></i></span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="swiper-slide">
+                                        <div class="single-product-wrap">
+                                            <div class="product-image banner-hover">
+                                                <a href="product-template.html" class="pro-img">
+                                                    <img src="~/customer/img/product/home1-pro-9.jpg" class="img-fluid img1 mobile-img1" alt="p1">
+                                                    <img src="~/customer/img/product/home1-pro-10.jpg" class="img-fluid img2 mobile-img2" alt="p2">
+                                                </a>
+                                                <div class="product-action product-cart-btn">
+                                                    <a href="#add-to-cart" class="add-to-cart">
+                                                        <span class="cart-title">
+                                                            <span class="add-c-title">
+                                                                <span class="tooltip-text">Add to cart</span>
+                                                                <span class="cart-icon"><i class="feather-shopping-bag"></i></span>
+                                                                <span class="add-title">Add to cart</span>
+                                                            </span>
+                                                        </span>
+                                                    </a>
+                                                </div>
+                                                <div class="product-action">
+                                                    <a href="/Customer/Wishlist/Index" class="wishlist">
+                                                        <span class="tooltip-text">Wishlist</span>
+                                                        <span class="pro-action-icon"><i class="feather-heart"></i></span>
+                                                    </a>
+                                                    <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview">
+                                                        <span class="tooltip-text">Quickview</span>
+                                                        <span class="pro-action-icon"><i class="feather-eye"></i></span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="product-caption">
+                                                <div class="product-content">
+                                                    <div class="product-title">
+                                                        <div class="pro-title-price">
+                                                            <h6><a href="product-template.html">Castle cactus</a></h6>
+                                                            <div class="product-price">
+                                                                <div class="price-box">
+                                                                    <span class="new-price">Rs. 25.00</span>
+                                                                    <span class="old-price">Rs. 35.00</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="product-name">
+                                                            <a class="product-type" asp-area="Customer" asp-controller="ClientCustomer" asp-action="Index">Castle</a>
+                                                            <a class="product-vendor" asp-area="Customer" asp-controller="ClientCustomer" asp-action="Index">Panno</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="product-ratting">
+                                                        <span class="pro-ratting">
+                                                            <i class="fa-regular fa-star"></i>
+                                                            <i class="fa-regular fa-star"></i>
+                                                            <i class="fa-regular fa-star"></i>
+                                                            <i class="fa-regular fa-star"></i>
+                                                            <i class="fa-regular fa-star"></i>
+                                                        </span>
+                                                    </div>
+                                                    <div class="product-description">
+                                                        <p>The purpose of lorem ipsum is to create a natural looking block of text (sentence, paragraph, page, etc.) that doesn't distract from the layout. A practice not without controversy, laying out pages with meaningless filler...</p>
+                                                    </div>
+                                                    <div class="product-action">
+                                                        <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview">
+                                                            <span class="tooltip-text">Quickview</span>
+                                                            <span class="pro-action-icon"><i class="feather-eye"></i></span>
+                                                        </a>
+                                                        <a href="#add-to-cart" class="add-to-cart" data-bs-toggle="modal" data-bs-target="#add-to-cart">
+                                                            <span class="tooltip-text">Add to cart</span>
+                                                            <span class="pro-action-icon"><i class="feather-shopping-bag"></i></span>
+                                                        </a>
+                                                        <a href="/Customer/Wishlist/Index" class="wishlist">
+                                                            <span class="tooltip-text">Wishlist</span>
+                                                            <span class="pro-action-icon"><i class="feather-heart"></i></span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="swiper-slide">
+                                        <div class="single-product-wrap">
+                                            <div class="product-image banner-hover">
+                                                <a href="product-template.html" class="pro-img">
+                                                    <img src="~/customer/img/product/home1-pro-11.jpg" class="img-fluid img1 mobile-img1" alt="p1">
+                                                    <img src="~/customer/img/product/home1-pro-12.jpg" class="img-fluid img2 mobile-img2" alt="p2">
+                                                </a>
+                                                <div class="product-action product-cart-btn">
+                                                    <a href="#add-to-cart" class="add-to-cart">
+                                                        <span class="cart-title">
+                                                            <span class="add-c-title">
+                                                                <span class="tooltip-text">Add to cart</span>
+                                                                <span class="cart-icon"><i class="feather-shopping-bag"></i></span>
+                                                                <span class="add-title">Add to cart</span>
+                                                            </span>
+                                                        </span>
+                                                    </a>
+                                                </div>
+                                                <div class="product-action">
+                                                    <a href="/Customer/Wishlist/Index" class="wishlist">
+                                                        <span class="tooltip-text">Wishlist</span>
+                                                        <span class="pro-action-icon"><i class="feather-heart"></i></span>
+                                                    </a>
+                                                    <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview">
+                                                        <span class="tooltip-text">Quickview</span>
+                                                        <span class="pro-action-icon"><i class="feather-eye"></i></span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="product-caption">
+                                                <div class="product-content">
+                                                    <div class="product-title">
+                                                        <div class="pro-title-price">
+                                                            <h6><a href="product-template.html">Bird of paradise</a></h6>
+                                                            <div class="product-price">
+                                                                <div class="price-box">
+                                                                    <span class="new-price">Rs. 21.00</span>
+                                                                    <span class="old-price">Rs. 25.00</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="product-name">
+                                                            <a class="product-type" asp-area="Customer" asp-controller="ClientCustomer" asp-action="Index">Paradise</a>
+                                                            <a class="product-vendor" asp-area="Customer" asp-controller="ClientCustomer" asp-action="Index">Panno</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="product-ratting">
+                                                        <span class="pro-ratting">
+                                                            <i class="fa-regular fa-star"></i>
+                                                            <i class="fa-regular fa-star"></i>
+                                                            <i class="fa-regular fa-star"></i>
+                                                            <i class="fa-regular fa-star"></i>
+                                                            <i class="fa-regular fa-star"></i>
+                                                        </span>
+                                                    </div>
+                                                    <div class="product-description">
+                                                        <p>The purpose of lorem ipsum is to create a natural looking block of text (sentence, paragraph, page, etc.) that doesn't distract from the layout. A practice not without controversy, laying out pages with meaningless filler...</p>
+                                                    </div>
+                                                    <div class="product-action">
+                                                        <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview">
+                                                            <span class="tooltip-text">Quickview</span>
+                                                            <span class="pro-action-icon"><i class="feather-eye"></i></span>
+                                                        </a>
+                                                        <a href="#add-to-cart" class="add-to-cart" data-bs-toggle="modal" data-bs-target="#add-to-cart">
+                                                            <span class="tooltip-text">Add to cart</span>
+                                                            <span class="pro-action-icon"><i class="feather-shopping-bag"></i></span>
+                                                        </a>
+                                                        <a href="/Customer/Wishlist/Index" class="wishlist">
+                                                            <span class="tooltip-text">Wishlist</span>
+                                                            <span class="pro-action-icon"><i class="feather-heart"></i></span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="swiper-slide">
+                                        <div class="single-product-wrap">
+                                            <div class="product-image banner-hover">
+                                                <a href="product-template.html" class="pro-img">
+                                                    <img src="~/customer/img/product/home1-pro-13.jpg" class="img-fluid img1 mobile-img1" alt="p1">
+                                                    <img src="~/customer/img/product/home1-pro-14.jpg" class="img-fluid img2 mobile-img2" alt="p2">
+                                                </a>
+                                                <div class="product-action product-cart-btn">
+                                                    <a href="#add-to-cart" class="add-to-cart">
+                                                        <span class="cart-title">
+                                                            <span class="add-c-title">
+                                                                <span class="tooltip-text">Add to cart</span>
+                                                                <span class="cart-icon"><i class="feather-shopping-bag"></i></span>
+                                                                <span class="add-title">Add to cart</span>
+                                                            </span>
+                                                        </span>
+                                                    </a>
+                                                </div>
+                                                <div class="product-action">
+                                                    <a href="/Customer/Wishlist/Index" class="wishlist">
+                                                        <span class="tooltip-text">Wishlist</span>
+                                                        <span class="pro-action-icon"><i class="feather-heart"></i></span>
+                                                    </a>
+                                                    <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview">
+                                                        <span class="tooltip-text">Quickview</span>
+                                                        <span class="pro-action-icon"><i class="feather-eye"></i></span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="product-caption">
+                                                <div class="product-content">
+                                                    <div class="product-title">
+                                                        <div class="pro-title-price">
+                                                            <h6><a href="product-template.html">Snake plant</a></h6>
+                                                            <div class="product-price">
+                                                                <div class="price-box">
+                                                                    <span class="new-price">Rs. 54.00</span>
+                                                                    <span class="old-price">Rs. 65.00</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="product-name">
+                                                            <a class="product-type" asp-area="Customer" asp-controller="ClientCustomer" asp-action="Index">Snake</a>
+                                                            <a class="product-vendor" asp-area="Customer" asp-controller="ClientCustomer" asp-action="Index">Panno</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="product-ratting">
+                                                        <span class="pro-ratting">
+                                                            <i class="fa-regular fa-star"></i>
+                                                            <i class="fa-regular fa-star"></i>
+                                                            <i class="fa-regular fa-star"></i>
+                                                            <i class="fa-regular fa-star"></i>
+                                                            <i class="fa-regular fa-star"></i>
+                                                        </span>
+                                                    </div>
+                                                    <div class="product-description">
+                                                        <p>The purpose of lorem ipsum is to create a natural looking block of text (sentence, paragraph, page, etc.) that doesn't distract from the layout. A practice not without controversy, laying out pages with meaningless filler...</p>
+                                                    </div>
+                                                    <div class="product-action">
+                                                        <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview">
+                                                            <span class="tooltip-text">Quickview</span>
+                                                            <span class="pro-action-icon"><i class="feather-eye"></i></span>
+                                                        </a>
+                                                        <a href="#add-to-cart" class="add-to-cart" data-bs-toggle="modal" data-bs-target="#add-to-cart">
+                                                            <span class="tooltip-text">Add to cart</span>
+                                                            <span class="pro-action-icon"><i class="feather-shopping-bag"></i></span>
+                                                        </a>
+                                                        <a href="/Customer/Wishlist/Index" class="wishlist">
+                                                            <span class="tooltip-text">Wishlist</span>
+                                                            <span class="pro-action-icon"><i class="feather-heart"></i></span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="swiper-slide">
+                                        <div class="single-product-wrap">
+                                            <div class="product-image banner-hover">
+                                                <a href="product-template.html" class="pro-img">
+                                                    <img src="~/customer/img/product/home1-pro-15.jpg" class="img-fluid img1 mobile-img1" alt="p1">
+                                                    <img src="~/customer/img/product/home1-pro-16.jpg" class="img-fluid img2 mobile-img2" alt="p2">
+                                                </a>
+                                                <div class="product-action product-cart-btn">
+                                                    <a href="#add-to-cart" class="add-to-cart">
+                                                        <span class="cart-title">
+                                                            <span class="add-c-title">
+                                                                <span class="tooltip-text">Add to cart</span>
+                                                                <span class="cart-icon"><i class="feather-shopping-bag"></i></span>
+                                                                <span class="add-title">Add to cart</span>
+                                                            </span>
+                                                        </span>
+                                                    </a>
+                                                </div>
+                                                <div class="product-action">
+                                                    <a href="/Customer/Wishlist/Index" class="wishlist">
+                                                        <span class="tooltip-text">Wishlist</span>
+                                                        <span class="pro-action-icon"><i class="feather-heart"></i></span>
+                                                    </a>
+                                                    <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview">
+                                                        <span class="tooltip-text">Quickview</span>
+                                                        <span class="pro-action-icon"><i class="feather-eye"></i></span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="product-caption">
+                                                <div class="product-content">
+                                                    <div class="product-title">
+                                                        <div class="pro-title-price">
+                                                            <h6><a href="product-template.html">Areca palm</a></h6>
+                                                            <div class="product-price">
+                                                                <div class="price-box">
+                                                                    <span class="new-price">Rs. 61.00</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="product-name">
+                                                            <a class="product-type" asp-area="Customer" asp-controller="ClientCustomer" asp-action="Index">Palm</a>
+                                                            <a class="product-vendor" asp-area="Customer" asp-controller="ClientCustomer" asp-action="Index">Panno</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="product-ratting">
+                                                        <span class="pro-ratting">
+                                                            <i class="fa-regular fa-star"></i>
+                                                            <i class="fa-regular fa-star"></i>
+                                                            <i class="fa-regular fa-star"></i>
+                                                            <i class="fa-regular fa-star"></i>
+                                                            <i class="fa-regular fa-star"></i>
+                                                        </span>
+                                                    </div>
+                                                    <div class="product-description">
+                                                        <p>The purpose of lorem ipsum is to create a natural looking block of text (sentence, paragraph, page, etc.) that doesn't distract from the layout. A practice not without controversy, laying out pages with meaningless filler...</p>
+                                                    </div>
+                                                    <div class="product-action">
+                                                        <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview">
+                                                            <span class="tooltip-text">Quickview</span>
+                                                            <span class="pro-action-icon"><i class="feather-eye"></i></span>
+                                                        </a>
+                                                        <a href="#add-to-cart" class="add-to-cart" data-bs-toggle="modal" data-bs-target="#add-to-cart">
+                                                            <span class="tooltip-text">Add to cart</span>
+                                                            <span class="pro-action-icon"><i class="feather-shopping-bag"></i></span>
+                                                        </a>
+                                                        <a href="/Customer/Wishlist/Index" class="wishlist">
+                                                            <span class="tooltip-text">Wishlist</span>
+                                                            <span class="pro-action-icon"><i class="feather-heart"></i></span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="swiper-slide">
+                                        <div class="single-product-wrap">
+                                            <div class="product-image banner-hover">
+                                                <a href="product-template.html" class="pro-img">
+                                                    <img src="~/customer/img/product/home1-pro-17.jpg" class="img-fluid img1 mobile-img1" alt="p1">
+                                                    <img src="~/customer/img/product/home1-pro-18.jpg" class="img-fluid img2 mobile-img2" alt="p2">
+                                                </a>
+                                                <div class="product-action product-cart-btn">
+                                                    <a href="#add-to-cart" class="add-to-cart">
+                                                        <span class="cart-title">
+                                                            <span class="add-c-title">
+                                                                <span class="tooltip-text">Add to cart</span>
+                                                                <span class="cart-icon"><i class="feather-shopping-bag"></i></span>
+                                                                <span class="add-title">Add to cart</span>
+                                                            </span>
+                                                        </span>
+                                                    </a>
+                                                </div>
+                                                <div class="product-action">
+                                                    <a href="/Customer/Wishlist/Index" class="wishlist">
+                                                        <span class="tooltip-text">Wishlist</span>
+                                                        <span class="pro-action-icon"><i class="feather-heart"></i></span>
+                                                    </a>
+                                                    <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview">
+                                                        <span class="tooltip-text">Quickview</span>
+                                                        <span class="pro-action-icon"><i class="feather-eye"></i></span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="product-caption">
+                                                <div class="product-content">
+                                                    <div class="product-title">
+                                                        <div class="pro-title-price">
+                                                            <h6><a href="product-template.html">Howea forsteriana</a></h6>
+                                                            <div class="product-price">
+                                                                <div class="price-box">
+                                                                    <span class="new-price">Rs. 22.00</span>
+                                                                    <span class="old-price">Rs. 45.00</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="product-name">
+                                                            <a class="product-type" asp-area="Customer" asp-controller="ClientCustomer" asp-action="Index">Howea</a>
+                                                            <a class="product-vendor" asp-area="Customer" asp-controller="ClientCustomer" asp-action="Index">Panno</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="product-ratting">
+                                                        <span class="pro-ratting">
+                                                            <i class="fa-regular fa-star"></i>
+                                                            <i class="fa-regular fa-star"></i>
+                                                            <i class="fa-regular fa-star"></i>
+                                                            <i class="fa-regular fa-star"></i>
+                                                            <i class="fa-regular fa-star"></i>
+                                                        </span>
+                                                    </div>
+                                                    <div class="product-description">
+                                                        <p>The purpose of lorem ipsum is to create a natural looking block of text (sentence, paragraph, page, etc.) that doesn't distract from the layout. A practice not without controversy, laying out pages with meaningless filler...</p>
+                                                    </div>
+                                                    <div class="product-action">
+                                                        <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview">
+                                                            <span class="tooltip-text">Quickview</span>
+                                                            <span class="pro-action-icon"><i class="feather-eye"></i></span>
+                                                        </a>
+                                                        <a href="#add-to-cart" class="add-to-cart" data-bs-toggle="modal" data-bs-target="#add-to-cart">
+                                                            <span class="tooltip-text">Add to cart</span>
+                                                            <span class="pro-action-icon"><i class="feather-shopping-bag"></i></span>
+                                                        </a>
+                                                        <a href="/Customer/Wishlist/Index" class="wishlist">
+                                                            <span class="tooltip-text">Wishlist</span>
+                                                            <span class="pro-action-icon"><i class="feather-heart"></i></span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="collection-button">
+                                    <a asp-area="Customer" asp-controller="ClientCustomer" asp-action="Index" class="btn btn-style">View product</a>
+                                </div>
+                            </div>
+                            <div class="swiper-buttons">
+                                <div class="swiper-buttons-wrap">
+                                    <button class="swiper-prev swiper-prev-new"><span><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><polyline points="15 18 9 12 15 6"></polyline></svg></span></button>
+                                    <button class="swiper-next swiper-next-new"><span><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><polyline points="9 18 15 12 9 6"></polyline></svg></span></button>
+                                </div>
+                            </div>
+                            <div class="swiper-dots">
+                                <div class="swiper-pagination swiper-pagination-new"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- product end -->
+    <!-- category start -->
+    <section class="category-slider section-ptb">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="section-capture">
+                        <div class="section-title">
+                            <h2>Shop category</h2>
+                        </div>
+                    </div>
+                    <div class="cat-slider owl-carousel owl-theme" id="category-slider">
+                        <div class="item">
+                            <div class="category-wrap banner-hover">
+                                <a asp-area="Customer" asp-controller="ClientCustomer" asp-action="Index" class="cat-img-title banner-img">
+                                    <div class="cat-img">
+                                        <img src="~/customer/img/cat/home-1-cate1.jpg" class="img-fluid" alt="cat-1">
+                                    </div>
+                                    <div class="cat-content-info">
+                                        <div class="cat-content">
+                                            <h6><span class="cat-title">Snake plant</span></h6>
+                                            <span class="cat-count">12 Items</span>
+                                        </div>
+                                        <div class="category-button">
+                                            <span class="button-block"><i class="feather-plus"></i></span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="category-wrap banner-hover">
+                                <a asp-area="Customer" asp-controller="ClientCustomer" asp-action="Index" class="cat-img-title banner-img">
+                                    <div class="cat-img">
+                                        <img src="~/customer/img/cat/home-1-cate2.jpg" class="img-fluid" alt="cat-2">
+                                    </div>
+                                    <div class="cat-content-info">
+                                        <div class="cat-content">
+                                            <h6><span class="cat-title">Radermachera</span></h6>
+                                            <span class="cat-count">12 Items</span>
+                                        </div>
+                                        <div class="category-button">
+                                            <span class="button-block"><i class="feather-plus"></i></span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="category-wrap banner-hover">
+                                <a asp-area="Customer" asp-controller="ClientCustomer" asp-action="Index" class="cat-img-title banner-img">
+                                    <div class="cat-img">
+                                        <img src="~/customer/img/cat/home-1-cate3.jpg" class="img-fluid" alt="cat-3">
+                                    </div>
+                                    <div class="cat-content-info">
+                                        <div class="cat-content">
+                                            <h6><span class="cat-title">Strelitzia nicolai</span></h6>
+                                            <span class="cat-count">12 Items</span>
+                                        </div>
+                                        <div class="category-button">
+                                            <span class="button-block"><i class="feather-plus"></i></span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="category-wrap banner-hover">
+                                <a asp-area="Customer" asp-controller="ClientCustomer" asp-action="Index" class="cat-img-title banner-img">
+                                    <div class="cat-img">
+                                        <img src="~/customer/img/cat/home-1-cate4.jpg" class="img-fluid" alt="cat-4">
+                                    </div>
+                                    <div class="cat-content-info">
+                                        <div class="cat-content">
+                                            <h6><span class="cat-title">Monstera plant</span></h6>
+                                            <span class="cat-count">12 Items</span>
+                                        </div>
+                                        <div class="category-button">
+                                            <span class="button-block"><i class="feather-plus"></i></span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="category-wrap banner-hover">
+                                <a asp-area="Customer" asp-controller="ClientCustomer" asp-action="Index" class="cat-img-title banner-img">
+                                    <div class="cat-img">
+                                        <img src="~/customer/img/cat/home-1-cate5.jpg" class="img-fluid" alt="cat-5">
+                                    </div>
+                                    <div class="cat-content-info">
+                                        <div class="cat-content">
+                                            <h6><span class="home-1-cat-title">Bromeliads</span></h6>
+                                            <span class="cat-count">12 Items</span>
+                                        </div>
+                                        <div class="category-button">
+                                            <span class="button-block"><i class="feather-plus"></i></span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="category-wrap banner-hover">
+                                <a asp-area="Customer" asp-controller="ClientCustomer" asp-action="Index" class="cat-img-title banner-img">
+                                    <div class="cat-img">
+                                        <img src="~/customer/img/cat/home-1-cate6.jpg" class="img-fluid" alt="cat-6">
+                                    </div>
+                                    <div class="cat-content-info">
+                                        <div class="cat-content">
+                                            <h6><span class="cat-title">Fruit plants</span></h6>
+                                            <span class="cat-count">12 Items</span>
+                                        </div>
+                                        <div class="category-button">
+                                            <span class="button-block"><i class="feather-plus"></i></span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- category end -->
         
+}

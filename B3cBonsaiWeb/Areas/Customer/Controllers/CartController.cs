@@ -6,7 +6,9 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            Random rd = new Random();
+            var listObjs = rd.NextDouble() < 0.5 ? new List<Object>() : null;
+            return View(listObjs);
         }
     }
 }
