@@ -3,10 +3,10 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - B3cBonsaiWeb</title>
+    <title> Trang Chủ</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <!-- favicon -->
-    <link rel="icon" type="image/x-icon" href="img/favicon/favicon.png">
+    <link rel="icon" type="image/x-icon" href="~/customer/img/favicon/favicon.png">
     <!-- bootstrap css -->
     <link rel="stylesheet" type="text/css" href="~/customer/css/bootstrap.min.css" asp-append-version="true" />
     <link rel="stylesheet" type="text/css" href="~/customer/css/bootstrap-icons.css" asp-append-version="true" />
@@ -40,7 +40,7 @@
 
 </head>
 <body>
-        <!-- header start -->
+    <!-- header start -->
     <header class="main-header" id="stickyheader">
         <div class="header-top-area">
             <div class="container">
@@ -203,7 +203,7 @@
                                                         <li class="menubanner-li">
                                                             <div class="menubanner-img">
                                                                 <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Index" class="banner-hover">
-                                                                    <img src="~/customer/img/menu/home1-menu-banner1.jpg"  class="img-fluid" alt="menu-banner1">
+                                                                    <img src="~/customer/img/menu/home1-menu-banner1.jpg" class="img-fluid" alt="menu-banner1">
                                                                 </a>
                                                                 <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Index" class="collection-title">
                                                                     <span>New product</span>
@@ -358,14 +358,14 @@
                                                             </div>
                                                         </li>
                                                         <li class="menusub-li">
-                                                            <a  asp-area="Customer" asp-controller="Home" asp-action="ContactUs" class="menusub-title">
+                                                            <a asp-area="Customer" asp-controller="Home" asp-action="ContactUs" class="menusub-title">
                                                                 <span class="sp-link-title">Contact us</span>
                                                                 <span class="menu-arrow"><i class="fa-solid fa-angle-right"></i></span>
                                                             </a>
                                                             <div class="menusup-dropdown collapse">
                                                                 <ul class="menusup-ul">
                                                                     <li class="menusup-li">
-                                                                        <a  asp-area="Customer" asp-controller="Home" asp-action="ContactUs" class="menusup-title">
+                                                                        <a asp-area="Customer" asp-controller="Home" asp-action="ContactUs" class="menusup-title">
                                                                             <span class="sp-link-title">Contact us</span>
                                                                         </a>
                                                                     </li>
@@ -373,14 +373,14 @@
                                                             </div>
                                                         </li>
                                                         <li class="menusub-li">
-                                                        <a asp-area="Customer" asp-controller="Payment" asp-action="Index" class="menusub-title">
+                                                            <a asp-area="Customer" asp-controller="Payment" asp-action="Index" class="menusub-title">
                                                                 <span class="sp-link-title">Checkout</span>
                                                                 <span class="menu-arrow"><i class="fa-solid fa-angle-right"></i></span>
                                                             </a>
                                                             <div class="menusup-dropdown collapse">
                                                                 <ul class="menusup-ul">
                                                                     <li class="menusup-li">
-                                                                    <a asp-area="Customer" asp-controller="Payment" asp-action="Index" class="menusup-title">
+                                                                        <a asp-area="Customer" asp-controller="Payment" asp-action="Index" class="menusup-title">
                                                                             <span class="sp-link-title">Checkout</span>
                                                                         </a>
                                                                     </li>
@@ -456,7 +456,7 @@
                                         <li class="side-wrap toggler-wrap">
                                             <div class="toggler-wrapper">
                                                 <button type="button" class="toggler-btn">
-                                                <span class="toggler-icon"><i class="feather-menu"></i></span>
+                                                    <span class="toggler-icon"><i class="feather-menu"></i></span>
                                                 </button>
                                             </div>
                                         </li>
@@ -520,8 +520,10 @@
                                 <div class="footer-deal">
                                     <div class="section-capture">
                                         <div class="section-title">
-                                            <span class="sub-title">Hurry Up</span>
-                                            <h2>Plants deals</h2>
+                                            <span class="sub-title">
+                                                Nhanh lên
+                                            </span>
+                                            <h2>Mua cây tốt nhất</h2>
                                         </div>
                                         <div class="deal-button">
                                             <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Index" class="deal-btn">
@@ -535,7 +537,7 @@
                                             <li class="clock-li clock-day">
                                                 <div class="clock-wrap">
                                                     <span class="time days"></span>
-                                                    <div class="clock-text">Day</div>
+                                                    <div class="clock-text">Ngày</div>
                                                 </div>
                                             </li>
                                             <!-- deal day end -->
@@ -543,7 +545,7 @@
                                             <li class="clock-li sclock-hours">
                                                 <div class="clock-wrap">
                                                     <span class="time hours"></span>
-                                                    <div class="clock-text">Hrs</div>
+                                                    <div class="clock-text">Giờ</div>
                                                 </div>
                                             </li>
                                             <!-- deal hours end -->
@@ -551,7 +553,7 @@
                                             <li class="clock-li sclock-minutes">
                                                 <div class="clock-wrap">
                                                     <span class="time minutes"></span>
-                                                    <div class="clock-text">Min</div>
+                                                    <div class="clock-text">Phút</div>
                                                 </div>
                                             </li>
                                             <!-- deal minute end -->
@@ -559,7 +561,9 @@
                                             <li class="clock-li sclock-seconds">
                                                 <div class="clock-wrap">
                                                     <span class="time seconds"></span>
-                                                    <div class="clock-text">Sec</div>
+                                                    <div class="clock-text">
+                                                        Giây
+                                                    </div>
                                                 </div>
                                             </li>
                                             <!-- deal second end -->
@@ -570,7 +574,7 @@
                             <li class="footer-li footer-contact">
                                 <ul class="ftlist-ul">
                                     <li class="ftlist-li">
-                                        <h2 class="ftlist-title">Contact us</h2>
+                                        <h2 class="ftlist-title">Liên hệ với chúng tôi</h2>
                                         <a data-bs-toggle="collapse" href="#footer-contact" class="ftlist-title">
                                             <span>Contact us</span>
                                             <span><i class="fa-solid fa-plus"></i></span>
@@ -578,15 +582,15 @@
                                         <ul class="ftcontact-ul collapse" id="footer-contact">
                                             <li class="ftcontact-li">
                                                 <div class="ft-contact-add">
-                                                    <span class="info-icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="m12 20.9l4.95-4.95a7 7 0 1 0-9.9 0zm0 2.828l-6.364-6.364a9 9 0 1 1 12.728 0zM12 13a2 2 0 1 0 0-4a2 2 0 0 0 0 4m0 2a4 4 0 1 1 0-8a4 4 0 0 1 0 8"/></svg></span>
+                                                    <span class="info-icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="m12 20.9l4.95-4.95a7 7 0 1 0-9.9 0zm0 2.828l-6.364-6.364a9 9 0 1 1 12.728 0zM12 13a2 2 0 1 0 0-4a2 2 0 0 0 0 4m0 2a4 4 0 1 1 0-8a4 4 0 0 1 0 8" /></svg></span>
                                                     <div class="info-block">
-                                                        <p>16 Porter alley, keyser,</p><p>26326  united states</p>
+                                                        <p>Ngõ 16 Porter, thợ khóa,</p><p>26326 Buôn Ma Thuật</p>
                                                     </div>
                                                 </div>
                                             </li>
                                             <li class="ftcontact-li">
                                                 <div class="ft-contact-add">
-                                                    <span class="info-icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M9.366 10.682a10.556 10.556 0 0 0 3.952 3.952l.884-1.238a1 1 0 0 1 1.294-.296a11.421 11.421 0 0 0 4.583 1.364a1 1 0 0 1 .921.997v4.462a1 1 0 0 1-.898.995A15.51 15.51 0 0 1 18.5 21C9.94 21 3 14.06 3 5.5c0-.538.027-1.072.082-1.602A1 1 0 0 1 4.077 3h4.462a1 1 0 0 1 .997.921A11.421 11.421 0 0 0 10.9 8.504a1 1 0 0 1-.296 1.294zm-2.522-.657l1.9-1.357A13.41 13.41 0 0 1 7.647 5H5.01c-.006.166-.009.333-.009.5C5 12.956 11.044 19 18.5 19c.167 0 .334-.003.5-.01v-2.637a13.41 13.41 0 0 1-3.668-1.097l-1.357 1.9a12.45 12.45 0 0 1-1.588-.75l-.058-.033a12.556 12.556 0 0 1-4.702-4.702l-.033-.058a12.441 12.441 0 0 1-.75-1.588"/></svg></span>
+                                                    <span class="info-icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M9.366 10.682a10.556 10.556 0 0 0 3.952 3.952l.884-1.238a1 1 0 0 1 1.294-.296a11.421 11.421 0 0 0 4.583 1.364a1 1 0 0 1 .921.997v4.462a1 1 0 0 1-.898.995A15.51 15.51 0 0 1 18.5 21C9.94 21 3 14.06 3 5.5c0-.538.027-1.072.082-1.602A1 1 0 0 1 4.077 3h4.462a1 1 0 0 1 .997.921A11.421 11.421 0 0 0 10.9 8.504a1 1 0 0 1-.296 1.294zm-2.522-.657l1.9-1.357A13.41 13.41 0 0 1 7.647 5H5.01c-.006.166-.009.333-.009.5C5 12.956 11.044 19 18.5 19c.167 0 .334-.003.5-.01v-2.637a13.41 13.41 0 0 1-3.668-1.097l-1.357 1.9a12.45 12.45 0 0 1-1.588-.75l-.058-.033a12.556 12.556 0 0 1-4.702-4.702l-.033-.058a12.441 12.441 0 0 1-.75-1.588" /></svg></span>
                                                     <div class="info-block">
                                                         <a href="tel:+550123456789" class="ft-contact-address">+55 0123 456 789</a>
                                                     </div>
@@ -594,7 +598,7 @@
                                             </li>
                                             <li class="ftcontact-li">
                                                 <div class="ft-contact-add">
-                                                    <span class="info-icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M3 3h18a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1m17 4.238l-7.928 7.1L4 7.216V19h16zM4.511 5l7.55 6.662L19.502 5z"/></svg></span>
+                                                    <span class="info-icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M3 3h18a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1m17 4.238l-7.928 7.1L4 7.216V19h16zM4.511 5l7.55 6.662L19.502 5z" /></svg></span>
                                                     <div class="info-block">
                                                         <a href="mailto:demo@demo.com" class="ft-contact-address">demo@demo.com</a>
                                                     </div>
@@ -608,7 +612,7 @@
                                 <div class="menu-content">
                                     <ul class="ftlist-ul">
                                         <li class="ftlist-li">
-                                            <h2 class="ftlist-title">Information</h2>
+                                            <h2 class="ftlist-title">Thông tin</h2>
                                             <a data-bs-toggle="collapse" href="#footer-information" class="ftlist-title">
                                                 <span>Information</span>
                                                 <span><i class="fa-solid fa-plus"></i></span>
@@ -641,7 +645,7 @@
                                 <div class="menu-content">
                                     <ul class="ftlist-ul">
                                         <li class="ftlist-li">
-                                            <h2 class="ftlist-title">Privacy &amp; terms</h2>
+                                            <h2 class="ftlist-title">Quyền riêng tư và điều khoản</h2>
                                             <a data-bs-toggle="collapse" href="#footer-privacy" class="ftlist-title">
                                                 <span>Privacy &amp; terms</span>
                                                 <span><i class="fa-solid fa-plus"></i></span>
@@ -669,7 +673,7 @@
                             </li>
                         </ul>
                     </div>
-                </div> 
+                </div>
             </div>
         </div>
     </div>
@@ -721,7 +725,7 @@
         <div class="mobile-contents">
             <div class="menu-close">
                 <button class="menu-close-btn">
-                <span class="menu-close-icon"><i class="feather-x"></i></span>
+                    <span class="menu-close-icon"><i class="feather-x"></i></span>
                 </button>
             </div>
             <div class="mobilemenu-content">
@@ -886,7 +890,7 @@
                                     <li class="menubanner-li">
                                         <div class="menubanner-img">
                                             <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Index" class="collection-img banner-hover">
-                                                <img src="~/customer/img/menu/home1-menu-banner1.jpg"  class="img-fluid" alt="menu-banner1">
+                                                <img src="~/customer/img/menu/home1-menu-banner1.jpg" class="img-fluid" alt="menu-banner1">
                                             </a>
                                             <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Index" class="collection-title">
                                                 <span>New product</span>
@@ -1178,14 +1182,14 @@
                                 <div class="crap-search">
                                     <!-- search-button-close start -->
                                     <div class="button-close">
-                                        <button type="button" class="search-close" data-bs-dismiss="modal"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/><path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/></svg></button>
+                                        <button type="button" class="search-close" data-bs-dismiss="modal"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z" /><path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z" /></svg></button>
                                     </div>
                                     <!-- search-button-close end -->
                                     <!-- search-form start -->
                                     <form method="get" class="search-bar">
                                         <div class="form-search">
                                             <input name="q" placeholder="Search product here.." class="input-text" required>
-                                            <a href="search.html" class="search-btn"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="bi bi-search" viewBox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/></svg></a>
+                                            <a href="search.html" class="search-btn"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="bi bi-search" viewBox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" /></svg></a>
                                         </div>
                                     </form>
                                     <!-- search-form end -->
@@ -1536,7 +1540,6 @@
         </div>
     </div>
     <!-- quickview modal end -->
-
     <!-- newsletter start
     <div id="newsletter" class="popup-wrapper">
         <div class="popup-wrapper">
@@ -1572,7 +1575,6 @@
         </div>
     </div>
     newsletter end -->
-
     <!-- bg-scren start -->
     <div class="bg-screen"></div>
     <!-- bg-scren end -->
