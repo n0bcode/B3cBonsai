@@ -13,7 +13,10 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Admin
         {
             return View();
         }
-        
+        public IActionResult DetailWithDelete()
+        {
+            return View();
+        }
         public IActionResult Delete()
         {
             return View();

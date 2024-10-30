@@ -19,7 +19,7 @@
 			</li>
 			<li class="breadcrumb-item active"><a href="javascript:void(0)">Employee</a></li>
 		</ol>
-		<a class="text-primary fs-13" data-bs-toggle="offcanvas" href="#offcanvasExample1" role="button" aria-controls="offcanvasExample1">+ Add Task</a>
+		<a class="text-primary fs-13" data-bs-toggle="offcanvas" href="#upsertObject1" role="button" aria-controls="upsertObject1">+ Add Task</a>
 	</div>
 	<div class="container-fluid">
 		<div class="row">
@@ -30,7 +30,7 @@
 							<div class="tbl-caption">
 								<h4 class="heading mb-0">Employees</h4>
 								<div>
-									<a class="btn btn-primary btn-sm" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">+ Add Employee</a>
+									<a class="btn btn-primary btn-sm" data-bs-toggle="offcanvas" href="#upsertObject" role="button" aria-controls="upsertObject">+ Add/Edit</a>
 									<button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal1">
 										+ Invite Employee
 									</button>
@@ -374,3 +374,16 @@
 
 	</div>
 </div>
+
+
+@section upsertObject {
+	<partial name="Upsert" />
+}
+
+@section detailWithDelete {
+	<partial name="DetailWithDelete" />
+}
+
+@section Scripts {
+	<script src="~/js/employee/managerCustomer.js" asp-append-version="true"></script>
+}
