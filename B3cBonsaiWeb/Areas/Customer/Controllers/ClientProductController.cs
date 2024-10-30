@@ -2,6 +2,7 @@
 
 namespace B3cBonsaiWeb.Areas.Customer.Controllers
 {
+    //Quản lý chức năng hiển thị view sản phẩm cho người dùng
     public class ClientProductController : Controller
     {
         public IActionResult Index()
