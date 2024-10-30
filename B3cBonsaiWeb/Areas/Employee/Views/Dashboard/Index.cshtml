@@ -15,7 +15,7 @@
 			</li>
 			<li class="breadcrumb-item active"><a href="javascript:void(0)">Dashboard</a></li>
 		</ol>
-		<a class="text-primary fs-13" data-bs-toggle="offcanvas" href="#offcanvasExample1" role="button" aria-controls="offcanvasExample1">+ Add Task</a>
+		<a class="text-primary fs-13" data-bs-toggle="offcanvas" href="#upsertObject1" role="button" aria-controls="upsertObject1">+ Add Task</a>
 	</div>
 	<div class="container-fluid">
 		<div class="row">
@@ -1825,10 +1825,7 @@
 							<div class="tbl-caption">
 								<h4 class="heading mb-0">Employees</h4>
 								<div>
-									<a class="btn btn-primary btn-sm" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">+ Add Employee</a>
-									<button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal1">
-										+ Invite Employee
-									</button>
+									<a class="btn btn-primary btn-sm" data-bs-toggle="offcanvas" href="/Employee/ManagerEmployee/Index" role="button" aria-controls="upsertObject">Quản lý</a>
 								</div>
 							</div>
 							<table id="empoloyees-tbl" class="table">
@@ -2326,3 +2323,9 @@
 
 	</div>
 </div>
+
+@section Scripts {
+	<script src="~/employee/vendor/chart.js/Chart.bundle.min.js" asp-append-version="true"></script>
+	<script src="~/employee/vendor/bootstrap-select/dist/js/bootstrap-select.min.js" asp-append-version="true"></script>
+	<script src="~/employee/vendor/apexchart/apexchart.js" asp-append-version="true"></script>
+}
