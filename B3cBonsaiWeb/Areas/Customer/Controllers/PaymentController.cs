@@ -2,6 +2,7 @@
 
 namespace B3cBonsaiWeb.Areas.Customer.Controllers
 {
+    //Quản lý chức năng thanh toán của người dùng
     public class PaymentController : Controller
     {
         public IActionResult Index()

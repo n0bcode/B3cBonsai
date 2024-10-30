@@ -2,6 +2,7 @@
 
 namespace B3cBonsaiWeb.Areas.Customer.Controllers
 {
+    //Quản lý các chức năng liên quan đến thông tin người dùng
     public class ClientProfileController : Controller
     {
         public IActionResult Index()

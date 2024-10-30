@@ -467,33 +467,7 @@
                                                 </a>
                                             </div>
                                         </li>
-                                        <li class="side-wrap user-wrap">
-                                            <div class="user-wrapper">
-                                                <a href="/Customer/Account/Login?typeUser=user">
-                                                    <span class="user-icon"><i class="feather-user"></i></span>
-                                                </a>
-                                            </div>
-                                        </li>
-                                        <li class="side-wrap wishlist-wrap">
-                                            <div class="wishlist-wrapper">
-                                                <a asp-area="Customer" asp-controller="Wishlist" asp-action="Index">
-                                                    <span class="wishlist-icon-count">
-                                                        <span class="wishlist-icon"><i class="feather-heart"></i></span>
-                                                        <span class="wishlist-count">5</span>
-                                                    </span>
-                                                </a>
-                                            </div>
-                                        </li>
-                                        <li class="side-wrap cart-wrap">
-                                            <div class="cart-wrapper">
-                                                <a href="javascript:void(0)" class="js-cart-drawer">
-                                                    <span class="cart-icon-count">
-                                                        <span class="cart-icon"><i class="feather-shopping-bag"></i></span>
-                                                        <span class="cart-count">4</span>
-                                                    </span>
-                                                </a>
-                                            </div>
-                                        </li>
+                                        @await Component.InvokeAsync("RightHeaderNavigation")
                                     </ul>
                                 </div>
                             </div>
