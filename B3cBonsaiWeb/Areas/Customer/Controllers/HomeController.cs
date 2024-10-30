@@ -1,9 +1,10 @@
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using B3cBonsaiWeb.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace B3cBonsaiWeb.Controllers
 {
+    //Cho hiển thị các view giao diện đơn giản
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

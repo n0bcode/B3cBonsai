@@ -2,6 +2,7 @@
 
 namespace B3cBonsaiWeb.Areas.Customer.Controllers
 {
+    //Quản lý chức năng liên quan đến danh sách sản phẩm yêu thích của người dùng
     public class WishlistController : Controller
     {
         public IActionResult Index()

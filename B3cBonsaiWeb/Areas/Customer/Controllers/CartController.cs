@@ -2,6 +2,7 @@
 
 namespace B3cBonsaiWeb.Areas.Customer.Controllers
 {
+    //Quản lý tính năng liên quan đến giỏ hàng
     public class CartController : Controller
     {
         public IActionResult Index()
