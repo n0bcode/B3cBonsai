@@ -10,7 +10,7 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
             {
                 return View("UserLogin");
             }
-            return View();
+            return View("EmployeeLogin");
         }
     }
 }
