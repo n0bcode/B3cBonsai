@@ -9,7 +9,7 @@
         cancelButtonColor: "#d33",
         confirmButtonText: "Yes, delete it!"
     }).then((result) => {
-        if (result) {
+        if (result.value) {
             /*$.ajax({
                 url: url,
                 type: 'DELETE',
