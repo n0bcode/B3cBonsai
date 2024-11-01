@@ -1,4 +1,4 @@
-namespace B3cBonsaiWeb.Models
+namespace B3cBonsai.Models
 {
     public class ErrorViewModel
     {
