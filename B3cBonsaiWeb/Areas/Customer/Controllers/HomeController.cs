@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics;
-using B3cBonsaiWeb.Models;
+using B3cBonsai.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace B3cBonsaiWeb.Controllers

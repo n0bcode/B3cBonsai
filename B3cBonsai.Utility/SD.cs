@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace B3cBonsai.Utility
 {
-    internal class SD
+    public class SD
     {
+        public const string Role_Customer = "KhachHang";
+        public const string Role_Admin = "Admin";
+        public const string Role_Employee = "NhanVien";
     }
 }
