@@ -6,10 +6,12 @@ using System.Text;
 using System.Threading.Tasks;
 using B3cBonsai.Models;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace B3cBonsai.DataAccess.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<Microsoft.AspNetCore.Identity.IdentityUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
@@ -27,6 +29,40 @@ namespace B3cBonsai.DataAccess.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.HasDefaultSchema("dbo");
+
+            #region//Thay đổi cấu trúc tên bảng được tạo từ Identity !!!Chưa áp dụng!!!
+            //aspNetUser table -> IdentityUsers
+            /*modelBuilder.Entity<IdentityUser>(e => 
+            {
+                e.ToTable(name: "NguoiDung", schema: "identity"); // Đổi tên bảng thành "NguoiDung"
+            });
+            modelBuilder.Entity<IdentityRoleClaim<string>>(e =>
+            {
+                e.ToTable(name: "YeuCauVaiTro", schema: "identity"); // Đổi tên bảng thành "YeuCauVaiTro"
+            });
+            modelBuilder.Entity<IdentityRole>(e =>
+            {
+                e.ToTable(name: "VaiTro", schema: "identity"); // Đổi tên bảng thành "VaiTro"
+            });
+            modelBuilder.Entity<IdentityUserClaim<string>>(e =>
+            {
+                e.ToTable(name: "YeuCauDanhTinh", schema: "identity"); // Đổi tên bảng thành "YeuCauDanhTinh"
+            });
+            modelBuilder.Entity<IdentityUserLogin<string>>(e =>
+            {
+                e.ToTable(name: "DangNhap", schema: "identity"); // Đổi tên bảng thành "DangNhap"
+            });
+            modelBuilder.Entity<IdentityUserRole<string>>(e =>
+            {
+                e.ToTable(name: "VaiTroNguoiDung", schema: "identity"); // Đổi tên bảng thành "VaiTroNguoiDung"
+            });
+            modelBuilder.Entity<IdentityUserToken<string>>(e =>
+            {
+                e.ToTable(name: "TokenDangNhap", schema: "identity"); // Đổi tên bảng thành "TokenDangNhap"
+            });*/
+            #endregion
 
             // Thiết lập quan hệ giữa DonHang và NguoiDung (1-nhiều)
             modelBuilder.Entity<DonHang>()
@@ -156,6 +192,8 @@ namespace B3cBonsai.DataAccess.Data
 
             modelBuilder.Entity<NguoiDungUngDung>().HasData(nguoiDungs);
 
+            var khachHangs = nguoiDungs.Where(x=>x.VaiTro == "KhachHang").ToList();
+
             // Dữ liệu khởi tạo cho DANH_MUC_SAN_PHAM
             var danhMucSanPhams = new List<DanhMucSanPham>
     {
@@ -223,7 +261,7 @@ namespace B3cBonsai.DataAccess.Data
                 donHangs.Add(new DonHang
                 {
                     Id = i,
-                    NguoiDungId = nguoiDungs[0].Id, // Sử dụng ID của người dùng admin
+                    NguoiDungId = khachHangs[new Random().Next(khachHangs.Length)].Id,
                     NhanVienId = nguoiDungs[0].Id,
                     NgayDatHang = DateTime.Now.AddDays(-new Random().Next(0, 30)),
                     TrangThai = new[] { "ChoXacNhan", "HoanTat", "DaHuy" }[new Random().Next(3)],
@@ -317,7 +355,7 @@ namespace B3cBonsai.DataAccess.Data
                 }
             }
             modelBuilder.Entity<ChiTietDonHang>().HasData(chiTietDonHangs);*/
-#endregion
+            #endregion
         }
     }
 }
