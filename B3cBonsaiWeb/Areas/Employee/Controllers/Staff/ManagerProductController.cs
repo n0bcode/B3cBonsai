@@ -2,6 +2,7 @@
 
 namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
 {
+    [Area("Employee")]
     public class ManagerProductController : Controller
     {
         public IActionResult Index()

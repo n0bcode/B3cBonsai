@@ -1,0 +1,41 @@
+﻿@page
+@model AccessDeniedModel
+@{
+    ViewData["Title"] = "Access denied";
+}
+
+<!-- breadcrumb start -->
+<section class="breadcrumb-area">
+    <div class="container">
+        <div class="col">
+            <div class="row">
+                <div class="breadcrumb-index">
+                    <!-- breadcrumb-list start -->
+                    <ul class="breadcrumb-ul">
+                        <li class="breadcrumb-li">
+                            <a class="breadcrumb-link" asp-area="Customer" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="breadcrumb-li">
+                            <span class="breadcrumb-text">@ViewData["Title"]</span>
+                        </li>
+                    </ul>
+                    <!-- breadcrumb-list end -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- breadcrumb end -->
+<section class="page-not-found section-ptb bg-color">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="search-error-wrapper">
+                    <h2>Không quyền truy cập</h2>
+                    <p>Rất tiếc nhưng trang bạn đang không có quyền truy cập trang này.</p>
+                    <a asp-area="Customer" asp-controller="Home" asp-action="Index" class="btn btn-style2">Trở về Trang Chủ</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

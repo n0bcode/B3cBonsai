@@ -2,6 +2,7 @@
 
 namespace B3cBonsaiWeb.Areas.Customer.Controllers
 {
+    [Area("Customer")]
     //Quản lý các chức năng liên quan đến thông tin người dùng
     public class ClientProfileController : Controller
     {

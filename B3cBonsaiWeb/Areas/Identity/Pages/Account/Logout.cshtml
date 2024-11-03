@@ -1,0 +1,61 @@
+﻿@page
+@model LogoutModel
+@{
+    ViewData["Title"] = "Đăng xuất";
+}
+
+<!-- breadcrumb start -->
+<section class="breadcrumb-area">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="breadcrumb-index">
+                    <!-- breadcrumb-list start -->
+                    <ul class="breadcrumb-ul">
+                        <li class="breadcrumb-li">
+                            <a class="breadcrumb-link" href="/">Trang chủ</a>
+                        </li>
+                        <li class="breadcrumb-li">
+                            <span class="breadcrumb-text">Đăng xuất</span>
+                        </li>
+                    </ul>
+                    <!-- breadcrumb-list end -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- breadcrumb end -->
+<!-- customer-page start -->
+<section class="customer-page section-ptb">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <!-- section title start -->
+                <div class="section-capture">
+                    <div class="section-title">
+                        <h2><span>@ViewData["Title"]</span></h2>
+                    </div>
+                </div>
+                <!-- section title end -->
+
+                <header>
+                    <h1>@ViewData["Title"]</h1>
+                    @{
+                        if (User.Identity?.IsAuthenticated ?? false)
+                        {
+                            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
+                                <button type="submit" class="nav-link btn btn-link text-dark">Nhấn vào đây để đăng xuất</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <p>Bạn đã đăng xuất thành công khỏi ứng dụng.</p>
+                        }
+                    }
+                </header>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- customer-page end -->

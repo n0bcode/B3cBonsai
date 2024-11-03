@@ -1,0 +1,61 @@
+﻿@page
+@model ConfirmEmailChangeModel
+@{
+    ViewData["Title"] = "Xác nhận thay đổi email";
+}
+
+<!-- breadcrumb start -->
+<section class="breadcrumb-area">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="breadcrumb-index">
+                    <!-- breadcrumb-list start -->
+                    <ul class="breadcrumb-ul">
+                        <li class="breadcrumb-li">
+                            <a class="breadcrumb-link" href="/">Trang chủ</a>
+                        </li>
+                        <li class="breadcrumb-li">
+                            <span class="breadcrumb-text">Tài khoản</span>
+                        </li>
+                        <li class="breadcrumb-li">
+                            <span class="breadcrumb-text">@ViewData["Title"]</span>
+                        </li>
+                    </ul>
+                    <!-- breadcrumb-list end -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- breadcrumb end -->
+<!-- customer-page start -->
+<section class="customer-page section-ptb">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <!-- section title start -->
+                <div class="section-capture">
+                    <div class="section-title">
+                        <h2><span>@ViewData["Title"]</span></h2>
+                    </div>
+                </div>
+                <!-- section title end -->
+
+                <partial name="_StatusMessage" model="Model.StatusMessage" />
+
+                <div class="confirmation-message">
+                    <p>Vui lòng kiểm tra email mới của bạn để xác nhận thay đổi. Làm theo hướng dẫn trong email để hoàn tất quá trình.</p>
+                </div>
+
+                <div class="acc-wrapper">
+                    <h6>Bạn đã xác nhận chưa?</h6>
+                    <div class="account-optional">
+                        <a asp-page="./Login">Đăng nhập vào tài khoản của bạn</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- customer-page end -->

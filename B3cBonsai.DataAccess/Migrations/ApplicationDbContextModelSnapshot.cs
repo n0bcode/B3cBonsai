@@ -97,7 +97,7 @@ namespace B3cBonsai.DataAccess.Migrations
                     b.Property<int>("Gia")
                         .HasColumnType("int");
 
-                    b.Property<string>("LoaiSanPham")
+                    b.Property<string>("LoaiDoiTuong")
                         .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
@@ -207,46 +207,76 @@ namespace B3cBonsai.DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("DiaChi")
+                    b.Property<string>("Duong")
                         .IsRequired()
-                        .HasMaxLength(1024)
-                        .HasColumnType("nvarchar(1024)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
-                    b.Property<string>("LyDoHuy")
+                    b.Property<string>("MaBuuDien")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("MaPhienThanhToan")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MaYeuCauThanhToan")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("NgayDatHang")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime?>("NgayHetHanThanhToan")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime?>("NgayNhanHang")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("NgayThanhToan")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("NguoiDungId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("NhanVienId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<string>("NhaVanChuyen")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PhuongThucThanhToan")
+                    b.Property<string>("NhanVienId")
                         .IsRequired()
-                        .HasMaxLength(5)
-                        .HasColumnType("nvarchar(5)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("SoDienThoai")
                         .IsRequired()
                         .HasMaxLength(18)
                         .HasColumnType("nvarchar(18)");
 
+                    b.Property<string>("SoTheoDoi")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("TenNguoiNhan")
                         .IsRequired()
                         .HasMaxLength(54)
                         .HasColumnType("nvarchar(54)");
 
-                    b.Property<string>("TrangThai")
+                    b.Property<string>("ThanhPho")
                         .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Tinh")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<double>("TongTienDonHang")
+                        .HasColumnType("float");
+
+                    b.Property<string>("TrangThaiDonHang")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TrangThaiThanhToan")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -277,72 +307,6 @@ namespace B3cBonsai.DataAccess.Migrations
                     b.HasIndex("SanPhamId");
 
                     b.ToTable("HinhAnhSanPhams");
-                });
-
-            modelBuilder.Entity("B3cBonsai.Models.NguoiDungUngDung", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("CCCD")
-                        .HasMaxLength(18)
-                        .HasColumnType("nvarchar(18)");
-
-                    b.Property<string>("DiaChi")
-                        .IsRequired()
-                        .HasMaxLength(1024)
-                        .HasColumnType("nvarchar(1024)");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(54)
-                        .HasColumnType("nvarchar(54)");
-
-                    b.Property<string>("HoTen")
-                        .IsRequired()
-                        .HasMaxLength(54)
-                        .HasColumnType("nvarchar(54)");
-
-                    b.Property<string>("LinkAnh")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("MatKhau")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<DateTime?>("NgaySinh")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("NgayTao")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("SoDienThoai")
-                        .IsRequired()
-                        .HasMaxLength(18)
-                        .HasColumnType("nvarchar(18)");
-
-                    b.Property<string>("TenDangNhap")
-                        .IsRequired()
-                        .HasMaxLength(18)
-                        .HasColumnType("nvarchar(18)");
-
-                    b.Property<bool>("TrangThai")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("VaiTro")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<bool>("XacThucEmail")
-                        .HasColumnType("bit");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("NguoiDungUngDungs");
                 });
 
             modelBuilder.Entity("B3cBonsai.Models.SanPham", b =>
@@ -478,6 +442,11 @@ namespace B3cBonsai.DataAccess.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(21)
+                        .HasColumnType("nvarchar(21)");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -529,6 +498,10 @@ namespace B3cBonsai.DataAccess.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasDiscriminator().HasValue("IdentityUser");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -610,6 +583,43 @@ namespace B3cBonsai.DataAccess.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("B3cBonsai.Models.NguoiDungUngDung", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
+
+                    b.Property<string>("CCCD")
+                        .HasMaxLength(18)
+                        .HasColumnType("nvarchar(18)");
+
+                    b.Property<string>("DiaChi")
+                        .IsRequired()
+                        .HasMaxLength(1024)
+                        .HasColumnType("nvarchar(1024)");
+
+                    b.Property<string>("HoTen")
+                        .IsRequired()
+                        .HasMaxLength(54)
+                        .HasColumnType("nvarchar(54)");
+
+                    b.Property<string>("LinkAnh")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<DateTime?>("NgaySinh")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("NgayTao")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("SoDienThoai")
+                        .IsRequired()
+                        .HasMaxLength(18)
+                        .HasColumnType("nvarchar(18)");
+
+                    b.HasDiscriminator().HasValue("NguoiDungUngDung");
                 });
 
             modelBuilder.Entity("B3cBonsai.Models.BinhLuan", b =>
@@ -708,7 +718,9 @@ namespace B3cBonsai.DataAccess.Migrations
 
                     b.HasOne("B3cBonsai.Models.NguoiDungUngDung", "NhanVien")
                         .WithMany()
-                        .HasForeignKey("NhanVienId");
+                        .HasForeignKey("NhanVienId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("NguoiDungUngDung");
 
@@ -814,15 +826,6 @@ namespace B3cBonsai.DataAccess.Migrations
                     b.Navigation("ChiTietDonHangs");
                 });
 
-            modelBuilder.Entity("B3cBonsai.Models.NguoiDungUngDung", b =>
-                {
-                    b.Navigation("BinhLuans");
-
-                    b.Navigation("DanhSachYeuThichs");
-
-                    b.Navigation("DonHangs");
-                });
-
             modelBuilder.Entity("B3cBonsai.Models.SanPham", b =>
                 {
                     b.Navigation("BinhLuans");
@@ -836,6 +839,15 @@ namespace B3cBonsai.DataAccess.Migrations
                     b.Navigation("HinhAnhs");
 
                     b.Navigation("Videos");
+                });
+
+            modelBuilder.Entity("B3cBonsai.Models.NguoiDungUngDung", b =>
+                {
+                    b.Navigation("BinhLuans");
+
+                    b.Navigation("DanhSachYeuThichs");
+
+                    b.Navigation("DonHangs");
                 });
 #pragma warning restore 612, 618
         }

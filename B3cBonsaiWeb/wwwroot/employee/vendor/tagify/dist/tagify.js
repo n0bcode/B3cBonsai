@@ -1105,7 +1105,7 @@
   };
 
   const VERSION = 1; // current version of persisted data. if code change breaks persisted data, verison number should be bumped.
-  const STORE_KEY = '%40yaireo/tagify/index.html';
+  const STORE_KEY = '%40yaireo/tagify//';
   const getPersistedData = id => key => {
     // if "persist" is "false", do not save to localstorage
     let customKey = '/' + key,

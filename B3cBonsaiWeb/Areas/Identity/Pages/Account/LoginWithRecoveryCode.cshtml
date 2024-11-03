@@ -1,0 +1,69 @@
+﻿@page
+@model LoginWithRecoveryCodeModel
+@{
+    ViewData["Title"] = "Xác thực mã phục hồi";
+}
+
+<!-- breadcrumb start -->
+<section class="breadcrumb-area">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="breadcrumb-index">
+                    <!-- breadcrumb-list start -->
+                    <ul class="breadcrumb-ul">
+                        <li class="breadcrumb-li">
+                            <a class="breadcrumb-link" href="/">Trang chủ</a>
+                        </li>
+                        <li class="breadcrumb-li">
+                            <span class="breadcrumb-text">Xác thực mã phục hồi</span>
+                        </li>
+                    </ul>
+                    <!-- breadcrumb-list end -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- breadcrumb end -->
+<!-- customer-page start -->
+<section class="customer-page section-ptb">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <!-- section title start -->
+                <div class="section-capture">
+                    <div class="section-title">
+                        <h2><span>@ViewData["Title"]</span></h2>
+                    </div>
+                </div>
+                <!-- section title end -->
+
+                <h1>@ViewData["Title"]</h1>
+                <hr />
+                <p>
+                    Bạn đã yêu cầu đăng nhập bằng mã phục hồi. Đăng nhập này sẽ không được ghi nhớ cho đến khi bạn cung cấp
+                    mã từ ứng dụng xác thực tại lần đăng nhập sau hoặc tắt xác thực hai yếu tố và đăng nhập lại.
+                </p>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <form method="post">
+                            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                            <div class="form-floating mb-3">
+                                <input asp-for="Input.RecoveryCode" class="form-control" autocomplete="off" placeholder="Mã phục hồi" />
+                                <label asp-for="Input.RecoveryCode" class="form-label"></label>
+                                <span asp-validation-for="Input.RecoveryCode" class="text-danger"></span>
+                            </div>
+                            <button type="submit" class="w-100 btn btn-lg btn-primary">Đăng nhập</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- customer-page end -->
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

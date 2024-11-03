@@ -1,0 +1,72 @@
+﻿@{
+    if (ViewData.TryGetValue("ParentLayout", out var parentLayout) && parentLayout !=  null)
+    {
+        Layout = parentLayout.ToString();
+    }
+    else
+    {
+        Layout = "/Areas/Customer/Views/Shared/_Layout.cshtml";
+    }
+}
+
+<!-- breadcrumb start -->
+<section class="breadcrumb-area">
+    <div class="container">
+        <div class="col">
+            <div class="row">
+                <div class="breadcrumb-index">
+                    <!-- breadcrumb-list start -->
+                    <ul class="breadcrumb-ul">
+                        <li class="breadcrumb-li">
+                            <a class="breadcrumb-link" href="/">Trang chủ</a>
+                        </li>
+                        <li class="breadcrumb-li">
+                            <span class="breadcrumb-text">Quản lý thông tin tài khoản</span>
+                        </li>
+                    </ul>
+                    <!-- breadcrumb-list end -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- breadcrumb end -->
+<!--profile start -->
+<section class="pro-address-area section-ptb">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="password-block">
+                    <!-- order profile start -->
+                    <div class="profile-info">
+                        <div class="account-profile">
+                            <div class="pro-img">
+                                <a href="javascript:void(0)">
+                                    <img src="~/customer/img/testi/test-1.jpg" class="img-fluid" alt="testi-1">
+                                </a>
+                            </div>
+                            <div class="profile-text">
+                                <h6>Miranda joy</h6>
+                                <span>Joined April 06, 2024</span>
+                            </div>
+                        </div>
+                        <div class="account-detail">
+                            <partial name="_ManageNav" />
+                        </div>
+                    </div>
+                    <!-- order profile end -->
+                    <!-- order info start -->
+                    <div class="profile-form profile-address">
+                        @RenderBody()
+                    </div>
+                    <!-- order info end -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- profile end -->
+
+@section Scripts {
+    @RenderSection("Scripts", required: false)
+}

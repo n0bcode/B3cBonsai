@@ -1,0 +1,50 @@
+﻿@page
+@model LockoutModel
+@{
+    ViewData["Title"] = "Tài khoản bị khóa";
+}
+
+<!-- breadcrumb start -->
+<section class="breadcrumb-area">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="breadcrumb-index">
+                    <!-- breadcrumb-list start -->
+                    <ul class="breadcrumb-ul">
+                        <li class="breadcrumb-li">
+                            <a class="breadcrumb-link" href="/">Trang chủ</a>
+                        </li>
+                        <li class="breadcrumb-li">
+                            <span class="breadcrumb-text">Tài khoản bị khóa</span>
+                        </li>
+                    </ul>
+                    <!-- breadcrumb-list end -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- breadcrumb end -->
+<!-- customer-page start -->
+<section class="customer-page section-ptb">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <!-- section title start -->
+                <div class="section-capture">
+                    <div class="section-title">
+                        <h2><span>@ViewData["Title"]</span></h2>
+                    </div>
+                </div>
+                <!-- section title end -->
+
+                <header>
+                    <h1 class="text-danger">@ViewData["Title"]</h1>
+                    <p class="text-danger">Tài khoản này đã bị khóa, vui lòng thử lại sau.</p>
+                </header>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- customer-page end -->

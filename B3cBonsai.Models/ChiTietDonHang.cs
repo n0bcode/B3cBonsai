@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+﻿using B3cBonsai.Utility;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -24,7 +25,7 @@ namespace B3cBonsai.Models
 
         [Required]
         [StringLength(10)]
-        public string LoaiSanPham { get; set; } = "SAN_PHAM";
+        public string LoaiDoiTuong { get; set; } = SD.ObjectDetailOrder_SanPham;
 
         [Required]
         [Range(1, int.MaxValue)]

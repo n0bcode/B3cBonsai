@@ -2,6 +2,7 @@
 
 namespace B3cBonsaiWeb.Areas.Customer.Controllers
 {
+    [Area("Customer")]
     //Quản lý chức năng thanh toán của người dùng
     public class PaymentController : Controller
     {

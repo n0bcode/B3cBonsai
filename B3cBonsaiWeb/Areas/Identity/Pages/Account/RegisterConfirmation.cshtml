@@ -1,0 +1,60 @@
+﻿@page
+@model RegisterConfirmationModel
+@{
+    ViewData["Title"] = "Xác nhận đăng ký";
+}
+
+<!-- breadcrumb start -->
+<section class="breadcrumb-area">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="breadcrumb-index">
+                    <!-- breadcrumb-list start -->
+                    <ul class="breadcrumb-ul">
+                        <li class="breadcrumb-li">
+                            <a class="breadcrumb-link" href="/">Trang chủ</a>
+                        </li>
+                        <li class="breadcrumb-li">
+                            <span class="breadcrumb-text">Xác nhận đăng ký</span>
+                        </li>
+                    </ul>
+                    <!-- breadcrumb-list end -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- breadcrumb end -->
+<!-- customer-page start -->
+<section class="customer-page section-ptb">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <!-- section title start -->
+                <div class="section-capture">
+                    <div class="section-title">
+                        <h2><span>@ViewData["Title"]</span></h2>
+                    </div>
+                </div>
+                <!-- section title end -->
+
+                <h1>@ViewData["Title"]</h1>
+                @if (@Model.DisplayConfirmAccountLink)
+                {
+                    <p>
+                        Ứng dụng này hiện không có trình gửi email thực tế, xem <a href="https://aka.ms/aspaccountconf">tài liệu này</a> để biết cách cấu hình trình gửi email thực sự.
+                        Thông thường, liên kết này sẽ được gửi qua email: <a id="confirm-link" href="@Model.EmailConfirmationUrl">Nhấn vào đây để xác nhận tài khoản của bạn</a>
+                    </p>
+                }
+                else
+                {
+                    <p>
+                        Vui lòng kiểm tra email của bạn để xác nhận tài khoản.
+                    </p>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+<!-- customer-page end -->
