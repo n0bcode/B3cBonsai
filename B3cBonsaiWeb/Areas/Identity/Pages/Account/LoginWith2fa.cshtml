@@ -1,0 +1,80 @@
+﻿@page
+@model LoginWith2faModel
+@{
+    ViewData["Title"] = "Xác thực hai yếu tố";
+}
+
+<!-- breadcrumb start -->
+<section class="breadcrumb-area">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="breadcrumb-index">
+                    <!-- breadcrumb-list start -->
+                    <ul class="breadcrumb-ul">
+                        <li class="breadcrumb-li">
+                            <a class="breadcrumb-link" href="/">Trang chủ</a>
+                        </li>
+                        <li class="breadcrumb-li">
+                            <span class="breadcrumb-text">Xác thực hai yếu tố</span>
+                        </li>
+                    </ul>
+                    <!-- breadcrumb-list end -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- breadcrumb end -->
+<!-- customer-page start -->
+<section class="customer-page section-ptb">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <!-- section title start -->
+                <div class="section-capture">
+                    <div class="section-title">
+                        <h2><span>@ViewData["Title"]</span></h2>
+                    </div>
+                </div>
+                <!-- section title end -->
+
+                <h1>@ViewData["Title"]</h1>
+                <hr />
+                <p>Đăng nhập của bạn được bảo vệ bằng ứng dụng xác thực. Nhập mã xác thực của bạn bên dưới.</p>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <form method="post" asp-route-returnUrl="@Model.ReturnUrl">
+                            <input asp-for="RememberMe" type="hidden" />
+                            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                            <div class="form-floating mb-3">
+                                <input asp-for="Input.TwoFactorCode" class="form-control" autocomplete="off" />
+                                <label asp-for="Input.TwoFactorCode" class="form-label"></label>
+                                <span asp-validation-for="Input.TwoFactorCode" class="text-danger"></span>
+                            </div>
+                            <div class="checkbox mb-3">
+                                <label asp-for="Input.RememberMachine" class="form-label">
+                                    <input asp-for="Input.RememberMachine" />
+                                    @Html.DisplayNameFor(m => m.Input.RememberMachine)
+                                </label>
+                            </div>
+                            <div>
+                                <button type="submit" class="w-100 btn btn-lg btn-primary">Đăng nhập</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <p>
+                    Bạn không có quyền truy cập vào thiết bị xác thực của mình? Bạn có thể
+                    <a id="recovery-code-login" asp-page="./LoginWithRecoveryCode" asp-route-returnUrl="@Model.ReturnUrl">đăng nhập bằng mã phục hồi</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- customer-page end -->
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

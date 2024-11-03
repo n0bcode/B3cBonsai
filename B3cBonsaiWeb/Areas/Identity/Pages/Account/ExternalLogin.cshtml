@@ -1,0 +1,71 @@
+﻿@page
+@model ExternalLoginModel
+@{
+    ViewData["Title"] = "Đăng ký";
+}
+
+<!-- breadcrumb start -->
+<section class="breadcrumb-area">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="breadcrumb-index">
+                    <!-- breadcrumb-list start -->
+                    <ul class="breadcrumb-ul">
+                        <li class="breadcrumb-li">
+                            <a class="breadcrumb-link" href="/">Trang chủ</a>
+                        </li>
+                        <li class="breadcrumb-li">
+                            <span class="breadcrumb-text">Đăng ký</span>
+                        </li>
+                    </ul>
+                    <!-- breadcrumb-list end -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- breadcrumb end -->
+<!-- customer-page start -->
+<section class="customer-page section-ptb">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <!-- section title start -->
+                <div class="section-capture">
+                    <div class="section-title">
+                        <h2><span>@ViewData["Title"]</span></h2>
+                    </div>
+                </div>
+                <!-- section title end -->
+
+                <h2 id="external-login-title">Gắn kết tài khoản của bạn với @Model.ProviderDisplayName.</h2>
+                <hr />
+
+                <p id="external-login-description" class="text-info">
+                    Bạn đã xác thực thành công với <strong>@Model.ProviderDisplayName</strong>.
+                    Vui lòng nhập địa chỉ email cho trang này bên dưới và nhấn nút Đăng ký để hoàn tất
+                    việc đăng nhập.
+                </p>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <form asp-page-handler="Confirmation" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                            <div class="form-floating mb-3">
+                                <input asp-for="Input.Email" class="form-control" autocomplete="email" placeholder="Vui lòng nhập email của bạn." />
+                                <label asp-for="Input.Email" class="form-label"></label>
+                                <span asp-validation-for="Input.Email" class="text-danger"></span>
+                            </div>
+                            <button type="submit" class="w-100 btn btn-lg btn-primary">Đăng ký</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- customer-page end -->
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

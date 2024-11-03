@@ -1,0 +1,67 @@
+﻿@page
+@model ExternalLoginsModel
+@{
+    ViewData["Title"] = "Quản lý đăng nhập bên ngoài";
+    ViewData["ActivePage"] = ManageNavPages.ExternalLogins;
+}
+
+<partial name="_StatusMessage" for="StatusMessage" />
+@if (Model.CurrentLogins?.Count > 0)
+{
+    <div class="billing-area">
+        <div class="pro-add-title">
+            <h6>Đăng nhập đã đăng ký</h6>
+        </div>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Nhà cung cấp đăng nhập</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var login in Model.CurrentLogins)
+                {
+                    <tr>
+                        <td id="@($"login-provider-{login.LoginProvider}")">@login.ProviderDisplayName</td>
+                        <td>
+                            @if (Model.ShowRemoveButton)
+                            {
+                                <form id="@($"remove-login-{login.LoginProvider}")" asp-page-handler="RemoveLogin" method="post">
+                                    <div>
+                                        <input asp-for="@login.LoginProvider" name="LoginProvider" type="hidden" />
+                                        <input asp-for="@login.ProviderKey" name="ProviderKey" type="hidden" />
+                                        <button type="submit" class="btn btn-danger" title="Xóa đăng nhập @login.ProviderDisplayName khỏi tài khoản của bạn">Xóa</button>
+                                    </div>
+                                </form>
+                            }
+                            else
+                            {
+                                @: &nbsp;
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+@if (Model.OtherLogins?.Count > 0)
+{
+    <div class="billing-area">
+        <div class="pro-add-title">
+            <h6>Thêm dịch vụ khác để đăng nhập.</h6>
+        </div>
+        <hr />
+        <form id="link-login-form" asp-page-handler="LinkLogin" method="post" class="form-horizontal">
+            <div id="socialLoginList">
+                <p>
+                    @foreach (var provider in Model.OtherLogins)
+                    {
+                        <button id="@($"link-login-button-{provider.Name}")" type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Đăng nhập bằng tài khoản @provider.DisplayName">@provider.DisplayName</button>
+                    }
+                </p>
+            </div>
+        </form>
+    </div>
+}

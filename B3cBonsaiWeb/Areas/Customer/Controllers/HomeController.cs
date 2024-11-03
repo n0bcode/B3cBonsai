@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace B3cBonsaiWeb.Controllers
 {
+    [Area("Customer")]
     //Cho hiển thị các view giao diện đơn giản
     public class HomeController : Controller
     {

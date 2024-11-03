@@ -30,11 +30,12 @@ namespace B3cBonsai.DataAccess.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.HasDefaultSchema("dbo");
 
             #region//Thay đổi cấu trúc tên bảng được tạo từ Identity !!!Chưa áp dụng!!!
             //aspNetUser table -> IdentityUsers
-            /*modelBuilder.Entity<IdentityUser>(e => 
+            /*
+            modelBuilder.HasDefaultSchema("dbo");
+            modelBuilder.Entity<IdentityUser>(e => 
             {
                 e.ToTable(name: "NguoiDung", schema: "identity"); // Đổi tên bảng thành "NguoiDung"
             });
@@ -63,6 +64,10 @@ namespace B3cBonsai.DataAccess.Data
                 e.ToTable(name: "TokenDangNhap", schema: "identity"); // Đổi tên bảng thành "TokenDangNhap"
             });*/
             #endregion
+/*
+            // Thiết lập quan hệ giữa NguoiDungUngDung với IdentityUser
+            modelBuilder.Entity<NguoiDungUngDung>()
+                .HasOne(n => n.ApplicationUser);*/
 
             // Thiết lập quan hệ giữa DonHang và NguoiDung (1-nhiều)
             modelBuilder.Entity<DonHang>()
@@ -147,48 +152,46 @@ namespace B3cBonsai.DataAccess.Data
                 .HasForeignKey(vs => vs.SanPhamId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            #region //Vùng tạo dữ liệu
+            /*#region //Vùng tạo dữ liệu
             // Dữ liệu khởi tạo cho NGUOI_DUNG
-            /*var nguoiDungs = new List<NguoiDungUngDung> { };
+
+            var nguoiDungs = new List<NguoiDungUngDung>();
 
             nguoiDungs.Add(
-                    new NguoiDungUngDung
-                    {
-                        Id = Guid.NewGuid().ToString(),
-                        HoTen = "Trần Lý",
-                        TenDangNhap = "tlys123", // Tên đăng nhập trong Identity
-                        SoDienThoai = "911", // Gán số điện thoại
-                        DiaChi = "146 Tinh Vân",
-                        Email = "tructtpk03625@gmail.com", // Địa chỉ email
-                        MatKhau = "123123", // Gán mật khẩu (nên băm trước khi lưu trữ)
-                        VaiTro = "Admin", // Gán vai trò cho người dùng
-                        LinkAnh = "https://i.pinimg.com/control/564x/6a/9c/77/6a9c77e0b1c7e5571ea5b5a350af0248.jpg",
-                        NgayTao = DateTime.Now,
-                        NgaySinh = DateTime.Now.AddDays(-new Random().Next(5000, 7200)), // Ngày sinh ngẫu nhiên
-                        TrangThai = true,
-                        XacThucEmail = true
-                    });
+                new NguoiDungUngDung
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    HoTen = "Trần Lý",
+                    UserName = "tlys123", // Sử dụng UserName, được ánh xạ tới TenDangNhap
+                    SoDienThoai = "911", // Gán số điện thoại
+                    DiaChi = "146 Tinh Vân",
+                    Email = "tructtpk03625@gmail.com", // Địa chỉ email
+                    PasswordHash = BCrypt.Net.BCrypt.HashPassword("123123"), // Gán mật khẩu (nên băm trước khi lưu trữ)
+                    VaiTro = "Admin", // Gán vai trò cho người dùng
+                    LinkAnh = "https://i.pinimg.com/control/564x/6a/9c/77/6a9c77e0b1c7e5571ea5b5a350af0248.jpg",
+                    NgayTao = DateTime.Now,
+                    NgaySinh = DateTime.Now.AddDays(-new Random().Next(5000, 7200)), // Ngày sinh ngẫu nhiên
+                });
 
             for (int i = 0; i < 30; i++)
             {
                 nguoiDungs.Add(
-                        new NguoiDungUngDung
-                        {
-                            Id = Guid.NewGuid().ToString(),
-                            HoTen = RandomData_DB.Instance.rdName(),
-                            TenDangNhap = "RD" + new Random().Next(1, 10000).ToString(), // Tên đăng nhập trong Identity
-                            SoDienThoai = "911", // Gán số điện thoại
-                            DiaChi = RandomData_DB.Instance.rdAddress(),
-                            Email = RandomData_DB.Instance._Email(), // Địa chỉ email
-                            MatKhau = new Random().Next(100000, 9999999).ToString(), // Gán mật khẩu (nên băm trước khi lưu trữ)
-                            VaiTro = new string[] { "KhachHang", "Admin", "NhanVien" }[new Random().Next(3)],
-                            LinkAnh = RandomData_DB.Instance._UserImage(),
-                            NgayTao = DateTime.Now,
-                            NgaySinh = DateTime.Now.AddDays(-new Random().Next(5000, 7200)), // Ngày sinh ngẫu nhiên
-                            TrangThai = true,
-                            XacThucEmail = true
-                        });
+                    new NguoiDungUngDung
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        HoTen = RandomData_DB.Instance.rdName(),
+                        UserName = "RD" + new Random().Next(1, 10000).ToString(), // Sử dụng UserName
+                        SoDienThoai = "09" + new Random().Next(100000,9999999).ToString(), // Gán số điện thoại
+                        DiaChi = RandomData_DB.Instance.rdAddress(),
+                        Email = RandomData_DB.Instance._Email(), // Địa chỉ email
+                        PasswordHash = BCrypt.Net.BCrypt.HashPassword(new Random().Next(100000, 9999999).ToString()), // Gán mật khẩu (nên băm trước khi lưu trữ)
+                        VaiTro = new string[] { "KhachHang", "Admin", "NhanVien" }[new Random().Next(3)],
+                        LinkAnh = RandomData_DB.Instance._UserImage(),
+                        NgayTao = DateTime.Now,
+                        NgaySinh = DateTime.Now.AddDays(-new Random().Next(5000, 7200)), // Ngày sinh ngẫu nhiên
+                    });
             }
+
 
             modelBuilder.Entity<NguoiDungUngDung>().HasData(nguoiDungs);
 
@@ -196,16 +199,16 @@ namespace B3cBonsai.DataAccess.Data
 
             // Dữ liệu khởi tạo cho DANH_MUC_SAN_PHAM
             var danhMucSanPhams = new List<DanhMucSanPham>
-    {
-        new DanhMucSanPham { Id = 1, TenDanhMuc = "Cây lá màu" },
-        new DanhMucSanPham { Id = 2, TenDanhMuc = "Cây thân gỗ bonsai" },
-        new DanhMucSanPham { Id = 3, TenDanhMuc = "Cây hoa cảnh" },
-        new DanhMucSanPham { Id = 4, TenDanhMuc = "Cây xương rồng và cây mọng nước" },
-        new DanhMucSanPham { Id = 5, TenDanhMuc = "Cây cảnh để bàn" },
-        new DanhMucSanPham { Id = 6, TenDanhMuc = "Cây cảnh thủy sinh" },
-        new DanhMucSanPham { Id = 7, TenDanhMuc = "Cây phong thủy" },
-        new DanhMucSanPham { Id = 8, TenDanhMuc = "Cây leo và cây treo" }
-    };
+            {
+                new DanhMucSanPham { Id = 1, TenDanhMuc = "Cây lá màu" },
+                new DanhMucSanPham { Id = 2, TenDanhMuc = "Cây thân gỗ bonsai" },
+                new DanhMucSanPham { Id = 3, TenDanhMuc = "Cây hoa cảnh" },
+                new DanhMucSanPham { Id = 4, TenDanhMuc = "Cây xương rồng và cây mọng nước" },
+                new DanhMucSanPham { Id = 5, TenDanhMuc = "Cây cảnh để bàn" },
+                new DanhMucSanPham { Id = 6, TenDanhMuc = "Cây cảnh thủy sinh" },
+                new DanhMucSanPham { Id = 7, TenDanhMuc = "Cây phong thủy" },
+                new DanhMucSanPham { Id = 8, TenDanhMuc = "Cây leo và cây treo" }
+            };
             modelBuilder.Entity<DanhMucSanPham>().HasData(danhMucSanPhams);
 
             // Dữ liệu khởi tạo cho SAN_PHAM
@@ -261,7 +264,7 @@ namespace B3cBonsai.DataAccess.Data
                 donHangs.Add(new DonHang
                 {
                     Id = i,
-                    NguoiDungId = khachHangs[new Random().Next(khachHangs.Length)].Id,
+                    NguoiDungId = khachHangs[new Random().Next(khachHangs.Count)].Id,
                     NhanVienId = nguoiDungs[0].Id,
                     NgayDatHang = DateTime.Now.AddDays(-new Random().Next(0, 30)),
                     TrangThai = new[] { "ChoXacNhan", "HoanTat", "DaHuy" }[new Random().Next(3)],
@@ -354,8 +357,9 @@ namespace B3cBonsai.DataAccess.Data
                     });
                 }
             }
-            modelBuilder.Entity<ChiTietDonHang>().HasData(chiTietDonHangs);*/
+            modelBuilder.Entity<ChiTietDonHang>().HasData(chiTietDonHangs);
             #endregion
+            */
         }
     }
 }
