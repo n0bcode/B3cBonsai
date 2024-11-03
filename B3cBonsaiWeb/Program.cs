@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authentication.Facebook; // Thêm namespace cho Faceb
 using B3cBonsai.Models;
 using B3cBonsai.Utility;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using System.Configuration;
 
 namespace B3cBonsaiWeb
 {
@@ -45,20 +46,21 @@ namespace B3cBonsaiWeb
                 options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
             });
 
-            // Thêm xác thực với Facebook
+            var facebookOptions = builder.Configuration.GetSection("Authentication:Facebook");
+            var googleOptions = builder.Configuration.GetSection("Authentication:Google");
+
             builder.Services.AddAuthentication()
                 .AddCookie() // Đăng ký Cookie authentication trước
                 .AddFacebook(options =>
                 {
-                    options.ClientId = "1314586289526497";
-                    options.ClientSecret = "8d3ab1c336749f8f8b956b040425e98e";
+                    options.ClientId = facebookOptions["ClientId"];
+                    options.ClientSecret = facebookOptions["ClientSecret"];
                 })
                 .AddGoogle(GoogleDefaults.AuthenticationScheme, options =>
                 {
-                    options.ClientId = "974403152940-7s77p8jicv61gtlcctacmo6l6v59967b.apps.googleusercontent.com";
-                    options.ClientSecret = "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";
+                    options.ClientId = googleOptions["ClientId"];
+                    options.ClientSecret = googleOptions["ClientSecret"];
                 });
-
             // Thêm các dịch vụ cần thiết
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<IEmailSender, EmailSender>();
