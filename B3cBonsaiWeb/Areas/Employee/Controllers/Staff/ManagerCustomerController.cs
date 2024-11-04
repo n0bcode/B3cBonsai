@@ -2,10 +2,11 @@
 using B3cBonsai.DataAccess.Repository.IRepository;
 using B3cBonsai.Models;
 using B3cBonsai.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-namespace B3cBonsaiWeb.Areas.Employee.Controllers.Admin
+namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
 {
     [Area("Employee")]
     public class ManagerCustomerController : Controller
@@ -14,16 +15,17 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Admin
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<ManagerCustomerController> _logger;
 
-        public ManagerCustomerController(UserManager<IdentityUser> userManager, IUnitOfWork unitOfWork,ILogger<ManagerCustomerController> logger)
+        public ManagerCustomerController(UserManager<IdentityUser> userManager, IUnitOfWork unitOfWork, ILogger<ManagerCustomerController> logger)
         {
             _userManager = userManager;
             _unitOfWork = unitOfWork;
             _logger = logger;
         }
 
+        [Authorize]
         public IActionResult Index()
         {
-            
+
             return View();
         }
 

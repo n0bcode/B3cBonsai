@@ -17,7 +17,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 
@@ -32,6 +34,7 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<IdentityUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
@@ -39,7 +42,8 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
             IUserStore<IdentityUser> userStore,
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            IWebHostEnvironment webHostEnvironment)
         {
             _userManager = userManager;
             _roleManager = roleManager;
@@ -48,6 +52,7 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         /// <summary>
@@ -92,6 +97,7 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
+            [RegularExpression(@"^(?=.*[!@#$%^&*(),.?""{}|<>])[a-zA-Z0-9!@#$%^&*(),.?""{}|<>]{6,100}$", ErrorMessage = "Mật khẩu phải chứa ít nhất 1 ký tự đặc biệt.")]
             public string Password { get; set; }
 
             /// <summary>
@@ -102,19 +108,29 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            public string? Role { get; set; }
+            [ValidateNever]
+            public IEnumerable<SelectListItem> RoleList { get; set; }
+
         }
 
-        public string typeView {  get; set; }
-
-        public async Task OnGetAsync(string returnUrl = null, string typeAccess = null)
+        public async Task OnGetAsync(string returnUrl = null)
         {
-            typeView = typeAccess;
-
             if (!_roleManager.RoleExistsAsync(SD.Role_Admin).GetAwaiter().GetResult()) {
                 _roleManager.CreateAsync(new IdentityRole(SD.Role_Admin)).GetAwaiter().GetResult();
                 _roleManager.CreateAsync(new IdentityRole(SD.Role_Customer)).GetAwaiter().GetResult();
                 _roleManager.CreateAsync(new IdentityRole(SD.Role_Staff)).GetAwaiter().GetResult();
             }
+
+            Input = new()
+            {
+                RoleList = _roleManager.Roles.Select(x => x.Name).Select(i => new SelectListItem
+                {
+                    Text = i,
+                    Value = i
+                })
+            };
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
@@ -135,9 +151,9 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User created a new account with password.");
 
-                    if (!String.IsNullOrEmpty(typeView) && typeView == "employee")
+                    if (!String.IsNullOrEmpty(Input.Role))
                     {
-                        await _userManager.AddToRoleAsync(user, SD.Role_Staff);
+                        await _userManager.AddToRoleAsync(user, Input.Role);
                     }
                     else
                     {
@@ -153,8 +169,40 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+                    #region//Tính năng chưa phát triển
+                    /*var PathToFile = _webHostEnvironment.WebRootPath + Path.DirectorySeparatorChar.ToString()
+                            + "Templates" + Path.DirectorySeparatorChar.ToString() + "EmailTemplates"
+                            + Path.DirectorySeparatorChar.ToString() + "Confirm_Account_Registration.html";
+
+                    var subject = "Confirm account registration";
+                    string HtmlBody = "";
+                    using (StreamReader streamReader = System.IO.File.OpenText(PathToFile))
+                    {
+                        HtmlBody = streamReader.ReadToEnd();
+                    }
+
+                    //{0} : Subject
+                    //{1} : DateTime
+                    //{2} : Name
+                    //{3} : Email
+                    //{4} : Message
+                    //{5} : CallBackURL
+
+
+                    string Message = $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.";
+
+                    string messageBody = string.Format(HtmlBody,
+                        subject,
+                        String.Format("{0:ddd, d MMMM yyyy}", DateTime.Now),
+                        user.UserName,
+                        user.Email,
+                        Message,
+                        callbackUrl
+                        );*/
+                    #endregion
+
+                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email", $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>."); 
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
@@ -173,6 +221,14 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
             }
 
             // If we got this far, something failed, redisplay form
+            Input = new()
+            {
+                RoleList = _roleManager.Roles.Select(x => x.Name).Select(i => new SelectListItem
+                {
+                    Text = i,
+                    Value = i
+                })
+            };
             return Page();
         }
 

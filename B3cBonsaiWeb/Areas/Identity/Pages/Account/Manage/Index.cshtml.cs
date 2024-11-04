@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace B3cBonsaiWeb.Areas.Identity.Pages.Account.Manage
 {
-    [Authorize(Roles = SD.Role_Admin)]
+    [Authorize]
     public class IndexModel : PageModel
     {
         private readonly UserManager<IdentityUser> _userManager;

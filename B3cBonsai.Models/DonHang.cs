@@ -22,6 +22,10 @@ namespace B3cBonsai.Models
         [ValidateNever]
         public virtual NguoiDungUngDung NguoiDungUngDung { get; set; } // Khai báo quan hệ với người dùng
 
+        public string NhanVienId {  get; set; }
+        [ValidateNever]
+        [ForeignKey("NhanVienId")]
+        public virtual NguoiDungUngDung NhanVien { get; set; } // Khai báo quan hệ với nhân viên
         public DateTime NgayDatHang { get; set; }
         public DateTime? NgayNhanHang { get; set; }
         public double TongTienDonHang { get; set; }
@@ -61,9 +65,6 @@ namespace B3cBonsai.Models
         [StringLength(54)]
         public string TenNguoiNhan { get; set; } // Name từ `OrderHeader`
 
-        [ValidateNever]
-        [ForeignKey("NhanVienId")]
-        public virtual NguoiDungUngDung NhanVien { get; set; } // Khai báo quan hệ với nhân viên
 
         [ValidateNever]
         public virtual ICollection<ChiTietDonHang> ChiTietDonHangs { get; set; } // Khai báo quan hệ 1-n với chi tiết đơn hàng

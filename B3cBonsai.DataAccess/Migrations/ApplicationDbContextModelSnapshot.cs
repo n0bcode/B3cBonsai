@@ -615,7 +615,6 @@ namespace B3cBonsai.DataAccess.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("SoDienThoai")
-                        .IsRequired()
                         .HasMaxLength(18)
                         .HasColumnType("nvarchar(18)");
 

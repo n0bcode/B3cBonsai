@@ -1,8 +1,9 @@
 ﻿/*====================================
     google font
 ====================================*/
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&amp;display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@100..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&amp;family=Outfit:wght@100..900&amp;display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Merriweather+Sans:wght@400;700&display=swap');
 
 /*====================================
     root
@@ -12,7 +13,7 @@
     --body-font-color: #383431;
     --body-font-size: 16px;
     --body-bgcolor: #ffffff;
-    --body-font-family: 'Outfit', sans-serif;
+    --body-font-family: 'Noto Sans', sans-serif;
     --body-font-weight: 400;
     --body-font-style: normal;
     --body-font-line-height: normal;
@@ -20,7 +21,7 @@
 
     /* heading */
     --heading-font-color: #383431;
-    --heading-font-family: 'Outfit', sans-serif;
+    --heading-font-family: 'Noto Sans', sans-serif;
     --heading-font-weight: 600;
     --heading-font-style: normal;
     --heading-font-line-height: normal;
@@ -34,7 +35,7 @@
 
     /* paragraph */
     --paragraph-font-color: #808080;
-    --paragraph-font-family: 'Outfit', sans-serif;
+    --paragraph-font-family: 'Noto Sans', sans-serif;
     --paragraph-font-line-height: 30px;
     --paragraph-font-style: normal;
 

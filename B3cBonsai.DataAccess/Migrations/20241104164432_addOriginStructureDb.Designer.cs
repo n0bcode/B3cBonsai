@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace B3cBonsai.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241103141240_addOriginStructureDb")]
+    [Migration("20241104164432_addOriginStructureDb")]
     partial class addOriginStructureDb
     {
         /// <inheritdoc />
@@ -618,7 +618,6 @@ namespace B3cBonsai.DataAccess.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("SoDienThoai")
-                        .IsRequired()
                         .HasMaxLength(18)
                         .HasColumnType("nvarchar(18)");
 
