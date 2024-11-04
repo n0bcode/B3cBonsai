@@ -66,38 +66,34 @@
 @import url(../vendor/perfect-scrollbar/css/perfect-scrollbar.css);
 @import url(../vendor/metismenu/css/metisMenu.min.css);
 :root {
-  --primary: #F2C12E; /* Yellow from product page */
-  --secondary: #733119; /* Brown from product page */
-  --secondary-dark: #4F2514; /* Darker Brown for contrast */
-  --primary-hover: #D98D30; /* Orange from product page */
-  --primary-dark: #733119; /* Darker Brown for a more professional look */
-  
-  --rgba-primary-1: rgba(242, 193, 46, 0.1);
-  --rgba-primary-2: rgba(242, 193, 46, 0.2);
-  --rgba-primary-3: rgba(242, 193, 46, 0.3);
-  --rgba-primary-4: rgba(242, 193, 46, 0.4);
-  --rgba-primary-5: rgba(242, 193, 46, 0.5);
-  --rgba-primary-6: rgba(242, 193, 46, 0.6);
-  --rgba-primary-7: rgba(242, 193, 46, 0.7);
-  --rgba-primary-8: rgba(242, 193, 46, 0.8);
-  --rgba-primary-9: rgba(242, 193, 46, 0.9);
-
-  --rgba-secondary-1: rgba(115, 49, 25, 0.1);
-  --rgba-secondary-2: rgba(115, 49, 25, 0.2);
-  --rgba-secondary-3: rgba(115, 49, 25, 0.3);
-  --rgba-secondary-4: rgba(115, 49, 25, 0.4);
-  --rgba-secondary-5: rgba(115, 49, 25, 0.5);
-  --rgba-secondary-6: rgba(115, 49, 25, 0.6);
-  --rgba-secondary-7: rgba(115, 49, 25, 0.7);
-  --rgba-secondary-8: rgba(115, 49, 25, 0.8);
-  --rgba-secondary-9: rgba(115, 49, 25, 0.9);
-
-  --font-family-base: poppins, sans-serif, sans-serif;
-  --font-family-title: poppins, sans-serif, sans-serif;
-  
-  --title: #733119; /* Brown for headings */
-  --bs-white: #fff; /* White remains unchanged */
-  --border-light: #F2EAE4; /* Light Cream from product page */
+    --primary: #0D99FF;
+    --secondary: #2C2C2C;
+    --secondary-dark: #131313;
+    --primary-hover: #007ed9;
+    --primary-dark: #004373;
+    --rgba-primary-1: rgba(13, 153, 255, 0.1);
+    --rgba-primary-2: rgba(13, 153, 255, 0.2);
+    --rgba-primary-3: rgba(13, 153, 255, 0.3);
+    --rgba-primary-4: rgba(13, 153, 255, 0.4);
+    --rgba-primary-5: rgba(13, 153, 255, 0.5);
+    --rgba-primary-6: rgba(13, 153, 255, 0.6);
+    --rgba-primary-7: rgba(13, 153, 255, 0.7);
+    --rgba-primary-8: rgba(13, 153, 255, 0.8);
+    --rgba-primary-9: rgba(13, 153, 255, 0.9);
+    --rgba-secondary-1: rgba(44, 44, 44, 0.1);
+    --rgba-secondary-2: rgba(44, 44, 44, 0.2);
+    --rgba-secondary-3: rgba(44, 44, 44, 0.3);
+    --rgba-secondary-4: rgba(44, 44, 44, 0.4);
+    --rgba-secondary-5: rgba(44, 44, 44, 0.5);
+    --rgba-secondary-6: rgba(44, 44, 44, 0.6);
+    --rgba-secondary-7: rgba(44, 44, 44, 0.7);
+    --rgba-secondary-8: rgba(44, 44, 44, 0.8);
+    --rgba-secondary-9: rgba(44, 44, 44, 0.9);
+    --font-family-base: poppins, sans-serif, sans-serif;
+    --font-family-title: poppins, sans-serif, sans-serif;
+    --title: #374557;
+    --bs-white: #fff;
+    --border-light: #ededed;
 }
 
 

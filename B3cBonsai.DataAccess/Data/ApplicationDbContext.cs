@@ -8,6 +8,7 @@ using B3cBonsai.Models;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using B3cBonsai.Utility;
 
 namespace B3cBonsai.DataAccess.Data
 {
@@ -151,67 +152,59 @@ namespace B3cBonsai.DataAccess.Data
                 .WithMany(sp => sp.Videos)
                 .HasForeignKey(vs => vs.SanPhamId)
                 .OnDelete(DeleteBehavior.Cascade);
+            /*#region//Random data
+            var random = new Random(); // Use one Random instance
 
-            /*#region //Vùng tạo dữ liệu
-            // Dữ liệu khởi tạo cho NGUOI_DUNG
-
-            var nguoiDungs = new List<NguoiDungUngDung>();
-
-            nguoiDungs.Add(
+            #region Seed NguoiDungUngDung
+            // Seed NguoiDungUngDung
+            var nguoiDungs = new List<NguoiDungUngDung>
+            {
                 new NguoiDungUngDung
                 {
                     Id = Guid.NewGuid().ToString(),
                     HoTen = "Trần Lý",
-                    UserName = "tlys123", // Sử dụng UserName, được ánh xạ tới TenDangNhap
-                    SoDienThoai = "911", // Gán số điện thoại
+                    UserName = "tlys123",
+                    SoDienThoai = "911",
                     DiaChi = "146 Tinh Vân",
-                    Email = "tructtpk03625@gmail.com", // Địa chỉ email
-                    PasswordHash = BCrypt.Net.BCrypt.HashPassword("123123"), // Gán mật khẩu (nên băm trước khi lưu trữ)
-                    VaiTro = "Admin", // Gán vai trò cho người dùng
+                    Email = "tructtpk03625@gmail.com",
+                    PasswordHash = BCrypt.Net.BCrypt.HashPassword("123123"),
                     LinkAnh = "https://i.pinimg.com/control/564x/6a/9c/77/6a9c77e0b1c7e5571ea5b5a350af0248.jpg",
                     NgayTao = DateTime.Now,
-                    NgaySinh = DateTime.Now.AddDays(-new Random().Next(5000, 7200)), // Ngày sinh ngẫu nhiên
-                });
+                    NgaySinh = DateTime.Now.AddDays(-random.Next(5000, 7200))
+                }
+            };
 
             for (int i = 0; i < 30; i++)
             {
-                nguoiDungs.Add(
-                    new NguoiDungUngDung
-                    {
-                        Id = Guid.NewGuid().ToString(),
-                        HoTen = RandomData_DB.Instance.rdName(),
-                        UserName = "RD" + new Random().Next(1, 10000).ToString(), // Sử dụng UserName
-                        SoDienThoai = "09" + new Random().Next(100000,9999999).ToString(), // Gán số điện thoại
-                        DiaChi = RandomData_DB.Instance.rdAddress(),
-                        Email = RandomData_DB.Instance._Email(), // Địa chỉ email
-                        PasswordHash = BCrypt.Net.BCrypt.HashPassword(new Random().Next(100000, 9999999).ToString()), // Gán mật khẩu (nên băm trước khi lưu trữ)
-                        VaiTro = new string[] { "KhachHang", "Admin", "NhanVien" }[new Random().Next(3)],
-                        LinkAnh = RandomData_DB.Instance._UserImage(),
-                        NgayTao = DateTime.Now,
-                        NgaySinh = DateTime.Now.AddDays(-new Random().Next(5000, 7200)), // Ngày sinh ngẫu nhiên
-                    });
+                nguoiDungs.Add(new NguoiDungUngDung
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    HoTen = RandomData_DB.Instance.rdName(),
+                    UserName = "RD" + random.Next(1, 10000),
+                    SoDienThoai = "09" + random.Next(100000, 9999999),
+                    DiaChi = RandomData_DB.Instance.rdAddress(),
+                    Email = RandomData_DB.Instance._Email(),
+                    PasswordHash = BCrypt.Net.BCrypt.HashPassword(random.Next(100000, 9999999).ToString()),
+                    LinkAnh = RandomData_DB.Instance._UserImage(),
+                    NgayTao = DateTime.Now,
+                    NgaySinh = DateTime.Now.AddDays(-random.Next(5000, 7200))
+                });
             }
 
-
             modelBuilder.Entity<NguoiDungUngDung>().HasData(nguoiDungs);
+            #endregion
 
-            var khachHangs = nguoiDungs.Where(x=>x.VaiTro == "KhachHang").ToList();
-
-            // Dữ liệu khởi tạo cho DANH_MUC_SAN_PHAM
+            #region Seed DanhMucSanPham
             var danhMucSanPhams = new List<DanhMucSanPham>
             {
                 new DanhMucSanPham { Id = 1, TenDanhMuc = "Cây lá màu" },
                 new DanhMucSanPham { Id = 2, TenDanhMuc = "Cây thân gỗ bonsai" },
-                new DanhMucSanPham { Id = 3, TenDanhMuc = "Cây hoa cảnh" },
-                new DanhMucSanPham { Id = 4, TenDanhMuc = "Cây xương rồng và cây mọng nước" },
-                new DanhMucSanPham { Id = 5, TenDanhMuc = "Cây cảnh để bàn" },
-                new DanhMucSanPham { Id = 6, TenDanhMuc = "Cây cảnh thủy sinh" },
-                new DanhMucSanPham { Id = 7, TenDanhMuc = "Cây phong thủy" },
-                new DanhMucSanPham { Id = 8, TenDanhMuc = "Cây leo và cây treo" }
+                // Add other categories here as needed...
             };
             modelBuilder.Entity<DanhMucSanPham>().HasData(danhMucSanPhams);
+            #endregion
 
-            // Dữ liệu khởi tạo cho SAN_PHAM
+            #region Seed SanPham
             var sanPhams = new List<SanPham>();
             for (int i = 1; i <= 50; i++)
             {
@@ -219,17 +212,18 @@ namespace B3cBonsai.DataAccess.Data
                 {
                     Id = i,
                     TenSanPham = RandomData_DB.Instance.RandomProductName(),
-                    DanhMucId = new Random().Next(1, 9), // Lựa chọn ngẫu nhiên danh mục từ 1 đến 8
+                    DanhMucId = random.Next(1, danhMucSanPhams.Count + 1),
                     MoTa = RandomData_DB.Instance.RandomProductDescription(),
-                    SoLuong = new Random().Next(1, 100),
-                    Gia = new Random().Next(10000, 1000000),
+                    SoLuong = random.Next(1, 100),
+                    Gia = random.Next(10000, 1000000),
                     NgayTao = DateTime.Now,
                     TrangThai = true
                 });
             }
             modelBuilder.Entity<SanPham>().HasData(sanPhams);
+            #endregion
 
-            // Dữ liệu khởi tạo cho COMBO_SAN_PHAM
+            #region// Dữ liệu khởi tạo cho COMBO_SAN_PHAM
             var comboSanPhams = new List<ComboSanPham>();
             for (int i = 1; i <= 20; i++)
             {
@@ -242,8 +236,9 @@ namespace B3cBonsai.DataAccess.Data
                 });
             }
             modelBuilder.Entity<ComboSanPham>().HasData(comboSanPhams);
+            #endregion
 
-            // Dữ liệu khởi tạo cho CHI_TIET_COMBO
+            #region// Dữ liệu khởi tạo cho CHI_TIET_COMBO
             var chiTietCombos = new List<ChiTietCombo>();
             for (int i = 1; i <= 50; i++)
             {
@@ -256,28 +251,32 @@ namespace B3cBonsai.DataAccess.Data
                 });
             }
             modelBuilder.Entity<ChiTietCombo>().HasData(chiTietCombos);
+            #endregion
 
-            // Dữ liệu khởi tạo cho DON_HANG
+            #region// Dữ liệu khởi tạo cho DON_HANG
             var donHangs = new List<DonHang>();
             for (int i = 1; i <= 30; i++)
             {
                 donHangs.Add(new DonHang
                 {
                     Id = i,
-                    NguoiDungId = khachHangs[new Random().Next(khachHangs.Count)].Id,
+                    NguoiDungId = nguoiDungs[new Random().Next(nguoiDungs.Count)].Id,
                     NhanVienId = nguoiDungs[0].Id,
                     NgayDatHang = DateTime.Now.AddDays(-new Random().Next(0, 30)),
-                    TrangThai = new[] { "ChoXacNhan", "HoanTat", "DaHuy" }[new Random().Next(3)],
-                    PhuongThucThanhToan = "Tien",
+                    TrangThaiDonHang = new[] { SD.StatusInProcess, SD.StatusPending, SD.StatusCancelled,SD.StatusShipped,SD.StatusApproved }[new Random().Next(5)],
                     NgayNhanHang = DateTime.Now.AddDays(new Random().Next(1, 7)),
                     TenNguoiNhan = RandomData_DB.Instance.rdName(),
                     SoDienThoai = RandomData_DB.Instance.RandomPhone(),
-                    DiaChi = RandomData_DB.Instance.rdAddress()
+                    ThanhPho = RandomData_DB.Instance.rdAddress(),
+                    Duong = RandomData_DB.Instance.rdAddress(),
+                    Tinh = RandomData_DB.Instance.rdAddress(),
+                    MaBuuDien = random.Next(1000,9999).ToString()
                 });
             }
             modelBuilder.Entity<DonHang>().HasData(donHangs);
+            #endregion
 
-            // Dữ liệu khởi tạo cho HINH_ANH_SAN_PHAM
+            #region// Dữ liệu khởi tạo cho HINH_ANH_SAN_PHAM
             var hinhAnhSanPhams = new List<HinhAnhSanPham>();
             foreach (var product in sanPhams)
             {
@@ -292,8 +291,9 @@ namespace B3cBonsai.DataAccess.Data
                 }
             }
             modelBuilder.Entity<HinhAnhSanPham>().HasData(hinhAnhSanPhams);
+            #endregion
 
-            // Dữ liệu khởi tạo cho VIDEO_SAN_PHAM
+            #region// Dữ liệu khởi tạo cho VIDEO_SAN_PHAM
             var videoSanPhams = new List<VideoSanPham>();
             foreach (var product in sanPhams)
             {
@@ -306,8 +306,9 @@ namespace B3cBonsai.DataAccess.Data
                 });
             }
             modelBuilder.Entity<VideoSanPham>().HasData(videoSanPhams);
+            #endregion
 
-            // Dữ liệu khởi tạo cho DANH_SACH_YEU_THICH
+            #region// Dữ liệu khởi tạo cho DANH_SACH_YEU_THICH
             var danhSachYeuThichs = new List<DanhSachYeuThich>();
             foreach (var user in nguoiDungs)
             {
@@ -322,8 +323,9 @@ namespace B3cBonsai.DataAccess.Data
                 }
             }
             modelBuilder.Entity<DanhSachYeuThich>().HasData(danhSachYeuThichs);
+            #endregion
 
-            // Dữ liệu khởi tạo cho BINH_LUAN
+            #region// Dữ liệu khởi tạo cho BINH_LUAN
             var binhLuans = new List<BinhLuan>();
             foreach (var user in nguoiDungs)
             {
@@ -339,8 +341,9 @@ namespace B3cBonsai.DataAccess.Data
                 }
             }
             modelBuilder.Entity<BinhLuan>().HasData(binhLuans);
+            #endregion
 
-            // Dữ liệu khởi tạo cho CHI_TIET_DON_HANG
+            #region// Dữ liệu khởi tạo cho CHI_TIET_DON_HANG
             var chiTietDonHangs = new List<ChiTietDonHang>();
             foreach (var order in donHangs)
             {
@@ -351,7 +354,7 @@ namespace B3cBonsai.DataAccess.Data
                         Id = (order.Id - 1) * 3 + i, // Đảm bảo ID duy nhất
                         DonHangId = order.Id,
                         SanPhamId = sanPhams[new Random().Next(sanPhams.Count)].Id,
-                        LoaiSanPham = "SAN_PHAM",
+                        LoaiDoiTuong = SD.ObjectDetailOrder_SanPham,
                         SoLuong = new Random().Next(1, 5),
                         Gia = new Random().Next(10000, 1000000)
                     });
@@ -359,7 +362,7 @@ namespace B3cBonsai.DataAccess.Data
             }
             modelBuilder.Entity<ChiTietDonHang>().HasData(chiTietDonHangs);
             #endregion
-            */
+            #endregion*/
         }
     }
 }

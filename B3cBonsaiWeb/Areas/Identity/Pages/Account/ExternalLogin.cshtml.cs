@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using B3cBonsai.Models;
 
 namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
 {
@@ -197,11 +198,11 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
             return Page();
         }
 
-        private IdentityUser CreateUser()
+        private NguoiDungUngDung CreateUser()
         {
             try
             {
-                return Activator.CreateInstance<IdentityUser>();
+                return Activator.CreateInstance<NguoiDungUngDung>();
             }
             catch
             {

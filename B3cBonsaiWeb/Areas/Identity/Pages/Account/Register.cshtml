@@ -5,133 +5,91 @@
     ViewData["Title"] = "Đăng ký tài khoản";
 }
 
-@if (Model.typeView == "user")
-{
-    <!-- breadcrumb start -->
-    <section class="breadcrumb-area">
-        <div class="container">
-            <div class="row">
-                <div class="col">
-                    <div class="breadcrumb-index">
-                        <!-- breadcrumb-list start -->
-                        <ul class="breadcrumb-ul">
-                            <li class="breadcrumb-li">
-                                <a class="breadcrumb-link" href="/">Trang chủ</a>
-                            </li>
-                            <li class="breadcrumb-li">
-                                <span class="breadcrumb-text">Tài khoản</span>
-                            </li>
-                        </ul>
-                        <!-- breadcrumb-list end -->
-                    </div>
+<!-- breadcrumb start -->
+<section class="breadcrumb-area">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="breadcrumb-index">
+                    <!-- breadcrumb-list start -->
+                    <ul class="breadcrumb-ul">
+                        <li class="breadcrumb-li">
+                            <a class="breadcrumb-link" href="/">Trang chủ</a>
+                        </li>
+                        <li class="breadcrumb-li">
+                            <span class="breadcrumb-text">Tài khoản</span>
+                        </li>
+                    </ul>
+                    <!-- breadcrumb-list end -->
                 </div>
             </div>
         </div>
-    </section>
-    <!-- breadcrumb end -->
-    <!-- customer-page start -->
-    <section class="customer-page section-ptb">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <!-- account register title start -->
-                    <div class="section-capture">
-                        <div class="section-title">
-                            <h2><span>Đăng ký tài khoản</span></h2>
-                        </div>
+    </div>
+</section>
+<!-- breadcrumb end -->
+<!-- customer-page start -->
+<section class="customer-page section-ptb">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <!-- account register title start -->
+                <div class="section-capture">
+                    <div class="section-title">
+                        <h2><span>Đăng ký tài khoản</span></h2>
                     </div>
-                    <!-- account register title end -->
-                    <!-- account register start -->
-                    <div class="log-acc-page">
-                        <div class="contact-form-list">
-                            <form method="post">
-                                <ul class="form-fill">
-                                    <li class="form-fill-li Email">
-                                        <label>Email address</label>
-                                        <input asp-for="Input.Email" class="form-control" autocomplete="email" placeholder="Email address">
-                                        <span asp-validation-for="Input.Email" class="text-danger"></span>
-                                    </li>
-                                    <li class="form-fill-li Password">
-                                        <label>Mật khẩu</label>
-                                        <input asp-for="Input.Password" class="form-control" autocomplete="new-password" placeholder="Mật khẩu">
-                                        <span asp-validation-for="Input.Password" class="text-danger"></span>
-                                    </li>
-                                    <li class="form-fill-li ConfirmPassword">
-                                        <label>Xác nhận mật khẩu</label>
-                                        <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" placeholder="Xác nhận mật khẩu">
-                                        <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-                                    </li>
-                                </ul>
-                                <div class="form-action-button">
-                                    <div class="button-forget">
-                                        <button type="submit" class="btn btn-style2">Đăng ký</button>
-                                        <a asp-page="./Login" asp-route-typeAccess="user">Đã có tài khoản? Đăng nhập</a>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="acc-wrapper">
-                            <h6>Bạn là nhân viên?</h6>
-                            <div class="account-optional">
-                                <a asp-page="./Login" asp-route-typeAccess="employee">Đăng nhập ở đây</a>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- account register end -->
                 </div>
-            </div>
-        </div>
-    </section>
-    <!-- customer-page end -->
-}
-else
-{
-    <!-- Employee registration view -->
-    Layout = null;
-    <partial name="_EmployeeHeaderCSS" />
-
-    <body class="vh-100">
-        <div class="authincation h-100">
-            <div class="container-fluid h-100">
-                <div class="row h-100">
-                    <div class="col-lg-6 col-md-12 col-sm-12 mx-auto align-self-center">
-                        <div class="login-form">
-                            <div class="text-center">
-                                <h3 class="title">Đăng Ký Nhân Viên</h3>
-                                <p>Vui lòng tạo tài khoản nhân viên của bạn.</p>
-                            </div>
-                            <form method="post">
-                                <div class="mb-4">
-                                    <label asp-for="Input.Email" class="mb-1 text-dark">Email</label>
-                                    <input asp-for="Input.Email" class="form-control" placeholder="Nhập email của bạn" required autocomplete="email">
+                <!-- account register title end -->
+                <!-- account register start -->
+                <div class="log-acc-page">
+                    <div class="contact-form-list">
+                        <form method="post">
+                            <ul class="form-fill">
+                                <li class="form-fill-li Email">
+                                    <label>Email address</label>
+                                    <input asp-for="Input.Email" class="form-control" autocomplete="email" placeholder="Email address">
                                     <span asp-validation-for="Input.Email" class="text-danger"></span>
-                                </div>
-                                <div class="mb-4 position-relative">
-                                    <label asp-for="Input.Password" class="mb-1 text-dark">Mật khẩu</label>
-                                    <input asp-for="Input.Password" class="form-control" placeholder="Nhập mật khẩu của bạn" required autocomplete="new-password">
+                                </li>
+                                <li class="form-fill-li Password">
+                                    <label>Mật khẩu</label>
+                                    <input asp-for="Input.Password" class="form-control" autocomplete="new-password" placeholder="Mật khẩu">
                                     <span asp-validation-for="Input.Password" class="text-danger"></span>
-                                </div>
-                                <div class="mb-4 position-relative">
-                                    <label asp-for="Input.ConfirmPassword" class="mb-1 text-dark">Xác nhận mật khẩu</label>
-                                    <input asp-for="Input.ConfirmPassword" class="form-control" placeholder="Xác nhận mật khẩu" required autocomplete="new-password">
+                                </li>
+                                <li class="form-fill-li ConfirmPassword">
+                                    <label>Xác nhận mật khẩu</label>
+                                    <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" placeholder="Xác nhận mật khẩu">
                                     <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                                </li>
+                                <li class="form-fill-li Role">
+                                    <label>Chọn vai trò</label>
+                                    <div class="form-floating mb-3 col-md-6">
+                                        <select asp-for="Input.Role" asp-items="@Model.Input.RoleList" class="form-select">
+                                            <option disabled selected>-Select Role-</option>
+                                        </select>
+                                    </div>
+                                </li>
+                            </ul>
+                            <div class="form-action-button">
+                                <div class="button-forget">
+                                    <button type="submit" class="btn btn-style2">Đăng ký</button>
+                                    <a asp-page="./Login" asp-route-typeUser="user">Đã có tài khoản? Đăng nhập</a>
                                 </div>
-                                <div class="text-center mb-4">
-                                    <button type="submit" class="btn btn-primary btn-block">Đăng Ký</button>
-                                </div>
-                                <p class="text-center">
-                                    Đã có tài khoản?
-                                    <a asp-page="/Account/Login" asp-route-typeAccess="employee" class="btn-link text-primary">Đăng nhập</a>
-                                </p>
-                            </form>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="acc-wrapper">
+                        <h6>Bạn là nhân viên?</h6>
+                        <div class="account-optional">
+                            <a asp-page="./Login" asp-route-typeUser="employee">Đăng nhập ở đây</a>
                         </div>
                     </div>
                 </div>
+                <!-- account register end -->
             </div>
         </div>
-        <partial name="_EmployeeFooterJs" />
-    </body>
-}
+    </div>
+</section>
+<!-- customer-page end -->
+
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }

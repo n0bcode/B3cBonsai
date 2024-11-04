@@ -76,6 +76,7 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
             /// </summary>
             [Required]
             [DataType(DataType.Password)]
+            [RegularExpression(@"^(?=.*[!@#$%^&*(),.?""{}|<>])[a-zA-Z0-9!@#$%^&*(),.?""{}|<>]{6,100}$", ErrorMessage = "Mật khẩu phải chứa ít nhất 1 ký tự đặc biệt.")]
             public string Password { get; set; }
 
             /// <summary>
@@ -86,11 +87,8 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
             public bool RememberMe { get; set; }
         }
 
-        public string typeView {  get; set; }
-
-        public async Task OnGetAsync(string returnUrl = null, string typeAccess = null)
+        public async Task OnGetAsync(string returnUrl = null)
         {
-            typeView = typeAccess;
             if (!string.IsNullOrEmpty(ErrorMessage))
             {
                 ModelState.AddModelError(string.Empty, ErrorMessage);

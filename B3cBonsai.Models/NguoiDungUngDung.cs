@@ -16,7 +16,7 @@ namespace B3cBonsai.Models
         public DateTime? NgaySinh { get; set; }
 
         [StringLength(18)]
-        public string SoDienThoai { get; set; }
+        public string? SoDienThoai { get => PhoneNumber; set => _ = PhoneNumber; }
 
         [StringLength(18)]
         public string? CCCD { get; set; } // Số CCCD cần unique

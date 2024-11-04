@@ -9,7 +9,7 @@
             <div class="user-wrapper">
                 <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
                     <span class="user-icon"><i class="feather-user"></i></span>
-                    Hello, @UserManager.GetUserName(User)!
+                    @* Hello, @UserManager.GetUserName(User)! *@
                 </a>
             </div>
         </li>
@@ -35,7 +35,9 @@
         </li>
         <li class="nav-item">
             <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                <button id="logout" type="submit" class="nav-link btn btn-link text-dark border-0">Logout</button>
+            <button id="logout" type="submit" class="nav-link btn btn-link text-dark border-0">
+                <i class="fas fa-sign-out-alt"></i>
+            </button>
             </form>
         </li>
     }
@@ -44,18 +46,18 @@
         <!-- Hiển thị các tùy chọn Login và Register khi chưa đăng nhập -->
         <li class="side-wrap user-wrap">
             <div class="user-wrapper">
-                <a class="nav-link text-dark" id="login" asp-area="Identity" asp-page="/Account/Login" asp-route-typeAccess="user">
-                    <span class="user-icon"><i class="feather-user"></i></span> Login
+                <a class="nav-link text-dark" id="login" asp-area="Identity" asp-page="/Account/Login" asp-route-typeUser="user">
+                    <span class="user-icon"><i class="feather-user"></i></span> 
                 </a>
             </div>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-dark" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
+            <a class="nav-link text-dark" id="register" asp-area="Identity" asp-page="/Account/Register"></a>
         </li>
         <!-- Wishlist và Cart vẫn hiển thị, nhưng có thể thêm logic ẩn/hiện nếu cần -->
         <li class="side-wrap wishlist-wrap">
             <div class="wishlist-wrapper">
-                <a asp-area="Identity" asp-page="/Account/Login" asp-route-typeAccess="user">
+                <a asp-area="Identity" asp-page="/Account/Login" asp-route-typeUser="user">
                     <span class="wishlist-icon-count">
                         <span class="wishlist-icon"><i class="feather-heart"></i></span>
                     </span>
@@ -64,7 +66,7 @@
         </li>
         <li class="side-wrap cart-wrap">
             <div class="cart-wrapper">
-                <a asp-area="Identity" asp-page="/Account/Login" asp-route-typeAccess="user" class="js-cart-drawer">
+                <a asp-area="Identity" asp-page="/Account/Login" asp-route-typeUser="user" class="js-cart-drawer">
                     <span class="cart-icon-count">
                         <span class="cart-icon"><i class="feather-shopping-bag"></i></span>
                     </span>

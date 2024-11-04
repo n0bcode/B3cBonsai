@@ -200,6 +200,7 @@ namespace B3cBonsai.DataAccess.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     NguoiDungId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    NhanVienId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     NgayDatHang = table.Column<DateTime>(type: "datetime2", nullable: false),
                     NgayNhanHang = table.Column<DateTime>(type: "datetime2", nullable: true),
                     TongTienDonHang = table.Column<double>(type: "float", nullable: false),
@@ -216,8 +217,7 @@ namespace B3cBonsai.DataAccess.Migrations
                     ThanhPho = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Tinh = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     MaBuuDien = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    TenNguoiNhan = table.Column<string>(type: "nvarchar(54)", maxLength: 54, nullable: false),
-                    NhanVienId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    TenNguoiNhan = table.Column<string>(type: "nvarchar(54)", maxLength: 54, nullable: false)
                 },
                 constraints: table =>
                 {
