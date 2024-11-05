@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using B3cBonsai.Utility;
+using Microsoft.AspNetCore.Mvc;
 
 namespace B3cBonsaiWeb.Areas.Employee.ViewComponents
 {
@@ -6,9 +7,7 @@ namespace B3cBonsaiWeb.Areas.Employee.ViewComponents
     {
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            //Dữ liệu tĩnh
-            string? role = "admin";
-            if (role == "admin")
+            if (User.IsInRole(SD.Role_Admin))
             {
                 return View("AdminRightBar");
             } 

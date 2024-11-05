@@ -1,46 +1,58 @@
-﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-@using Microsoft.AspNetCore.Identity
+﻿@using B3cBonsai.Utility
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 
 @if (SignInManager.IsSignedIn(User))
 {
-    <!-- Hiển thị tên người dùng và các mục điều hướng khi đã đăng nhập -->
-    <li class="side-wrap user-wrap">
-        <div class="user-wrapper">
-            <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
-                <span class="user-icon"><i class="feather-user"></i></span>
-                @* Hello, @UserManager.GetUserName(User)! *@
-            </a>
-        </div>
-    </li>
-    <li class="side-wrap wishlist-wrap">
-        <div class="wishlist-wrapper">
-            <a asp-area="Customer" asp-controller="Wishlist" asp-action="Index">
-                <span class="wishlist-icon-count">
-                    <span class="wishlist-icon"><i class="feather-heart"></i></span>
-                    <span class="wishlist-count">5</span>
-                </span>
-            </a>
-        </div>
-    </li>
-    <li class="side-wrap cart-wrap">
-        <div class="cart-wrapper">
-            <a href="javascript:void(0)" class="js-cart-drawer">
-                <span class="cart-icon-count">
-                    <span class="cart-icon"><i class="feather-shopping-bag"></i></span>
-                    <span class="cart-count">4</span>
-                </span>
-            </a>
-        </div>
-    </li>
-    <li class="nav-item">
-        <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-            <button id="logout" type="submit" class="nav-link btn btn-link text-dark border-0">
-                <i class="fas fa-sign-out-alt"></i>
-            </button>
-        </form>
-    </li>
+    if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Staff))
+    {
+        <li class="side-wrap user-wrap">
+            <div class="user-wrapper">
+                <a href="/Employee/EmployeeProfile/Index">
+                    <span class="user-icon"><i class="feather-user"></i></span>
+                </a>
+            </div>
+        </li>
+    }
+    if (User.IsInRole(SD.Role_Customer)) {
+        <!-- Hiển thị tên người dùng và các mục điều hướng khi đã đăng nhập -->
+        <li class="side-wrap user-wrap">
+            <div class="user-wrapper">
+                <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
+                    <span class="user-icon"><i class="feather-user"></i></span>
+                    @* Hello, @UserManager.GetUserName(User)! *@
+                </a>
+            </div>
+        </li>
+        <li class="side-wrap wishlist-wrap">
+            <div class="wishlist-wrapper">
+                <a asp-area="Customer" asp-controller="Wishlist" asp-action="Index">
+                    <span class="wishlist-icon-count">
+                        <span class="wishlist-icon"><i class="feather-heart"></i></span>
+                        <span class="wishlist-count">5</span>
+                    </span>
+                </a>
+            </div>
+        </li>
+        <li class="side-wrap cart-wrap">
+            <div class="cart-wrapper">
+                <a href="javascript:void(0)" class="js-cart-drawer">
+                    <span class="cart-icon-count">
+                        <span class="cart-icon"><i class="feather-shopping-bag"></i></span>
+                        <span class="cart-count">4</span>
+                    </span>
+                </a>
+            </div>
+        </li>
+        <li class="nav-item">
+            <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                <button id="logout" type="submit" class="nav-link btn btn-link text-dark border-0">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </form>
+        </li>
+    }
 }
 else
 {
