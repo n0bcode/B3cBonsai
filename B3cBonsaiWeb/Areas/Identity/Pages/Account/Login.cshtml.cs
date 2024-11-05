@@ -125,6 +125,8 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
                         // Lấy Role của người dùng
                         var roles = await _userManager.GetRolesAsync(user);
 
+                        TempData["successToastr"] = "Đăng nhập thành công";
+
                         // Điều hướng theo Role
                         if (roles.Contains("Admin"))
                         {

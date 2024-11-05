@@ -36,10 +36,15 @@
     <!-- style css -->
     <link rel="stylesheet" type="text/css" href="~/customer/css/style.css" asp-append-version="true" />
 
+    <!-- external link css -->
+    <link ref="stylesheet" href="~/css/site.css"/>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+
     
 
 </head>
 <body>
+    <partial name="_Notification" />
     <!-- header start -->
     <header class="main-header" id="stickyheader">
         <div class="header-top-area">
@@ -1630,6 +1635,9 @@
     <script src="~/customer/js/counter.js" asp-append-version="true"></script>
     <!-- main js -->
     <script src="~/customer/js/main.js" asp-append-version="true"></script>
+
+    <!-- external link js-->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

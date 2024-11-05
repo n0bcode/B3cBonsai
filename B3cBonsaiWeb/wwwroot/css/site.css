@@ -1,22 +1,8 @@
-html {
-  font-size: 14px;
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
-}
-
-body {
-  margin-bottom: 60px;
+﻿.toast-background {
+    background-image: url('~/images/backgroundToastr.jpg'); /* Thay 'link_hinh_anh_nen' bằng liên kết hình ảnh của bạn */
+    background-size: cover; /* Lấp đầy toàn bộ vùng */
+    background-position: center; /* Căn giữa hình ảnh */
+    color: white; /* Màu chữ sáng để nổi bật trên hình nền */
+    backdrop-filter: blur(5px); /* Mức độ làm mờ; bạn có thể điều chỉnh nó */
+    opacity: 0.5;
 }
