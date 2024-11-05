@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using B3cBonsai.Models;
+using B3cBonsai.Utility;
 
 namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
 {
@@ -93,7 +94,6 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
         {
             try
             {
-                TempData["successToastr"] = "Đăng nhập thành công";
                 // Request a redirect to the external login provider.
                 var redirectUrl = Url.Page("./ExternalLogin", pageHandler: "Callback", values: new { returnUrl });
                 var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
@@ -126,6 +126,7 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
                 var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
                 if (result.Succeeded)
                 {
+                    TempData["successToastr"] = "Đăng nhập thành công";
                     _logger.LogInformation("{Name} logged in with {LoginProvider} provider.", info.Principal.Identity.Name, info.LoginProvider);
                     return LocalRedirect(returnUrl);
                 }
@@ -184,6 +185,7 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
 
                             var userId = await _userManager.GetUserIdAsync(user);
                             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                            //_userManager.AddToRoleAsync(user, SD.Role_Staff/ SD.Role_Customer); Cần cập nhập giao diện B3cNote
                             code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                             var callbackUrl = Url.Page(
                                 "/Account/ConfirmEmail",

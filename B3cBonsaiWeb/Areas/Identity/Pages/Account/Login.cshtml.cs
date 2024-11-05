@@ -130,7 +130,7 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
                         // Điều hướng theo Role
                         if (roles.Contains("Admin"))
                         {
-                            return LocalRedirect("/Admin/Dashboard");
+                            return LocalRedirect("/Employee/Dashboard");
                         }
                         else if (roles.Contains("Employee"))
                         {
