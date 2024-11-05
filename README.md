@@ -16,7 +16,7 @@
 - ...: Các class đối chiếu với bảng trong CSDL.
 
 ### 3. B3cBonsai.Utility (Class Library)
-- `SD.cs`: Class chứa các Role của người dùng.
+- `SD.cs`: Class chứa các tên cố định cho vai trò, tình trạng thanh toán, tình trạng đơn hàng, tên session sử dụng cho Cart.
 - ...: Các class mang tính năng thực tế như EmailSender, v.v.
 
 ### 4. B3cBonsaiWeb (ASP.NET Core Web App MVC)
@@ -26,6 +26,10 @@
 - **Areas**: 
   - **Customer**: Các Controller-Views về phương thức truy cập và chức năng của người dùng.
   - **Employee**: Các Controller-Views về chức năng quản lý của nhân viên.
+- **Identity**:
+  - **Account**: Chứa các phương thức quản lý chức năng truy cập, chủ yếu là RazorPage.
+    - **Manager**: Chứa các phương thức cho người dùng đã đăng nhập.
+    - ...: Các trang RazorPage chủ yếu cung cấp phương thức cho người dùng chưa truy cập.
 
 ### 5. Cấu hình dự án
 - `appsettings.json`: Cấu hình dự án (hiện chưa có nội dung).
@@ -55,10 +59,6 @@
 
 #### Customer
 - **Controller**:
-  - `AccountController.cs`: Class quản lý phương thức truy cập.
-    - `Login`: Mở giao diện điều hướng theo typeUser.
-      - `UserLogin.cshtml`: View hiển thị khi typeUser = user.
-      - `EmployeeLogin.cshtml`: View hiển thị khi typeUser != user.
   - `CartController.cs`: Class quản lý giỏ hàng.
     - `Index.cshtml`: View hiển thị danh sách sản phẩm trong giỏ hàng.
   - `ClientProductController.cs`: Class hiển thị sản phẩm cho người dùng.
