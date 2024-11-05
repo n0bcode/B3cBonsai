@@ -2,7 +2,7 @@
 //using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Newtonsoft.Json;
 
-namespace None.Extentions
+namespace B3cBonsai.Utility.Extentions
 {
     public static class SessionExtentions
     {
@@ -11,7 +11,7 @@ namespace None.Extentions
             var data = session.GetString(key);
             if (data == null)
             {
-                return default(T);
+                return default;
             }
             return JsonConvert.DeserializeObject<T>(data);
         }
