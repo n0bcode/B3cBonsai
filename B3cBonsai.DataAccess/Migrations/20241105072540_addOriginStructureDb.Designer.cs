@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace B3cBonsai.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241104164432_addOriginStructureDb")]
+    [Migration("20241105072540_addOriginStructureDb")]
     partial class addOriginStructureDb
     {
         /// <inheritdoc />
