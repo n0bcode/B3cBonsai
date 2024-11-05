@@ -27,6 +27,7 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
         {
             await _signInManager.SignOutAsync();
             _logger.LogInformation("User logged out.");
+            TempData["successToastr"] = "Đăng xuất thành công";
             if (returnUrl != null)
             {
                 return LocalRedirect(returnUrl);

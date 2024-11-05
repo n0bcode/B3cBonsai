@@ -10,6 +10,8 @@ using B3cBonsai.Models;
 using B3cBonsai.Utility;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using System.Configuration;
+using B3cBonsai.DataAccess.DbInitializer;
+using Microsoft.Extensions.Options;
 
 namespace B3cBonsaiWeb
 {
@@ -60,8 +62,10 @@ namespace B3cBonsaiWeb
                 {
                     options.ClientId = googleOptions["ClientId"];
                     options.ClientSecret = googleOptions["ClientSecret"];
+                    options.AccessDeniedPath = $"/Identity/Account/Login";
                 });
             // Thêm các dịch vụ cần thiết
+            builder.Services.AddScoped<IDbInitializer, DbInitializer>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<IEmailSender, EmailSender>();
 
@@ -81,6 +85,8 @@ namespace B3cBonsaiWeb
 
             app.UseSession(); // Đặt session trước xác thực
 
+            SeedDatabase();
+
             app.UseAuthentication(); // Xác thực người dùng
             app.UseAuthorization(); // Phân quyền
 
@@ -92,6 +98,24 @@ namespace B3cBonsaiWeb
                 pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
 
             app.Run();
+
+
+            void SeedDatabase()
+            {
+                using (var scope = app.Services.CreateScope())
+                {
+                    var dbInitializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
+                    try
+                    {
+                        dbInitializer.Initialize();
+                    }
+                    catch (Exception ex)
+                    {
+                        // Log the exception (you might want to use a logging library)
+                        Console.WriteLine($"Error seeding database: {ex.Message}");
+                    }
+                }
+            }
         }
     }
 }
