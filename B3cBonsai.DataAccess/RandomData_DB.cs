@@ -59,9 +59,12 @@ namespace B3cBonsai.DataAccess
         string[] descript = { "Món này ngon nhưng nhiều mỡ", "Ăn nhiều dễ béo", "Ăn ít thôi" };
         #endregion
 
-
-        #region//Random video
+        #region//Random video Bonsai
         string[] linkVideos = { "https://videos.pexels.com/video-files/853839/853839-sd_640_360_30fps.mp4", "https://videos.pexels.com/video-files/3132090/3132090-sd_640_360_24fps.mp4", "https://videos.pexels.com/video-files/856030/856030-sd_640_360_25fps.mp4", "https://videos.pexels.com/video-files/3176704/3176704-sd_360_640_30fps.mp4", "https://videos.pexels.com/video-files/28967565/12531601_640_360_60fps.mp4", "https://videos.pexels.com/video-files/1494279/1494279-sd_640_360_24fps.mp4", "https://videos.pexels.com/video-files/4947342/4947342-sd_640_360_30fps.mp4" };
+        #endregion
+
+        #region//Random image Bonsai
+        string[] linkImgBonsai = { "https://i.pinimg.com/736x/39/0c/0a/390c0a43f21becd7305ad73a48760f12.jpg", "https://i.pinimg.com/564x/0b/7d/ae/0b7dae3946327c7b03726c0f41ae1def.jpg", "https://i.pinimg.com/564x/4f/97/20/4f9720e73caa7c1a276df615457188c7.jpg", "https://images.pexels.com/photos/1382195/pexels-photo-1382195.jpeg?auto=compress&cs=tinysrgb&w=600", "https://images.pexels.com/photos/2149105/pexels-photo-2149105.jpeg?auto=compress&cs=tinysrgb&w=600", "https://images.pexels.com/photos/6072061/pexels-photo-6072061.jpeg?auto=compress&cs=tinysrgb&w=600", "https://images.pexels.com/photos/4050790/pexels-photo-4050790.jpeg?auto=compress&cs=tinysrgb&w=600", "https://images.pexels.com/photos/5765694/pexels-photo-5765694.jpeg?auto=compress&cs=tinysrgb&w=600", "https://images.pexels.com/photos/5831008/pexels-photo-5831008.jpeg?auto=compress&cs=tinysrgb&w=600", "https://images.pexels.com/photos/28822467/pexels-photo-28822467/free-photo-of-cay-bonsai-phong-mua-thu-r-c-r-tren-n-n-t-i.jpeg?auto=compress&cs=tinysrgb&w=600", "https://images.pexels.com/photos/6852309/pexels-photo-6852309.jpeg?auto=compress&cs=tinysrgb&w=600" };
         #endregion
         Random rd = new Random();
         public string _CakeName()
@@ -177,6 +180,11 @@ namespace B3cBonsai.DataAccess
         public string RandomVideoBonsai()
         {
             return linkVideos[rd.Next(linkVideos.Length)];
+        }
+        // Random image bonsai
+        public string RandomImageBonsai()
+        {
+            return linkImgBonsai[rd.Next(linkImgBonsai.Length)];
         }
         #endregion
     }
