@@ -163,7 +163,6 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-
                     #region//Tính năng chưa phát triển
                     /*var PathToFile = _webHostEnvironment.WebRootPath + Path.DirectorySeparatorChar.ToString()
                             + "Templates" + Path.DirectorySeparatorChar.ToString() + "EmailTemplates"

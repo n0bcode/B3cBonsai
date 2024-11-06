@@ -1,0 +1,77 @@
+﻿@model NguoiDungUngDung
+
+<div class="modal-body">
+    <div class="container-fluid">
+        <!-- Row -->
+        <div class="row">
+            <div class="col-xl-3 col-lg-4">
+                <div class="clearfix">
+                    <div class="card card-bx profile-card author-profile m-b30">
+                        <div class="card-body">
+                            <div class="p-5">
+                                <div class="author-profile">
+                                    <div class="author-media">
+                                        <img src="@Model.LinkAnh" alt="Hình ảnh nhân viên" onerror="this.src='~/images/user/default.png';">
+                                    </div>
+                                    <div class="author-info">
+                                        <h6 class="title">@Model.HoTen</h6>
+                                        <span>Nhân viên</span> <!-- Hoặc Admin nếu có thông tin phân quyền -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-9 col-lg-8">
+                <div class="card profile-card card-bx m-b30">
+                    <div class="card-header">
+                        <h6 class="title">Mã: @Model.Id</h6>
+                    </div>
+                    <div class="profile-form">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-6 m-b30">
+                                    <label class="form-label">Tên đăng nhập</label>
+                                    <input readonly type="text" class="form-control" value="@Model.UserName">
+                                </div>
+                                <div class="col-sm-6 m-b30">
+                                    <label class="form-label">Email</label>
+                                    <input readonly type="text" class="form-control" value="@Model.Email">
+                                </div>
+                                <div class="col-sm-6 m-b30">
+                                    <label class="form-label">Số điện thoại</label>
+                                    <input readonly type="text" class="form-control" value="@Model.SoDienThoai ?? " Chưa cập nhật"">
+                                </div>
+                                <div class="col-sm-6 m-b30">
+                                    <label class="form-label">Ngày sinh</label>
+                                    <input readonly type="date" class="form-control" value="@Model.NgaySinh?.ToString("yyyy-MM-dd")">
+                                </div>
+                                <div class="col-sm-6 m-b30">
+                                    <label class="form-label">Giới tính</label>
+                                    <input readonly type="text" class="form-control" value="@((Model.GioiTinh == null) ? "Chưa xác định" : (Model.GioiTinh.Value ? "Nam" : "Nữ"))">
+                                </div>
+                                <div class="col-sm-6 m-b30">
+                                    <label class="form-label">Ngày tạo thông tin</label>
+                                    <input readonly type="date" class="form-control" value="@Model.NgayTao.ToString("yyyy-MM-dd")">
+                                </div>
+                                <div class="col-sm-12 m-b30">
+                                    <label class="form-label">Địa chỉ</label>
+                                    <textarea class="form-control" rows="3" readonly>@Model.DiaChi</textarea>
+                                </div>
+                                <div class="col-sm-12 m-b30">
+                                    <label class="form-label">Mô tả</label>
+                                    <textarea class="form-control" rows="3" readonly>@Model.MoTa</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-danger light" data-bs-dismiss="modal">Đóng</button>
+    <button type="button" class="btn btn-primary" onclick="DeleteDWD('@Model.Id')">Xóa đối tượng</button>
+</div>

@@ -5,6 +5,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
+using B3cBonsai.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -89,7 +90,7 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
 
             var result = await _signInManager.TwoFactorRecoveryCodeSignInAsync(recoveryCode);
 
-            var userId = await _userManager.GetUserIdAsync(user);
+            var userId = await _userManager.GetUserIdAsync((NguoiDungUngDung)user);
 
             if (result.Succeeded)
             {

@@ -17,6 +17,7 @@ namespace B3cBonsai.Models
 
         [StringLength(18)]
         public string? SoDienThoai { get => PhoneNumber; set => _ = PhoneNumber; }
+        public bool? GioiTinh { get; set; }
 
         [StringLength(18)]
         public string? CCCD { get; set; } // Số CCCD cần unique
@@ -25,10 +26,12 @@ namespace B3cBonsai.Models
         public string DiaChi { get; set; }
 
         [StringLength(255)]
-        public string LinkAnh { get; set; }
+        [ValidateNever]
+        public string? LinkAnh { get; set; }
 
         public DateTime NgayTao { get; set; } = DateTime.Now;
-
+        public string? MoTa { get; set; }
+        [ValidateNever]
         public virtual ICollection<DonHang> DonHangs { get; set; }
 
         [ValidateNever]
@@ -36,5 +39,7 @@ namespace B3cBonsai.Models
 
         [ValidateNever]
         public virtual ICollection<DanhSachYeuThich> DanhSachYeuThichs { get; set; }
+        [NotMapped]
+        public string? VaiTro {  get; set; }
     }
 }

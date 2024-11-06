@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace B3cBonsai.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class addOriginStructureDb : Migration
+    public partial class addOriginStrutureDb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -34,10 +34,12 @@ namespace B3cBonsai.DataAccess.Migrations
                     HoTen = table.Column<string>(type: "nvarchar(54)", maxLength: 54, nullable: true),
                     NgaySinh = table.Column<DateTime>(type: "datetime2", nullable: true),
                     SoDienThoai = table.Column<string>(type: "nvarchar(18)", maxLength: 18, nullable: true),
+                    GioiTinh = table.Column<bool>(type: "bit", nullable: true),
                     CCCD = table.Column<string>(type: "nvarchar(18)", maxLength: 18, nullable: true),
                     DiaChi = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: true),
                     LinkAnh = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     NgayTao = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    MoTa = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
