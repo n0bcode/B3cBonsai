@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace B3cBonsai.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241105072540_addOriginStructureDb")]
-    partial class addOriginStructureDb
+    [Migration("20241106084357_addOriginStrutureDb")]
+    partial class addOriginStrutureDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -601,15 +601,20 @@ namespace B3cBonsai.DataAccess.Migrations
                         .HasMaxLength(1024)
                         .HasColumnType("nvarchar(1024)");
 
+                    b.Property<bool?>("GioiTinh")
+                        .HasColumnType("bit");
+
                     b.Property<string>("HoTen")
                         .IsRequired()
                         .HasMaxLength(54)
                         .HasColumnType("nvarchar(54)");
 
                     b.Property<string>("LinkAnh")
-                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("MoTa")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("NgaySinh")
                         .HasColumnType("datetime2");

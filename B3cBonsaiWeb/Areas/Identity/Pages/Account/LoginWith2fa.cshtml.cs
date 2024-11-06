@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
+using B3cBonsai.Models;
 
 namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
 {
@@ -108,7 +109,7 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
 
             var result = await _signInManager.TwoFactorAuthenticatorSignInAsync(authenticatorCode, rememberMe, Input.RememberMachine);
 
-            var userId = await _userManager.GetUserIdAsync(user);
+            var userId = await _userManager.GetUserIdAsync((NguoiDungUngDung)user);
 
             if (result.Succeeded)
             {

@@ -1,0 +1,135 @@
+﻿@model B3cBonsai.Models.ViewModels.NguoiDungUngDungVM
+
+<div class="offcanvas-header">
+    <h5 class="modal-title" id="#gridSystemModal">@(Model == null ? "Thêm":"Sửa") thông tin Người Dùng</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close">
+        <i class="fa-solid fa-xmark"></i>
+    </button>
+</div>
+
+<div class="offcanvas-body">
+    <div class="container-fluid">
+        <form asp-action="Upsert" method="post" id="upsertForm">
+            <div class="row">
+                <div class="row justify-content-center mb-3">
+                    <div class="col-md-3">
+                        @if (Model?.NguoiDungUngDung != null && !string.IsNullOrEmpty(Model.NguoiDungUngDung.LinkAnh))
+                        {
+                            <img class="img-thumbnail" src="@Model.NguoiDungUngDung.LinkAnh" alt="Hình ảnh hiện tại" style="height:100px;width:100%;object-fit:contain" />
+                        }
+                        else
+                        {
+                            <img class="img-thumbnail" src="~/images/employee/default.png" alt="Hình ảnh hiện tại" />
+                        }
+                    </div>
+                    <div class="col">
+                        <label asp-for="NguoiDungUngDung.LinkAnh" class="form-label">Chọn hình ảnh</label>
+                        <input asp-for="NguoiDungUngDung.LinkAnh" type="file" class="form-control" accept="image/*" />
+                        <span asp-validation-for="NguoiDungUngDung.LinkAnh" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-xl-6 mb-3">
+                    <label asp-for="NguoiDungUngDung.UserName" class="form-label">Tên người dùng <span class="text-danger">*</span></label>
+                    <input asp-for="NguoiDungUngDung.UserName" class="form-control" required />
+                    <span asp-validation-for="NguoiDungUngDung.UserName" class="text-danger"></span>
+                </div>
+                <div class="col-xl-6 mb-3">
+                    <label asp-for="NguoiDungUngDung.Email" class="form-label">Email <span class="text-danger">*</span></label>
+                    <input asp-for="NguoiDungUngDung.Email" class="form-control" required />
+                    <span asp-validation-for="NguoiDungUngDung.Email" class="text-danger"></span>
+                </div>
+                <div class="col-xl-6 mb-3">
+                    <label asp-for="NguoiDungUngDung.PasswordHash" class="form-label">Mật khẩu <span class="text-danger">*</span></label>
+                    <input asp-for="NguoiDungUngDung.PasswordHash" class="form-control" required />
+                    <span asp-validation-for="NguoiDungUngDung.PasswordHash" class="text-danger"></span>
+                </div>
+                <div class="col-xl-6 mb-3">
+                    <label asp-for="NguoiDungUngDung.HoTen" class="form-label">Họ tên <span class="text-danger">*</span></label>
+                    <input asp-for="NguoiDungUngDung.HoTen" class="form-control" required />
+                    <span asp-validation-for="NguoiDungUngDung.HoTen" class="text-danger"></span>
+                </div>
+                <div class="col-xl-6 mb-3">
+                    <label asp-for="NguoiDungUngDung.PhoneNumber" class="form-label">Số điện thoại <span class="text-danger">*</span></label>
+                    <input asp-for="NguoiDungUngDung.PhoneNumber" class="form-control" />
+                    <span asp-validation-for="NguoiDungUngDung.PhoneNumber" class="text-danger"></span>
+                </div>
+                <div class="col-xl-6 mb-3">
+                    <label asp-for="NguoiDungUngDung.NgaySinh" class="form-label">Ngày sinh <span class="text-danger">*</span></label>
+                    <input asp-for="NguoiDungUngDung.NgaySinh" type="date" class="form-control" required />
+                    <span asp-validation-for="NguoiDungUngDung.NgaySinh" class="text-danger"></span>
+                </div>
+                <div class="col-xl-6 mb-3">
+                    <label asp-for="NguoiDungUngDung.DiaChi" class="form-label">Địa chỉ <span class="text-danger">*</span></label>
+                    <textarea asp-for="NguoiDungUngDung.DiaChi" rows="3" class="form-control" required></textarea>
+                    <span asp-validation-for="NguoiDungUngDung.DiaChi" class="text-danger"></span>
+                </div>
+                <div class="col-xl-6 mb-3">
+                    <label asp-for="NguoiDungUngDung.GioiTinh" class="form-label">Giới tính <span class="text-danger">*</span></label>
+                    <select asp-for="NguoiDungUngDung.GioiTinh" class="default-select style-1 form-control" required>
+                        <option value="">Chọn giới tính</option>
+                        <option value="true">Nam</option>
+                        <option value="false">Nữ</option>
+                        <option value="">Khác</option>
+                    </select>
+                    <span asp-validation-for="NguoiDungUngDung.GioiTinh" class="text-danger"></span>
+                </div>
+                <div class="col-xl-6 mb-3">
+                    <label class="form-label">Giới tính <span class="text-danger">*</span></label>
+                    <select asp-items="@Model.DanhSachVaiTro" class="default-select style-1 form-control" required name="VaiTro">
+                        <option value="">Chọn vai trò</option>
+                    </select>
+                    <span asp-validation-for="NguoiDungUngDung.GioiTinh" class="text-danger"></span>
+                </div>
+                <div class="col-xl-6 mb-3">
+                    <label asp-for="NguoiDungUngDung.NgayTao" class="form-label">Ngày gia nhập <span class="text-danger">*</span></label>
+                    <input asp-for="NguoiDungUngDung.NgayTao" type="date" class="form-control"/>
+                </div>
+                <div class="col-xl-12 mb-3">
+                    <label asp-for="NguoiDungUngDung.MoTa" class="form-label">Giới thiệu <span class="text-danger">*</span></label>
+                    <textarea asp-for="NguoiDungUngDung.MoTa" rows="3" class="form-control" required></textarea>
+                    <span asp-validation-for="NguoiDungUngDung.MoTa" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="d-flex justify-content-between">
+                <button type="button" class="btn btn-danger light" data-bs-dismiss="offcanvas">Hủy</button>
+                <button type="submit" class="btn btn-primary">@(Model == null ? "Thêm" : "Sửa")</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Xử lý khi form được submit
+    $("#upsertForm").on("submit", function (e) {
+        e.preventDefault(); // Ngăn không cho form submit thông thường
+
+        // Lấy dữ liệu từ form
+        var formData = new FormData(this);
+
+        $.ajax({
+            url: '/Employee/ManagerUser/Upsert', // URL của action
+            method: 'POST', // Phương thức POST
+            data: formData, // Dữ liệu form
+            processData: false, // Không xử lý dữ liệu
+            contentType: false, // Không cần thiết lập contentType
+            success: function (response) {
+                if (response.success) {
+                    // Nếu thêm thành công, hiển thị thông báo thành công
+                    toastr.success(response.content, response.title, { timeOut: 5000 });
+                    dataTable.ajax.reload();
+                } else {
+                    $('#upsertObject').html(response.data);
+
+                    // Thông báo lỗi với toastr
+                    toastr.error(response.content, response.title, { timeOut: 5000 });
+                }
+            },
+            error: function (xhr, status, error) {
+                // Hiển thị thông báo lỗi chung nếu có lỗi trong quá trình gọi Ajax
+                toastr.error("Có lỗi xảy ra trong quá trình xử lý. Vui lòng thử lại!", "Lỗi", { timeOut: 5000 });
+                console.log(xhr);
+            }
+        });
+    });
+    </script>
