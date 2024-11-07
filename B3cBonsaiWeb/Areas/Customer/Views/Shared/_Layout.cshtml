@@ -37,10 +37,10 @@
     <link rel="stylesheet" type="text/css" href="~/customer/css/style.css" asp-append-version="true" />
 
     <!-- external link css -->
-    <link ref="stylesheet" href="~/css/site.css"/>
+    <link ref="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
 
-    
+
 
 </head>
 <body>
@@ -66,14 +66,14 @@
                                         <ul class="main-menu">
                                             <li class="menu-link">
                                                 <a asp-area="Customer" asp-controller="Home" asp-action="Index" class="link-title">
-                                                    <span class="sp-link-title">Home</span>
+                                                    <span class="sp-link-title">Trang Chủ</span>
                                                     <span class="menu-arrow"><i class="fa fa-angle-down"></i></span>
                                                 </a>
                                                 <div class="menu-dropdown menu-single collapse" id="collapse-Home">
                                                     <ul class="ul">
                                                         <li class="menusingle-li">
                                                             <a asp-area="Customer" asp-controller="Home" asp-action="Index" class="menusingle-title">
-                                                                <span class="sp-link-title">Live plants</span>
+                                                                <span class="sp-link-title">Cây sống</span>
                                                             </a>
                                                         </li>
                                                     </ul>
@@ -81,21 +81,21 @@
                                             </li>
                                             <li class="menu-link">
                                                 <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Index" class="link-title">
-                                                    <span class="sp-link-title">Product<span class="header-sale-lable">Sale</span></span>
+                                                    <span class="sp-link-title">Cửa Hàng@* <span class="header-sale-lable">Sale</span> *@</span>
                                                     <span class="menu-arrow"><i class="fa fa-angle-down"></i></span>
                                                 </a>
                                                 <div class="menu-dropdown menu-mega collapse" id="colection">
                                                     <ul class="ul container p-0">
                                                         <li class="menumega-li">
                                                             <a href="javascript:void(0)" class="menumega-title">
-                                                                <span class="sp-link-title">Product page</span>
+                                                                <span class="sp-link-title">Trang sản phẩm</span>
                                                                 <span class="menu-arrow"><i class="fa-solid fa-angle-down"></i></span>
                                                             </a>
                                                             <div class="menumegasup-dropdown collapse">
                                                                 <ul class="menumegasup-ul">
                                                                     <li class="menumegasup-li">
                                                                         <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail" class="menumegasup-title">
-                                                                            <span class="sp-link-title">Product layout</span>
+                                                                            <span class="sp-link-title">Bố cục sản phẩm</span>
                                                                         </a>
                                                                     </li>
                                                                 </ul>
@@ -144,7 +144,7 @@
                                                                     </li>
                                                                 </ul>
                                                                 <div class="menu-product-btn">
-                                                                    <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Index" class="menu-pro-link">See more<i class="bi bi-chevron-right"></i></a>
+                                                                    <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Index" class="menu-pro-link">Xem Thêm<i class="bi bi-chevron-right"></i></a>
                                                                 </div>
                                                             </div>
                                                         </li>
@@ -191,7 +191,7 @@
                                                                     </li>
                                                                 </ul>
                                                                 <div class="menu-product-btn">
-                                                                    <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Index" class="menu-pro-link">See more<i class="bi bi-chevron-right"></i></a>
+                                                                    <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Index" class="menu-pro-link">Xem Thêm<i class="bi bi-chevron-right"></i></a>
                                                                 </div>
                                                             </div>
                                                         </li>
@@ -200,7 +200,7 @@
                                             </li>
                                             <li class="menu-link">
                                                 <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Index" class="link-title">
-                                                    <span class="sp-link-title">Collection</span>
+                                                    <span class="sp-link-title">Bộ sưu tập</span>
                                                     <span class="menu-arrow"><i class="fa fa-angle-down"></i></span>
                                                 </a>
                                                 <div class="menu-dropdown menu-banner collapse" id="collapse-shop">
@@ -211,7 +211,7 @@
                                                                     <img src="~/customer/img/menu/home1-menu-banner1.jpg" class="img-fluid" alt="menu-banner1">
                                                                 </a>
                                                                 <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Index" class="collection-title">
-                                                                    <span>New product</span>
+                                                                    <span>Sản phẩm mới</span>
                                                                 </a>
                                                             </div>
                                                         </li>
@@ -221,7 +221,7 @@
                                                                     <img src="~/customer/img/menu/home1-menu-banner2.jpg" class="img-fluid" alt="menu-banner2">
                                                                 </a>
                                                                 <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Index" class="collection-title">
-                                                                    <span>Featured product</span>
+                                                                    <span>Sản phẩm nổi bật</span>
                                                                 </a>
                                                             </div>
                                                         </li>
@@ -231,7 +231,9 @@
                                                                     <img src="~/customer/img/menu/home1-menu-banner3.jpg" class="img-fluid" alt="menu-banner3">
                                                                 </a>
                                                                 <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Index" class="collection-title">
-                                                                    <span>Best seller</span>
+                                                                    <span>
+                                                                        Bán chạy nhất
+                                                                    </span>
                                                                 </a>
                                                             </div>
                                                         </li>
@@ -241,7 +243,7 @@
                                                                     <img src="~/customer/img/menu/home1-menu-banner4.jpg" class="img-fluid" alt="menu-banner4">
                                                                 </a>
                                                                 <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Index" class="collection-title">
-                                                                    <span>Super sale</span>
+                                                                    <span>Siêu giảm giá</span>
                                                                 </a>
                                                             </div>
                                                         </li>
@@ -292,21 +294,21 @@
 
                                             <li class="menu-link">
                                                 <a href="about-us.html" class="link-title">
-                                                    <span class="sp-link-title">Pages</span>
+                                                    <span class="sp-link-title">Các Trang</span>
                                                     <span class="menu-arrow"><i class="fa fa-angle-down"></i></span>
                                                 </a>
                                                 <div class="menu-dropdown menu-sub collapse" id="page">
                                                     <ul class="ul">
                                                         <li class="menusub-li">
                                                             <a asp-area="Customer" asp-controller="Home" asp-action="AboutUs" class="menusub-title">
-                                                                <span class="sp-link-title">About us</span>
+                                                                <span class="sp-link-title">Về chúng tôi</span>
                                                                 <span class="menu-arrow"><i class="fa-solid fa-angle-right"></i></span>
                                                             </a>
                                                             <div class="menusup-dropdown collapse" id="About">
                                                                 <ul class="menusup-ul">
                                                                     <li class="menusup-li">
                                                                         <a asp-area="Customer" asp-controller="Home" asp-action="AboutUs" class="menusup-title">
-                                                                            <span class="sp-link-title">About us</span>
+                                                                            <span class="sp-link-title">Về chúng tôi</span>
                                                                         </a>
                                                                     </li>
                                                                 </ul>
@@ -314,49 +316,45 @@
                                                         </li>
                                                         <li class="menusub-li">
                                                             <a href="/Customer/Account/Login?typeUser=user" class="menusub-title">
-                                                                <span class="sp-link-title">My account</span>
+                                                                <span class="sp-link-title">Tài Khoản Của Tôi</span>
                                                                 <span class="menu-arrow"><i class="fa-solid fa-angle-right"></i></span>
                                                             </a>
                                                             <div class="menusup-dropdown collapse">
                                                                 <ul class="menusup-ul">
                                                                     <li class="menusup-li">
                                                                         <a href="/Customer/ClientProfile/Index" class="menusup-title">
-                                                                            <span class="sp-link-title">Order</span>
+                                                                            <span class="sp-link-title">Đặt Hàng</span>
                                                                         </a>
                                                                     </li>
                                                                     <li class="menusup-li">
                                                                         <a href="/Customer/ClientProfile/Profile" class="menusup-title">
-                                                                            <span class="sp-link-title">Profile</span>
+                                                                            <span class="sp-link-title">Hồ Sơ</span>
                                                                         </a>
                                                                     </li>
                                                                     <li class="menusup-li">
                                                                         <a href="/Customer/ClientProfile/ProAddress" class="menusup-title">
-                                                                            <span class="sp-link-title">Address</span>
+                                                                            <span class="sp-link-title">Địa Chỉ</span>
                                                                         </a>
                                                                     </li>
                                                                     <li class="menusup-li">
                                                                         <a href="/Customer/ClientProfile/ProWishlist" class="menusup-title">
-                                                                            <span class="sp-link-title">Wishlist</span>
+                                                                            <span class="sp-link-title">Danh Sách Mong Muốn</span>
                                                                         </a>
                                                                     </li>
                                                                     <li class="menusup-li">
                                                                         <a href="/Customer/ClientProfile/ProTickets" class="menusup-title">
-                                                                            <span class="sp-link-title">My tickets</span>
+                                                                            <span class="sp-link-title">Vé Của Tôi</span>
                                                                         </a>
                                                                     </li>
-                                                                    <li class="menusup-li">
-                                                                        <a href="billing-info.html" class="menusup-title">
-                                                                            <span class="sp-link-title">Billing info</span>
-                                                                        </a>
-                                                                    </li>
+                                                                    
                                                                     <li class="menusup-li">
                                                                         <a href="/Customer/Payment/TrackOrder" class="menusup-title">
-                                                                            <span class="sp-link-title">Track page</span>
+                                                                            <span class="sp-link-title">Thông Tin Thanh Toán</span>
                                                                         </a>
                                                                     </li>
                                                                     <li class="menusup-li">
                                                                         <a href="/Customer/Payment/OrderComplete" class="menusup-title">
-                                                                            <span class="sp-link-title">Order complete</span>
+                                                                            <span class="sp-link-title">Đơn Hàng Hoàn Tất</span>
                                                                         </a>
                                                                     </li>
                                                                 </ul>
@@ -364,14 +362,14 @@
                                                         </li>
                                                         <li class="menusub-li">
                                                             <a asp-area="Customer" asp-controller="Home" asp-action="ContactUs" class="menusub-title">
-                                                                <span class="sp-link-title">Contact us</span>
+                                                                <span class="sp-link-title">Liên hệ với chúng tôi</span>
                                                                 <span class="menu-arrow"><i class="fa-solid fa-angle-right"></i></span>
                                                             </a>
                                                             <div class="menusup-dropdown collapse">
                                                                 <ul class="menusup-ul">
                                                                     <li class="menusup-li">
                                                                         <a asp-area="Customer" asp-controller="Home" asp-action="ContactUs" class="menusup-title">
-                                                                            <span class="sp-link-title">Contact us</span>
+                                                                            <span class="sp-link-title">Liên hệ với chúng tôi</span>
                                                                         </a>
                                                                     </li>
                                                                 </ul>
@@ -379,14 +377,14 @@
                                                         </li>
                                                         <li class="menusub-li">
                                                             <a asp-area="Customer" asp-controller="Payment" asp-action="Index" class="menusub-title">
-                                                                <span class="sp-link-title">Checkout</span>
+                                                                <span class="sp-link-title">Thanh Toán</span>
                                                                 <span class="menu-arrow"><i class="fa-solid fa-angle-right"></i></span>
                                                             </a>
                                                             <div class="menusup-dropdown collapse">
                                                                 <ul class="menusup-ul">
                                                                     <li class="menusup-li">
                                                                         <a asp-area="Customer" asp-controller="Payment" asp-action="Index" class="menusup-title">
-                                                                            <span class="sp-link-title">Checkout</span>
+                                                                            <span class="sp-link-title">Thanh Toán</span>
                                                                         </a>
                                                                     </li>
                                                                 </ul>
@@ -394,19 +392,19 @@
                                                         </li>
                                                         <li class="menusub-li">
                                                             <a href="javascript:void(0)" class="menusub-title">
-                                                                <span class="sp-link-title">Features</span>
+                                                                <span class="sp-link-title">Đặc Trưng</span>
                                                                 <span class="menu-arrow"><i class="fa-solid fa-angle-right"></i></span>
                                                             </a>
                                                             <div class="menusup-dropdown collapse">
                                                                 <ul class="menusup-ul">
                                                                     <li class="menusup-li">
                                                                         <a asp-area="Customer" asp-controller="Cart" asp-action="Index" class="menusup-title">
-                                                                            <span class="sp-link-title">Cart page</span>
+                                                                            <span class="sp-link-title">Trang Giỏ Hàng</span>
                                                                         </a>
                                                                     </li>
                                                                     <li class="menusup-li">
                                                                         <a asp-area="Customer" asp-controller="Wishlist" asp-action="Index" class="menusup-title">
-                                                                            <span class="sp-link-title">Wishlist product</span>
+                                                                            <span class="sp-link-title">Sản Phẩm Mong Muốn</span>
                                                                         </a>
                                                                     </li>
                                                                 </ul>
@@ -414,27 +412,27 @@
                                                         </li>
                                                         <li class="menusub-li">
                                                             <a asp-area="Customer" asp-controller="Home" asp-action="FAQ" class="menusub-title">
-                                                                <span class="sp-link-title">Faq's</span>
+                                                                <span class="sp-link-title">Câu Hỏi Thường Gặp</span>
                                                             </a>
                                                         </li>
                                                         <li class="menusub-li">
                                                             <a asp-area="Customer" asp-controller="Home" asp-action="Privacy" class="menusub-title">
-                                                                <span class="sp-link-title">Privacy policy</span>
+                                                                <span class="sp-link-title">Chính Sách Bảo Mật</span>
                                                             </a>
                                                         </li>
                                                         <li class="menusub-li">
                                                             <a asp-area="Customer" asp-controller="Payment" asp-action="Policy" class="menusub-title">
-                                                                <span class="sp-link-title">Payment policy</span>
+                                                                <span class="sp-link-title">Chính Sách Thanh Toán</span>
                                                             </a>
                                                         </li>
                                                         <li class="menusub-li">
                                                             <a asp-area="Customer" asp-controller="Home" asp-action="Terms" class="menusub-title">
-                                                                <span class="sp-link-title">Terms &amp; condition</span>
+                                                                <span class="sp-link-title">Điều Khoản & Điều Kiện</span>
                                                             </a>
                                                         </li>
                                                         <li class="menusub-li">
                                                             <a asp-area="Customer" asp-controller="Home" asp-action="ReturnPolicy" class="menusub-title">
-                                                                <span class="sp-link-title">Return policy</span>
+                                                                <span class="sp-link-title">Chính Sách Đổi Trả</span>
                                                             </a>
                                                         </li>
                                                         <li class="menusub-li">
@@ -444,7 +442,7 @@
                                                         </li>
                                                         <li class="menusub-li">
                                                             <a asp-area="Customer" asp-controller="Home" asp-action="ComingSoon" class="menusub-title">
-                                                                <span class="sp-link-title">Coming soon</span>
+                                                                <span class="sp-link-title">Sắp Ra Mắt</span>
                                                             </a>
                                                         </li>
                                                     </ul>
@@ -563,7 +561,7 @@
                                                 <div class="ft-contact-add">
                                                     <span class="info-icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="m12 20.9l4.95-4.95a7 7 0 1 0-9.9 0zm0 2.828l-6.364-6.364a9 9 0 1 1 12.728 0zM12 13a2 2 0 1 0 0-4a2 2 0 0 0 0 4m0 2a4 4 0 1 1 0-8a4 4 0 0 1 0 8" /></svg></span>
                                                     <div class="info-block">
-                                                        <p>Ngõ 16 Porter, thợ khóa,</p><p>26326 Buôn Ma Thuật</p>
+                                                        <p>Ngõ 6 Hà Duy Tập,</p><p>Buôn Ma Thuột, Đắk Lắk</p>
                                                     </div>
                                                 </div>
                                             </li>
@@ -571,7 +569,7 @@
                                                 <div class="ft-contact-add">
                                                     <span class="info-icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M9.366 10.682a10.556 10.556 0 0 0 3.952 3.952l.884-1.238a1 1 0 0 1 1.294-.296a11.421 11.421 0 0 0 4.583 1.364a1 1 0 0 1 .921.997v4.462a1 1 0 0 1-.898.995A15.51 15.51 0 0 1 18.5 21C9.94 21 3 14.06 3 5.5c0-.538.027-1.072.082-1.602A1 1 0 0 1 4.077 3h4.462a1 1 0 0 1 .997.921A11.421 11.421 0 0 0 10.9 8.504a1 1 0 0 1-.296 1.294zm-2.522-.657l1.9-1.357A13.41 13.41 0 0 1 7.647 5H5.01c-.006.166-.009.333-.009.5C5 12.956 11.044 19 18.5 19c.167 0 .334-.003.5-.01v-2.637a13.41 13.41 0 0 1-3.668-1.097l-1.357 1.9a12.45 12.45 0 0 1-1.588-.75l-.058-.033a12.556 12.556 0 0 1-4.702-4.702l-.033-.058a12.441 12.441 0 0 1-.75-1.588" /></svg></span>
                                                     <div class="info-block">
-                                                        <a href="tel:+550123456789" class="ft-contact-address">+55 0123 456 789</a>
+                                                        <a href="tel:(024) 7300 1955" class="ft-contact-address">(024) 7300 1955</a>
                                                     </div>
                                                 </div>
                                             </li>
@@ -579,7 +577,7 @@
                                                 <div class="ft-contact-add">
                                                     <span class="info-icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M3 3h18a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1m17 4.238l-7.928 7.1L4 7.216V19h16zM4.511 5l7.55 6.662L19.502 5z" /></svg></span>
                                                     <div class="info-block">
-                                                        <a href="mailto:demo@demo.com" class="ft-contact-address">demo@demo.com</a>
+                                                        <a href="mailto:Caodang@fpt.edu.vn" class="ft-contact-address">Caodang@fpt.edu.vn</a>
                                                     </div>
                                                 </div>
                                             </li>
@@ -593,27 +591,26 @@
                                         <li class="ftlist-li">
                                             <h2 class="ftlist-title">Thông tin</h2>
                                             <a data-bs-toggle="collapse" href="#footer-information" class="ftlist-title">
-                                                <span>Information</span>
+                                                <span>Thông tin</span>
                                                 <span><i class="fa-solid fa-plus"></i></span>
                                             </a>
                                             <ul class="ftlink-ul collapse" id="footer-information">
                                                 <li class="ftlink-li">
-                                                    <a href="about-us.html">About us</a>
+                                                    <a href="/Customer/Home/AboutUs">Về chúng tôi</a>
                                                 </li>
                                                 <li class="ftlink-li">
-                                                    <a href="contact-us.html">Contact us</a>
+                                                    <a href="/Customer/Home/ContactUs">
+                                                        Liên hệ với chúng tôi
+                                                    </a>
                                                 </li>
                                                 <li class="ftlink-li">
-                                                    <a href="faq.html">Faq's</a>
+                                                    <a href="/Customer/Home/FAQ">Hỏi đáp</a>
                                                 </li>
                                                 <li class="ftlink-li">
-                                                    <a href="article-post.html">News</a>
+                                                    <a asp-area="Customer" asp-controller="Cart" asp-action="Index">Giỏ hàng của tôi</a>
                                                 </li>
                                                 <li class="ftlink-li">
-                                                    <a asp-area="Customer" asp-controller="Cart" asp-action="Index">My cart</a>
-                                                </li>
-                                                <li class="ftlink-li">
-                                                    <a asp-area="Customer" asp-controller="Wishlist" asp-action="Index">My wishlist</a>
+                                                    <a asp-area="Customer" asp-controller="Wishlist" asp-action="Index">Danh sách yêu thích của tôi</a>
                                                 </li>
                                             </ul>
                                         </li>
@@ -631,19 +628,15 @@
                                             </a>
                                             <ul class="ftlink-ul collapse" id="footer-privacy">
                                                 <li class="ftlink-li">
-                                                    <a href="about-us-2.html">About us 2</a>
+                                                    <a href="/Customer/Home/Privacy">
+                                                        Chính sách bảo mật
+                                                    </a>
                                                 </li>
                                                 <li class="ftlink-li">
-                                                    <a href="contact-us-2.html">Contact us 2</a>
+                                                    <a href="/Customer/Home/ReturnPolicy">Giao hàng và trả lại</a>
                                                 </li>
                                                 <li class="ftlink-li">
-                                                    <a href="privacy-policy.html">Privacy policy</a>
-                                                </li>
-                                                <li class="ftlink-li">
-                                                    <a href="return-policy.html">Delivery & return</a>
-                                                </li>
-                                                <li class="ftlink-li">
-                                                    <a href="terms-condition.html">Terms & condition</a>
+                                                    <a href="/Customer/Home/Terms">Điều khoản & điều kiện</a>
                                                 </li>
                                             </ul>
                                         </li>
@@ -1609,6 +1602,18 @@
         </ul>
     </div>
     <!-- bottom-menu end -->
+
+
+    @* đây là code của boxchat *@
+    <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+    <df-messenger intent="WELCOME"
+                  chat-title="BurnBugBurnCode"
+                  agent-id="d429dc9b-7731-49cd-b0c3-0a382d3b8ebb"
+                  language-code="vi"></df-messenger>
+
+
+
+
 
     <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js" asp-append-version="true"></script>
