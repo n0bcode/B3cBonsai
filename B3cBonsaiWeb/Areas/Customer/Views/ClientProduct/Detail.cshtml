@@ -1,4 +1,5 @@
-﻿<!-- breadcrumb start -->
+﻿@model SanPham
+<!-- breadcrumb start -->
 <section class="breadcrumb-area">
     <div class="container">
         <div class="col">
@@ -7,10 +8,10 @@
                     <!-- breadcrumb-list start -->
                     <ul class="breadcrumb-ul">
                         <li class="breadcrumb-li">
-                            <a class="breadcrumb-link" asp-area="Customer" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="breadcrumb-link" asp-area="Customer" asp-controller="Home" asp-action="Index">Trang chủ</a>
                         </li>
                         <li class="breadcrumb-li">
-                            <span class="breadcrumb-text">Stripping pliers</span>
+                            <span class="breadcrumb-text">@Model.TenSanPham</span>
                         </li>
                     </ul>
                     <!-- breadcrumb-list end -->
@@ -40,168 +41,32 @@
                             <div class="product-img-top">
                                 <button class="full-view"><i class="bi bi-arrows-fullscreen"></i></button>
                                 <div class="slider-big slick-slider">
-                                    <div class="slick-slide ">
-                                        <a href="img/product/home1-pro-1.jpg" class="product-single">
-                                            <figure class="zoom" onmousemove="zoom(event)"
-                                                style="background-image: url('@Url.Content("~/customer/img/product/home1-pro-1.jpg")');">
-                                                <img src="~/customer/img/product/home1-pro-1.jpg" class="img-fluid" alt="pro-1">
-                                            </figure>
-                                        </a>
-                                    </div>
-                                    <div class="slick-slide ">
-                                        <a href="img/product/home1-pro-2.jpg" class="product-single">
-                                            <figure class="zoom" onmousemove="zoom(event)"
-                                                style="background-image: url('@Url.Content("~/customer/img/product/home1-pro-2.jpg")');">
-                                                <img src="~/customer/img/product/home1-pro-2.jpg" class="img-fluid" alt="pro-2">
-                                            </figure>
-                                        </a>
-                                    </div>
-                                    <div class="slick-slide ">
-                                        <a href="img/product/home1-pro-3.jpg" class="product-single">
-                                            <figure class="zoom" onmousemove="zoom(event)"
-                                                style="background-image: url('@Url.Content("~/customer/img/product/home1-pro-3.jpg")');">
-                                                <img src="~/customer/img/product/home1-pro-3.jpg" class="img-fluid" alt="pro-3">
-                                            </figure>
-                                        </a>
-                                    </div>
-                                    <div class="slick-slide ">
-                                        <a href="img/product/home1-pro-4.jpg" class="product-single">
-                                            <figure class="zoom" onmousemove="zoom(event)"
-                                                style="background-image: url('@Url.Content("~/customer/img/product/home1-pro-4.jpg")');">
-                                                <img src="~/customer/img/product/home1-pro-4.jpg" class="img-fluid" alt="pro-4">
-                                            </figure>
-                                        </a>
-                                    </div>
-                                    <div class="slick-slide ">
-                                        <a href="img/product/home1-pro-5.jpg" class="product-single">
-                                            <figure class="zoom" onmousemove="zoom(event)"
-                                                style="background-image: url('@Url.Content("~/customer/img/product/home1-pro-5.jpg")');">
-                                                <img src="~/customer/img/product/home1-pro-5.jpg" class="img-fluid" alt="pro-5">
-                                            </figure>
-                                        </a>
-                                    </div>
-                                    <div class="slick-slide ">
-                                        <a href="img/product/home1-pro-6.jpg" class="product-single">
-                                            <figure class="zoom" onmousemove="zoom(event)"
-                                                style="background-image: url('@Url.Content("~/customer/img/product/home1-pro-6.jpg")');">
-                                                <img src="~/customer/img/product/home1-pro-6.jpg" class="img-fluid" alt="p-6">
-                                            </figure>
-                                        </a>
-                                    </div>
-                                    <div class="slick-slide ">
-                                        <a href="img/product/home1-pro-7.jpg" class="product-single">
-                                            <figure class="zoom" onmousemove="zoom(event)"
-                                                style="background-image: url('@Url.Content("~/customer/img/product/home1-pro-7.jpg")');">
-                                                <img src="~/customer/img/product/home1-pro-7.jpg" class="img-fluid" alt="p-7">
-                                            </figure>
-                                        </a>
-                                    </div>
-                                    <div class="slick-slide ">
-                                        <a href="img/product/home1-pro-8.jpg" class="product-single">
-                                            <figure class="zoom" onmousemove="zoom(event)"
-                                                style="background-image: url('@Url.Content("~/customer/img/product/home1-pro-8.jpg")');">
-                                                <img src="~/customer/img/product/home1-pro-8.jpg" class="img-fluid" alt="pro-8">
-                                            </figure>
-                                        </a>
-                                    </div>
-                                    <div class="slick-slide ">
-                                        <a href="img/product/home1-pro-9.jpg" class="product-single">
-                                            <figure class="zoom" onmousemove="zoom(event)"
-                                                style="background-image: url('@Url.Content("~/customer/img/product/home1-pro-9.jpg")');">
-                                                <img src="~/customer/img/product/home1-pro-9.jpg" class="img-fluid" alt="pro-9">
-                                            </figure>
-                                        </a>
-                                    </div>
-                                    <div class="slick-slide ">
-                                        <a href="img/product/home1-pro-10.jpg" class="product-single">
-                                            <figure class="zoom" onmousemove="zoom(event)"
-                                                style="background-image: url('@Url.Content("~/customer/img/product/home1-pro-10.jpg")');">
-                                                <img src="~/customer/img/product/home1-pro-10.jpg" class="img-fluid" alt="pro-10">
-                                            </figure>
-                                        </a>
-                                    </div>
-                                    <div class="slick-slide ">
-                                        <a href="img/product/home1-pro-11.jpg" class="product-single">
-                                            <figure class="zoom" onmousemove="zoom(event)"
-                                                style="background-image: url('@Url.Content("~/customer/img/product/home1-pro-11.jpg")');">
-                                                <img src="~/customer/img/product/home1-pro-11.jpg" class="img-fluid" alt="pro-11">
-                                            </figure>
-                                        </a>
-                                    </div>
-                                    <div class="slick-slide ">
-                                        <a href="img/product/home1-pro-12.jpg" class="product-single">
-                                            <figure class="zoom" onmousemove="zoom(event)"
-                                                style="background-image: url('@Url.Content("~/customer/img/product/home1-pro-12.jpg")');">
-                                                <img src="~/customer/img/product/home1-pro-12.jpg" class="img-fluid" alt="pro-12">
-                                            </figure>
-                                        </a>
-                                    </div>
+                                    @foreach(var image in Model.HinhAnhs)
+                                    {
+                                        <div class="slick-slide ">
+                                            <a href="@image.LinkAnh" class="product-single">
+                                                <figure class="zoom" onmousemove="zoom(event)"
+                                                        style="background-image: url('@Url.Content(@image.LinkAnh)');">
+                                                    <img src="@image.LinkAnh" class="img-fluid" alt="pro-1">
+                                                </figure>
+                                            </a>
+                                        </div>
+                                    }
                                 </div>
                             </div>
                             <!-- top slick-slider end -->
                             <!-- small slick-slider start -->
                             <div class="pro-slider">
                                 <div class="slider-small pro-detail-slider small-slider">
-                                    <div class="slick-slide ">
-                                        <a href="javascript:void(0)" class="product-single--thumbnail">
-                                            <img src="~/customer/img/product/home1-pro-1.jpg" class="img-fluid" alt="pro-1">
-                                        </a>
-                                    </div>
-                                    <div class="slick-slide ">
-                                        <a href="javascript:void(0)" class="product-single--thumbnail">
-                                            <img src="~/customer/img/product/home1-pro-2.jpg" class="img-fluid" alt="pro-2">
-                                        </a>
-                                    </div>
-                                    <div class="slick-slide ">
-                                        <a href="javascript:void(0)" class="product-single--thumbnail">
-                                            <img src="~/customer/img/product/home1-pro-3.jpg" class="img-fluid" alt="pro-3">
-                                        </a>
-                                    </div>
-                                    <div class="slick-slide ">
-                                        <a href="javascript:void(0)" class="product-single--thumbnail">
-                                            <img src="~/customer/img/product/home1-pro-4.jpg" class="img-fluid" alt="pro-4">
-                                        </a>
-                                    </div>
-                                    <div class="slick-slide ">
-                                        <a href="javascript:void(0)" class="product-single--thumbnail">
-                                            <img src="~/customer/img/product/home1-pro-6.jpg" class="img-fluid" alt="pro-5">
-                                        </a>
-                                    </div>
-                                    <div class="slick-slide ">
-                                        <a href="javascript:void(0)" class="product-single--thumbnail">
-                                            <img src="~/customer/img/product/home1-pro-6.jpg" class="img-fluid" alt="pro-6">
-                                        </a>
-                                    </div>
-                                    <div class="slick-slide ">
-                                        <a href="javascript:void(0)" class="product-single--thumbnail">
-                                            <img src="~/customer/img/product/home1-pro-7.jpg" class="img-fluid" alt="pro-7">
-                                        </a>
-                                    </div>
-                                    <div class="slick-slide ">
-                                        <a href="javascript:void(0)" class="product-single--thumbnail">
-                                            <img src="~/customer/img/product/home1-pro-8.jpg" class="img-fluid" alt="pro-8">
-                                        </a>
-                                    </div>
-                                    <div class="slick-slide ">
-                                        <a href="javascript:void(0)" class="product-single--thumbnail">
-                                            <img src="~/customer/img/product/home1-pro-9.jpg" class="img-fluid" alt="pro-9">
-                                        </a>
-                                    </div>
-                                    <div class="slick-slide ">
-                                        <a href="javascript:void(0)" class="product-single--thumbnail">
-                                            <img src="~/customer/img/product/home1-pro-10.jpg" class="img-fluid" alt="pro-10">
-                                        </a>
-                                    </div>
-                                    <div class="slick-slide ">
-                                        <a href="javascript:void(0)" class="product-single--thumbnail">
-                                            <img src="~/customer/img/product/home1-pro-11.jpg" class="img-fluid" alt="pro-11">
-                                        </a>
-                                    </div>
-                                    <div class="slick-slide ">
-                                        <a href="javascript:void(0)" class="product-single--thumbnail">
-                                            <img src="~/customer/img/product/home1-pro-12.jpg" class="img-fluid" alt="pro-12">
-                                        </a>
-                                    </div>
+                                    @foreach (var image in Model.HinhAnhs)
+                                    {
+                                        <div class="slick-slide ">
+                                            <a href="javascript:void(0)" class="product-single--thumbnail">
+                                                <img src="@image.LinkAnh" class="img-fluid" alt="pro-1">
+                                            </a>
+                                        </div>
+                                    }
+
                                 </div>
                             </div>
                             <!-- small slick-slider end -->
@@ -213,23 +78,9 @@
                         <div class="product-details-info">
                             <div class="pro-nprist">
                                 <div class="product-info">
-                                    <!--  product-ratting start -->
-                                    <div class="product-ratting">
-                                        <span class="pro-ratting">
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star-half-alt"></i>
-                                        </span>
-                                        <span class="spr-badge-caption">3 Reviews</span>
-                                    </div>
-                                    <!--  product-ratting end -->
-                                </div>
-                                <div class="product-info">
                                     <!-- product-title start -->
                                     <div class="product-title">
-                                        <h2>Stripping pliers</h2>
+                                        <h2>@Model.TenSanPham</h2>
                                     </div>
                                     <!-- product-title end -->
                                 </div>
@@ -262,44 +113,13 @@
                                     </div>
                                 </div>
                                 <div class="product-info">
-                                    <div class="pro-detail-action">
-                                        <form method="get" class="cart">
-                                            <div class="product-variant-option">
-                                                <div class="swatch-variant">
-                                                    <div class="swatch clearfix Color">
-                                                        <div class="header">
-                                                            <h6><span>Color</span></h6>
-                                                        </div>
-                                                        <div class="variant-wrap">
-                                                            <div class="variant-property">
-                                                                <div class="swatch-element Black first-variant">
-                                                                    <input type="radio" name="option-0" value="Black" checked>
-                                                                    <label>Black</label>
-                                                                </div>
-                                                                <div class="swatch-element Red">
-                                                                    <input type="radio" name="option-0" value="Red">
-                                                                    <label>Red</label>
-                                                                </div>
-                                                                <div class="swatch-element Green">
-                                                                    <input type="radio" name="option-0" value="Green">
-                                                                    <label>Green</label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                                <div class="product-info">
                                     <form method="post" class="cart">
                                         <div class="product-quantity-action">
                                             <h6>Quantity:</h6>
                                             <div class="product-quantity">
                                                 <div class="cart-plus-minus">
                                                     <button class="dec qtybutton minus"><i class="fa-solid fa-minus"></i></button>
-                                                    <input type="text" name="quantity" value="1">
+                                                    <input type="text" name="quantity" value="1" min="1">
                                                     <button class="inc qtybutton plus"><i class="fa-solid fa-plus"></i></button>
                                                 </div>
                                             </div>

@@ -1,4 +1,7 @@
-﻿<!-- breadcrumb start -->
+﻿@model IEnumerable<B3cBonsai.Models.SanPham>
+
+
+<!-- breadcrumb start -->
 <section class="breadcrumb-area">
     <div class="container">
         <div class="col">
@@ -7,10 +10,12 @@
                     <!-- breadcrumb-list start -->
                     <ul class="breadcrumb-ul">
                         <li class="breadcrumb-li">
-                            <a class="breadcrumb-link" asp-area="Customer" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="breadcrumb-link" asp-area="Customer" asp-controller="Home" asp-action="Index">Cửa hàng </a>
                         </li>
                         <li class="breadcrumb-li">
-                            <span class="breadcrumb-text">Collection left</span>
+                            <span class="breadcrumb-text">
+                                Bộ sưu tập còn lại
+                            </span>
                         </li>
                     </ul>
                     <!-- breadcrumb-list end -->
@@ -28,7 +33,9 @@
                 <div class="pro-grli-wrapper left-side-wrap">
                     <div class="pro-grli-wrap product-grid">
                         <div class="collection-img-wrap">
-                            <h6 class="st-title">Collection left (23)</h6>
+                            <h6 class="st-title">
+                                Bộ sưu tập còn lại (23)
+                            </h6>
                             <!-- collection info start -->
                             <div class="collection-info">
                                 <div class="collection-image">
@@ -40,44 +47,44 @@
                         <!-- shop-top-bar start -->
                         <div class="shop-top-bar">
                             <div class="product-filter without-sidebar">
-                                <button class="filter-button" type="button"><i class="fa-solid fa-filter"></i><span>Filter</span></button>
+                                <button class="filter-button" type="button"><i class="fa-solid fa-filter"></i><span>Lọc</span></button>
                             </div>
                             <div class="product-view-mode">
-                                <!-- shop-item-filter-list start -->
+                                <!-- shop-item-filter-list bắt đầu -->
                                 <a href="javascript:void(0)" class="list-change-view grid-three active" data-grid-view="3"><i class="fa-solid fa-border-all"></i></a>
                                 <a href="javascript:void(0)" data-grid-view="1" class="list-change-view list-one"><i class="fa-solid fa-list"></i></a>
-                                <!-- shop-item-filter-list end -->
+                                <!-- shop-item-filter-list kết thúc -->
                             </div>
-                            <!-- product-short start -->
+                            <!-- product-short bắt đầu -->
                             <div class="product-short">
-                                <label for="SortBy">Sort by:</label>
+                                <label for="SortBy">Sắp xếp theo:</label>
                                 <select class="nice-select" name="sortby" id="SortBy">
-                                    <option value="manual">Featured</option>
-                                    <option value="best-selling">Best Selling</option>
-                                    <option value="title-ascending">Alphabetically, A-Z</option>
-                                    <option value="title-descending">Alphabetically, Z-A</option>
-                                    <option value="price-ascending">Price, low to high</option>
-                                    <option value="price-descending">Price, high to low</option>
-                                    <option value="created-descending">Date, new to old</option>
-                                    <option value="created-ascending">Date, old to new</option>
+                                    <option value="manual">Nổi bật</option>
+                                    <option value="best-selling">Bán chạy nhất</option>
+                                    <option value="title-ascending">Theo tên, A-Z</option>
+                                    <option value="title-descending">Theo tên, Z-A</option>
+                                    <option value="price-ascending">Theo giá, thấp đến cao</option>
+                                    <option value="price-descending">Theo giá, cao đến thấp</option>
+                                    <option value="created-descending">Theo ngày, mới đến cũ</option>
+                                    <option value="created-ascending">Theo ngày, cũ đến mới</option>
                                 </select>
                                 <a href="javascript:void(0)" class="short-title">
-                                    <span class="sort-title">Best Selling</span>
+                                    <span class="sort-title">Bán chạy nhất</span>
                                     <span class="sort-icon"><i class="bi bi-chevron-down"></i></span>
                                 </a>
                                 <a href="javascript:void(0)" class="short-title short-title-lg">
-                                    <span class="sort-title">Best Selling</span>
+                                    <span class="sort-title">Bán chạy nhất</span>
                                     <span class="sort-icon"><i class="bi bi-chevron-down"></i></span>
                                 </a>
                                 <ul class="pro-ul collapse">
-                                    <li class="pro-li"><a href="javascript:void(0)">Featured</a></li>
-                                    <li class="pro-li selected"><a href="javascript:void(0)">Best Selling</a></li>
-                                    <li class="pro-li"><a href="javascript:void(0)">Alphabetically, A-Z</a></li>
-                                    <li class="pro-li"><a href="javascript:void(0)">Alphabetically, Z-A</a></li>
-                                    <li class="pro-li"><a href="javascript:void(0)">Price, low to high</a></li>
-                                    <li class="pro-li"><a href="javascript:void(0)">Price, high to low</a></li>
-                                    <li class="pro-li"><a href="javascript:void(0)">Date, new to old</a></li>
-                                    <li class="pro-li"><a href="javascript:void(0)">Date, old to new</a></li>
+                                    <li class="pro-li"><a href="javascript:void(0)">Nổi bật</a></li>
+                                    <li class="pro-li selected"><a href="javascript:void(0)">Bán chạy nhất</a></li>
+                                    <li class="pro-li"><a href="javascript:void(0)">Theo tên, A-Z</a></li>
+                                    <li class="pro-li"><a href="javascript:void(0)">Theo tên, Z-A</a></li>
+                                    <li class="pro-li"><a href="javascript:void(0)">Theo giá, thấp đến cao</a></li>
+                                    <li class="pro-li"><a href="javascript:void(0)">Theo giá, cao đến thấp</a></li>
+                                    <li class="pro-li"><a href="javascript:void(0)">Theo ngày, mới đến cũ</a></li>
+                                    <li class="pro-li"><a href="javascript:void(0)">Theo ngày, cũ đến mới</a></li>
                                 </ul>
                             </div>
                             <!-- product-short end -->
@@ -90,977 +97,95 @@
                                     <div class="col">
                                         <div class="collection-wrap">
                                             <ul class="product-view-ul">
-                                                <li class="pro-item-li">
-                                                    <div class="single-product-wrap">
-                                                        <div class="product-image banner-hover">
-                                                            <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail" class="pro-img">
-                                                                <img src="~/customer/img/product/home1-pro-1.jpg" class="img-fluid img1 mobile-img1" alt="p1">
-                                                                <img src="~/customer/img/product/home1-pro-2.jpg" class="img-fluid img2 mobile-img2" alt="p2">
-                                                            </a>
-                                                            <div class="product-action product-cart-btn">
-                                                                <a href="#add-to-cart" class="add-to-cart">
-                                                                    <span class="cart-title">
-                                                                        <span class="add-c-title">
-                                                                            <span class="tooltip-text">Add to cart</span>
-                                                                            <span class="cart-icon"><i class="feather-shopping-bag"></i></span>
-                                                                            <span class="add-title">Add to cart</span>
-                                                                        </span>
-                                                                    </span>
+                                                @foreach (var product in Model)
+                                                {
+                                                    <li class="pro-item-li">
+                                                        <div class="single-product-wrap">
+                                                            <div class="product-image banner-hover">
+                                                                <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail" asp-route-id="@product.Id" class="pro-img">
+                                                                    <img src="@(product.HinhAnhs.FirstOrDefault()?.LinkAnh ?? @Url.Content("~/images/product/default/jpg") )" class="img-fluid img1 mobile-img1" alt="p1" style="width: 300px; height: 300px; object-fit: contain;">
+                                                                    <img src="@(product.HinhAnhs.Skip(1).FirstOrDefault()?.LinkAnh ?? @Url.Content("~/images/product/default/jpg") )" class="img-fluid img2 mobile-img2" alt="p2" style="width: 300px; height: 300px; object-fit: contain;">
+
                                                                 </a>
-                                                            </div>
-                                                            <div class="product-action">
-                                                                <a href="/Customer/Wishlist/Index" class="wishlist">
-                                                                    <span class="tooltip-text">Wishlist</span>
-                                                                    <span class="pro-action-icon"><i class="feather-heart"></i></span>
-                                                                </a>
-                                                                <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview">
-                                                                    <span class="tooltip-text">Quickview</span>
-                                                                    <span class="pro-action-icon"><i class="feather-eye"></i></span>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="product-caption">
-                                                            <div class="product-content">
-                                                                <div class="product-title">
-                                                                    <div class="pro-title-price">
-                                                                        <h6><a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail">Strelitzia nicolai</a></h6>
-                                                                        <div class="product-price">
-                                                                            <div class="price-box">
-                                                                                <span class="new-price">Rs. 44.00</span>
-                                                                                <span class="old-price">Rs. 49.00</span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="product-name">
-                                                                        <a class="product-type" asp-area="Customer" asp-controller="ClientProduct" asp-action="Index">Strelitzia</a>
-                                                                        <a class="product-vendor" asp-area="Customer" asp-controller="ClientProduct" asp-action="Index">Panno</a>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="product-ratting">
-                                                                    <span class="pro-ratting">
-                                                                        <i class="fa-regular fa-star"></i>
-                                                                        <i class="fa-regular fa-star"></i>
-                                                                        <i class="fa-regular fa-star"></i>
-                                                                        <i class="fa-regular fa-star"></i>
-                                                                        <i class="fa-regular fa-star"></i>
-                                                                    </span>
-                                                                </div>
-                                                                <div class="product-description">
-                                                                    <p>The purpose of lorem ipsum is to create a natural looking block of text (sentence, paragraph, page, etc.) that doesn't distract from the layout. A practice not without controversy, laying out pages with meaningless filler...</p>
-                                                                </div>
-                                                                <div class="product-action">
-                                                                    <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview">
-                                                                        <span class="tooltip-text">Quickview</span>
-                                                                        <span class="pro-action-icon"><i class="feather-eye"></i></span>
-                                                                    </a>
+                                                                <div class="product-action product-cart-btn">
                                                                     <a href="#add-to-cart" class="add-to-cart">
                                                                         <span class="cart-title">
                                                                             <span class="add-c-title">
-                                                                                <span class="tooltip-text">Add to cart</span>
+                                                                                <span class="tooltip-text">Thêm vào giỏ</span>
                                                                                 <span class="cart-icon"><i class="feather-shopping-bag"></i></span>
-                                                                                <span class="add-title">Add to cart</span>
+                                                                                <span class="add-title">Thêm vào giỏ</span>
                                                                             </span>
                                                                         </span>
                                                                     </a>
-                                                                    <a href="/Customer/Wishlist/Index" class="wishlist">
-                                                                        <span class="tooltip-text">Wishlist</span>
-                                                                        <span class="pro-action-icon"><i class="feather-heart"></i></span>
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li class="pro-item-li">
-                                                    <div class="single-product-wrap">
-                                                        <div class="product-image banner-hover">
-                                                            <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail" class="pro-img">
-                                                                <img src="~/customer/img/product/home1-pro-3.jpg" class="img-fluid img1 mobile-img1" alt="p1">
-                                                                <img src="~/customer/img/product/home1-pro-4.jpg" class="img-fluid img2 mobile-img2" alt="p2">
-                                                            </a>
-                                                            <div class="product-action product-cart-btn">
-                                                                <a href="#add-to-cart" class="add-to-cart">
-                                                                    <span class="cart-title">
-                                                                        <span class="add-c-title">
-                                                                            <span class="tooltip-text">Add to cart</span>
-                                                                            <span class="cart-icon"><i class="feather-shopping-bag"></i></span>
-                                                                            <span class="add-title">Add to cart</span>
-                                                                        </span>
-                                                                    </span>
-                                                                </a>
-                                                            </div>
-                                                            <div class="product-action">
-                                                                <a href="/Customer/Wishlist/Index" class="wishlist">
-                                                                    <span class="tooltip-text">Wishlist</span>
-                                                                    <span class="pro-action-icon"><i class="feather-heart"></i></span>
-                                                                </a>
-                                                                <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview">
-                                                                    <span class="tooltip-text">Quickview</span>
-                                                                    <span class="pro-action-icon"><i class="feather-eye"></i></span>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="product-caption">
-                                                            <div class="product-content">
-                                                                <div class="product-title">
-                                                                    <div class="pro-title-price">
-                                                                        <h6><a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail">Aloe vera plant</a></h6>
-                                                                        <div class="product-price">
-                                                                            <div class="price-box">
-                                                                                <span class="new-price">Rs. 61.00</span>
-                                                                                <span class="old-price">Rs. 69.00</span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="product-name">
-                                                                        <a class="product-type" asp-area="Customer" asp-controller="ClientProduct" asp-action="Index">Aloe vera</a>
-                                                                        <a class="product-vendor" asp-area="Customer" asp-controller="ClientProduct" asp-action="Index">Panno</a>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="product-ratting">
-                                                                    <span class="pro-ratting">
-                                                                        <i class="fa-regular fa-star"></i>
-                                                                        <i class="fa-regular fa-star"></i>
-                                                                        <i class="fa-regular fa-star"></i>
-                                                                        <i class="fa-regular fa-star"></i>
-                                                                        <i class="fa-regular fa-star"></i>
-                                                                    </span>
-                                                                </div>
-                                                                <div class="product-description">
-                                                                    <p>The purpose of lorem ipsum is to create a natural looking block of text (sentence, paragraph, page, etc.) that doesn't distract from the layout. A practice not without controversy, laying out pages with meaningless filler...</p>
                                                                 </div>
                                                                 <div class="product-action">
-                                                                    <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview">
-                                                                        <span class="tooltip-text">Quickview</span>
-                                                                        <span class="pro-action-icon"><i class="feather-eye"></i></span>
-                                                                    </a>
-                                                                    <a href="#add-to-cart" class="add-to-cart">
-                                                                        <span class="cart-title">
-                                                                            <span class="add-c-title">
-                                                                                <span class="tooltip-text">Add to cart</span>
-                                                                                <span class="cart-icon"><i class="feather-shopping-bag"></i></span>
-                                                                                <span class="add-title">Add to cart</span>
-                                                                            </span>
-                                                                        </span>
-                                                                    </a>
                                                                     <a href="/Customer/Wishlist/Index" class="wishlist">
-                                                                        <span class="tooltip-text">Wishlist</span>
+                                                                        <span class="tooltip-text">Yêu thích</span>
                                                                         <span class="pro-action-icon"><i class="feather-heart"></i></span>
+                                                                    </a>
+                                                                    <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview">
+                                                                        <span class="tooltip-text">
+                                                                            Xem nhanh
+                                                                        </span>
+                                                                        <span class="pro-action-icon"><i class="feather-eye"></i></span>
                                                                     </a>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li class="pro-item-li">
-                                                    <div class="single-product-wrap">
-                                                        <div class="product-image banner-hover">
-                                                            <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail" class="pro-img">
-                                                                <img src="~/customer/img/product/home1-pro-5.jpg" class="img-fluid img1 mobile-img1" alt="p1">
-                                                                <img src="~/customer/img/product/home1-pro-6.jpg" class="img-fluid img2 mobile-img2" alt="p2">
-                                                            </a>
-                                                            <div class="product-action product-cart-btn">
-                                                                <a href="#add-to-cart" class="add-to-cart">
-                                                                    <span class="cart-title">
-                                                                        <span class="add-c-title">
-                                                                            <span class="tooltip-text">Add to cart</span>
-                                                                            <span class="cart-icon"><i class="feather-shopping-bag"></i></span>
-                                                                            <span class="add-title">Add to cart</span>
-                                                                        </span>
-                                                                    </span>
-                                                                </a>
-                                                            </div>
-                                                            <div class="product-action">
-                                                                <a href="/Customer/Wishlist/Index" class="wishlist">
-                                                                    <span class="tooltip-text">Wishlist</span>
-                                                                    <span class="pro-action-icon"><i class="feather-heart"></i></span>
-                                                                </a>
-                                                                <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview">
-                                                                    <span class="tooltip-text">Quickview</span>
-                                                                    <span class="pro-action-icon"><i class="feather-eye"></i></span>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="product-caption">
-                                                            <div class="product-content">
-                                                                <div class="product-title">
-                                                                    <div class="pro-title-price">
-                                                                        <h6><a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail">Chinese evergreen</a></h6>
-                                                                        <div class="product-price">
-                                                                            <div class="price-box">
-                                                                                <span class="new-price">Rs. 24.00</span>
-                                                                                <span class="old-price">Rs. 29.00</span>
+                                                            <div class="product-caption">
+                                                                <div class="product-content">
+                                                                    <div class="product-title">
+                                                                        <div class="pro-title-price">
+                                                                            <h6><a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail">@product.TenSanPham</a></h6>
+                                                                            <div class="product-price">
+                                                                                <div class="price-box">
+                                                                                    <span class="new-price">@product.Gia VND</span>
+                    
+                                                                                </div>
                                                                             </div>
                                                                         </div>
-                                                                    </div>
-                                                                    <div class="product-name">
-                                                                        <a class="product-type" asp-area="Customer" asp-controller="ClientProduct" asp-action="Index">Evergreen</a>
-                                                                        <a class="product-vendor" asp-area="Customer" asp-controller="ClientProduct" asp-action="Index">Panno</a>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="product-ratting">
-                                                                    <span class="pro-ratting">
-                                                                        <i class="fa-regular fa-star"></i>
-                                                                        <i class="fa-regular fa-star"></i>
-                                                                        <i class="fa-regular fa-star"></i>
-                                                                        <i class="fa-regular fa-star"></i>
-                                                                        <i class="fa-regular fa-star"></i>
-                                                                    </span>
-                                                                </div>
-                                                                <div class="product-description">
-                                                                    <p>The purpose of lorem ipsum is to create a natural looking block of text (sentence, paragraph, page, etc.) that doesn't distract from the layout. A practice not without controversy, laying out pages with meaningless filler...</p>
-                                                                </div>
-                                                                <div class="product-action">
-                                                                    <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview">
-                                                                        <span class="tooltip-text">Quickview</span>
-                                                                        <span class="pro-action-icon"><i class="feather-eye"></i></span>
-                                                                    </a>
-                                                                    <a href="#add-to-cart" class="add-to-cart">
-                                                                        <span class="cart-title">
-                                                                            <span class="add-c-title">
-                                                                                <span class="tooltip-text">Add to cart</span>
-                                                                                <span class="cart-icon"><i class="feather-shopping-bag"></i></span>
-                                                                                <span class="add-title">Add to cart</span>
-                                                                            </span>
-                                                                        </span>
-                                                                    </a>
-                                                                    <a href="/Customer/Wishlist/Index" class="wishlist">
-                                                                        <span class="tooltip-text">Wishlist</span>
-                                                                        <span class="pro-action-icon"><i class="feather-heart"></i></span>
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li class="pro-item-li">
-                                                    <div class="single-product-wrap">
-                                                        <div class="product-image banner-hover">
-                                                            <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail" class="pro-img">
-                                                                <img src="~/customer/img/product/home1-pro-7.jpg" class="img-fluid img1 mobile-img1" alt="p1">
-                                                                <img src="~/customer/img/product/home1-pro-8.jpg" class="img-fluid img2 mobile-img2" alt="p2">
-                                                            </a>
-                                                            <div class="product-action product-cart-btn">
-                                                                <a href="#add-to-cart" class="add-to-cart">
-                                                                    <span class="cart-title">
-                                                                        <span class="add-c-title">
-                                                                            <span class="tooltip-text">Add to cart</span>
-                                                                            <span class="cart-icon"><i class="feather-shopping-bag"></i></span>
-                                                                            <span class="add-title">Add to cart</span>
-                                                                        </span>
-                                                                    </span>
-                                                                </a>
-                                                            </div>
-                                                            <div class="product-action">
-                                                                <a href="/Customer/Wishlist/Index" class="wishlist">
-                                                                    <span class="tooltip-text">Wishlist</span>
-                                                                    <span class="pro-action-icon"><i class="feather-heart"></i></span>
-                                                                </a>
-                                                                <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview">
-                                                                    <span class="tooltip-text">Quickview</span>
-                                                                    <span class="pro-action-icon"><i class="feather-eye"></i></span>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="product-caption">
-                                                            <div class="product-content">
-                                                                <div class="product-title">
-                                                                    <div class="pro-title-price">
-                                                                        <h6><a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail">Wheat grass</a></h6>
-                                                                        <div class="product-price">
-                                                                            <div class="price-box">
-                                                                                <span class="new-price">Rs. 21.00</span>
-                                                                                <span class="old-price">Rs. 25.00</span>
-                                                                            </div>
+                                                                        <div class="product-name">
+                                                                            <a class="product-type" asp-area="Customer" asp-controller="ClientProduct" asp-action="Index">Số lượng: @product.SoLuong</a>
+                                                                            <a class="product-vendor" asp-area="Customer" asp-controller="ClientProduct" asp-action="Index">Panno</a>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="product-name">
-                                                                        <a class="product-type" asp-area="Customer" asp-controller="ClientProduct" asp-action="Index">Grass</a>
-                                                                        <a class="product-vendor" asp-area="Customer" asp-controller="ClientProduct" asp-action="Index">Panno</a>
+                                                                    <div class="product-ratting">
+                                                                        <span class="pro-ratting">
+                                                                            <i class="fa-regular fa-star"></i>
+                                                                            <i class="fa-regular fa-star"></i>
+                                                                            <i class="fa-regular fa-star"></i>
+                                                                            <i class="fa-regular fa-star"></i>
+                                                                            <i class="fa-regular fa-star"></i>
+                                                                        </span>
                                                                     </div>
-                                                                </div>
-                                                                <div class="product-ratting">
-                                                                    <span class="pro-ratting">
-                                                                        <i class="fa-regular fa-star"></i>
-                                                                        <i class="fa-regular fa-star"></i>
-                                                                        <i class="fa-regular fa-star"></i>
-                                                                        <i class="fa-regular fa-star"></i>
-                                                                        <i class="fa-regular fa-star"></i>
-                                                                    </span>
-                                                                </div>
-                                                                <div class="product-description">
-                                                                    <p>The purpose of lorem ipsum is to create a natural looking block of text (sentence, paragraph, page, etc.) that doesn't distract from the layout. A practice not without controversy, laying out pages with meaningless filler...</p>
-                                                                </div>
-                                                                <div class="product-action">
-                                                                    <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview">
-                                                                        <span class="tooltip-text">Quickview</span>
-                                                                        <span class="pro-action-icon"><i class="feather-eye"></i></span>
-                                                                    </a>
-                                                                    <a href="#add-to-cart" class="add-to-cart">
-                                                                        <span class="cart-title">
-                                                                            <span class="add-c-title">
-                                                                                <span class="tooltip-text">Add to cart</span>
-                                                                                <span class="cart-icon"><i class="feather-shopping-bag"></i></span>
-                                                                                <span class="add-title">Add to cart</span>
+                                                                    <div class="product-description">
+                                                                        <p>Mô tả: @product.MoTa</p>
+                                                                    </div>
+                                                                    <div class="product-action">
+                                                                        <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview">
+                                                                            <span class="tooltip-text">Xem nhanh</span>
+                                                                            <span class="pro-action-icon"><i class="feather-eye"></i></span>
+                                                                        </a>
+                                                                        <a href="#add-to-cart" class="add-to-cart">
+                                                                            <span class="cart-title">
+                                                                                <span class="add-c-title">
+                                                                                    <span class="tooltip-text">Thêm vào giỏ</span>
+                                                                                    <span class="cart-icon"><i class="feather-shopping-bag"></i></span>
+                                                                                    <span class="add-title">Thêm vào giỏ</span>
+                                                                                </span>
                                                                             </span>
-                                                                        </span>
-                                                                    </a>
-                                                                    <a href="/Customer/Wishlist/Index" class="wishlist">
-                                                                        <span class="tooltip-text">Wishlist</span>
-                                                                        <span class="pro-action-icon"><i class="feather-heart"></i></span>
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li class="pro-item-li">
-                                                    <div class="single-product-wrap">
-                                                        <div class="product-image banner-hover">
-                                                            <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail" class="pro-img">
-                                                                <img src="~/customer/img/product/home1-pro-9.jpg" class="img-fluid img1 mobile-img1" alt="p1">
-                                                                <img src="~/customer/img/product/home1-pro-10.jpg" class="img-fluid img2 mobile-img2" alt="p2">
-                                                            </a>
-                                                            <div class="product-action product-cart-btn">
-                                                                <a href="#add-to-cart" class="add-to-cart">
-                                                                    <span class="cart-title">
-                                                                        <span class="add-c-title">
-                                                                            <span class="tooltip-text">Add to cart</span>
-                                                                            <span class="cart-icon"><i class="feather-shopping-bag"></i></span>
-                                                                            <span class="add-title">Add to cart</span>
-                                                                        </span>
-                                                                    </span>
-                                                                </a>
-                                                            </div>
-                                                            <div class="product-action">
-                                                                <a href="/Customer/Wishlist/Index" class="wishlist">
-                                                                    <span class="tooltip-text">Wishlist</span>
-                                                                    <span class="pro-action-icon"><i class="feather-heart"></i></span>
-                                                                </a>
-                                                                <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview">
-                                                                    <span class="tooltip-text">Quickview</span>
-                                                                    <span class="pro-action-icon"><i class="feather-eye"></i></span>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="product-caption">
-                                                            <div class="product-content">
-                                                                <div class="product-title">
-                                                                    <div class="pro-title-price">
-                                                                        <h6><a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail">Castle cactus</a></h6>
-                                                                        <div class="product-price">
-                                                                            <div class="price-box">
-                                                                                <span class="new-price">Rs. 25.00</span>
-                                                                                <span class="old-price">Rs. 35.00</span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="product-name">
-                                                                        <a class="product-type" asp-area="Customer" asp-controller="ClientProduct" asp-action="Index">Castle</a>
-                                                                        <a class="product-vendor" asp-area="Customer" asp-controller="ClientProduct" asp-action="Index">Panno</a>
+                                                                        </a>
+                                                                        <a href="/Customer/Wishlist/Index" class="wishlist">
+                                                                            <span class="tooltip-text">Yêu thích</span>
+                                                                            <span class="pro-action-icon"><i class="feather-heart"></i></span>
+                                                                        </a>
                                                                     </div>
                                                                 </div>
-                                                                <div class="product-ratting">
-                                                                    <span class="pro-ratting">
-                                                                        <i class="fa-regular fa-star"></i>
-                                                                        <i class="fa-regular fa-star"></i>
-                                                                        <i class="fa-regular fa-star"></i>
-                                                                        <i class="fa-regular fa-star"></i>
-                                                                        <i class="fa-regular fa-star"></i>
-                                                                    </span>
-                                                                </div>
-                                                                <div class="product-description">
-                                                                    <p>The purpose of lorem ipsum is to create a natural looking block of text (sentence, paragraph, page, etc.) that doesn't distract from the layout. A practice not without controversy, laying out pages with meaningless filler...</p>
-                                                                </div>
-                                                                <div class="product-action">
-                                                                    <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview">
-                                                                        <span class="tooltip-text">Quickview</span>
-                                                                        <span class="pro-action-icon"><i class="feather-eye"></i></span>
-                                                                    </a>
-                                                                    <a href="#add-to-cart" class="add-to-cart">
-                                                                        <span class="cart-title">
-                                                                            <span class="add-c-title">
-                                                                                <span class="tooltip-text">Add to cart</span>
-                                                                                <span class="cart-icon"><i class="feather-shopping-bag"></i></span>
-                                                                                <span class="add-title">Add to cart</span>
-                                                                            </span>
-                                                                        </span>
-                                                                    </a>
-                                                                    <a href="/Customer/Wishlist/Index" class="wishlist">
-                                                                        <span class="tooltip-text">Wishlist</span>
-                                                                        <span class="pro-action-icon"><i class="feather-heart"></i></span>
-                                                                    </a>
-                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                </li>
-                                                <li class="pro-item-li">
-                                                    <div class="single-product-wrap">
-                                                        <div class="product-image banner-hover">
-                                                            <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail" class="pro-img">
-                                                                <img src="~/customer/img/product/home1-pro-11.jpg" class="img-fluid img1 mobile-img1" alt="p1">
-                                                                <img src="~/customer/img/product/home1-pro-12.jpg" class="img-fluid img2 mobile-img2" alt="p2">
-                                                            </a>
-                                                            <div class="product-action product-cart-btn">
-                                                                <a href="#add-to-cart" class="add-to-cart">
-                                                                    <span class="cart-title">
-                                                                        <span class="add-c-title">
-                                                                            <span class="tooltip-text">Add to cart</span>
-                                                                            <span class="cart-icon"><i class="feather-shopping-bag"></i></span>
-                                                                            <span class="add-title">Add to cart</span>
-                                                                        </span>
-                                                                    </span>
-                                                                </a>
-                                                            </div>
-                                                            <div class="product-action">
-                                                                <a href="/Customer/Wishlist/Index" class="wishlist">
-                                                                    <span class="tooltip-text">Wishlist</span>
-                                                                    <span class="pro-action-icon"><i class="feather-heart"></i></span>
-                                                                </a>
-                                                                <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview">
-                                                                    <span class="tooltip-text">Quickview</span>
-                                                                    <span class="pro-action-icon"><i class="feather-eye"></i></span>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="product-caption">
-                                                            <div class="product-content">
-                                                                <div class="product-title">
-                                                                    <div class="pro-title-price">
-                                                                        <h6><a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail">Bird of paradise</a></h6>
-                                                                        <div class="product-price">
-                                                                            <div class="price-box">
-                                                                                <span class="new-price">Rs. 21.00</span>
-                                                                                <span class="old-price">Rs. 25.00</span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="product-name">
-                                                                        <a class="product-type" asp-area="Customer" asp-controller="ClientProduct" asp-action="Index">Paradise</a>
-                                                                        <a class="product-vendor" asp-area="Customer" asp-controller="ClientProduct" asp-action="Index">Panno</a>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="product-ratting">
-                                                                    <span class="pro-ratting">
-                                                                        <i class="fa-regular fa-star"></i>
-                                                                        <i class="fa-regular fa-star"></i>
-                                                                        <i class="fa-regular fa-star"></i>
-                                                                        <i class="fa-regular fa-star"></i>
-                                                                        <i class="fa-regular fa-star"></i>
-                                                                    </span>
-                                                                </div>
-                                                                <div class="product-description">
-                                                                    <p>The purpose of lorem ipsum is to create a natural looking block of text (sentence, paragraph, page, etc.) that doesn't distract from the layout. A practice not without controversy, laying out pages with meaningless filler...</p>
-                                                                </div>
-                                                                <div class="product-action">
-                                                                    <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview">
-                                                                        <span class="tooltip-text">Quickview</span>
-                                                                        <span class="pro-action-icon"><i class="feather-eye"></i></span>
-                                                                    </a>
-                                                                    <a href="#add-to-cart" class="add-to-cart">
-                                                                        <span class="cart-title">
-                                                                            <span class="add-c-title">
-                                                                                <span class="tooltip-text">Add to cart</span>
-                                                                                <span class="cart-icon"><i class="feather-shopping-bag"></i></span>
-                                                                                <span class="add-title">Add to cart</span>
-                                                                            </span>
-                                                                        </span>
-                                                                    </a>
-                                                                    <a href="/Customer/Wishlist/Index" class="wishlist">
-                                                                        <span class="tooltip-text">Wishlist</span>
-                                                                        <span class="pro-action-icon"><i class="feather-heart"></i></span>
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li class="pro-item-li">
-                                                    <div class="single-product-wrap">
-                                                        <div class="product-image banner-hover">
-                                                            <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail" class="pro-img">
-                                                                <img src="~/customer/img/product/home1-pro-13.jpg" class="img-fluid img1 mobile-img1" alt="p1">
-                                                                <img src="~/customer/img/product/home1-pro-14.jpg" class="img-fluid img2 mobile-img2" alt="p2">
-                                                            </a>
-                                                            <div class="product-action product-cart-btn">
-                                                                <a href="#add-to-cart" class="add-to-cart">
-                                                                    <span class="cart-title">
-                                                                        <span class="add-c-title">
-                                                                            <span class="tooltip-text">Add to cart</span>
-                                                                            <span class="cart-icon"><i class="feather-shopping-bag"></i></span>
-                                                                            <span class="add-title">Add to cart</span>
-                                                                        </span>
-                                                                    </span>
-                                                                </a>
-                                                            </div>
-                                                            <div class="product-action">
-                                                                <a href="/Customer/Wishlist/Index" class="wishlist">
-                                                                    <span class="tooltip-text">Wishlist</span>
-                                                                    <span class="pro-action-icon"><i class="feather-heart"></i></span>
-                                                                </a>
-                                                                <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview">
-                                                                    <span class="tooltip-text">Quickview</span>
-                                                                    <span class="pro-action-icon"><i class="feather-eye"></i></span>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="product-caption">
-                                                            <div class="product-content">
-                                                                <div class="product-title">
-                                                                    <div class="pro-title-price">
-                                                                        <h6><a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail">Snake plant</a></h6>
-                                                                        <div class="product-price">
-                                                                            <div class="price-box">
-                                                                                <span class="new-price">Rs. 54.00</span>
-                                                                                <span class="old-price">Rs. 65.00</span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="product-name">
-                                                                        <a class="product-type" asp-area="Customer" asp-controller="ClientProduct" asp-action="Index">Snake</a>
-                                                                        <a class="product-vendor" asp-area="Customer" asp-controller="ClientProduct" asp-action="Index">Panno</a>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="product-ratting">
-                                                                    <span class="pro-ratting">
-                                                                        <i class="fa-regular fa-star"></i>
-                                                                        <i class="fa-regular fa-star"></i>
-                                                                        <i class="fa-regular fa-star"></i>
-                                                                        <i class="fa-regular fa-star"></i>
-                                                                        <i class="fa-regular fa-star"></i>
-                                                                    </span>
-                                                                </div>
-                                                                <div class="product-description">
-                                                                    <p>The purpose of lorem ipsum is to create a natural looking block of text (sentence, paragraph, page, etc.) that doesn't distract from the layout. A practice not without controversy, laying out pages with meaningless filler...</p>
-                                                                </div>
-                                                                <div class="product-action">
-                                                                    <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview">
-                                                                        <span class="tooltip-text">Quickview</span>
-                                                                        <span class="pro-action-icon"><i class="feather-eye"></i></span>
-                                                                    </a>
-                                                                    <a href="#add-to-cart" class="add-to-cart">
-                                                                        <span class="cart-title">
-                                                                            <span class="add-c-title">
-                                                                                <span class="tooltip-text">Add to cart</span>
-                                                                                <span class="cart-icon"><i class="feather-shopping-bag"></i></span>
-                                                                                <span class="add-title">Add to cart</span>
-                                                                            </span>
-                                                                        </span>
-                                                                    </a>
-                                                                    <a href="/Customer/Wishlist/Index" class="wishlist">
-                                                                        <span class="tooltip-text">Wishlist</span>
-                                                                        <span class="pro-action-icon"><i class="feather-heart"></i></span>
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li class="pro-item-li">
-                                                    <div class="single-product-wrap">
-                                                        <div class="product-image banner-hover">
-                                                            <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail" class="pro-img">
-                                                                <img src="~/customer/img/product/home1-pro-15.jpg" class="img-fluid img1 mobile-img1" alt="p1">
-                                                                <img src="~/customer/img/product/home1-pro-16.jpg" class="img-fluid img2 mobile-img2" alt="p2">
-                                                            </a>
-                                                            <div class="product-action product-cart-btn">
-                                                                <a href="#add-to-cart" class="add-to-cart">
-                                                                    <span class="cart-title">
-                                                                        <span class="add-c-title">
-                                                                            <span class="tooltip-text">Add to cart</span>
-                                                                            <span class="cart-icon"><i class="feather-shopping-bag"></i></span>
-                                                                            <span class="add-title">Add to cart</span>
-                                                                        </span>
-                                                                    </span>
-                                                                </a>
-                                                            </div>
-                                                            <div class="product-action">
-                                                                <a href="/Customer/Wishlist/Index" class="wishlist">
-                                                                    <span class="tooltip-text">Wishlist</span>
-                                                                    <span class="pro-action-icon"><i class="feather-heart"></i></span>
-                                                                </a>
-                                                                <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview">
-                                                                    <span class="tooltip-text">Quickview</span>
-                                                                    <span class="pro-action-icon"><i class="feather-eye"></i></span>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="product-caption">
-                                                            <div class="product-content">
-                                                                <div class="product-title">
-                                                                    <div class="pro-title-price">
-                                                                        <h6><a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail">Areca palm</a></h6>
-                                                                        <div class="product-price">
-                                                                            <div class="price-box">
-                                                                                <span class="new-price">Rs. 61.00</span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="product-name">
-                                                                        <a class="product-type" asp-area="Customer" asp-controller="ClientProduct" asp-action="Index">Palm</a>
-                                                                        <a class="product-vendor" asp-area="Customer" asp-controller="ClientProduct" asp-action="Index">Panno</a>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="product-ratting">
-                                                                    <span class="pro-ratting">
-                                                                        <i class="fa-regular fa-star"></i>
-                                                                        <i class="fa-regular fa-star"></i>
-                                                                        <i class="fa-regular fa-star"></i>
-                                                                        <i class="fa-regular fa-star"></i>
-                                                                        <i class="fa-regular fa-star"></i>
-                                                                    </span>
-                                                                </div>
-                                                                <div class="product-description">
-                                                                    <p>The purpose of lorem ipsum is to create a natural looking block of text (sentence, paragraph, page, etc.) that doesn't distract from the layout. A practice not without controversy, laying out pages with meaningless filler...</p>
-                                                                </div>
-                                                                <div class="product-action">
-                                                                    <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview">
-                                                                        <span class="tooltip-text">Quickview</span>
-                                                                        <span class="pro-action-icon"><i class="feather-eye"></i></span>
-                                                                    </a>
-                                                                    <a href="#add-to-cart" class="add-to-cart">
-                                                                        <span class="cart-title">
-                                                                            <span class="add-c-title">
-                                                                                <span class="tooltip-text">Add to cart</span>
-                                                                                <span class="cart-icon"><i class="feather-shopping-bag"></i></span>
-                                                                                <span class="add-title">Add to cart</span>
-                                                                            </span>
-                                                                        </span>
-                                                                    </a>
-                                                                    <a href="/Customer/Wishlist/Index" class="wishlist">
-                                                                        <span class="tooltip-text">Wishlist</span>
-                                                                        <span class="pro-action-icon"><i class="feather-heart"></i></span>
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li class="pro-item-li">
-                                                    <div class="single-product-wrap">
-                                                        <div class="product-image banner-hover">
-                                                            <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail" class="pro-img">
-                                                                <img src="~/customer/img/product/home1-pro-17.jpg" class="img-fluid img1 mobile-img1" alt="p1">
-                                                                <img src="~/customer/img/product/home1-pro-18.jpg" class="img-fluid img2 mobile-img2" alt="p2">
-                                                            </a>
-                                                            <div class="product-action product-cart-btn">
-                                                                <a href="#add-to-cart" class="add-to-cart">
-                                                                    <span class="cart-title">
-                                                                        <span class="add-c-title">
-                                                                            <span class="tooltip-text">Add to cart</span>
-                                                                            <span class="cart-icon"><i class="feather-shopping-bag"></i></span>
-                                                                            <span class="add-title">Add to cart</span>
-                                                                        </span>
-                                                                    </span>
-                                                                </a>
-                                                            </div>
-                                                            <div class="product-action">
-                                                                <a href="/Customer/Wishlist/Index" class="wishlist">
-                                                                    <span class="tooltip-text">Wishlist</span>
-                                                                    <span class="pro-action-icon"><i class="feather-heart"></i></span>
-                                                                </a>
-                                                                <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview">
-                                                                    <span class="tooltip-text">Quickview</span>
-                                                                    <span class="pro-action-icon"><i class="feather-eye"></i></span>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="product-caption">
-                                                            <div class="product-content">
-                                                                <div class="product-title">
-                                                                    <div class="pro-title-price">
-                                                                        <h6><a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail">Howea forsteriana</a></h6>
-                                                                        <div class="product-price">
-                                                                            <div class="price-box">
-                                                                                <span class="new-price">Rs. 22.00</span>
-                                                                                <span class="old-price">Rs. 45.00</span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="product-name">
-                                                                        <a class="product-type" asp-area="Customer" asp-controller="ClientProduct" asp-action="Index">Howea</a>
-                                                                        <a class="product-vendor" asp-area="Customer" asp-controller="ClientProduct" asp-action="Index">Panno</a>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="product-ratting">
-                                                                    <span class="pro-ratting">
-                                                                        <i class="fa-regular fa-star"></i>
-                                                                        <i class="fa-regular fa-star"></i>
-                                                                        <i class="fa-regular fa-star"></i>
-                                                                        <i class="fa-regular fa-star"></i>
-                                                                        <i class="fa-regular fa-star"></i>
-                                                                    </span>
-                                                                </div>
-                                                                <div class="product-description">
-                                                                    <p>The purpose of lorem ipsum is to create a natural looking block of text (sentence, paragraph, page, etc.) that doesn't distract from the layout. A practice not without controversy, laying out pages with meaningless filler...</p>
-                                                                </div>
-                                                                <div class="product-action">
-                                                                    <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview">
-                                                                        <span class="tooltip-text">Quickview</span>
-                                                                        <span class="pro-action-icon"><i class="feather-eye"></i></span>
-                                                                    </a>
-                                                                    <a href="#add-to-cart" class="add-to-cart">
-                                                                        <span class="cart-title">
-                                                                            <span class="add-c-title">
-                                                                                <span class="tooltip-text">Add to cart</span>
-                                                                                <span class="cart-icon"><i class="feather-shopping-bag"></i></span>
-                                                                                <span class="add-title">Add to cart</span>
-                                                                            </span>
-                                                                        </span>
-                                                                    </a>
-                                                                    <a href="/Customer/Wishlist/Index" class="wishlist">
-                                                                        <span class="tooltip-text">Wishlist</span>
-                                                                        <span class="pro-action-icon"><i class="feather-heart"></i></span>
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li class="pro-item-li">
-                                                    <div class="single-product-wrap">
-                                                        <div class="product-image banner-hover">
-                                                            <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail" class="pro-img">
-                                                                <img src="~/customer/img/product/home1-pro-3.jpg" class="img-fluid img1 mobile-img1" alt="p1">
-                                                                <img src="~/customer/img/product/home1-pro-4.jpg" class="img-fluid img2 mobile-img2" alt="p2">
-                                                            </a>
-                                                            <div class="product-action product-cart-btn">
-                                                                <a href="#add-to-cart" class="add-to-cart">
-                                                                    <span class="cart-title">
-                                                                        <span class="add-c-title">
-                                                                            <span class="tooltip-text">Add to cart</span>
-                                                                            <span class="cart-icon"><i class="feather-shopping-bag"></i></span>
-                                                                            <span class="add-title">Add to cart</span>
-                                                                        </span>
-                                                                    </span>
-                                                                </a>
-                                                            </div>
-                                                            <div class="product-action">
-                                                                <a href="/Customer/Wishlist/Index" class="wishlist">
-                                                                    <span class="tooltip-text">Wishlist</span>
-                                                                    <span class="pro-action-icon"><i class="feather-heart"></i></span>
-                                                                </a>
-                                                                <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview">
-                                                                    <span class="tooltip-text">Quickview</span>
-                                                                    <span class="pro-action-icon"><i class="feather-eye"></i></span>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="product-caption">
-                                                            <div class="product-content">
-                                                                <div class="product-title">
-                                                                    <div class="pro-title-price">
-                                                                        <h6><a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail">Aloe vera plant</a></h6>
-                                                                        <div class="product-price">
-                                                                            <div class="price-box">
-                                                                                <span class="new-price">Rs. 61.00</span>
-                                                                                <span class="old-price">Rs. 69.00</span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="product-name">
-                                                                        <a class="product-type" asp-area="Customer" asp-controller="ClientProduct" asp-action="Index">Aloe vera</a>
-                                                                        <a class="product-vendor" asp-area="Customer" asp-controller="ClientProduct" asp-action="Index">Panno</a>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="product-ratting">
-                                                                    <span class="pro-ratting">
-                                                                        <i class="fa-regular fa-star"></i>
-                                                                        <i class="fa-regular fa-star"></i>
-                                                                        <i class="fa-regular fa-star"></i>
-                                                                        <i class="fa-regular fa-star"></i>
-                                                                        <i class="fa-regular fa-star"></i>
-                                                                    </span>
-                                                                </div>
-                                                                <div class="product-description">
-                                                                    <p>The purpose of lorem ipsum is to create a natural looking block of text (sentence, paragraph, page, etc.) that doesn't distract from the layout. A practice not without controversy, laying out pages with meaningless filler...</p>
-                                                                </div>
-                                                                <div class="product-action">
-                                                                    <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview">
-                                                                        <span class="tooltip-text">Quickview</span>
-                                                                        <span class="pro-action-icon"><i class="feather-eye"></i></span>
-                                                                    </a>
-                                                                    <a href="#add-to-cart" class="add-to-cart">
-                                                                        <span class="cart-title">
-                                                                            <span class="add-c-title">
-                                                                                <span class="tooltip-text">Add to cart</span>
-                                                                                <span class="cart-icon"><i class="feather-shopping-bag"></i></span>
-                                                                                <span class="add-title">Add to cart</span>
-                                                                            </span>
-                                                                        </span>
-                                                                    </a>
-                                                                    <a href="/Customer/Wishlist/Index" class="wishlist">
-                                                                        <span class="tooltip-text">Wishlist</span>
-                                                                        <span class="pro-action-icon"><i class="feather-heart"></i></span>
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li class="pro-item-li">
-                                                    <div class="single-product-wrap">
-                                                        <div class="product-image banner-hover">
-                                                            <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail" class="pro-img">
-                                                                <img src="~/customer/img/product/home1-pro-5.jpg" class="img-fluid img1 mobile-img1" alt="p1">
-                                                                <img src="~/customer/img/product/home1-pro-6.jpg" class="img-fluid img2 mobile-img2" alt="p2">
-                                                            </a>
-                                                            <div class="product-action product-cart-btn">
-                                                                <a href="#add-to-cart" class="add-to-cart">
-                                                                    <span class="cart-title">
-                                                                        <span class="add-c-title">
-                                                                            <span class="tooltip-text">Add to cart</span>
-                                                                            <span class="cart-icon"><i class="feather-shopping-bag"></i></span>
-                                                                            <span class="add-title">Add to cart</span>
-                                                                        </span>
-                                                                    </span>
-                                                                </a>
-                                                            </div>
-                                                            <div class="product-action">
-                                                                <a href="/Customer/Wishlist/Index" class="wishlist">
-                                                                    <span class="tooltip-text">Wishlist</span>
-                                                                    <span class="pro-action-icon"><i class="feather-heart"></i></span>
-                                                                </a>
-                                                                <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview">
-                                                                    <span class="tooltip-text">Quickview</span>
-                                                                    <span class="pro-action-icon"><i class="feather-eye"></i></span>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="product-caption">
-                                                            <div class="product-content">
-                                                                <div class="product-title">
-                                                                    <div class="pro-title-price">
-                                                                        <h6><a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail">Chinese evergreen</a></h6>
-                                                                        <div class="product-price">
-                                                                            <div class="price-box">
-                                                                                <span class="new-price">Rs. 24.00</span>
-                                                                                <span class="old-price">Rs. 29.00</span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="product-name">
-                                                                        <a class="product-type" asp-area="Customer" asp-controller="ClientProduct" asp-action="Index">Evergreen</a>
-                                                                        <a class="product-vendor" asp-area="Customer" asp-controller="ClientProduct" asp-action="Index">Panno</a>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="product-ratting">
-                                                                    <span class="pro-ratting">
-                                                                        <i class="fa-regular fa-star"></i>
-                                                                        <i class="fa-regular fa-star"></i>
-                                                                        <i class="fa-regular fa-star"></i>
-                                                                        <i class="fa-regular fa-star"></i>
-                                                                        <i class="fa-regular fa-star"></i>
-                                                                    </span>
-                                                                </div>
-                                                                <div class="product-description">
-                                                                    <p>The purpose of lorem ipsum is to create a natural looking block of text (sentence, paragraph, page, etc.) that doesn't distract from the layout. A practice not without controversy, laying out pages with meaningless filler...</p>
-                                                                </div>
-                                                                <div class="product-action">
-                                                                    <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview">
-                                                                        <span class="tooltip-text">Quickview</span>
-                                                                        <span class="pro-action-icon"><i class="feather-eye"></i></span>
-                                                                    </a>
-                                                                    <a href="#add-to-cart" class="add-to-cart">
-                                                                        <span class="cart-title">
-                                                                            <span class="add-c-title">
-                                                                                <span class="tooltip-text">Add to cart</span>
-                                                                                <span class="cart-icon"><i class="feather-shopping-bag"></i></span>
-                                                                                <span class="add-title">Add to cart</span>
-                                                                            </span>
-                                                                        </span>
-                                                                    </a>
-                                                                    <a href="/Customer/Wishlist/Index" class="wishlist">
-                                                                        <span class="tooltip-text">Wishlist</span>
-                                                                        <span class="pro-action-icon"><i class="feather-heart"></i></span>
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li class="pro-item-li">
-                                                    <div class="single-product-wrap">
-                                                        <div class="product-image banner-hover">
-                                                            <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail" class="pro-img">
-                                                                <img src="~/customer/img/product/home1-pro-19.jpg" class="img-fluid img1 mobile-img1" alt="p1">
-                                                                <img src="~/customer/img/product/home1-pro-20.jpg" class="img-fluid img2 mobile-img2" alt="p2">
-                                                            </a>
-                                                            <div class="product-action product-cart-btn">
-                                                                <a href="#add-to-cart" class="add-to-cart">
-                                                                    <span class="cart-title">
-                                                                        <span class="add-c-title">
-                                                                            <span class="tooltip-text">Add to cart</span>
-                                                                            <span class="cart-icon"><i class="feather-shopping-bag"></i></span>
-                                                                            <span class="add-title">Add to cart</span>
-                                                                        </span>
-                                                                    </span>
-                                                                </a>
-                                                            </div>
-                                                            <div class="product-action">
-                                                                <a href="/Customer/Wishlist/Index" class="wishlist">
-                                                                    <span class="tooltip-text">Wishlist</span>
-                                                                    <span class="pro-action-icon"><i class="feather-heart"></i></span>
-                                                                </a>
-                                                                <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview">
-                                                                    <span class="tooltip-text">Quickview</span>
-                                                                    <span class="pro-action-icon"><i class="feather-eye"></i></span>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="product-caption">
-                                                            <div class="product-content">
-                                                                <div class="product-title">
-                                                                    <div class="pro-title-price">
-                                                                        <h6><a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail">Wheat grass</a></h6>
-                                                                        <div class="product-price">
-                                                                            <div class="price-box">
-                                                                                <span class="new-price">Rs. 21.00</span>
-                                                                                <span class="old-price">Rs. 25.00</span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="product-name">
-                                                                        <a class="product-type" asp-area="Customer" asp-controller="ClientProduct" asp-action="Index">Grass</a>
-                                                                        <a class="product-vendor" asp-area="Customer" asp-controller="ClientProduct" asp-action="Index">Panno</a>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="product-ratting">
-                                                                    <span class="pro-ratting">
-                                                                        <i class="fa-regular fa-star"></i>
-                                                                        <i class="fa-regular fa-star"></i>
-                                                                        <i class="fa-regular fa-star"></i>
-                                                                        <i class="fa-regular fa-star"></i>
-                                                                        <i class="fa-regular fa-star"></i>
-                                                                    </span>
-                                                                </div>
-                                                                <div class="product-description">
-                                                                    <p>The purpose of lorem ipsum is to create a natural looking block of text (sentence, paragraph, page, etc.) that doesn't distract from the layout. A practice not without controversy, laying out pages with meaningless filler...</p>
-                                                                </div>
-                                                                <div class="product-action">
-                                                                    <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview">
-                                                                        <span class="tooltip-text">Quickview</span>
-                                                                        <span class="pro-action-icon"><i class="feather-eye"></i></span>
-                                                                    </a>
-                                                                    <a href="#add-to-cart" class="add-to-cart">
-                                                                        <span class="cart-title">
-                                                                            <span class="add-c-title">
-                                                                                <span class="tooltip-text">Add to cart</span>
-                                                                                <span class="cart-icon"><i class="feather-shopping-bag"></i></span>
-                                                                                <span class="add-title">Add to cart</span>
-                                                                            </span>
-                                                                        </span>
-                                                                    </a>
-                                                                    <a href="/Customer/Wishlist/Index" class="wishlist">
-                                                                        <span class="tooltip-text">Wishlist</span>
-                                                                        <span class="pro-action-icon"><i class="feather-heart"></i></span>
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </li>
+                                                    </li>
+                                                }
+
+
                                             </ul>
                                         </div>
                                         <div class="paginatoin-area">
@@ -1081,7 +206,7 @@
                                 <div class="shop-sidebar-wrap filter-sidebar">
                                     <!-- button start -->
                                     <button class="close-sidebar" type="button">
-                                    <i class="fa-solid fa-xmark"></i>
+                                        <i class="fa-solid fa-xmark"></i>
                                     </button>
                                     <!-- button end -->
                                     <!-- filter-form start -->
@@ -1090,14 +215,14 @@
                                             <div class="facets-wrapper">
                                                 <!-- Product-Categories start -->
                                                 <div class="shop-sidebar">
-                                                    <h6 class="shop-title">Categories</h6>
-                                                    <a href="#collapse-5" data-bs-toggle="collapse" class="shop-title shop-title-lg">Categories<i class="fa fa-angle-down"></i></a>
+                                                    <h6 class="shop-title">Thể loại</h6>
+                                                    <a href="#collapse-5" data-bs-toggle="collapse" class="shop-title shop-title-lg">Thể loại<i class="fa fa-angle-down"></i></a>
                                                     <div class="collapse show shop-element" id="collapse-5">
                                                         <ul class="brand-ul scrollbar">
                                                             <li class="cat-checkbox">
                                                                 <label class="checkbox-label">
                                                                     <input type="checkbox" class="cust-checkbox">
-                                                                    <span class="check-name">Wheat grass</span>
+                                                                    <span class="check-name">Cỏ lúa mì</span>
                                                                     <span class="count-check">(12)</span>
                                                                     <span class="cust-check"></span>
                                                                 </label>
@@ -1105,7 +230,9 @@
                                                             <li class="cat-checkbox">
                                                                 <label class="checkbox-label">
                                                                     <input type="checkbox" class="cust-checkbox">
-                                                                    <span class="check-name">Castle cactus</span>
+                                                                    <span class="check-name">
+                                                                        Lâu đài xương rồng
+                                                                    </span>
                                                                     <span class="count-check">(12)</span>
                                                                     <span class="cust-check"></span>
                                                                 </label>
@@ -1113,7 +240,7 @@
                                                             <li class="cat-checkbox">
                                                                 <label class="checkbox-label 64gb">
                                                                     <input type="checkbox" value="64gb" class="cust-checkbox">
-                                                                    <span class="check-name">Areca palm</span>
+                                                                    <span class="check-name">Cọ cau</span>
                                                                     <span class="count-check">(12)</span>
                                                                     <span class="cust-check"></span>
                                                                 </label>
@@ -1121,7 +248,7 @@
                                                             <li class="cat-checkbox">
                                                                 <label class="checkbox-label 500gb">
                                                                     <input type="checkbox" value="500gb" class="cust-checkbox">
-                                                                    <span class="check-name">Collection</span>
+                                                                    <span class="check-name">Bộ sưu tập</span>
                                                                     <span class="count-check">(12)</span>
                                                                     <span class="cust-check"></span>
                                                                 </label>
@@ -1129,7 +256,9 @@
                                                             <li class="cat-checkbox">
                                                                 <label class="checkbox-label 1tb">
                                                                     <input type="checkbox" value="1tb" class="cust-checkbox">
-                                                                    <span class="check-name">Collection left</span>
+                                                                    <span class="check-name">
+                                                                        Bộ sưu tập còn lại
+                                                                    </span>
                                                                     <span class="count-check">(12)</span>
                                                                     <span class="cust-check"></span>
                                                                 </label>
@@ -1137,7 +266,7 @@
                                                             <li class="cat-checkbox">
                                                                 <label class="checkbox-label 2tb">
                                                                     <input type="checkbox" value="2tb" class="cust-checkbox">
-                                                                    <span class="check-name">Collection list</span>
+                                                                    <span class="check-name">Danh sách bộ sưu tập</span>
                                                                     <span class="count-check">(12)</span>
                                                                     <span class="cust-check"></span>
                                                                 </label>
@@ -1145,7 +274,7 @@
                                                             <li class="cat-checkbox">
                                                                 <label class="checkbox-label 3tb">
                                                                     <input type="checkbox" value="3tb" class="cust-checkbox">
-                                                                    <span class="check-name">Collection list left</span>
+                                                                    <span class="check-name">Danh sách bộ sưu tập còn lại</span>
                                                                     <span class="count-check">(12)</span>
                                                                     <span class="cust-check"></span>
                                                                 </label>
@@ -1153,7 +282,7 @@
                                                             <li class="cat-checkbox">
                                                                 <label class="checkbox-label 3tb">
                                                                     <input type="checkbox" value="3tb" class="cust-checkbox">
-                                                                    <span class="check-name">Collection right</span>
+                                                                    <span class="check-name">Quyền thu thập</span>
                                                                     <span class="count-check">(12)</span>
                                                                     <span class="cust-check"></span>
                                                                 </label>
@@ -1161,7 +290,7 @@
                                                             <li class="cat-checkbox">
                                                                 <label class="checkbox-label 3tb">
                                                                     <input type="checkbox" value="3tb" class="cust-checkbox">
-                                                                    <span class="check-name">Snake plant</span>
+                                                                    <span class="check-name">Cây rắn</span>
                                                                     <span class="count-check">(12)</span>
                                                                     <span class="cust-check"></span>
                                                                 </label>
@@ -1177,7 +306,7 @@
                                                             <li class="cat-checkbox">
                                                                 <label class="checkbox-label 3tb">
                                                                     <input type="checkbox" value="3tb" class="cust-checkbox">
-                                                                    <span class="check-name">Nicolai plant</span>
+                                                                    <span class="check-name">cây Nicolai</span>
                                                                     <span class="count-check">(12)</span>
                                                                     <span class="cust-check"></span>
                                                                 </label>
@@ -1185,7 +314,9 @@
                                                             <li class="cat-checkbox">
                                                                 <label class="checkbox-label 3tb">
                                                                     <input type="checkbox" value="3tb" class="cust-checkbox">
-                                                                    <span class="check-name">Aloe vera plant</span>
+                                                                    <span class="check-name">
+                                                                        Cây lô hội
+                                                                    </span>
                                                                     <span class="count-check">(12)</span>
                                                                     <span class="cust-check"></span>
                                                                 </label>
@@ -1196,50 +327,55 @@
                                                 <!-- Product-Categories end -->
                                                 <div class="shop-sidebar sidebar-filter">
                                                     <h6 class="shop-title">Filter</h6>
-                                                    <a href="javascript:void(0)" class="shop-title shop-title-lg">Filter</a>
+                                                    <a href="javascript:void(0)" class="shop-title shop-title-lg">
+                                                        Lọc
+                                                    </a>
                                                     <div class="filter-info">
-                                                        <span class="filter-count-text">23 products</span>
+                                                        <span class="filter-count-text">
+                                                            23 sản phẩm
+                                                        </span>
                                                         <span class="loading-spinner"><svg aria-hidden="true" focusable="false" role="presentation" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg"><circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle></svg></span>
                                                     </div>
                                                 </div>
                                                 <div class="shop-sidebar sidebar-price">
-                                                    <h6 class="shop-title">Price</h6>
-                                                    <a href="#collapse-3" data-bs-toggle="collapse" class="shop-title shop-title-lg">Price</a>
+                                                    <h6 class="shop-title">Giá</h6>
+                                                    <a href="#collapse-3" data-bs-toggle="collapse" class="shop-title shop-title-lg">Giá</a>
                                                     <div class="filter-info">
-                                                        <span class="shop-price">The highest price is $89.00</span>
-                                                        <facet-remove><a asp-area="Customer" asp-controller="ClientProduct" asp-action="Index" class="reset-text">Reset</a></facet-remove>
+                                                        <span class="shop-price">Giá cao nhất là 1000000 VND</span>
+                                                        <facet-remove><a asp-area="Customer" asp-controller="ClientProduct" asp-action="Index" class="reset-text">Đặt lại</a></facet-remove>
                                                     </div>
                                                     <!-- Product-price start -->
                                                     <div class="collapse price-wrap" id="collapse-3">
                                                         <price-range class="price-range">
                                                             <div class="price-range-group group-range">
-                                                                <input type="range" class="range" min="0" max="89" value="0" id="range1">
-                                                                <input type="range" class="range" min="0" max="89" value="89" id="range2">
+                                                                <input type="range" class="range" min="0" max="2100000" value="0" id="range1">
+                                                                <input type="range" class="range" min="0" max="2100000" value="2100000" id="range2">
                                                             </div>
                                                             <div class="price-input-group group-input">
                                                                 <div class="price-range-input input-price">
-                                                                    <label class="label-text">From</label>
-                                                                    <span class="price-value">$</span>
+                                                                    <label class="label-text">Từ</label>
+                                                                    <span class="price-value">₫</span>
                                                                     <span id="demo1" class="price-field">0</span>
                                                                 </div>
                                                                 <span class="price-range-delimeter">-</span>
                                                                 <div class="price-range-input input-price">
-                                                                    <label class="label-text">To</label>
-                                                                    <span class="price-value">$</span>
-                                                                    <span id="demo2" class="price-field">89</span>
+                                                                    <label class="label-text">Đến</label>
+                                                                    <span class="price-value">₫</span>
+                                                                    <span id="demo2" class="price-field">2,100,000</span>
                                                                 </div>
                                                             </div>
                                                         </price-range>
                                                     </div>
+
                                                     <!-- Product-price end -->
                                                     <!-- product-type start -->
                                                     <div class="shop-sidebar sidebar-open">
-                                                        <h6 class="shop-title">Color</h6>
-                                                        <a href="#collapse-6" data-bs-toggle="collapse" class="shop-title shop-title-lg">Color<i class="fa fa-angle-down"></i></a>
+                                                        <h6 class="shop-title">Màu sắc</h6>
+                                                        <a href="#collapse-6" data-bs-toggle="collapse" class="shop-title shop-title-lg">Màu sắc<i class="fa fa-angle-down"></i></a>
                                                         <div class="filter-info">
-                                                            <span class="shop-price">0 selected</span>
+                                                            <span class="shop-price">0 đã chọn</span>
                                                             <facet-remove>
-                                                            <a href="collection-list-right.html" class="reset-text">Reset</a>
+                                                                <a href="collection-list-right.html" class="reset-text">Đặt lại</a>
                                                             </facet-remove>
                                                         </div>
                                                         <div class="collapse shop-element shop-flavor" id="collapse-6">
@@ -1247,7 +383,7 @@
                                                                 <li class="cat-checkbox">
                                                                     <label class="checkbox-label 16gb">
                                                                         <input type="checkbox" value="16gb" class="cust-checkbox">
-                                                                        <span class="check-name">Wheat grass</span>
+                                                                        <span class="check-name">Cỏ lúa mì</span>
                                                                         <span class="count-check">(12)</span>
                                                                         <span class="cust-check"></span>
                                                                     </label>
@@ -1255,7 +391,7 @@
                                                                 <li class="cat-checkbox">
                                                                     <label class="checkbox-label 32gb">
                                                                         <input type="checkbox" value="32gb" class="cust-checkbox">
-                                                                        <span class="check-name">Castle cactus</span>
+                                                                        <span class="check-name">Xương rồng lâu năm</span>
                                                                         <span class="count-check">(12)</span>
                                                                         <span class="cust-check"></span>
                                                                     </label>
@@ -1263,7 +399,7 @@
                                                                 <li class="cat-checkbox">
                                                                     <label class="checkbox-label 64gb">
                                                                         <input type="checkbox" value="64gb" class="cust-checkbox">
-                                                                        <span class="check-name">Areca palm</span>
+                                                                        <span class="check-name">Cây cọ Areca</span>
                                                                         <span class="count-check">(12)</span>
                                                                         <span class="cust-check"></span>
                                                                     </label>
@@ -1271,7 +407,7 @@
                                                                 <li class="cat-checkbox">
                                                                     <label class="checkbox-label 500gb">
                                                                         <input type="checkbox" value="500gb" class="cust-checkbox">
-                                                                        <span class="check-name">Collection</span>
+                                                                        <span class="check-name">Bộ sưu tập</span>
                                                                         <span class="count-check">(12)</span>
                                                                         <span class="cust-check"></span>
                                                                     </label>
@@ -1279,7 +415,7 @@
                                                                 <li class="cat-checkbox">
                                                                     <label class="checkbox-label 1tb">
                                                                         <input type="checkbox" value="1tb" class="cust-checkbox">
-                                                                        <span class="check-name">Collection left</span>
+                                                                        <span class="check-name">Bộ sưu tập trái</span>
                                                                         <span class="count-check">(12)</span>
                                                                         <span class="cust-check"></span>
                                                                     </label>
@@ -1287,7 +423,7 @@
                                                                 <li class="cat-checkbox">
                                                                     <label class="checkbox-label 2tb">
                                                                         <input type="checkbox" value="2tb" class="cust-checkbox">
-                                                                        <span class="check-name">Collection list</span>
+                                                                        <span class="check-name">Danh sách bộ sưu tập</span>
                                                                         <span class="count-check">(12)</span>
                                                                         <span class="cust-check"></span>
                                                                     </label>
@@ -1295,7 +431,7 @@
                                                                 <li class="cat-checkbox">
                                                                     <label class="checkbox-label 3tb">
                                                                         <input type="checkbox" value="3tb" class="cust-checkbox">
-                                                                        <span class="check-name">Collection list left</span>
+                                                                        <span class="check-name">Danh sách bộ sưu tập trái</span>
                                                                         <span class="count-check">(12)</span>
                                                                         <span class="cust-check"></span>
                                                                     </label>
@@ -1303,7 +439,7 @@
                                                                 <li class="cat-checkbox">
                                                                     <label class="checkbox-label 3tb">
                                                                         <input type="checkbox" value="3tb" class="cust-checkbox">
-                                                                        <span class="check-name">Collection right</span>
+                                                                        <span class="check-name">Cây rắn</span>
                                                                         <span class="count-check">(12)</span>
                                                                         <span class="cust-check"></span>
                                                                     </label>
@@ -1311,7 +447,7 @@
                                                                 <li class="cat-checkbox">
                                                                     <label class="checkbox-label 3tb">
                                                                         <input type="checkbox" value="3tb" class="cust-checkbox">
-                                                                        <span class="check-name">Snake plant</span>
+                                                                        <span class="check-name">Cây Nicolai</span>
                                                                         <span class="count-check">(12)</span>
                                                                         <span class="cust-check"></span>
                                                                     </label>
@@ -1319,7 +455,7 @@
                                                                 <li class="cat-checkbox">
                                                                     <label class="checkbox-label 3tb">
                                                                         <input type="checkbox" value="3tb" class="cust-checkbox">
-                                                                        <span class="check-name">Nicolai plant</span>
+                                                                        <span class="check-name">Strelitzia Nicolai</span>
                                                                         <span class="count-check">(12)</span>
                                                                         <span class="cust-check"></span>
                                                                     </label>
@@ -1327,15 +463,7 @@
                                                                 <li class="cat-checkbox">
                                                                     <label class="checkbox-label 3tb">
                                                                         <input type="checkbox" value="3tb" class="cust-checkbox">
-                                                                        <span class="check-name">Strelitzia nicolai</span>
-                                                                        <span class="count-check">(12)</span>
-                                                                        <span class="cust-check"></span>
-                                                                    </label>
-                                                                </li>
-                                                                <li class="cat-checkbox">
-                                                                    <label class="checkbox-label 3tb">
-                                                                        <input type="checkbox" value="3tb" class="cust-checkbox">
-                                                                        <span class="check-name">Aloe vera plant</span>
+                                                                        <span class="check-name">Cây lô hội</span>
                                                                         <span class="count-check">(12)</span>
                                                                         <span class="cust-check"></span>
                                                                     </label>
@@ -1343,15 +471,16 @@
                                                             </ul>
                                                         </div>
                                                     </div>
+
                                                     <!-- product-type end -->
                                                 </div>
                                                 <div class="shop-sidebar sidebar-product">
-                                                    <h6 class="shop-title">Product type</h6>
-                                                    <a href="#reset" data-bs-toggle="collapse" class="shop-title shop-title-lg">Product type</a>
+                                                    <h6 class="shop-title">Loại sản phẩm</h6>
+                                                    <a href="#reset" data-bs-toggle="collapse" class="shop-title shop-title-lg">Loại sản phẩm</a>
                                                     <div class="filter-info">
-                                                        <span class="shop-price no-js-hidden">0 selected</span>
+                                                        <span class="shop-price no-js-hidden">0 đã chọn</span>
                                                         <facet-remove>
-                                                        <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Index" class="reset-text">Reset</a>
+                                                            <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Index" class="reset-text">Đặt lại</a>
                                                         </facet-remove>
                                                     </div>
                                                     <div class="collapse filter-element" id="reset">
@@ -1359,7 +488,7 @@
                                                             <li class="brand-li">
                                                                 <label class="cust-checkbox-label">
                                                                     <input type="checkbox" name="cust-checkbox" class="cust-checkbox">
-                                                                    <span class="filter-name">plant</span>
+                                                                    <span class="filter-name">Cây cối</span>
                                                                     <span class="count-check">(23)</span>
                                                                     <span class="cust-check"></span>
                                                                 </label>
@@ -1368,12 +497,12 @@
                                                     </div>
                                                 </div>
                                                 <div class="shop-sidebar sidebar-wedget">
-                                                    <h6 class="shop-title">Availability</h6>
-                                                    <a href="#collapse-1" class="shop-title shop-title-lg" data-bs-toggle="collapse">Availability</a>
+                                                    <h6 class="shop-title">Tình trạng hàng hóa</h6>
+                                                    <a href="#collapse-1" class="shop-title shop-title-lg" data-bs-toggle="collapse">Tình trạng hàng hóa</a>
                                                     <div class="filter-info">
-                                                        <span class="shop-price no-js-hidden">0 selected</span>
+                                                        <span class="shop-price no-js-hidden">0 đã chọn</span>
                                                         <facet-remove>
-                                                        <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Index" class="reset-text">Reset</a>
+                                                            <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Index" class="reset-text">Đặt lại</a>
                                                         </facet-remove>
                                                     </div>
                                                     <div class="collapse filter-element" id="collapse-1">
@@ -1381,7 +510,7 @@
                                                             <li class="availability">
                                                                 <label class="cust-checkbox-label availability in-stock">
                                                                     <input type="checkbox" name="filter.v.availability" value="1" class="cust-checkbox">
-                                                                    <span class="filter-name">In stock</span>
+                                                                    <span class="filter-name">Có sẵn</span>
                                                                     <span class="count-check">(23)</span>
                                                                     <span class="cust-check"></span>
                                                                 </label>
@@ -1389,7 +518,7 @@
                                                             <li class="availability">
                                                                 <label class="cust-checkbox-label availability in-stock">
                                                                     <input type="checkbox" name="filter.v.availability" value="1" class="cust-checkbox">
-                                                                    <span class="filter-name">Out of stock</span>
+                                                                    <span class="filter-name">Hết hàng</span>
                                                                     <span class="count-check">(1)</span>
                                                                     <span class="cust-check"></span>
                                                                 </label>
@@ -1397,13 +526,14 @@
                                                         </ul>
                                                     </div>
                                                 </div>
+
                                                 <div class="shop-sidebar sidebar-wedget">
-                                                    <h6 class="shop-title">Brand</h6>
+                                                    <h6 class="shop-title">Thương hiệu</h6>
                                                     <a href="#collapse-2" data-bs-toggle="collapse" class="shop-title shop-title-lg">Brand</a>
                                                     <div class="filter-info">
-                                                        <span class="shop-price no-js-hidden">0 selected</span>
+                                                        <span class="shop-price no-js-hidden">0 đã chọn</span>
                                                         <facet-remove>
-                                                        <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Index" class="reset-text">Reset</a>
+                                                            <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Index" class="reset-text">Đặt lại</a>
                                                         </facet-remove>
                                                     </div>
                                                     <div class="collapse filter-element" id="collapse-2">
@@ -1443,4 +573,3 @@
     </div>
 </section>
 <!-- collection end -->
-        
