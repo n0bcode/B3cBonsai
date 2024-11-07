@@ -43,10 +43,11 @@
                 <div class="log-acc-page">
                     <div class="contact-form-list">
                         <form method="post">
+                            <div asp-validation-summary="All" class="alert alert-danger" role="alert"></div>
                             <ul class="form-fill">
                                 <li class="form-fill-li Email">
-                                    <label>Email address</label>
-                                    <input asp-for="Input.Email" class="form-control" autocomplete="email" placeholder="Email address">
+                                    <label>Địa chỉ email</label>
+                                    <input asp-for="Input.Email" class="form-control" autocomplete="email" placeholder="Địa chỉ email">
                                     <span asp-validation-for="Input.Email" class="text-danger"></span>
                                 </li>
                                 <li class="form-fill-li Password">

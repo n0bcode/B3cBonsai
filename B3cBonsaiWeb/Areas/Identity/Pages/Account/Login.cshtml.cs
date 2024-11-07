@@ -77,7 +77,6 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
             /// </summary>
             [Required]
             [DataType(DataType.Password)]
-            [RegularExpression(@"^(?=.*[!@#$%^&*(),.?""{}|<>])[a-zA-Z0-9!@#$%^&*(),.?""{}|<>]{6,100}$", ErrorMessage = "Mật khẩu phải chứa ít nhất 1 ký tự đặc biệt.")]
             public string Password { get; set; }
 
             /// <summary>

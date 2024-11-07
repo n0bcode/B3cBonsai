@@ -97,7 +97,7 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
-            [RegularExpression(@"^(?=.*[!@#$%^&*(),.?""{}|<>])[a-zA-Z0-9!@#$%^&*(),.?""{}|<>]{6,100}$", ErrorMessage = "Mật khẩu phải chứa ít nhất 1 ký tự đặc biệt.")]
+            [RegularExpression(@"^(?=.*[A-Z]).*$", ErrorMessage = "Mật khẩu phải có ít nhất một ký tự viết hoa.")]
             public string Password { get; set; }
 
             /// <summary>
@@ -195,8 +195,9 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
                         );*/
                     #endregion
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email", $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>."); 
+                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email", $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
+                    TempData["successToastr"] = "Đăng ký thành công";
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
                         return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
