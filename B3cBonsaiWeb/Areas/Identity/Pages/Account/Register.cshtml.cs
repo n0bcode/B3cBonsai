@@ -96,7 +96,7 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
-            [Display(Name = "Password")]
+            [Display(Name = "Mật khẩu")]
             [RegularExpression(@"^(?=.*[A-Z]).*$", ErrorMessage = "Mật khẩu phải có ít nhất một ký tự viết hoa.")]
             public string Password { get; set; }
 
@@ -105,9 +105,26 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
+            [Display(Name = "Xác nhận mật khẩu")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            [Required]
+            [DataType(DataType.Text)]
+            [Display(Name = "Họ tên người dùng")]
+            public string HoTen {  get; set; }
+
+
+            [Display(Name = "Giới tính")]
+            public bool GioiTinh { get; set; }
+
+            [DataType(DataType.Text)]
+            [Display(Name = "Số điện thoại")]
+            public string SoDienThoai { get; set; }
+
+            [DataType(DataType.Date)]
+            [Display(Name = "Ngày sinh")]
+            public DateTime NgaySinh { get; set; }
 
             public string? Role { get; set; }
             [ValidateNever]
@@ -139,8 +156,14 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
-                var result = await _userManager.CreateAsync(user, Input.Password);
 
+                user.HoTen = Input.HoTen;
+                user.GioiTinh = Input.GioiTinh;
+                user.SoDienThoai = Input.SoDienThoai;
+                user.NgaySinh = Input.NgaySinh;
+
+                var result = await _userManager.CreateAsync(user, Input.Password);
+                
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
