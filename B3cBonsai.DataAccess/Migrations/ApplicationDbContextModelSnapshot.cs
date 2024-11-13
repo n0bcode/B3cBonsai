@@ -130,6 +130,9 @@ namespace B3cBonsai.DataAccess.Migrations
                     b.Property<int>("GiamGia")
                         .HasColumnType("int");
 
+                    b.Property<string>("LinkAnh")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("MoTa")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");

@@ -166,7 +166,8 @@ namespace B3cBonsai.DataAccess.DbInitializer
                 {
                     TenCombo = "Combo " + i,
                     MoTa = "Combo sản phẩm " + i,
-                    TongGia = new Random().Next(100000, 2000000)
+                    TongGia = new Random().Next(100000, 2000000),
+                    LinkAnh = RandomData_DB.Instance.RandomImageBonsai()
                 });
             }
             _db.ComboSanPhams.AddRange(comboSanPhams);

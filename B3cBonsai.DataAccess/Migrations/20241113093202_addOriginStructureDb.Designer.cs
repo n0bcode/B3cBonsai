@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace B3cBonsai.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241106084357_addOriginStrutureDb")]
-    partial class addOriginStrutureDb
+    [Migration("20241113093202_addOriginStructureDb")]
+    partial class addOriginStructureDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -132,6 +132,9 @@ namespace B3cBonsai.DataAccess.Migrations
 
                     b.Property<int>("GiamGia")
                         .HasColumnType("int");
+
+                    b.Property<string>("LinkAnh")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MoTa")
                         .IsRequired()
