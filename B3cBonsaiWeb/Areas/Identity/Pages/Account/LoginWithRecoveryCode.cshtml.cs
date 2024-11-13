@@ -55,7 +55,7 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
             [BindProperty]
             [Required]
             [DataType(DataType.Text)]
-            [Display(Name = "Recovery Code")]
+            [Display(Name = "Mã khôi phục")]
             public string RecoveryCode { get; set; }
         }
 
@@ -65,7 +65,7 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
             var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
             if (user == null)
             {
-                throw new InvalidOperationException($"Unable to load two-factor authentication user.");
+                throw new InvalidOperationException($"Không thể tải người dùng xác thực hai yếu tố.");
             }
 
             ReturnUrl = returnUrl;
@@ -83,7 +83,7 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
             var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
             if (user == null)
             {
-                throw new InvalidOperationException($"Unable to load two-factor authentication user.");
+                throw new InvalidOperationException($"Không thể tải người dùng xác thực hai yếu tố.");
             }
 
             var recoveryCode = Input.RecoveryCode.Replace(" ", string.Empty);

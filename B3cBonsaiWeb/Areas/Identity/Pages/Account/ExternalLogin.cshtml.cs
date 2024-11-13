@@ -148,23 +148,25 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
                     }
                     return Page();
                 }
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occurred while handling an external login callback.");
+                _logger.LogError(ex, "Đã xảy ra lỗi khi xử lý callback đăng nhập bên ngoài.");
                 return RedirectToPage("./Login");
             }
         }
 
         public async Task<IActionResult> OnPostConfirmationAsync(string returnUrl = null)
         {
-            try 
+            try
             {
                 returnUrl = returnUrl ?? Url.Content("~/");
-                // Get the information about the user from the external login provider
+
+                // Lấy thông tin về người dùng từ nhà cung cấp đăng nhập bên ngoài
                 var info = await _signInManager.GetExternalLoginInfoAsync();
                 if (info == null)
                 {
-                    ErrorMessage = "Error loading external login information during confirmation.";
+                    ErrorMessage = "Lỗi khi tải thông tin đăng nhập bên ngoài trong quá trình xác nhận.";
                     return RedirectToPage("./Login", new { ReturnUrl = returnUrl });
                 }
 
@@ -181,11 +183,13 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
                         result = await _userManager.AddLoginAsync(user, info);
                         if (result.Succeeded)
                         {
-                            _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
+                            _logger.LogInformation("Người dùng đã tạo tài khoản sử dụng nhà cung cấp {Name}.", info.LoginProvider);
 
                             var userId = await _userManager.GetUserIdAsync(user);
                             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                            //_userManager.AddToRoleAsync(user, SD.Role_Staff/ SD.Role_Customer); Cần cập nhập giao diện B3cNote
+
+                            _userManager.AddToRoleAsync(user, SD.Role_Customer); //Cần cập nhật giao diện B3cNote
+
                             code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                             var callbackUrl = Url.Page(
                                 "/Account/ConfirmEmail",
@@ -193,10 +197,10 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
                                 values: new { area = "Identity", userId = userId, code = code },
                                 protocol: Request.Scheme);
 
-                            await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                                $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                            await _emailSender.SendEmailAsync(Input.Email, "Xác nhận email của bạn",
+                                $"Vui lòng xác nhận tài khoản của bạn bằng cách <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>click vào đây</a>.");
 
-                            // If account confirmation is required, we need to show the link if we don't have a real email sender
+                            // Nếu yêu cầu xác nhận tài khoản, chúng ta cần hiển thị liên kết nếu không có trình gửi email thực
                             if (_userManager.Options.SignIn.RequireConfirmedAccount)
                             {
                                 return RedirectToPage("./RegisterConfirmation", new { Email = Input.Email });
@@ -215,12 +219,13 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
                 ProviderDisplayName = info.ProviderDisplayName;
                 ReturnUrl = returnUrl;
                 return Page();
-                } catch (Exception ex)
-                {
-                    _logger.LogError(ex, "An error occurred while handling an external login callback.");
-                    return RedirectToPage("./Login");
-                }
             }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Đã xảy ra lỗi khi xử lý callback đăng nhập bên ngoài.");
+                return RedirectToPage("./Login");
+            }
+        }
 
         private NguoiDungUngDung CreateUser()
         {
@@ -230,9 +235,9 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
             }
             catch
             {
-                throw new InvalidOperationException($"Can't create an instance of '{nameof(IdentityUser)}'. " +
-                    $"Ensure that '{nameof(IdentityUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
-                    $"override the external login page in /Areas/Identity/Pages/Account/ExternalLogin.cshtml");
+                throw new InvalidOperationException($"Không thể tạo một thể hiện của '{nameof(IdentityUser)}'. " +
+                    $"Hãy đảm bảo rằng '{nameof(IdentityUser)}' không phải là một lớp trừu tượng và có một constructor không có tham số, hoặc thay vào đó " +
+                    $"ghi đè trang đăng nhập bên ngoài tại /Areas/Identity/Pages/Account/ExternalLogin.cshtml");
             }
         }
 

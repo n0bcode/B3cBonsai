@@ -218,7 +218,7 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
                         );*/
                     #endregion
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email", $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email", $"Vui lòng xác nhận tài khoản của bạn <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>nhấn vào đây</a>.");
 
                     TempData["successToastr"] = "Đăng ký thành công";
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
@@ -267,7 +267,7 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
         {
             if (!_userManager.SupportsUserEmail)
             {
-                throw new NotSupportedException("The default UI requires a user store with email support.");
+                throw new NotSupportedException("Giao diện mặc định yêu cầu kho người dùng hỗ trợ email.");
             }
             return (IUserEmailStore<IdentityUser>)_userStore;
         }
