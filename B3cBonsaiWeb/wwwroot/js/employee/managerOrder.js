@@ -2,214 +2,207 @@
 
 // Load DataTable for all orders (getall)
 function loadOrderDataTable() {
-    dataTable = $('#empoloyeestbl2').DataTable({
+    dataTable = $('#tableOrder').DataTable({
         "ajax": {
-            url: '/employee/ManagerOrder/getall',
-            dataSrc: 'data'
+            url: '/Employee/ManagerOrder/getall',
+            dataSrc: 'data' // Ensure data is loaded directly if it's an array
         },
         "columns": [
             {
-                data: null,
-                "render": function (data) {
-                    return `<div class="form-check custom-checkbox">
-                                <input type="checkbox" class="form-check-input" id="customCheckBox${data.id}" required>
-                                <label class="form-check-label" for="customCheckBox${data.id}"></label>
+                data: 'id',
+                "title": "#",
+                "render": function (data, type, row, meta) {
+                    return `<span >${meta.row + 1}</span>`;
+                },
+                "className": "text-center"
+            },
+            {
+                data: 'tenNguoiNhan',
+                "title": "Tên người nhận",
+                "render": function (data, type, row) {
+                    return `<div class="products">
+                                <div>
+                                    <h6>${decodeURIComponent(data) || 'N/A'}</h6>
+                                    <span>INV-${row.id || 'N/A'}</span>
+                                </div>
                             </div>`;
                 }
             },
             {
-                data: 'soTheoDoi',
-                "render": function (data, type, row, meta) {
-                    return `<span>${meta.row + 1}</span>`;
-                }
-            },
-            {
-                data: null,
-                "render": function (data) {
-                    return `<div class="products">
-                    <div>
-                      <h6>${decodeURIComponent(data.tenNguoiNhan) || 'N/A'}</h6>
-                      <span>${data.id || 'N/A'}</span>
-                    </div>
-                  </div>`;
-                }
-
-            },
-            {
                 data: 'trangThaiDonHang',
-                "render": function (data) {
-                    return `<select class="default-select status-select">
-                                <option value="Complete" ${data === 'Complete' ? 'selected' : ''}>Complete</option>
-                                <option value="Pending" ${data === 'Pending' ? 'selected' : ''}>Pending</option>
-                                <option value="Testing" ${data === 'Testing' ? 'selected' : ''}>Testing</option>
-                                <option value="Processing" ${data === 'In Progress' ? 'selected' : ''}>In Progress</option>
-                                <option value="Cancelled" ${data === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+                "title": "Trạng thái đơn hàng",
+                "render": function (data, type, row) {
+                    return `<select class="default-select status-select form-control" onchange="changeStatusOrder(${row.id}, this.value)">
+                                <option value="Pending" class="text-warning" ${data === 'Pending' ? 'selected' : ''}>Đang chờ</option>
+                                <option value="Approved" class="text-success" ${data === 'Approved' ? 'selected' : ''}>Đã duyệt</option>
+                                <option value="Processing" class="text-info" ${data === 'Processing' ? 'selected' : ''}>Đang xử lý</option>
+                                <option value="Shipped" class="text-primary" ${data === 'Shipped' ? 'selected' : ''}>Đã giao hàng</option>
+                                <option value="Cancelled" class="text-danger" ${data === 'Cancelled' ? 'selected' : ''}>Đã hủy</option>
+                                <option value="Refunded" class="text-secondary" ${data === 'Refunded' ? 'selected' : ''}>Đã hoàn tiền</option>
                             </select>`;
                 }
             },
             {
                 data: 'ngayDatHang',
+                "title": "Ngày đặt hàng",
                 "render": function (data) {
-                    return `<span>${new Date(data).toLocaleDateString()}</span>`;
+                    return `<span>${new Date(data).toLocaleDateString('vi-VN')}</span>`;
                 }
             },
             {
                 data: 'ngayNhanHang',
+                "title": "Ngày nhận hàng",
                 "render": function (data) {
-                    return `<span>${new Date(data).toLocaleDateString()}</span>`;
+                    return `<span>${new Date(data).toLocaleDateString('vi-VN')}</span>`;
                 }
             },
             {
-                data: 'hinhAnhSanPham',
+                data: 'chiTietDonHangs',
+                "title": "Sản phẩm của đơn",
                 "render": function (data) {
                     if (Array.isArray(data) && data.length > 0) {
-                        return data.map(img => `<img src="${img.linkAnh}" class="product-image" style="width: 40px; height: 40px; border-radius: 5px; margin-right: 5px;" alt="Product Image">`).join('');
+                        return `<div class="avatar-list avatar-list-stacked">` +
+                            data.map(sanPham => {
+                                // Check if hinhAnhs is defined and is an array, then access the first image
+                                const firstImage = Array.isArray(sanPham.sanPham.hinhAnhs) && sanPham.sanPham.hinhAnhs.length > 0 ? sanPham.sanPham.hinhAnhs[0]?.linkAnh : null;
+                                return firstImage ?
+                                    `<img src="${firstImage}" class="avatar rounded-circle" style="width: 40px; height: 40px;" alt="Product Image">` :
+                                    '<span></span>';
+                            }).join('') +
+                            `</div>`;
                     }
-                    return `<span>No images</span>`;
+                    return `<span>Không có hình ảnh</span>`;
                 }
             },
             {
                 data: 'trangThaiThanhToan',
-                "render": function (data) {
-                    return `<span class="badge badge-primary light border-0 me-1">${data}</span>`;
-                }
-            },
-            {
-                data: 'tongTienDonHang',
-                "render": function (data) {
-                    return `${data.toLocaleString('vi-VN')} đ`;
-                }
-            }
-        ]
-    });
-}
-
-
-// Load DataTable for order details (ctiet)
-function loadOrderDetailDataTable() {
-    // Initialize the DataTable
-    var dataTable = $('#ctiet').DataTable({
-        "ajax": {
-            url: '/employee/ManagerOrder/ctiet',  // Endpoint to fetch the order details
-            dataSrc: 'data'  // The key containing the data in the JSON response
-        },
-        "columns": [
-            {
-                data: null,
-                "render": function (data) {
-                    return `<div class="form-check custom-checkbox">
-                                <input type="checkbox" class="form-check-input" id="customCheckBox${data.id}" required>
-                                <label class="form-check-label" for="customCheckBox${data.id}"></label>
-                            </div>`;
-                }
-            },
-            {
-                data: 'soTheoDoi',
-                "render": function (data, type, row, meta) {
-                    return `<span>${meta.row + 1}</span>`;
-                }
-            },
-            {
-                data: null,
-                "render": function (data) {
-                    return `<div class="products">
-                    <div>
-                      <h6>${decodeURIComponent(data.tenNguoiNhan) || 'N/A'}</h6>
-                      <span>${data.id || 'N/A'}</span>
-                    </div>
-                  </div>`;
-                }
-
-            },
-            {
-                data: 'trangThaiDonHang',
-                "render": function (data) {
-                    return `<select class="default-select status-select">
-                                <option value="Complete" ${data === 'Complete' ? 'selected' : ''}>Complete</option>
-                                <option value="Pending" ${data === 'Pending' ? 'selected' : ''}>Pending</option>
-                                <option value="Testing" ${data === 'Testing' ? 'selected' : ''}>Testing</option>
-                                <option value="Processing" ${data === 'In Progress' ? 'selected' : ''}>In Progress</option>
-                                <option value="Cancelled" ${data === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+                "title": "Trạng thái thanh toán",
+                "render": function (data, type, row) {
+                    return `<select class="default-select status-select form-control" onchange="changeStatusPayment(${row.id}, this.value)">
+                                <option value="Pending" class="text-warning" ${data === 'Pending' ? 'selected' : ''}>Đang chờ</option>
+                                <option value="Approved" class="text-success" ${data === 'Approved' ? 'selected' : ''}>Đã duyệt</option>
+                                <option value="ApprovedForDelayedPayment" class="text-info" ${data === 'ApprovedForDelayedPayment' ? 'selected' : ''}>Duyệt thanh toán chậm</option>
+                                <option value="Rejected" class="text-danger" ${data === 'Rejected' ? 'selected' : ''}>Từ chối</option>
                             </select>`;
                 }
             },
             {
-                data: 'ngayDatHang',
-                "render": function (data) {
-                    return `<span>${new Date(data).toLocaleDateString()}</span>`;
-                }
-            },
-            {
-                data: 'ngayNhanHang',
-                "render": function (data) {
-                    return `<span>${new Date(data).toLocaleDateString()}</span>`;
-                }
-            },
-            {
-                data: null,
-                "render": function (data) {
-                    return `<div class="avatar-list avatar-list-stacked">
-                                <img src="images/contacts/pic666.jpg" class="avatar rounded-circle" alt="">
-                                <img src="images/contacts/pic555.jpg" class="avatar rounded-circle" alt="">
-                                <img src="images/contacts/pic666.jpg" class="avatar rounded-circle" alt="">
-                            </div>`;
-
-                }
-            },
-            {
-                data: 'trangThaiThanhToan',
-                "render": function (data) {
-                    return `<span class="badge badge-primary light border-0 me-1">${data}</span>`;
-                }
-            },
-            {
                 data: 'tongTienDonHang',
+                "title": "Thanh toán",
                 "render": function (data) {
-                    return `${data.toLocaleString('vi-VN')} đ`;
+                    return `<span>${data.toLocaleString('vi-VN')} VNĐ</span>`;
                 }
             }
-        ]
+        ],
+        "language": {
+            "sSearch": "Tìm kiếm:",
+            "lengthMenu": "Hiển thị _MENU_ mục",
+            "info": "Hiển thị _START_ đến _END_ trong tổng số _TOTAL_ mục",
+            "paginate": {
+                "first": "<<",
+                "last": ">>",
+                "next": ">",
+                "previous": "<"
+            },
+            "zeroRecords": "Không tìm thấy kết quả nào",
+            "infoEmpty": "Không có mục nào để hiển thị",
+            "infoFiltered": "(lọc từ _MAX_ mục)"
+        }
     });
 }
 
-$(document).ready(function () {
-    // Initialize DataTable for the first endpoint (orders)
-    loadOrderDataTable();
-    // Optionally, you can switch to the second DataTable if needed
-    loadOrderDetailDataTable();
-});
 
+
+
+
+
+$(document).ready(function () {
+    loadOrderDataTable();
+
+});
 let oldValue = $('select').val(); // Initialize the old value for the select box
 
 $('select').on('focus', function () {
     oldValue = this.value; // Store the old value when the select field is focused
 });
 
-$('select').on('change', function (e) {
-    const selectElement = $(this); // Store a reference to the select element
-
+const changeStatusOrder = (id, statusOrder) => {
     Swal.fire({
         title: "Chỉnh sửa",
         text: "Bạn có muốn thay đổi tình trạng?",
-        icon: "warning",
+        type: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Chỉnh!"
+        confirmButtonText: "Chỉnh sửa!",
+        cancelButtonText: "Hủy"
     }).then((result) => {
         if (result.value) {
-            // If confirmed, show a success message
-            toastr.success("Chỉnh sửa thành công", "Điều chỉnh tình trạng", {
-                timeOut: 5000,
-                closeButton: true,
-                positionClass: "toast-top-right"
+            $.ajax({
+                url: `/Employee/ManagerOrder/ChangeStatusOrder?id=${id}&statusOrder=${statusOrder}`,
+                method: 'POST',
+                success: (data) => {
+                    if (data.success) {
+                        Swal.fire({
+                            title: "Chỉnh sửa",
+                            text: "Bạn đã chỉnh sửa thành công!",
+                            type: "success"
+                        });
+                        dataTable.ajax.reload();
+                    } else {
+                        Swal.fire({
+                            title: data.title,
+                            text: data.content,
+                            type: "info"
+                        });
+                        dataTable.ajax.reload();
+                    }
+                }
             });
-            oldValue = this.value;  // Update the old value after confirmation
         } else {
-            this.value = oldValue;  // Revert to the old value if not confirmed
+            toastr.info("Bạn hủy hàng động thay đổi tình trạng.");
+            dataTable.ajax.reload();
         }
     });
-});
+};
 
-
-
+const changeStatusPayment = (id, statusPayment) => {
+    Swal.fire({
+        title: "Chỉnh sửa",
+        text: "Bạn có muốn thay đổi tình trạng?",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Chỉnh sửa!",
+        cancelButtonText: "Hủy"
+    }).then((result) => {
+        if (result.value) {
+            $.ajax({
+                url: `/Employee/ManagerOrder/ChangeStatusPayment?id=${id}&statusPayment=${statusPayment}`,
+                method: 'POST',
+                data: (id = id, statusPayment = statusPayment),
+                success: (data) => {
+                    if (data.success) {
+                        Swal.fire({
+                            title: "Chỉnh sửa",
+                            text: "Bạn đã chỉnh sửa thành công!",
+                            type: "success"
+                        });
+                        dataTable.ajax.reload();
+                    } else {
+                        Swal.fire({
+                            title: data.title,
+                            text: data.content,
+                            type: "info"
+                        });
+                        dataTable.ajax.reload();
+                    }
+                }
+            });
+        } else {
+            toastr.info("Bạn hủy hàng động thay đổi tình trạng.");
+            dataTable.ajax.reload();
+        }
+    });
+};
