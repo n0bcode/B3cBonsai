@@ -1,0 +1,132 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model ComboSanPham
+
+<div class="card h-auto">
+    <div class="card-header">
+        <h4 class="heading mb-0">Thêm/Sửa Combo Sản Phẩm</h4>
+    </div>
+    <div class="card-body">
+        <form class="form-combo" id="formUpsertCombo" onsubmit="return actionUpsertCombo(event)">
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group mb-3">
+                <label asp-for="TenCombo" class="font-w500">Tên Combo<span class="text-danger">*</span></label>
+                <input asp-for="TenCombo" type="text" class="form-control" placeholder="Tên Combo" required>
+            </div>
+
+
+
+            <div class="form-group mb-3">
+                <label asp-for="GiamGia">Giảm Giá (%)<span class="text-danger">*</span></label>
+                <input asp-for="GiamGia" type="number" class="form-control" min="1" max="99" placeholder="Nhập giảm giá" required>
+            </div>
+
+            <div class="form-group mb-3">
+                <label>Chọn sản phẩm và số lượng:</label>
+                @if (ViewBag.SanPhamList != null && ViewBag.SanPhamList.Count > 0)
+                {
+                    <select id="sanPhamSelect" class="select2 form-control" name="sanPham[]" multiple="multiple" data-placeholder="Chọn sản phẩm" style="width:100%; height: auto; min-height: 70px;">
+                        @foreach (var sanPham in ViewBag.SanPhamList)
+                        {
+                            <option value="@sanPham.Id">@sanPham.TenSanPham</option>
+                        }
+                    </select>
+                }
+                else
+                {
+                    <p>Không có sản phẩm nào để chọn.</p>
+                }
+            </div>
+
+            <div id="chiTietComboContainer">
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="TongGia">Tổng giá Combo</label>
+                <input asp-for="TongGia" class="form-control" type="number" value="10000" readonly />
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="MoTa">Mô Tả<span class="text-danger">*</span></label>
+                <textarea asp-for="MoTa" class="form-control" placeholder="Nhập mô tả cho Combo"></textarea>
+            </div>
+
+            <!-- Nút xác nhận -->
+            <button type="submit" class="btn btn-primary mb-3">Xác Nhận</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#sanPhamSelect').select2({ maximumSelectionLength: 5 });
+
+        $('#sanPhamSelect').on('change', function () {
+            var selectedProducts = $(this).val();
+            $('#chiTietComboContainer').empty();
+
+            selectedProducts.forEach(function (productId) {
+                var productName = $('#sanPhamSelect option[value="' + productId + '"]').text();
+                $('#chiTietComboContainer').append(`
+                        <div class="form-group mb-3">
+                            <label>${productName} - Số lượng:</label>
+                            <input type="number" name="soLuong[${productId}]" min="1" class="form-control" placeholder="Nhập số lượng">
+                        </div>
+                    `);
+            });
+        });
+    });
+
+    function actionUpsertCombo(event) {
+        event.preventDefault();
+        var formData = new FormData(document.getElementById('formUpsertCombo'));
+
+        $('#chiTietComboContainer input[type="number"]').each(function () {
+            var productId = $(this).attr("name").match(/\d+/)[0];
+            var quantity = $(this).val();
+            formData.append(`soLuong[${productId}]`, quantity);
+        });
+
+        // Log dữ liệu formData để kiểm tra
+        for (var pair of formData.entries()) {
+            console.log(pair[0] + ', ' + pair[1]);
+        }
+
+        $.ajax({
+            url: `/Employee/ManagerCombo/Upsert`,
+            data: formData,
+            method: 'POST',
+            processData: false,
+            contentType: false,
+            success: (data) => {
+                if (data.success) {
+                    toastr.success(data.message);
+                    dataTable.ajax.reload(); // Tải lại bảng dữ liệu sau khi sửa thành công
+                } else {
+                    $('#viewFormUpsert').html(data.data);
+                    toastr.error(data.message);
+                }
+            },
+            error: (xhr) => {
+                toastr.error("Có lỗi xảy ra: " + xhr.responseText);
+                console.error("Error:", xhr.responseText); // Xuất lỗi chi tiết lên Console
+            }
+        });
+    }
+
+</script>
+
+<style>
+    .select2-container--default .select2-selection--multiple .select2-selection__rendered {
+        min-height: 70px;
+        max-height: 150px;
+        overflow-y: auto;
+    }
+
+    .select2-container .select2-selection--multiple {
+        min-height: 70px;
+    }
+
+    .select2-container {
+        width: 100% !important;
+    }
+</style>

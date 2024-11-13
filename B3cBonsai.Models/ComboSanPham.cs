@@ -10,6 +10,7 @@ namespace B3cBonsai.Models
     {
         [Key]
         [Display(Name = "ID Combo")]
+        [ValidateNever]
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Tên combo không được để trống.")]
