@@ -1829,11 +1829,11 @@ function (_Emitter) {
                       return;
                     }
 
-                    file.fullPath = "".concat(path, "https://w3crm.dexignzone.com/").concat(file.name);
+                    file.fullPath = "".concat(path, "https://B3cBonsai.dexignzone.com/").concat(file.name);
                     return _this6.addFile(file);
                   });
                 } else if (entry.isDirectory) {
-                  _this6._addFilesFromDirectory(entry, "".concat(path, "https://w3crm.dexignzone.com/").concat(entry.name));
+                  _this6._addFilesFromDirectory(entry, "".concat(path, "https://B3cBonsai.dexignzone.com/").concat(entry.name));
                 }
               } // Recursively call readEntries() again, since browser only handle
               // the first 100 entries.
