@@ -2,27 +2,24 @@
 using B3cBonsai.Models;
 using Microsoft.EntityFrameworkCore;
 using B3cBonsai.DataAccess.Data;
+using B3cBonsai.DataAccess.Repository.IRepository;
 
 namespace B3cBonsaiWeb.Areas.Customer.Controllers
 {
     [Area("Customer")]
     public class ClientProductController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public ClientProductController(ApplicationDbContext context)
+        public ClientProductController(IUnitOfWork context)
         {
-            _context = context;
+            _unitOfWork = context;
         }
 
         // Hiển thị danh sách sản phẩm
         public async Task<IActionResult> Index()
         {
-            var products = await _context.SanPhams
-                .Include(sp => sp.DanhMuc)  // Bao gồm thông tin danh mục
-                .Include(sp => sp.HinhAnhs) // Bao gồm thông tin hình ảnh
-                .Where(sp => sp.TrangThai)  // Lọc sản phẩm đang hoạt động
-                .ToListAsync();
+            var products = await _unitOfWork.SanPham.GetAll(includeProperties: "DanhMuc,HinhAnhs", filter: x => x.TrangThai);
 
             return View(products);
         }
@@ -30,12 +27,7 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
         // Hiển thị chi tiết sản phẩm
         public async Task<IActionResult> Detail(int id)
         {
-            var product = await _context.SanPhams
-                .Include(sp => sp.DanhMuc)
-                .Include(sp => sp.HinhAnhs)
-                .Include(sp => sp.BinhLuans)  // Bao gồm thông tin bình luận
-                .Include(sp => sp.DanhSachYeuThichs) // Bao gồm danh sách yêu thích
-                .FirstOrDefaultAsync(sp => sp.Id == id);
+            var product = await _unitOfWork.SanPham.Get(includeProperties: "DanhMuc,HinhAnhs,BinhLuans,DanhSachYeuThichs", filter: x => x.TrangThai && x.Id == id);
 
             if (product == null)
             {

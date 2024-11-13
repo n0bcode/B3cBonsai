@@ -1,5 +1,5 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
+﻿// Được cấp phép cho .NET Foundation theo một hoặc nhiều thỏa thuận.
+// .NET Foundation cấp phép tệp này cho bạn theo giấy phép MIT.
 #nullable disable
 
 using System;
@@ -29,8 +29,8 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account.Manage
         }
 
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        ///     API này hỗ trợ cơ sở hạ tầng UI mặc định của ASP.NET Core Identity và không được thiết kế để sử dụng
+        ///     trực tiếp từ mã của bạn. API này có thể thay đổi hoặc bị loại bỏ trong các bản phát hành sau.
         /// </summary>
         [TempData]
         public string StatusMessage { get; set; }
@@ -40,7 +40,7 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Không thể tải người dùng với ID '{_userManager.GetUserId(User)}'.");
             }
 
             return Page();
@@ -51,16 +51,16 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Không thể tải người dùng với ID '{_userManager.GetUserId(User)}'.");
             }
 
             await _userManager.SetTwoFactorEnabledAsync(user, false);
             await _userManager.ResetAuthenticatorKeyAsync(user);
             var userId = await _userManager.GetUserIdAsync(user);
-            _logger.LogInformation("User with ID '{UserId}' has reset their authentication app key.", user.Id);
+            _logger.LogInformation("Người dùng với ID '{UserId}' đã đặt lại khóa ứng dụng xác thực của họ.", user.Id);
 
             await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Your authenticator app key has been reset, you will need to configure your authenticator app using the new key.";
+            StatusMessage = "Khóa ứng dụng xác thực của bạn đã được đặt lại, bạn sẽ cần cấu hình lại ứng dụng xác thực của mình với khóa mới.";
 
             return RedirectToPage("./EnableAuthenticator");
         }

@@ -1,4 +1,4 @@
-var W3Crm = function(){
+var B3cBonsai = function(){
 	"use strict"
 	
 	/* Search Bar ============ */
@@ -668,7 +668,7 @@ var W3Crm = function(){
 jQuery(document).ready(function() {
 	$('[data-bs-toggle="popover"]').popover();
     
-	W3Crm.init();
+	B3cBonsai.init();
 	
 	$('.btn-follow').click(function(){
 		if($(this).hasClass('active')){
@@ -687,10 +687,10 @@ jQuery(document).ready(function() {
 
 /* Window Load START */
 jQuery(window).on('load',function () {
-	W3Crm.load();
+	B3cBonsai.load();
 	
 	setTimeout(function(){
-		W3Crm.handleMenuPosition();
+		B3cBonsai.handleMenuPosition();
 	}, 500);
 	
 });
@@ -698,10 +698,10 @@ jQuery(window).on('load',function () {
 
 /* Window Resize START */
 jQuery(window).on('resize',function () {
-	W3Crm.resize();
+	B3cBonsai.resize();
 	
 	setTimeout(function(){
-		W3Crm.handleMenuPosition();
+		B3cBonsai.handleMenuPosition();
 	}, 500);
 	
 });
