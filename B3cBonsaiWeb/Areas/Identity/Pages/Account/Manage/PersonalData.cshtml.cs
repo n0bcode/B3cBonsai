@@ -1,5 +1,5 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
+﻿// Được cấp phép cho .NET Foundation dưới một hoặc nhiều thỏa thuận.
+// .NET Foundation cấp phép cho bạn sử dụng tệp này theo giấy phép MIT.
 using System;
 using System.Threading.Tasks;
 using B3cBonsai.Models;
@@ -28,7 +28,7 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Không thể tải người dùng với ID '{_userManager.GetUserId(User)}'.");
             }
 
             return Page();

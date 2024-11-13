@@ -42,6 +42,7 @@
                 <div class="log-acc-page">
                     <div class="contact-form-list">
                         <form method="post">
+                            @{    var hasErrors = ViewData.ModelState.Any(x => x.Value.Errors.Any());}@if (hasErrors){    <div asp-validation-summary="All" class="alert alert-danger" role="alert"></div>}
                             <ul class="form-fill">
                                 <li class="form-fill-li Email">
                                     <label>Địa chỉ Email</label>
