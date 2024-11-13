@@ -35,4 +35,11 @@
     <Folder Include="wwwroot\js\customer\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="wwwroot\js\employee\managerCombo.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

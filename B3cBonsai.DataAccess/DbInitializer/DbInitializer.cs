@@ -248,6 +248,7 @@ namespace B3cBonsai.DataAccess.DbInitializer
                     ThanhPho = RandomData_DB.Instance.rdAddress(),
                     Duong = RandomData_DB.Instance.rdAddress(),
                     Tinh = RandomData_DB.Instance.rdAddress(),
+                    TongTienDonHang = rd.Next(1000000, 9999999),
                     MaBuuDien = rd.Next(1000, 9999).ToString()
                 });
             }
