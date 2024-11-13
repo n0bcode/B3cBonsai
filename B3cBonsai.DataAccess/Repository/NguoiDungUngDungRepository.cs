@@ -1,6 +1,7 @@
 ﻿using B3cBonsai.DataAccess.Data;
 using B3cBonsai.DataAccess.Repository.IRepository;
 using B3cBonsai.Models;
+using Microsoft.AspNetCore.Http.HttpResults;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,20 @@ namespace B3cBonsai.DataAccess.Repository
         }
         public void Update(NguoiDungUngDung obj)
         {
-            _db.NguoiDungUngDungs.Update(obj);
+            NguoiDungUngDung? nguoiDungUngDung = _db.NguoiDungUngDungs.FirstOrDefault(nd => nd.Id == obj.Id);
+            if (nguoiDungUngDung != null)
+            {
+                nguoiDungUngDung.HoTen = obj.HoTen;
+                nguoiDungUngDung.NgaySinh = obj.NgaySinh;
+                nguoiDungUngDung.SoDienThoai = obj.SoDienThoai;
+                nguoiDungUngDung.GioiTinh = obj.GioiTinh;
+                nguoiDungUngDung.CCCD = obj.CCCD;
+                nguoiDungUngDung.DiaChi = obj.DiaChi;
+                nguoiDungUngDung.MoTa = obj.MoTa;
+                nguoiDungUngDung.Email = obj.Email;
+                nguoiDungUngDung.LinkAnh = obj.LinkAnh;
+                _db.NguoiDungUngDungs.Update(nguoiDungUngDung);
+            }
         }
     }
 }
