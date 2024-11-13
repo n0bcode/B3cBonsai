@@ -40,7 +40,21 @@ function loadDataTable() {
                     `;
                 }
             }
-        ]
+        ],
+        "language": {
+            "sSearch": "Tìm kiếm:", // Tên trường tìm kiếm
+            "lengthMenu": "Hiển thị _MENU_ mục", // Text phân trang
+            "info": "Hiển thị _START_ đến _END_ trong tổng số _TOTAL_ mục", // Thông tin
+            "paginate": {
+                "first": "<<",
+                "last": ">>",
+                "next": ">",
+                "previous": "<"
+            },
+            "zeroRecords": "Không tìm thấy kết quả nào",
+            "infoEmpty": "Không có mục nào để hiển thị",
+            "infoFiltered": "(lọc từ _MAX_ mục)"
+        }
     });
 }
 
