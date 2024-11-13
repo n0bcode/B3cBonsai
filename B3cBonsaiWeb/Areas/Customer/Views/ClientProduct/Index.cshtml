@@ -111,7 +111,7 @@
                                                                     <a href="#add-to-cart" class="add-to-cart">
                                                                         <span class="cart-title">
                                                                             <span class="add-c-title">
-                                                                                <span class="tooltip-text">Thêm vào giỏ</span>
+                                                                               @*  <span class="tooltip-text">Thêm vào giỏ</span> *@
                                                                                 <span class="cart-icon"><i class="feather-shopping-bag"></i></span>
                                                                                 <span class="add-title">Thêm vào giỏ</span>
                                                                             </span>
@@ -120,13 +120,13 @@
                                                                 </div>
                                                                 <div class="product-action">
                                                                     <a href="/Customer/Wishlist/Index" class="wishlist">
-                                                                        <span class="tooltip-text">Yêu thích</span>
+                                                                       @*  <span class="tooltip-text">Yêu thích</span> *@
                                                                         <span class="pro-action-icon"><i class="feather-heart"></i></span>
                                                                     </a>
                                                                     <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview">
-                                                                        <span class="tooltip-text">
+                                                                        @* <span class="tooltip-text">
                                                                             Xem nhanh
-                                                                        </span>
+                                                                        </span> *@
                                                                         <span class="pro-action-icon"><i class="feather-eye"></i></span>
                                                                     </a>
                                                                 </div>
@@ -138,9 +138,9 @@
                                                                             <h6><a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail">@product.TenSanPham</a></h6>
                                                                             <div class="product-price">
                                                                                 <div class="price-box">
-                                                                                    <span class="new-price">@product.Gia VND</span>
-                    
+                                                                                    <span class="new-price">@String.Format("{0:0,0} VND", product.Gia).Replace(",", ".")</span>
                                                                                 </div>
+
                                                                             </div>
                                                                         </div>
                                                                         <div class="product-name">
@@ -168,7 +168,7 @@
                                                                         <a href="#add-to-cart" class="add-to-cart">
                                                                             <span class="cart-title">
                                                                                 <span class="add-c-title">
-                                                                                    <span class="tooltip-text">Thêm vào giỏ</span>
+                                                                                     <span class="tooltip-text">Thêm vào giỏ</span> 
                                                                                     <span class="cart-icon"><i class="feather-shopping-bag"></i></span>
                                                                                     <span class="add-title">Thêm vào giỏ</span>
                                                                                 </span>

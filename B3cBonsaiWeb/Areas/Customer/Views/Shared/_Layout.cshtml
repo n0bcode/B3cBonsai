@@ -41,7 +41,8 @@
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
 
 
-
+ 
+    
 </head>
 <body>
     <partial name="_Notification" />
@@ -114,7 +115,7 @@
                                                                                     </a>
                                                                                 </div>
                                                                                 <div class="product-content">
-                                                                                    <h6><a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail">Philodendron birkin</a></h6>
+                                                                                    <h6><a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail">Cây hồ cầm</a></h6>
                                                                                     <div class="price-box">
                                                                                         <span class="new-price">Rs. 25.00</span>
                                                                                         <span class="old-price">Rs. 45.00</span>
@@ -1607,10 +1608,16 @@
     @* đây là code của boxchat *@
     <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
     <df-messenger intent="WELCOME"
-                  chat-title="BurnBugBurnCode"
+                  chat-title="Burn🔥Bug🔥Burn🔥Code"
                   agent-id="d429dc9b-7731-49cd-b0c3-0a382d3b8ebb"
                   language-code="vi"></df-messenger>
 
+
+    <style>
+        df-messenger {
+            --df-messenger-button-titlebar-color: #557e30; /* Màu xanh lá cho tiêu đề */
+        }
+    </style>
 
 
 

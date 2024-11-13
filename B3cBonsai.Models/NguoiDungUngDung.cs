@@ -55,5 +55,13 @@ namespace B3cBonsai.Models
         [NotMapped]
         [Display(Name = "Vai Trò")]
         public string? VaiTro { get; set; }
+        [NotMapped]
+        public bool ThaoTac { get; set; } = true; //Để xác định tạo hay không trong ManagerUser: true-Thêm // false-Sửa
+        [NotMapped]
+        [ValidateNever]
+        [StringLength(100, MinimumLength = 6, ErrorMessage = "Mật khẩu phải có từ 6 đến 100 ký tự.")]
+        [RegularExpression(@"^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{6,100}$",
+        ErrorMessage = "Mật khẩu phải chứa ít nhất 1 ký tự số, 1 ký tự chữ thường, 1 ký tự chữ hoa và 1 ký tự đặc biệt.")]
+        public string DatMatKhau { get; set; }
     }
 }

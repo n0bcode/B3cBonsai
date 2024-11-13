@@ -1,391 +1,147 @@
-﻿
-@{
-    ViewData["Title"] = "Index";
+﻿@{
+    ViewData["Title"] = "Danh sách sản phẩm";
     Layout = "~/Areas/Employee/Views/Shared/_Layout.cshtml";
 }
+
 <div class="content-body">
-	<!-- row -->
-	<div class="page-titles">
-		<ol class="breadcrumb">
-			<li><h5 class="bc-title">Employee</h5></li>
-			<li class="breadcrumb-item">
-				<a href="/">
-					<svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-						<path d="M2.125 6.375L8.5 1.41667L14.875 6.375V14.1667C14.875 14.5424 14.7257 14.9027 14.4601 15.1684C14.1944 15.4341 13.8341 15.5833 13.4583 15.5833H3.54167C3.16594 15.5833 2.80561 15.4341 2.53993 15.1684C2.27426 14.9027 2.125 14.5424 2.125 14.1667V6.375Z" stroke="#2C2C2C" stroke-linecap="round" stroke-linejoin="round" />
-						<path d="M6.375 15.5833V8.5H10.625V15.5833" stroke="#2C2C2C" stroke-linecap="round" stroke-linejoin="round" />
-					</svg>
-					Home
-				</a>
-			</li>
-			<li class="breadcrumb-item active"><a href="javascript:void(0)">Employee</a></li>
-		</ol>
-		<a class="text-primary fs-13" data-bs-toggle="offcanvas" href="#upsertObject1" role="button" aria-controls="upsertObject1">+ Add Task</a>
-	</div>
-	<div class="container-fluid">
-		<div class="row">
-			<div class="col-xl-12">
-				<div class="card">
-					<div class="card-body p-0">
-						<div class="table-responsive active-projects style-1">
-							<div class="tbl-caption">
-								<h4 class="heading mb-0">Employees</h4>
-								<div>
-									<a class="btn btn-primary btn-sm" data-bs-toggle="offcanvas" href="#upsertObject" role="button" aria-controls="upsertObject">+ Add/Edit</a>
-									<button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal1">
-										+ Invite Employee
-									</button>
-								</div>
-							</div>
-							<table id="empoloyees-tblwrapper" class="table">
-								<thead>
-									<tr>
-										<th>Employee ID</th>
-										<th>Employee Name</th>
-										<th>Department</th>
-										<th>Email Address</th>
-										<th>Contact Number</th>
-										<th>Gender</th>
-										<th>Location</th>
-										<th>Status</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr>
-										<td><span>1001</span></td>
-										<td>
-											<div class="products">
-												<img src="images/contacts/pic2.jpg" class="avatar avatar-md" alt="">
-												<div>
-													<h6>Liam Antony</h6>
-													<span>Web Designer</span>
-												</div>
-											</div>
-										</td>
-										<td><span>Computer Science</span></td>
-										<td><span class="text-primary">abc@gmail.com</span></td>
-										<td>
-											<span>+91 123 456 7890</span>
-										</td>
-										<td>
-											<span>Male</span>
-										</td>
-										<td>
-											<span>Delhi</span>
-										</td>
-										<td>
-											<span class="badge badge-success light border-0">Active</span>
-										</td>
-									</tr>
-									<tr>
-										<td><span>1001</span></td>
-										<td>
-											<div class="products">
-												<img src="images/contacts/pic1.jpg" class="avatar avatar-md" alt="">
-												<div>
-													<h6>Noah Oliver</h6>
-													<span>Web Designer</span>
-												</div>
-											</div>
-										</td>
-										<td><span>Computer Science</span></td>
-										<td><span class="text-primary">abc@gmail.com</span></td>
-										<td>
-											<span>+91 123 456 7890</span>
-										</td>
-										<td>
-											<span>Male</span>
-										</td>
-										<td>
-											<span>Delhi</span>
-										</td>
-										<td>
-											<span class="badge badge-danger light border-0">Inactive</span>
-										</td>
-									</tr>
-									<tr>
-										<td><span>1001</span></td>
-										<td>
-											<div class="products">
-												<img src="images/contacts/pic3.jpg" class="avatar avatar-md" alt="">
-												<div>
-													<h6>Elijah James</h6>
-													<span>Web Designer</span>
-												</div>
-											</div>
-										</td>
-										<td><span>Computer Science</span></td>
-										<td><span class="text-primary">abc@gmail.com</span></td>
-										<td>
-											<span>+91 123 456 7890</span>
-										</td>
-										<td>
-											<span>Male</span>
-										</td>
-										<td>
-											<span>Delhi</span>
-										</td>
-										<td>
-											<span class="badge badge-success light border-0">Active</span>
-										</td>
-									</tr>
-									<tr>
-										<td><span>1001</span></td>
-										<td>
-											<div class="products">
-												<img src="images/contacts/pic3.jpg" class="avatar avatar-md" alt="">
-												<div>
-													<h6>James Antony</h6>
-													<span>Web Designer</span>
-												</div>
-											</div>
-										</td>
-										<td><span>Computer Science</span></td>
-										<td><span class="text-primary">abc@gmail.com</span></td>
-										<td>
-											<span>+91 123 456 7890</span>
-										</td>
-										<td>
-											<span>Male</span>
-										</td>
-										<td>
-											<span>Delhi</span>
-										</td>
-										<td>
-											<span class="badge badge-success light border-0">Active</span>
-										</td>
-									</tr>
-									<tr>
-										<td><span>1001</span></td>
-										<td>
-											<div class="products">
-												<img src="images/contacts/pic1.jpg" class="avatar avatar-md" alt="">
-												<div>
-													<h6>William Sokli</h6>
-													<span>Web Designer</span>
-												</div>
-											</div>
-										</td>
-										<td><span>Computer Science</span></td>
-										<td><span class="text-primary">abc@gmail.com</span></td>
-										<td>
-											<span>+91 123 456 7890</span>
-										</td>
-										<td>
-											<span>Male</span>
-										</td>
-										<td>
-											<span>Delhi</span>
-										</td>
-										<td>
-											<span class="badge badge-success light border-0">Active</span>
-										</td>
-									</tr>
-									<tr>
-										<td><span>1001</span></td>
-										<td>
-											<div class="products">
-												<img src="images/contacts/pic2.jpg" class="avatar avatar-md" alt="">
-												<div>
-													<h6>William Sokli</h6>
-													<span>Web Designer</span>
-												</div>
-											</div>
-										</td>
-										<td><span>Computer Science</span></td>
-										<td><span class="text-primary">abc@gmail.com</span></td>
-										<td>
-											<span>+91 123 456 7890</span>
-										</td>
-										<td>
-											<span>Male</span>
-										</td>
-										<td>
-											<span>Delhi</span>
-										</td>
-										<td>
-											<span class="badge badge-danger light border-0">Inactive</span>
-										</td>
-									</tr>
-									<tr>
-										<td><span>1001</span></td>
-										<td>
-											<div class="products">
-												<img src="images/contacts/pic2.jpg" class="avatar avatar-md" alt="">
-												<div>
-													<h6>Benjamin Chaa</h6>
-													<span>Web Designer</span>
-												</div>
-											</div>
-										</td>
-										<td><span>Computer Science</span></td>
-										<td><span class="text-primary">abc@gmail.com</span></td>
-										<td>
-											<span>+91 123 456 7890</span>
-										</td>
-										<td>
-											<span>Male</span>
-										</td>
-										<td>
-											<span>Delhi</span>
-										</td>
-										<td>
-											<span class="badge badge-success light border-0">Active</span>
-										</td>
-									</tr>
-									<tr>
-										<td><span>1001</span></td>
-										<td>
-											<div class="products">
-												<img src="images/contacts/pic1.jpg" class="avatar avatar-md" alt="">
-												<div>
-													<h6>William Sokli</h6>
-													<span>Web Designer</span>
-												</div>
-											</div>
-										</td>
-										<td><span>Computer Science</span></td>
-										<td><span class="text-primary">abc@gmail.com</span></td>
-										<td>
-											<span>+91 123 456 7890</span>
-										</td>
-										<td>
-											<span>Male</span>
-										</td>
-										<td>
-											<span>Delhi</span>
-										</td>
-										<td>
-											<span class="badge badge-danger light border-0">Inactive</span>
-										</td>
-									</tr>
-									<tr>
-										<td><span>1001</span></td>
-										<td>
-											<div class="products">
-												<img src="images/contacts/pic3.jpg" class="avatar avatar-md" alt="">
-												<div>
-													<h6>Ricky Antony</h6>
-													<span>Web Designer</span>
-												</div>
-											</div>
-										</td>
-										<td><span>Computer Science</span></td>
-										<td><span class="text-primary">abc@gmail.com</span></td>
-										<td>
-											<span>+91 123 456 7890</span>
-										</td>
-										<td>
-											<span>Male</span>
-										</td>
-										<td>
-											<span>Delhi</span>
-										</td>
-										<td>
-											<span class="badge badge-success light border-0">Active</span>
-										</td>
-									</tr>
-									<tr>
-										<td><span>1001</span></td>
-										<td>
-											<div class="products">
-												<img src="images/contacts/pic3.jpg" class="avatar avatar-md" alt="">
-												<div>
-													<h6>William Sokli</h6>
-													<span>Web Designer</span>
-												</div>
-											</div>
-										</td>
-										<td><span>Computer Science</span></td>
-										<td><span class="text-primary">abc@gmail.com</span></td>
-										<td>
-											<span>+91 123 456 7890</span>
-										</td>
-										<td>
-											<span>Male</span>
-										</td>
-										<td>
-											<span>Delhi</span>
-										</td>
-										<td>
-											<span class="badge badge-success light border-0">Active</span>
-										</td>
-									</tr>
-									<tr>
-										<td><span>1001</span></td>
-										<td>
-											<div class="products">
-												<img src="images/contacts/pic1.jpg" class="avatar avatar-md" alt="">
-												<div>
-													<h6>Ricky Antony</h6>
-													<span>Web Designer</span>
-												</div>
-											</div>
-										</td>
-										<td><span>Computer Science</span></td>
-										<td><span class="text-primary">abc@gmail.com</span></td>
-										<td>
-											<span>+91 123 456 7890</span>
-										</td>
-										<td>
-											<span>Male</span>
-										</td>
-										<td>
-											<span>Delhi</span>
-										</td>
-										<td>
-											<span class="badge badge-success light border-0">Active</span>
-										</td>
-									</tr>
-									<tr>
-										<td><span>1001</span></td>
-										<td>
-											<div class="products">
-												<img src="images/contacts/pic2.jpg" class="avatar avatar-md" alt="">
-												<div>
-													<h6>William Sokli</h6>
-													<span>Web Designer</span>
-												</div>
-											</div>
-										</td>
-										<td><span>Computer Science</span></td>
-										<td><span class="text-primary">abc@gmail.com</span></td>
-										<td>
-											<span>+91 123 456 7890</span>
-										</td>
-										<td>
-											<span>Male</span>
-										</td>
-										<td>
-											<span>Delhi</span>
-										</td>
-										<td>
-											<span class="badge badge-danger light border-0">Inactive</span>
-										</td>
-									</tr>
+    <div class="page-titles">
+        <ol class="breadcrumb">
+            <li>
+                <h5 class="bc-title">Quản lý sản phẩm</h5>
+            </li>
+        </ol>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-body p-0">
+                        <div class="table-responsive active-projects style-1">
+                            <div class="tbl-caption">
+                                <h4 class="heading mb-0">Sản phẩm</h4>
+                                <div>
+                                    <a onclick="loadViewUpsert('')" class="btn btn-primary btn-sm"
+                                        data-bs-toggle="offcanvas" href="#upsertObject" role="button"
+                                        aria-controls="upsertObject">+ Thêm sản phẩm</a>
+                                </div>
+                            </div>
+                            <div class="table-responsive p-3 datatables">
+                                <table id="products-table" class="display table">
+                                    <thead>
+                                        <tr>
+                                            <th>Tên sản phẩm</th>
+                                            <th>Danh mục</th>
+                                            <th>Số lượng</th>
+                                            <th>Giá</th>
+                                            <th>Ngày tạo</th>
+                                            <th>Ngày cập nhật</th>
+                                            <th>Trạng thái</th>
+                                            <th>Thao tác</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-								</tbody>
+@section upsertObject {
+    <div class="offcanvas offcanvas-end customeoff" tabindex="-1" id="upsertObject">
+    </div>
+}
 
-							</table>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width: 70%; margin-top: 2rem;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">
+                    Thông tin sản phẩm
+                </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <section id="contentDWD">
+                    <div class="row">
+                        <!-- Phần hình ảnh và video -->
+                        <div class="col-md-6">
+                            <!-- Carousel cho hình ảnh -->
+                            <div id="productImageCarousel" class="carousel slide mb-3" data-bs-ride="carousel">
+                                <div class="carousel-inner">
+                                    <!-- Các hình ảnh sẽ được thêm động bằng JavaScript -->
+                                </div>
+                                <button class="carousel-control-prev" type="button"
+                                    data-bs-target="#productImageCarousel" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                </button>
+                                <button class="carousel-control-next" type="button"
+                                    data-bs-target="#productImageCarousel" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                </button>
+                            </div>
 
-	</div>
+                            <!-- Video player -->
+                            <div class="ratio ratio-16x9 mb-3">
+                                <video id="productVideo" controls>
+                                    <source src="" type="video/mp4">
+                                </video>
+                            </div>
+                        </div>
+
+                        <!-- Thông tin chi tiết sản phẩm -->
+                        <div class="col-md-6">
+                            <div class="product-details p-3">
+                                <h4 class="mb-4">Thông tin chi tiết</h4>
+                                <div class="info-group mb-3">
+                                    <label class="text-muted">Tên sản phẩm</label>
+                                    <h5 id="modal-productName" class="mb-0"></h5>
+                                </div>
+                                <div class="info-group mb-3">
+                                    <label class="text-muted">Danh mục</label>
+                                    <h5 id="modal-productCategory" class="mb-0"></h5>
+                                </div>
+                                <div class="info-group mb-3">
+                                    <label class="text-muted">Giá</label>
+                                    <h5 id="modal-productPrice" class="mb-0 text-primary"></h5>
+                                </div>
+                                <div class="info-group mb-3">
+                                    <label class="text-muted">Số lượng</label>
+                                    <h5 id="modal-productQuantity" class="mb-0"></h5>
+                                </div>
+                                <div class="info-group">
+                                    <label class="text-muted">Mô tả</label>
+                                    <p id="modal-productDescription" class="mb-0"></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Thumbnail images -->
+                        <div class="col-12 mt-3">
+                            <div class="d-flex gap-2 flex-wrap" id="thumbnailContainer">
+                                <!-- Thumbnails sẽ được thêm động -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát</button>
+               @*  <button type="button" class="btn btn-primary">Save changes</button> *@
+            </div>
+        </div>
+    </div>
 </div>
 
 
-@section upsertObject {
-	<div class="offcanvas offcanvas-end customeoff" tabindex="-1" id="upsertObject">
-		<partial name="Upsert" />
-	</div>
-}
 
-@section detailWithDelete {
-	<partial name="DetailWithDelete" />
-}
+<!-- Modal -->
+
 
 @section Scripts {
-	<script src="~/js/employee/managerProduct.js" asp-append-version="true"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="~/js/employee/ManagerProduct.js"></script>
 }

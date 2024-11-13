@@ -30,7 +30,7 @@
 <section class="customer-page section-ptb">
     <div class="container">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-12 row justify-content-center text-center">
                 <!-- section title start -->
                 <div class="section-capture">
                     <div class="section-title">
@@ -42,13 +42,13 @@
                 <h2 id="external-login-title">Gắn kết tài khoản của bạn với @Model.ProviderDisplayName.</h2>
                 <hr />
 
-                <p id="external-login-description" class="text-info">
+                <p id="external-login-description" class="text-info mb-3">
                     Bạn đã xác thực thành công với <strong>@Model.ProviderDisplayName</strong>.
                     Vui lòng nhập địa chỉ email cho trang này bên dưới và nhấn nút Đăng ký để hoàn tất
                     việc đăng nhập.
                 </p>
 
-                <div class="row">
+                <div class="row justify-content-center">
                     <div class="col-md-4">
                         <form asp-page-handler="Confirmation" asp-route-returnUrl="@Model.ReturnUrl" method="post">
                             <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
@@ -62,6 +62,7 @@
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 </section>

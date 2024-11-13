@@ -52,7 +52,21 @@ function loadDataTable() {
                             </div>`;
                 }
             }
-        ]
+        ],
+        "language": {
+            "sSearch": "Tìm kiếm:", // Tên trường tìm kiếm
+            "lengthMenu": "Hiển thị _MENU_ mục", // Text phân trang
+            "info": "Hiển thị _START_ đến _END_ trong tổng số _TOTAL_ mục", // Thông tin
+            "paginate": {
+                "first": "<<",
+                "last": ">>",
+                "next": ">",
+                "previous": "<"
+            },
+            "zeroRecords": "Không tìm thấy kết quả nào",
+            "infoEmpty": "Không có mục nào để hiển thị",
+            "infoFiltered": "(lọc từ _MAX_ mục)"
+        }
     });
 }
 
@@ -89,8 +103,8 @@ const loadDetailWithDelete = (id) => {
 
 const DeleteDWD = (id) => {
     Swal.fire({
-        title: "Bạn có chắc?",
-        text: "Bạn sẽ không thể khôi phục lại thông tin bị xóa!",
+        title: "Bạn có chắc chắn không?",
+        text: "Bạn sẽ không thể khôi phục lại thông tin đã xóa!",
         type: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
@@ -100,19 +114,31 @@ const DeleteDWD = (id) => {
         if (result.value) {
             $.ajax({
                 url: `/Employee/ManagerUser/Delete?id=${id}`,
-                method: 'GET',
+                method: 'DELETE',
                 success: (data) => {
-                    Swal.fire({
-                        title: "Đã xóa!",
-                        text: "Thông tin đối được chọn đã bị xóa.",
-                        type: "success"
-                    });
-                    dataTable.ajax.reload();
+                    if (data.success) {
+                        Swal.fire({
+                            title: "Đã xóa!",
+                            text: data.message,
+                            type: "success"
+                        });
+                        dataTable.ajax.reload(); // Tải lại dữ liệu bảng
+                    } else {
+                        Swal.fire({
+                            title: "Lỗi!",
+                            text: data.message,
+                            type: "error"
+                        });
+                    }
                 },
                 error: (xhr) => {
-                    toastr.error("Lỗi xóa thông tin đối tượng")
+                    let message = "Lỗi xóa thông tin đối tượng. Vui lòng thử lại sau.";
+                    if (xhr.responseJSON && xhr.responseJSON.message) {
+                        message = xhr.responseJSON.message; // Đưa ra thông báo cụ thể nếu có
+                    }
+                    toastr.error(message);
                 }
-            })
+            });
         }
     });
 }
