@@ -5,7 +5,7 @@ function loadDataTable() {
         "columns": [
             {
                 data: 'tenCombo',
-                "render": function (data, type, row) {
+                "render": function (data) {
                     return `<strong>${data || 'N/A'}</strong>`;
                 },
                 "title": "Tên Combo",
@@ -41,12 +41,11 @@ function loadDataTable() {
                 "title": "Actions",
                 "width": "20%"
             }
-
         ],
         "language": {
-            "sSearch": "Tìm kiếm:", // Tên trường tìm kiếm
-            "lengthMenu": "Hiển thị _MENU_ mục", // Text phân trang
-            "info": "Hiển thị _START_ đến _END_ trong tổng số _TOTAL_ mục", // Thông tin
+            "sSearch": "Tìm kiếm:",
+            "lengthMenu": "Hiển thị _MENU_ mục",
+            "info": "Hiển thị _START_ đến _END_ trong tổng số _TOTAL_ mục",
             "paginate": {
                 "first": "<<",
                 "last": ">>",
@@ -74,11 +73,10 @@ const loadViewUpsert = (id) => {
             $('#viewFormUpsert').html(data);
         },
         error: (xhr) => {
-            toastr.error("Lỗi tạo form tạo đối tượng người dùng.")
+            toastr.error("Lỗi tạo form tạo đối tượng người dùng.");
         }
-    })
+    });
 };
-
 
 
 const loadDetailWithDelete = (id) => {
@@ -131,7 +129,7 @@ function deleteCombo(id) {
     Swal.fire({
         title: "Bạn có chắc?",
         text: "Bạn sẽ không thể khôi phục lại dữ liệu đã xóa!",
-        type: "warning",  // Đổi 'icon' thành 'type'
+        icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
@@ -140,15 +138,17 @@ function deleteCombo(id) {
     }).then((result) => {
         if (result.value) {
             $.ajax({
-                url: `/Employee/ManagerCombo/Delete`, // Không cần truyền id vào URL
+                url: `/Employee/ManagerCombo/Delete`,
                 method: 'POST',
-                contentType: "application/json", // Đảm bảo gửi dưới dạng JSON
-                data: JSON.stringify(id), // Truyền id vào body dưới dạng JSON
+                contentType: "application/json",
+                data: JSON.stringify(id),
                 success: (data) => {
                     console.log("Server response:", data);
                     if (data.success) {
                         Swal.fire("Đã xóa!", data.message, "success");
-                        dataTable.ajax.reload(); // Tải lại bảng dữ liệu
+                        if (dataTable) {
+                            dataTable.ajax.reload();
+                        }
                     } else {
                         Swal.fire("Lỗi!", data.message, "error");
                     }
@@ -167,19 +167,23 @@ function deleteCombo(id) {
 
 
 
-
-
 function actionUpsertCombo(event) {
     event.preventDefault();
     var formData = new FormData(document.getElementById('formUpsertCombo'));
 
+    // Thêm số lượng cho từng sản phẩm được chọn
     $('#chiTietComboContainer input[type="number"]').each(function () {
         var productId = $(this).attr("name").match(/\d+/)[0];
         var quantity = $(this).val();
         formData.append(`soLuong[${productId}]`, quantity);
     });
 
-    // Loại bỏ các mục có giá trị trống và các '__Invariant' khỏi formData
+    // Kiểm tra giá trị Id và gán mặc định nếu trống
+    if (!formData.get("Id")) {
+        formData.set("Id", "0");
+    }
+
+    // Loại bỏ các trường không hợp lệ hoặc rỗng, bao gồm cả các trường __Invariant
     for (var pair of formData.entries()) {
         if (!pair[1] || pair[0].includes('__Invariant')) {
             formData.delete(pair[0]);
@@ -197,7 +201,9 @@ function actionUpsertCombo(event) {
         success: (data) => {
             if (data.success) {
                 toastr.success(data.message);
-                dataTable.ajax.reload();
+                if (dataTable) {
+                    dataTable.ajax.reload();
+                }
             } else {
                 $('#viewFormUpsert').html(data.data);
                 toastr.error(data.message);
@@ -209,5 +215,6 @@ function actionUpsertCombo(event) {
         }
     });
 }
+
 
 

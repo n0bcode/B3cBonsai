@@ -79,41 +79,41 @@
 		});
 
 		function actionUpsertCombo(event) {
-			event.preventDefault();
+    event.preventDefault();
 
-			var formData = new FormData(document.getElementById('formUpsertCombo'));
+    var formData = new FormData(document.getElementById('formUpsertCombo'));
 
-			// Kiểm tra và log dữ liệu FormData
-			$('#chiTietComboContainer input[type="number"]').each(function () {
-				var productId = $(this).attr("name").match(/\d+/)[0];
-				var quantity = $(this).val();
-				formData.append(`soLuong[${productId}]`, quantity);
-			});
+    // Kiểm tra và log dữ liệu FormData
+    $('#chiTietComboContainer input[type="number"]').each(function () {
+        var productId = $(this).attr("name").match(/\d+/)[0];
+        var quantity = $(this).val();
+        formData.append(`soLuong[${productId}]`, quantity);
+    });
 
-			// Kiểm tra dữ liệu đã được thêm vào formData đúng chưa
-			for (var pair of formData.entries()) {
-				console.log(pair[0] + ', ' + pair[1]);
-			}
+    // Kiểm tra dữ liệu đã được thêm vào formData đúng chưa
+    for (var pair of formData.entries()) {
+        console.log(pair[0]+ ', ' + pair[1]); 
+    }
 
-			$.ajax({
-				url: `/Employee/ManagerCombo/Upsert`,
-				data: formData,
-				method: 'POST',
-				processData: false, // Không xử lý dữ liệu
-				contentType: false, // Không cần thiết lập contentType
-				success: (data) => {
-					if (data.success) {
-						toastr.success(data.message);
-					} else {
-						$('#viewFormUpsert').html(data.data);
-						toastr.error(data.message);
-					}
-				},
-				error: (xhr) => {
-					toastr.error("Có lỗi xảy ra: " + xhr.responseText);
-				}
-			});
-		}
+    $.ajax({
+        url: `/Employee/ManagerCombo/Upsert`,
+        data: formData,
+        method: 'POST',
+        processData: false, // Không xử lý dữ liệu
+        contentType: false, // Không cần thiết lập contentType
+        success: (data) => {
+            if (data.success) {
+                toastr.success(data.message);
+            } else {
+                $('#viewFormUpsert').html(data.data);
+                toastr.error(data.message);
+            }
+        },
+        error: (xhr) => {
+            toastr.error("Có lỗi xảy ra: " + xhr.responseText);
+        }
+    });
+}
 
 	</script>
 
