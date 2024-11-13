@@ -7,7 +7,8 @@
     </div>
     <div class="card-body">
         <form class="form-combo" id="formUpsertCombo" onsubmit="return actionUpsertCombo(event)">
-            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Id" value="@(Model?.Id ?? 0)" />
+
             <div class="form-group mb-3">
                 <label asp-for="TenCombo" class="font-w500">Tên Combo<span class="text-danger">*</span></label>
                 <input asp-for="TenCombo" type="text" class="form-control" placeholder="Tên Combo" required>

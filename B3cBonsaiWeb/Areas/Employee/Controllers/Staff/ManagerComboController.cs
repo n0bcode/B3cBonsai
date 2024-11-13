@@ -21,10 +21,16 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
 		}
         public IActionResult Upsert(string? id)
         {
-            ComboSanPham comboSanPham = string.IsNullOrEmpty(id)
-                ? new ComboSanPham()
-                : _db.ComboSanPhams.Include(cbo => cbo.ChiTietCombos)
-                  .FirstOrDefault(cbo => cbo.Id.ToString() == id) ?? new ComboSanPham();
+            ComboSanPham comboSanPham;
+            if (string.IsNullOrEmpty(id))
+            {
+                comboSanPham = new ComboSanPham();
+            }
+            else
+            {
+                comboSanPham = _db.ComboSanPhams.Include(cbo => cbo.ChiTietCombos)
+                                 .FirstOrDefault(cbo => cbo.Id.ToString() == id) ?? new ComboSanPham();
+            }
 
             var sanPhamList = _db.SanPhams.ToList();
             if (sanPhamList == null || !sanPhamList.Any())
@@ -33,8 +39,9 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
             }
 
             ViewBag.SanPhamList = sanPhamList;
-            return PartialView(comboSanPham);
+            return PartialView(comboSanPham); 
         }
+
 
 
 
@@ -45,7 +52,7 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
             {
                 if (ModelState.IsValid)
                 {
-                    if (obj.Id == 0)
+                    if (obj.Id == 0) // Thêm mới nếu Id là 0
                     {
                         _db.ComboSanPhams.Add(obj);
                         await _db.SaveChangesAsync();
@@ -60,8 +67,8 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
                             };
                             _db.ChiTietCombos.Add(chiTietCombo);
                         }
-
                         await _db.SaveChangesAsync();
+
                         return Json(new { success = true, message = "Thêm Combo thành công" });
                     }
                     else
@@ -81,18 +88,17 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
                             };
                             _db.ChiTietCombos.Add(chiTietCombo);
                         }
-
                         await _db.SaveChangesAsync();
+
                         return Json(new { success = true, message = "Cập nhật Combo thành công" });
                     }
                 }
                 else
                 {
                     var errors = ModelState.Values.SelectMany(v => v.Errors)
-        .           Select(e => e.ErrorMessage).ToList();
+                                   .Select(e => e.ErrorMessage).ToList();
                     Console.WriteLine("ModelState Errors: " + string.Join(", ", errors));
                     return Json(new { success = false, message = "Dữ liệu không hợp lệ: " + string.Join(", ", errors) });
-
                 }
             }
             catch (Exception ex)
@@ -101,12 +107,14 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
                 return Json(new { success = false, message = "Lỗi server: " + ex.Message });
             }
         }
-    
 
 
 
 
-    [HttpPost]
+
+
+
+        [HttpPost]
         public async Task<IActionResult> Delete([FromBody] int id) // Đảm bảo nhận id từ body
         {
             try
