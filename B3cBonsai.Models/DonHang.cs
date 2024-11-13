@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+﻿using B3cBonsai.Utility;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -43,7 +44,7 @@ namespace B3cBonsai.Models
         public string? TrangThaiDonHang { get; set; } // OrderStatus từ `OrderHeader`
 
         [Display(Name = "Trạng Thái Thanh Toán")]
-        public string? TrangThaiThanhToan { get; set; } // PaymentStatus từ `OrderHeader`
+        public string? TrangThaiThanhToan { get; set; } = SD.PaymentStatusPending; // PaymentStatus từ `OrderHeader`
 
         [Display(Name = "Số Theo Dõi")]
         public string? SoTheoDoi { get; set; } // TrackingNumber từ `OrderHeader`
