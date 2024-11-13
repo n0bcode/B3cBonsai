@@ -23,11 +23,47 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
         }
 
 
-        // update sản phẩm
-        public IActionResult Upsert()
+
+        [HttpGet]
+        public async Task<IActionResult> Upsert(int? id)
         {
-            return PartialView();
+            if (id == null)
+            {
+                return PartialView(new SanPham());
+            }
+            var product = await _context.SanPhams.FindAsync(id);
+
+            if (product == null) {
+                return PartialView(new SanPham());
+            } 
+            return View(product);
         }
+
+        [HttpPost]
+        public IActionResult Upsert([FromBody] SanPham model)
+        {
+            if (!ModelState.IsValid)
+                return Json(new { success = false, message = "Dữ liệu không hợp lệ." });
+
+            try
+            {
+                if (model.Id == 0)
+                {
+                    _context.SanPhams.Add(model);
+                }
+                else
+                {
+                    _context.SanPhams.Update(model);
+                }
+                _context.SaveChanges();
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Lỗi: " + ex.Message });
+            }
+        }
+
 
         public IActionResult DetailWithDelete()
         {
@@ -94,39 +130,6 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
                 .ToList();
 
             return Json(new { data = products });
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> Upsert(int? id)
-        {
-            var product = await _context.SanPhams.FindAsync(id);
-
-            return Json(new { data = product });
-        }
-
-        [HttpPost]
-        public IActionResult Upsert([FromBody] SanPham model)
-        {
-            if (!ModelState.IsValid)
-                return Json(new { success = false, message = "Dữ liệu không hợp lệ." });
-
-            try
-            {
-                if (model.Id == 0)
-                {
-                    _context.SanPhams.Add(model);
-                }
-                else
-                {
-                    _context.SanPhams.Update(model);
-                }
-                _context.SaveChanges();
-                return Json(new { success = true });
-            }
-            catch (Exception ex)
-            {
-                return Json(new { success = false, message = "Lỗi: " + ex.Message });
-            }
         }
 
 
