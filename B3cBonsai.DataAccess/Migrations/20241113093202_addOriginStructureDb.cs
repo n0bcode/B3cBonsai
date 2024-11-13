@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace B3cBonsai.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class addOriginStrutureDb : Migration
+    public partial class addOriginStructureDb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -68,6 +68,7 @@ namespace B3cBonsai.DataAccess.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     TenCombo = table.Column<string>(type: "nvarchar(54)", maxLength: 54, nullable: false),
                     MoTa = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LinkAnh = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     GiamGia = table.Column<int>(type: "int", nullable: false),
                     TongGia = table.Column<int>(type: "int", nullable: false)
                 },

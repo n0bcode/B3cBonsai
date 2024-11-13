@@ -66,6 +66,11 @@ namespace B3cBonsai.DataAccess
         #region//Random image Bonsai
         string[] linkImgBonsai = { "https://i.pinimg.com/736x/39/0c/0a/390c0a43f21becd7305ad73a48760f12.jpg", "https://i.pinimg.com/564x/0b/7d/ae/0b7dae3946327c7b03726c0f41ae1def.jpg", "https://i.pinimg.com/564x/4f/97/20/4f9720e73caa7c1a276df615457188c7.jpg", "https://images.pexels.com/photos/1382195/pexels-photo-1382195.jpeg?auto=compress&cs=tinysrgb&w=600", "https://images.pexels.com/photos/2149105/pexels-photo-2149105.jpeg?auto=compress&cs=tinysrgb&w=600", "https://images.pexels.com/photos/6072061/pexels-photo-6072061.jpeg?auto=compress&cs=tinysrgb&w=600", "https://images.pexels.com/photos/4050790/pexels-photo-4050790.jpeg?auto=compress&cs=tinysrgb&w=600", "https://images.pexels.com/photos/5765694/pexels-photo-5765694.jpeg?auto=compress&cs=tinysrgb&w=600", "https://images.pexels.com/photos/5831008/pexels-photo-5831008.jpeg?auto=compress&cs=tinysrgb&w=600", "https://images.pexels.com/photos/28822467/pexels-photo-28822467/free-photo-of-cay-bonsai-phong-mua-thu-r-c-r-tren-n-n-t-i.jpeg?auto=compress&cs=tinysrgb&w=600", "https://images.pexels.com/photos/6852309/pexels-photo-6852309.jpeg?auto=compress&cs=tinysrgb&w=600" };
         #endregion
+
+
+        #region//Hinh ảnh combo Bonsai
+        string[] imagesComboBonsai = new string[] { "https://cdn.pixabay.com/photo/2016/02/10/21/59/landscape-1192669_640.jpg", "https://cdn.pixabay.com/photo/2023/10/12/07/34/mountain-8310076_640.jpg", "https://cdn.pixabay.com/photo/2016/10/19/08/57/mountains-1752433_640.jpg", "https://cdn.pixabay.com/photo/2016/08/12/23/44/river-1590010_640.jpg", "https://cdn.pixabay.com/photo/2022/05/23/11/26/tree-7215935_640.jpg", "https://cdn.pixabay.com/photo/2023/06/16/21/13/landscape-8068792_640.jpg" };
+        #endregion
         Random rd = new Random();
         public string _CakeName()
         {
@@ -185,6 +190,12 @@ namespace B3cBonsai.DataAccess
         public string RandomImageBonsai()
         {
             return linkImgBonsai[rd.Next(linkImgBonsai.Length)];
+        }
+
+        // Random image combo bonsai
+        public string RandomImageComboBonsai()
+        {
+            return imagesComboBonsai[rd.Next(imagesComboBonsai.Length)];
         }
         #endregion
     }
