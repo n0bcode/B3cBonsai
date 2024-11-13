@@ -17,7 +17,7 @@ namespace B3cBonsaiWeb.Areas.Employee.ViewComponents
         public async Task<IViewComponentResult> InvokeAsync()
         {
             var currentUser = await _userManager.GetUserAsync((System.Security.Claims.ClaimsPrincipal)User);
-            return View(_unitOfWork.NguoiDungUngDung.Get(x => x.Id == currentUser.Id));
+            return View(await _unitOfWork.NguoiDungUngDung.Get(x => x.Id == currentUser.Id));
         }
     }
 }
