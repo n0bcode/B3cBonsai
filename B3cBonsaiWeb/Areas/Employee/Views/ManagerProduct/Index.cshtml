@@ -29,6 +29,7 @@
                                 <table id="products-table" class="display table">
                                     <thead>
                                         <tr>
+                                            <th>Id</th>
                                             <th>Tên sản phẩm</th>
                                             <th>Danh mục</th>
                                             <th>Số lượng</th>
@@ -85,11 +86,11 @@
                             </div>
 
                             <!-- Video player -->
-                            <div class="ratio ratio-16x9 mb-3">
+                            @* <div class="ratio ratio-16x9 mb-3">
                                 <video id="productVideo" controls>
                                     <source src="" type="video/mp4">
                                 </video>
-                            </div>
+                            </div> *@
                         </div>
 
                         <!-- Thông tin chi tiết sản phẩm -->
@@ -143,5 +144,45 @@
 
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="~/js/employee/ManagerProduct.js"></script>
+    <script src="~/js/employee/ManagerProduct.js" asp-append-version="true"></script>
+}
+
+
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+
+
+<script src="/lib/jquery/dist/jquery.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+@if (TempData["ThanhCong"] != null)
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            toastr.options = {
+                "closeButton": true,
+                "progressBar": true
+            };
+            toastr.success('@TempData["ThanhCong"]');
+        });
+    </script>
+}
+
+@if (TempData["ThatBai"] != null)
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            toastr.options = {
+                "closeButton": true,
+                "progressBar": true
+            };
+            toastr.error('@TempData["ThatBai"]');
+        });
+    </script>
 }

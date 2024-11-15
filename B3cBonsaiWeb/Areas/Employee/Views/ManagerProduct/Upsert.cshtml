@@ -1,48 +1,65 @@
 ﻿@model B3cBonsai.Models.SanPham
 
 <div class="offcanvas-header">
-    <h5 class="modal-title">Thêm sản phẩm</h5>
+    <h5 class="modal-title">@((Model.Id == 0) ? "Thêm sản phẩm" : "Cập nhật sản phẩm")</h5>
     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 </div>
 <div class="offcanvas-body">
-    <form id="upsertForm" asp-action="YourActionName" asp-controller="YourControllerName" method="post">
+    <form id="upsertForm" asp-action="Upsert" asp-controller="ManagerProduct" method="post" enctype="multipart/form-data">
         <div class="row">
+            @if (Model.Id != 0)
+            {
+                <div class="col-xl-6">
+                    <label asp-for="Id" class="form-label">Mã sản phẩm</label>
+                    <input asp-for="Id" class="form-control" readonly />
+                </div>
+            }
+
             <div class="col-xl-6">
-                <label asp-for="TenSanPham" class="form-label"></label>
+                <label asp-for="TenSanPham" class="form-label">Tên sản phẩm</label>
                 <input asp-for="TenSanPham" class="form-control" />
                 <span asp-validation-for="TenSanPham" class="invalid-feedback"></span>
             </div>
+
             <div class="col-xl-6">
-                <label asp-for="DanhMucId" class="form-label"></label>
+                <label asp-for="DanhMucId" class="form-label">Danh mục</label>
                 <select asp-for="DanhMucId" class="default-select form-control" asp-items="ViewBag.DanhMucOptions">
                     <option value="">Chọn danh mục</option>
                 </select>
                 <span asp-validation-for="DanhMucId" class="invalid-feedback"></span>
             </div>
+
             <div class="col-xl-6">
-                <label asp-for="SoLuong" class="form-label"></label>
+                <label asp-for="SoLuong" class="form-label">Số lượng</label>
                 <input asp-for="SoLuong" class="form-control" />
                 <span asp-validation-for="SoLuong" class="invalid-feedback"></span>
             </div>
+
             <div class="col-xl-6">
-                <label asp-for="Gia" class="form-label"></label>
+                <label asp-for="Gia" class="form-label">Giá</label>
                 <input asp-for="Gia" class="form-control" />
                 <span asp-validation-for="Gia" class="invalid-feedback"></span>
             </div>
+
+
             <div class="col-xl-12">
-                <label asp-for="MoTa" class="form-label"></label>
+                <label asp-for="MoTa" class="form-label">Mô tả</label>
                 <textarea asp-for="MoTa" class="form-control" rows="4"></textarea>
             </div>
+
+
             <div class="col-xl-12">
-                <div class="form-check">
-                    <input asp-for="TrangThai" class="form-check-input" />
-                    <label asp-for="TrangThai" class="form-check-label"></label>
-                    <span asp-validation-for="TrangThai" class="invalid-feedback"></span>
-                </div>
+                <label for="HinhAnhs" class="form-label">Hình ảnh</label>
+                <input type="file" name="HinhAnhs" class="form-control" multiple />
             </div>
+
+         
             <div class="col-12 text-center">
-                <button type="submit" class="btn btn-primary">Thêm mới</button>
+                <br />
+                <button type="submit" class="btn btn-primary">Lưu lại</button>
             </div>
         </div>
     </form>
 </div>
+
+
