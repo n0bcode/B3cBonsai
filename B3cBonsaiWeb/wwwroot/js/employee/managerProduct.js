@@ -26,8 +26,8 @@ function loadDataTable() {
             { data: "ngayTao", "render": function (data) { return new Date(data).toLocaleDateString(); } },
             { data: "ngaySuaDoi", "render": function (data) { return new Date(data).toLocaleDateString(); } },
             {
-                data: "trangThai", "render": function (data) {
-                    return `<span  onclick="changeStatus(${data.id})" class="badge ${data ? 'badge-success' : 'badge-danger'}">${data ? "Đang hoạt động" : "Đã bị khóa"}</span>`;
+                data: null, "render": function (data) {
+                    return `<span  onclick="changeStatus(${data.id})" class="badge ${data.trangThai ? 'badge-success' : 'badge-danger'}">${data.trangThai ? "Đang hoạt động" : "Đã bị khóa"}</span>`;
                 }
             },
             {
@@ -36,7 +36,7 @@ function loadDataTable() {
                     return `
                             <div class="d-flex gap-2">
                                 <a onclick="loadViewUpsert('${data.id}')" class="btn btn-primary shadow btn-xs sharp me-1" data-bs-toggle="offcanvas" href="#upsertObject"><i class="fas fa-pencil-alt"></i></a>
-                                <button class="btn btn-danger shadow btn-xs sharp me-1"> <i class="fa-solid fa-trash"></i> </button>
+                                <button onclick="DeleteDWD('${data.id}')"class="btn btn-danger shadow btn-xs sharp me-1"> <i class="fa-solid fa-trash"></i> </button>
                             </div>
                     `;
                 }
@@ -52,8 +52,8 @@ function loadDataTable() {
                 "next": ">",
                 "previous": "<"
             },
-            "zeroRecords": "Không tìm thấy kết quả nào",
-            "infoEmpty": "Không có mục nào để hiển thị",
+            "zeroRecords": " <div style='text-align: center;'>Không tìm thấy kết quả nào.</div> ",
+            "infoEmpty": "Không có mục nào để hiển thị.",
             "infoFiltered": "(lọc từ _MAX_ mục)"
         }
     });
@@ -142,12 +142,13 @@ const loadViewUpsert = (id) => {
 function changeStatus(id) {
     Swal.fire({
         title: "Bạn có chắc chắn?",
-        text: "Bạn sẽ không thể khôi phục lại sản phẩm này!",
+        text: "Thay đổi tình trạng hiển thị của sản phẩm đối với khách hàng!",
         type: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Vâng, xóa đi!"
+        confirmButtonText: "Thay đổi",
+        cancelButtonText: "Hủy"
     }).then((result) => {
         if (result.value) {
             $.ajax({
@@ -155,11 +156,44 @@ function changeStatus(id) {
                 method: "POST",
                 data: { id: id },
                 success: function (response) {
-                    Swal.fire("Đã xóa!", "Sản phẩm đã bị xóa.", "success");
+                    Swal.fire("Thay đổi!", "Tình trạng thay đổi.", "success");
                     dataTable.ajax.reload();
                 },
                 error: function (xhr, status, error) {
-                    Swal.fire("Lỗi!", "Không thể xóa sản phẩm.", "error");
+                    Swal.fire("Lỗi!", "Không thể thay đổi tình trạng sản phẩm.", "error");
+                }
+            });
+        }
+    });
+}
+
+
+function DeleteDWD(id) {
+    Swal.fire({
+        title: "Bạn có chắc chắn?",
+        text: "Xóa sản phẩm này",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Xóa",
+        cancelButtonText: "Hủy"
+    }).then((result) => {
+        if (result.value) {
+            $.ajax({
+                url: "/Employee/ManagerProduct/Delete",
+                method: "POST",
+                data: { id: id },
+                success: function (response) {
+                    if (response.success) {
+                        Swal.fire("Đã xóa!", "Sản phẩm đã xóa.", "success");
+                        dataTable.ajax.reload();
+                    } else {
+                        Swal.fire("Xóa!", response.message, "info");
+                    }
+                },
+                error: function (xhr, status, error) {
+                    Swal.fire("Lỗi!", "Không thể thay đổi tình trạng sản phẩm.", "error");
                 }
             });
         }
