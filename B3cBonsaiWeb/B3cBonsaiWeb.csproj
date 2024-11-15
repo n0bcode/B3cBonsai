@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\js\customer\**" />
+    <Content Remove="wwwroot\js\customer\**" />
+    <EmbeddedResource Remove="wwwroot\js\customer\**" />
+    <None Remove="wwwroot\js\customer\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Areas\Employee\Views\Shared\_Layout.cshtml~RFeb5e55.TMP" />
   </ItemGroup>
 
@@ -29,10 +36,6 @@
     <ProjectReference Include="..\B3cBonsai.DataAccess\B3cBonsai.DataAccess.csproj" />
     <ProjectReference Include="..\B3cBonsai.Models\B3cBonsai.Models.csproj" />
     <ProjectReference Include="..\B3cBonsai.Utility\B3cBonsai.Utility.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\js\customer\" />
   </ItemGroup>
 
 </Project>
