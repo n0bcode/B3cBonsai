@@ -1,46 +1,26 @@
 ﻿@model B3cBonsai.Models.DanhMucSanPham
 
-<div>
-    <form id="upsertCategoryForm" asp-action="Upsert" method="post">
-        <input type="hidden" asp-for="Id" />
 
-        <div class="form-group">
-            <label asp-for="TenDanhMuc" class="font-weight-bold">Tên Danh Mục</label>
-            <input asp-for="TenDanhMuc" class="form-control" placeholder="Nhập tên danh mục" required />
-            <span asp-validation-for="TenDanhMuc" class="text-danger"></span>
-        </div>
+<div class="card h-auto">
+    <div class="card-header">
+        <h4 class="heading mb-0">@(Model.Id == 0 || Model == null ? "Thêm" : "Sửa") danh mục sản phẩm</h4>
+    </div>
+    <div class="card-body">
+        <form class="form-combo" id="formUpsertCombo" onsubmit="return submitUpsertForm(event);">
 
-        <button type="submit" class="btn btn-primary">Lưu</button>
-    </form>
+            <div class="form-group mb-3">
+                <label asp-for="Id" class="font-weight-bold">Mã Danh Mục</label>
+                <input asp-for="Id" class="form-control" placeholder="Bạn đang tạo danh mục.." />
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="TenDanhMuc" class="font-weight-bold">Tên Danh Mục</label>
+                <input asp-for="TenDanhMuc" class="form-control" placeholder="Nhập tên danh mục" required />
+                <span asp-validation-for="TenDanhMuc" class="text-danger"></span>
+            </div>
+
+            <!-- Nút xác nhận -->
+            <button type="submit" class="btn btn-primary mb-3">Xác Nhận</button>
+        </form>
+    </div>
 </div>
-
-@section Scripts {
-    <script>
-        $('#upsertCategoryForm').on('submit', function (event) {
-            event.preventDefault();
-
-            $.ajax({
-                url: '@Url.Action("Upsert", "ManagerCategory", new { area = "Employee" })',
-                type: 'POST',
-                data: $(this).serialize(),
-                success: function (data) {
-                    if (data.success) {
-                        toastr.success(data.message); // Hiển thị thông báo thành công
-                        $('#upsertModal').modal('hide'); // Đóng modal
-                        $('#categoryTable').DataTable().ajax.reload(); // Tải lại bảng
-                    } else {
-                        toastr.error(data.message); // Hiển thị lỗi trong toastr
-                    }
-                },
-                error: function () {
-                    toastr.error("Đã xảy ra lỗi khi lưu danh mục."); // Hiển thị thông báo lỗi
-                }
-            });
-        });
-
-        // Sử dụng jQuery để đóng modal khi click vào X hoặc Đóng
-        $('#upsertModal .close, #upsertModal .btn-secondary').on('click', function () {
-            $('#upsertModal').modal('hide');
-        });
-    </script>
-}
