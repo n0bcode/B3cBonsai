@@ -1,7 +1,6 @@
-﻿
-@{
-    ViewData["Title"] = "Index";
-    Layout = "~/Areas/Employee/Views/Shared/_Layout.cshtml";
+﻿@{
+	ViewData["Title"] = "Index";
+	Layout = "~/Areas/Employee/Views/Shared/_Layout.cshtml";
 }
 
 
@@ -9,23 +8,22 @@
 	<!-- row -->
 	<div class="page-titles">
 		<ol class="breadcrumb">
-			<li><h5 class="bc-title">Task</h5></li>
+			<li><h5 class="bc-title">Đơn hàng</h5></li>
 			<li class="breadcrumb-item">
 				<a href="javascript:void(0)">
 					<svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<path d="M2.125 6.375L8.5 1.41667L14.875 6.375V14.1667C14.875 14.5424 14.7257 14.9027 14.4601 15.1684C14.1944 15.4341 13.8341 15.5833 13.4583 15.5833H3.54167C3.16594 15.5833 2.80561 15.4341 2.53993 15.1684C2.27426 14.9027 2.125 14.5424 2.125 14.1667V6.375Z" stroke="#2C2C2C" stroke-linecap="round" stroke-linejoin="round" />
 						<path d="M6.375 15.5833V8.5H10.625V15.5833" stroke="#2C2C2C" stroke-linecap="round" stroke-linejoin="round" />
 					</svg>
-					Home
+					Trang chủ
 				</a>
 			</li>
-			<li class="breadcrumb-item active"><a href="javascript:void(0)">Task</a></li>
+			<li class="breadcrumb-item active"><a href="javascript:void(0)">Đơn hàng</a></li>
 		</ol>
-		<a class="text-primary fs-13" data-bs-toggle="offcanvas" href="#upsertObject1" role="button" aria-controls="upsertObject1">+ Add Task</a>
 	</div>
 	<div class="container-fluid">
 		<div class="d-flex justify-content-between align-items-center mb-4">
-			<h5 class="mb-0">Tasks Summary</h5>
+			<h5 class="mb-0">Đơn hàng</h5>
 			<div class="d-flex align-items-center">
 				<div class="icon-box  icon-box-sm task-tab me-2">
 					<a asp-area="Employee" asp-controller="ManagerOrder" asp-action="OrderSummary">
@@ -37,7 +35,6 @@
 						</svg>
 					</a>
 				</div>
-				<a href="javascript:void(0)" class="btn btn-primary btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#exampleModal">+ Add Task</a>
 			</div>
 		</div>
 		<div class="row">
@@ -48,57 +45,64 @@
 							<div class="col-xl-2 col-sm-4 col-6">
 								<div class="task-summary">
 									<div class="d-flex align-items-center">
-										<h2 class="text-primary count">8</h2>
-										<span>Not Started</span>
+										<h2 class="text-primary count">@TempData["NotStartedCount"]</h2>
+										<span>Chưa bắt đầu</span>
 									</div>
-									<p>Tasks assigne</p>
+									<p>Chưa bắt đầu</p>
 								</div>
 							</div>
+
 							<div class="col-xl-2 col-sm-4 col-6">
 								<div class="task-summary">
 									<div class="d-flex align-items-center">
-										<h2 class="text-purple count">7</h2>
-										<span>In Progress</span>
+										<h2 class="text-purple count">@TempData["InProgressCount"]</h2>
+										<span>Đang xử lý</span>
 									</div>
-									<p>Tasks assigne</p>
+									<p>Đang xử lý</p>
 								</div>
 							</div>
+
 							<div class="col-xl-2 col-sm-4 col-6">
 								<div class="task-summary">
 									<div class="d-flex align-items-center">
-										<h2 class="text-warning count">13</h2>
-										<span>Testing</span>
+										<h2 class="text-warning count">@TempData["TestingCount"]</h2>
+										<span>Đang kiểm tra</span>
 									</div>
-									<p>Tasks assigne</p>
+									<p>Đang kiểm tra</p>
 								</div>
 							</div>
+
 							<div class="col-xl-2 col-sm-4 col-6">
 								<div class="task-summary">
 									<div class="d-flex align-items-center">
-										<h2 class="text-danger count">11</h2>
-										<span>Awaiting</span>
+										<h2 class="text-danger count">@TempData["AwaitingCount"]</h2>
+										<span>Đang chờ</span>
 									</div>
-									<p>Tasks assigne</p>
+									<p>Đang chờ</p>
 								</div>
 							</div>
+
 							<div class="col-xl-2 col-sm-4 col-6">
 								<div class="task-summary">
 									<div class="d-flex align-items-center">
-										<h2 class="text-success count">21</h2>
-										<span>Complete</span>
+										<h2 class="text-success count">@TempData["CompleteCount"]</h2>
+										<span>Hoàn thành</span>
 									</div>
-									<p>Tasks assigne</p>
+									<p>Hoàn thành</p>
 								</div>
 							</div>
+
 							<div class="col-xl-2 col-sm-4 col-6">
 								<div class="task-summary">
 									<div class="d-flex align-items-center">
-										<h2 class="text-danger count">16</h2>
-										<span>pending</span>
+										<h2 class="text-danger count">@TempData["PendingCount"]</h2>
+										<span>Chờ thanh toán</span>
 									</div>
-									<p>Tasks assigne</p>
+									<p>Chờ thanh toán</p>
 								</div>
 							</div>
+
+
 						</div>
 					</div>
 				</div>
@@ -107,507 +111,22 @@
 				<div class="card">
 					<div class="card-body p-0">
 						<div class="table-responsive active-projects task-table">
-							<div class="tbl-caption">
-								<h4 class="heading mb-0">Task</h4>
+							<div class="tbl-caption d-flex justify-content-between">
+								<h4 class="heading mb-0">Đơn hàng</h4>
+								<form asp-action="ExportOrders" 
+													  tabindex="0"
+													  aria-controls="reports-tbl"
+													  type="button">
+									<button type="submit" class="dt-button buttons-excel buttons-html5 btn btn-sm border-0"><i class="fa-solid fa-file-excel"></i> Xuất danh sách</button>
+								</form>
 							</div>
-							<table id="empoloyeestbl2" class="table">
+							<div class="table-responsive p-3 datatables">
+								<table id="tableOrder" class="table display">
 								<thead>
-									<tr>
-										<th>
-											<div class="form-check custom-checkbox">
-												<input type="checkbox" class="form-check-input" id="checkAll" required>
-												<label class="form-check-label" for="checkAll"></label>
-											</div>
-										</th>
-										<th>#</th>
-										<th>Name</th>
-										<th>Status</th>
-										<th>Start Date</th>
-										<th>End Date</th>
-										<th>Assigned To</th>
-										<th>Tags</th>
-										<th class="text-end">Priority</th>
-									</tr>
 								</thead>
-								<tbody>
-									<tr>
-										<td>
-											<div class="form-check custom-checkbox">
-												<input type="checkbox" class="form-check-input" id="customCheckBox3" required>
-												<label class="form-check-label" for="customCheckBox3"></label>
-											</div>
-										</td>
-										<td><span>03</span></td>
-										<td>
-											<div class="products">
-												<div>
-													<h6>Create Frontend WordPress</h6>
-													<span>INV-100023456</span>
-												</div>
-											</div>
-										</td>
-										<td>
-											<select class="default-select status-select">
-												<option value="complete">Complete</option>
-												<option value="pending">Pending</option>
-												<option value="testing">Testing</option>
-												<option value="progress">In Progress</option>
-											</select>
-										</td>
-										<td><span>06 Feb 2023</span></td>
-										<td>
-											<span>19 Feb 2023</span>
-										</td>
-										<td>
-											<div class="avatar-list avatar-list-stacked">
-												<img src="images/contacts/pic666.jpg" class="avatar rounded-circle" alt="">
-												<img src="images/contacts/pic555.jpg" class="avatar rounded-circle" alt="">
-												<img src="images/contacts/pic666.jpg" class="avatar rounded-circle" alt="">
-											</div>
-										</td>
-										<td>
-											<span class="badge badge-primary light border-0 me-1">Issue</span>
-											<span class="badge badge-primary light border-0 ms-1">HTML</span>
-										</td>
-										<td class="text-end">
-											<select class="default-select status-select">
-												<option value="Medium">Medium</option>
-												<option value="High">High</option>
-												<option value="Low">Low</option>
-											</select>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<div class="form-check custom-checkbox">
-												<input type="checkbox" class="form-check-input" id="customCheckBox4" required>
-												<label class="form-check-label" for="customCheckBox4"></label>
-											</div>
-										</td>
-										<td><span>04</span></td>
-										<td>
-											<div class="products">
-												<div>
-													<h6>HTML To React Convert </h6>
-													<span>INV-100023456</span>
-												</div>
-											</div>
-										</td>
-										<td>
-											<select class="default-select status-select">
-												<option value="testing">Testing</option>
-												<option value="complete">Complete</option>
-												<option value="pending">Pending</option>
-												<option value="progress">In Progress</option>
-											</select>
-										</td>
-										<td><span>06 Feb 2023</span></td>
-										<td>
-											<span>19 Feb 2023</span>
-										</td>
-										<td>
-											<div class="avatar-list avatar-list-stacked">
-												<img src="images/contacts/pic666.jpg" class="avatar rounded-circle" alt="">
-												<img src="images/contacts/pic555.jpg" class="avatar rounded-circle" alt="">
-												<img src="images/contacts/pic666.jpg" class="avatar rounded-circle" alt="">
-											</div>
-										</td>
-										<td>
-											<span class="badge badge-primary light border-0 me-1">Issue</span>
-											<span class="badge badge-primary light border-0 ms-1">HTML</span>
-										</td>
-										<td class="text-end">
-											<select class="default-select status-select">
-												<option value="High">High</option>
-												<option value="Medium">Medium</option>
-												<option value="Low">Low</option>
-											</select>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<div class="form-check custom-checkbox">
-												<input type="checkbox" class="form-check-input" id="customCheckBox5" required>
-												<label class="form-check-label" for="customCheckBox5"></label>
-											</div>
-										</td>
-										<td><span>05</span></td>
-										<td>
-											<div class="products">
-												<div>
-													<h6>HTML template Issue Complete</h6>
-													<span>INV-100023456</span>
-												</div>
-											</div>
-										</td>
-										<td>
-											<select class="default-select status-select">
-												<option value="pending">Pending</option>
-												<option value="testing">Testing</option>
-												<option value="complete">Complete</option>
-												<option value="progress">In Progress</option>
-											</select>
-										</td>
-										<td><span>06 Feb 2023</span></td>
-										<td>
-											<span>19 Feb 2023</span>
-										</td>
-										<td>
-											<div class="avatar-list avatar-list-stacked">
-												<img src="images/contacts/pic666.jpg" class="avatar rounded-circle" alt="">
-												<img src="images/contacts/pic555.jpg" class="avatar rounded-circle" alt="">
-												<img src="images/contacts/pic1.jpg" class="avatar rounded-circle" alt="">
-												<img src="images/contacts/pic666.jpg" class="avatar rounded-circle" alt="">
-											</div>
-										</td>
-										<td>
-											<span class="badge badge-primary light border-0 me-1">Issue</span>
-											<span class="badge badge-primary light border-0 ms-1">HTML</span>
-										</td>
-										<td class="text-end">
-											<select class="default-select status-select">
-												<option value="High">High</option>
-												<option value="Medium">Medium</option>
-												<option value="Low">Low</option>
-											</select>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<div class="form-check custom-checkbox">
-												<input type="checkbox" class="form-check-input" id="customCheckBox6" required>
-												<label class="form-check-label" for="customCheckBox6"></label>
-											</div>
-										</td>
-										<td><span>06</span></td>
-										<td>
-											<div class="products">
-												<div>
-													<h6>Complete Admin Dashboard Project</h6>
-													<span>INV-100023456</span>
-												</div>
-											</div>
-										</td>
-										<td>
-											<select class="default-select status-select">
-												<option value="progress">In Progress</option>
-												<option value="pending">Pending</option>
-												<option value="testing">Testing</option>
-												<option value="complete">Complete</option>
-											</select>
-										</td>
-										<td><span>06 Feb 2023</span></td>
-										<td>
-											<span>19 Feb 2023</span>
-										</td>
-										<td>
-											<div class="avatar-list avatar-list-stacked">
-												<img src="images/contacts/pic666.jpg" class="avatar rounded-circle" alt="">
-												<img src="images/contacts/pic555.jpg" class="avatar rounded-circle" alt="">
-												<img src="images/contacts/pic1.jpg" class="avatar rounded-circle" alt="">
-												<img src="images/contacts/pic555.jpg" class="avatar rounded-circle" alt="">
-												<img src="images/contacts/pic666.jpg" class="avatar rounded-circle" alt="">
-											</div>
-										</td>
-										<td>
-											<span class="badge badge-primary light border-0 me-1">Issue</span>
-											<span class="badge badge-primary light border-0 ms-1">HTML</span>
-										</td>
-										<td class="text-end">
-											<select class="default-select status-select">
-												<option value="Low">Low</option>
-												<option value="High">High</option>
-												<option value="Medium">Medium</option>
-											</select>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<div class="form-check custom-checkbox">
-												<input type="checkbox" class="form-check-input" id="customCheckBox7" required>
-												<label class="form-check-label" for="customCheckBox7"></label>
-											</div>
-										</td>
-										<td><span>07</span></td>
-										<td>
-											<div class="products">
-												<div>
-													<h6>Create Frontend WordPress</h6>
-													<span>INV-100023456</span>
-												</div>
-											</div>
-										</td>
-										<td>
-											<select class="default-select status-select">
-												<option value="complete">Complete</option>
-												<option value="pending">Pending</option>
-												<option value="testing">Testing</option>
-												<option value="progress">In Progress</option>
-											</select>
-										</td>
-										<td><span>06 Feb 2023</span></td>
-										<td>
-											<span>19 Feb 2023</span>
-										</td>
-										<td>
-											<div class="avatar-list avatar-list-stacked">
-												<img src="images/contacts/pic666.jpg" class="avatar rounded-circle" alt="">
-												<img src="images/contacts/pic555.jpg" class="avatar rounded-circle" alt="">
-												<img src="images/contacts/pic666.jpg" class="avatar rounded-circle" alt="">
-											</div>
-										</td>
-										<td>
-											<span class="badge badge-primary light border-0 me-1">Issue</span>
-											<span class="badge badge-primary light border-0 ms-1">HTML</span>
-										</td>
-										<td class="text-end">
-											<select class="default-select status-select">
-												<option value="Medium">Medium</option>
-												<option value="High">High</option>
-												<option value="Low">Low</option>
-											</select>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<div class="form-check custom-checkbox">
-												<input type="checkbox" class="form-check-input" id="customCheckBox8" required>
-												<label class="form-check-label" for="customCheckBox8"></label>
-											</div>
-										</td>
-										<td><span>08</span></td>
-										<td>
-											<div class="products">
-												<div>
-													<h6>HTML To React Convert </h6>
-													<span>INV-100023456</span>
-												</div>
-											</div>
-										</td>
-										<td>
-											<select class="default-select status-select">
-												<option value="testing">Testing</option>
-												<option value="complete">Complete</option>
-												<option value="pending">Pending</option>
-												<option value="progress">In Progress</option>
-											</select>
-										</td>
-										<td><span>06 Feb 2023</span></td>
-										<td>
-											<span>19 Feb 2023</span>
-										</td>
-										<td>
-											<div class="avatar-list avatar-list-stacked">
-												<img src="images/contacts/pic666.jpg" class="avatar rounded-circle" alt="">
-												<img src="images/contacts/pic555.jpg" class="avatar rounded-circle" alt="">
-												<img src="images/contacts/pic666.jpg" class="avatar rounded-circle" alt="">
-											</div>
-										</td>
-										<td>
-											<span class="badge badge-primary light border-0 me-1">Issue</span>
-											<span class="badge badge-primary light border-0 ms-1">HTML</span>
-										</td>
-										<td class="text-end">
-											<select class="default-select status-select">
-												<option value="High">High</option>
-												<option value="Medium">Medium</option>
-												<option value="Low">Low</option>
-											</select>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<div class="form-check custom-checkbox">
-												<input type="checkbox" class="form-check-input" id="customCheckBox9" required>
-												<label class="form-check-label" for="customCheckBox9"></label>
-											</div>
-										</td>
-										<td><span>09</span></td>
-										<td>
-											<div class="products">
-												<div>
-													<h6>HTML template Issue Complete</h6>
-													<span>INV-100023456</span>
-												</div>
-											</div>
-										</td>
-										<td>
-											<select class="default-select status-select">
-												<option value="pending">Pending</option>
-												<option value="testing">Testing</option>
-												<option value="complete">Complete</option>
-												<option value="progress">In Progress</option>
-											</select>
-										</td>
-										<td><span>06 Feb 2023</span></td>
-										<td>
-											<span>19 Feb 2023</span>
-										</td>
-										<td>
-											<div class="avatar-list avatar-list-stacked">
-												<img src="images/contacts/pic666.jpg" class="avatar rounded-circle" alt="">
-												<img src="images/contacts/pic555.jpg" class="avatar rounded-circle" alt="">
-												<img src="images/contacts/pic1.jpg" class="avatar rounded-circle" alt="">
-												<img src="images/contacts/pic666.jpg" class="avatar rounded-circle" alt="">
-											</div>
-										</td>
-										<td>
-											<span class="badge badge-primary light border-0 me-1">Issue</span>
-											<span class="badge badge-primary light border-0 ms-1">HTML</span>
-										</td>
-										<td class="text-end">
-											<select class="default-select status-select">
-												<option value="High">High</option>
-												<option value="Medium">Medium</option>
-												<option value="Low">Low</option>
-											</select>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<div class="form-check custom-checkbox">
-												<input type="checkbox" class="form-check-input" id="customCheckBox10" required>
-												<label class="form-check-label" for="customCheckBox10"></label>
-											</div>
-										</td>
-										<td><span>10</span></td>
-										<td>
-											<div class="products">
-												<div>
-													<h6>Complete Admin Dashboard Project</h6>
-													<span>INV-100023456</span>
-												</div>
-											</div>
-										</td>
-										<td>
-											<select class="default-select status-select">
-												<option value="progress">In Progress</option>
-												<option value="pending">Pending</option>
-												<option value="testing">Testing</option>
-												<option value="complete">Complete</option>
-											</select>
-										</td>
-										<td><span>06 Feb 2023</span></td>
-										<td>
-											<span>19 Feb 2023</span>
-										</td>
-										<td>
-											<div class="avatar-list avatar-list-stacked">
-												<img src="images/contacts/pic666.jpg" class="avatar rounded-circle" alt="">
-												<img src="images/contacts/pic555.jpg" class="avatar rounded-circle" alt="">
-												<img src="images/contacts/pic1.jpg" class="avatar rounded-circle" alt="">
-												<img src="images/contacts/pic555.jpg" class="avatar rounded-circle" alt="">
-												<img src="images/contacts/pic666.jpg" class="avatar rounded-circle" alt="">
-											</div>
-										</td>
-										<td>
-											<span class="badge badge-primary light border-0 me-1">Issue</span>
-											<span class="badge badge-primary light border-0 ms-1">HTML</span>
-										</td>
-										<td class="text-end">
-											<select class="default-select status-select">
-												<option value="Low">Low</option>
-												<option value="High">High</option>
-												<option value="Medium">Medium</option>
-											</select>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<div class="form-check custom-checkbox">
-												<input type="checkbox" class="form-check-input" id="customCheckBox11" required>
-												<label class="form-check-label" for="customCheckBox11"></label>
-											</div>
-										</td>
-										<td><span>11</span></td>
-										<td>
-											<div class="products">
-												<div>
-													<h6>Create Frontend WordPress</h6>
-													<span>INV-100023456</span>
-												</div>
-											</div>
-										</td>
-										<td>
-											<select class="default-select status-select">
-												<option value="complete">Complete</option>
-												<option value="pending">Pending</option>
-												<option value="testing">Testing</option>
-												<option value="progress">In Progress</option>
-											</select>
-										</td>
-										<td><span>06 Feb 2023</span></td>
-										<td>
-											<span>19 Feb 2023</span>
-										</td>
-										<td>
-											<div class="avatar-list avatar-list-stacked">
-												<img src="images/contacts/pic666.jpg" class="avatar rounded-circle" alt="">
-												<img src="images/contacts/pic555.jpg" class="avatar rounded-circle" alt="">
-												<img src="images/contacts/pic666.jpg" class="avatar rounded-circle" alt="">
-											</div>
-										</td>
-										<td>
-											<span class="badge badge-primary light border-0 me-1">Issue</span>
-											<span class="badge badge-primary light border-0 ms-1">HTML</span>
-										</td>
-										<td class="text-end">
-											<select class="default-select status-select">
-												<option value="Medium">Medium</option>
-												<option value="High">High</option>
-												<option value="Low">Low</option>
-											</select>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<div class="form-check custom-checkbox">
-												<input type="checkbox" class="form-check-input" id="customCheckBox12" required>
-												<label class="form-check-label" for="customCheckBox12"></label>
-											</div>
-										</td>
-										<td><span>12</span></td>
-										<td>
-											<div class="products">
-												<div>
-													<h6>HTML To React Convert </h6>
-													<span>INV-100023456</span>
-												</div>
-											</div>
-										</td>
-										<td>
-											<select class="default-select status-select">
-												<option value="testing">Testing</option>
-												<option value="complete">Complete</option>
-												<option value="pending">Pending</option>
-												<option value="progress">In Progress</option>
-											</select>
-										</td>
-										<td><span>06 Feb 2023</span></td>
-										<td>
-											<span>19 Feb 2023</span>
-										</td>
-										<td>
-											<div class="avatar-list avatar-list-stacked">
-												<img src="images/contacts/pic666.jpg" class="avatar rounded-circle" alt="">
-												<img src="images/contacts/pic555.jpg" class="avatar rounded-circle" alt="">
-												<img src="images/contacts/pic666.jpg" class="avatar rounded-circle" alt="">
-											</div>
-										</td>
-										<td>
-											<span class="badge badge-primary light border-0 me-1">Issue</span>
-											<span class="badge badge-primary light border-0 ms-1">HTML</span>
-										</td>
-										<td class="text-end">
-											<select class="default-select status-select">
-												<option value="High">High</option>
-												<option value="Medium">Medium</option>
-												<option value="Low">Low</option>
-											</select>
-										</td>
-									</tr>
-								</tbody>
+								<tbody></tbody>
 							</table>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -618,32 +137,5 @@
 </div>
 
 @section Scripts {
-	<script>
-		$(document).ready(function() {
-
-		  var counters = $(".count");
-		  var countersQuantity = counters.length;
-		  var counter = [];
-
-		  for (i = 0; i < countersQuantity; i++) {
-			counter[i] = parseInt(counters[i].innerHTML);
-		  }
-
-		  var count = function(start, value, id) {
-			var localStart = start;
-			setInterval(function() {
-			  if (localStart < value) {
-				localStart++;
-				counters[id].innerHTML = localStart;
-			  }
-			}, 500);
-		  }
-
-		  for (j = 0; j < countersQuantity; j++) {
-			count(0, counter[j], j);
-		  }
-		});
-	</script>
-
-	<script src="~/js/employee/managerOrder.js" asp-append-version="true"></script>
+	<script src="~/js//employee/managerOrder.js"></script>
 }

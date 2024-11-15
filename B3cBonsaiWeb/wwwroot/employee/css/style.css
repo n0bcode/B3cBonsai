@@ -1,7 +1,7 @@
 ﻿/*
     Table of Contents
 
-    Name                 : W3CRM
+    Name                 : B3cBonsai
     Author               : Dexignzone
     Author Portfolio     : https://themeforest.net/user/dexignzone/portfolio
     
@@ -54,6 +54,11 @@
 @import url("https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800");
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:400,600,700");
 @import url("https://fonts.googleapis.com/css?family=Roboto:400,500,700");
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&amp;family=Outfit:wght@100..900&amp;display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Merriweather+Sans:wght@400;700&display=swap');
+
 @import url("../icons/simple-line-icons/css/simple-line-icons.css");
 @import url("../icons/fontawesome6/css/all.min.css");
 @import url("../icons/fontawesome/css/all.min.css");
@@ -66,34 +71,70 @@
 @import url(../vendor/perfect-scrollbar/css/perfect-scrollbar.css);
 @import url(../vendor/metismenu/css/metisMenu.min.css);
 :root {
-    --primary: #0D99FF;
-    --secondary: #2C2C2C;
-    --secondary-dark: #131313;
-    --primary-hover: #007ed9;
-    --primary-dark: #004373;
-    --rgba-primary-1: rgba(13, 153, 255, 0.1);
-    --rgba-primary-2: rgba(13, 153, 255, 0.2);
-    --rgba-primary-3: rgba(13, 153, 255, 0.3);
-    --rgba-primary-4: rgba(13, 153, 255, 0.4);
-    --rgba-primary-5: rgba(13, 153, 255, 0.5);
-    --rgba-primary-6: rgba(13, 153, 255, 0.6);
-    --rgba-primary-7: rgba(13, 153, 255, 0.7);
-    --rgba-primary-8: rgba(13, 153, 255, 0.8);
-    --rgba-primary-9: rgba(13, 153, 255, 0.9);
-    --rgba-secondary-1: rgba(44, 44, 44, 0.1);
-    --rgba-secondary-2: rgba(44, 44, 44, 0.2);
-    --rgba-secondary-3: rgba(44, 44, 44, 0.3);
-    --rgba-secondary-4: rgba(44, 44, 44, 0.4);
-    --rgba-secondary-5: rgba(44, 44, 44, 0.5);
-    --rgba-secondary-6: rgba(44, 44, 44, 0.6);
-    --rgba-secondary-7: rgba(44, 44, 44, 0.7);
-    --rgba-secondary-8: rgba(44, 44, 44, 0.8);
-    --rgba-secondary-9: rgba(44, 44, 44, 0.9);
-    --font-family-base: poppins, sans-serif, sans-serif;
-    --font-family-title: poppins, sans-serif, sans-serif;
-    --title: #374557;
-    --bs-white: #fff;
-    --border-light: #ededed;
+    --primary: #557e30;
+    --secondary: #383431;
+    --secondary-dark: #808080;
+    --primary-hover: #456624;
+    --primary-dark: #374d1d;
+    --rgba-primary-1: rgba(85, 126, 48, 0.1);
+    --rgba-primary-2: rgba(85, 126, 48, 0.2);
+    --rgba-primary-3: rgba(85, 126, 48, 0.3);
+    --rgba-primary-4: rgba(85, 126, 48, 0.4);
+    --rgba-primary-5: rgba(85, 126, 48, 0.5);
+    --rgba-primary-6: rgba(85, 126, 48, 0.6);
+    --rgba-primary-7: rgba(85, 126, 48, 0.7);
+    --rgba-primary-8: rgba(85, 126, 48, 0.8);
+    --rgba-primary-9: rgba(85, 126, 48, 0.9);
+    --rgba-secondary-1: rgba(56, 52, 49, 0.1);
+    --rgba-secondary-2: rgba(56, 52, 49, 0.2);
+    --rgba-secondary-3: rgba(56, 52, 49, 0.3);
+    --rgba-secondary-4: rgba(56, 52, 49, 0.4);
+    --rgba-secondary-5: rgba(56, 52, 49, 0.5);
+    --rgba-secondary-6: rgba(56, 52, 49, 0.6);
+    --rgba-secondary-7: rgba(56, 52, 49, 0.7);
+    --rgba-secondary-8: rgba(56, 52, 49, 0.8);
+    --rgba-secondary-9: rgba(56, 52, 49, 0.9);
+    --font-family-base: 'Noto Sans', sans-serif;
+    --font-family-title: 'Merriweather', sans-serif;
+    --title: #383431;
+    --bs-white: #ffffff;
+    --border-light: #eeeeee;
+    /* Additional color settings */
+    --body-font-color: #383431;
+    --body-font-size: 16px;
+    --body-bgcolor: #ffffff;
+    --body-font-family: 'Noto Sans', sans-serif;
+    --body-font-weight: 400;
+    --body-font-style: normal;
+    --body-font-line-height: normal;
+    --body-font-letter-spacing: 0px;
+    --heading-font-color: #383431;
+    --heading-font-family: 'Noto Sans', sans-serif;
+    --heading-font-weight: 600;
+    --heading-font-style: normal;
+    --heading-font-line-height: normal;
+    --section-heading-font-color: #383431;
+    --section-heading-font-family: 'Merriweather', sans-serif;
+    --section-heading-font-weight: 700;
+    --section-heading-font-style: normal;
+    --section-heading-font-line-height: normal;
+    --paragraph-font-color: #808080;
+    --paragraph-font-family: 'Noto Sans', sans-serif;
+    --paragraph-font-line-height: 30px;
+    --paragraph-font-style: normal;
+    --primary-font-color: #557e30;
+    --secondary-font-color: #eae7c4;
+    --extra-font-color: #f9f8f2;
+    --extra-bgcolor: #f7f7f7;
+    --extra-bgcolor2: #E63946;
+    --product-new-sale-label-bgcolor: #ee433f;
+    --product-ratting: #ffb703;
+    --header-sale-label-bgcolor: #ff3838;
+    --border-color: rgba(128, 128, 128, 0.2);
+    --border-color2: #eeeeee;
+    --border-radius: 0px;
+    --box-shadow-outer: 0 0 15px #00000026;
+    --box-shadow-inner: 0px 0px 15px rgb(0 0 0 / 15%);
 }
 
 
@@ -312,7 +353,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
   --bs-font-sans-serif: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   --bs-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
-  --bs-body-font-family: "poppins", sans-serif, sans-serif;
+  --bs-body-font-family: 'Noto Sans', sans-serif;
   --bs-body-font-size: 0.875rem;
   --bs-body-font-weight: 400;
   --bs-body-line-height: 1.5;
@@ -4105,7 +4146,7 @@ textarea.form-control-lg {
     float: left;
     padding-right: var(--bs-breadcrumb-item-padding-x);
     color: var(--bs-breadcrumb-divider-color);
-    content: var(--bs-breadcrumb-divider, "https://w3crm.dexignzone.com/") /* rtl: var(--bs-breadcrumb-divider, "/") */; }
+    content: var(--bs-breadcrumb-divider, "https://B3cBonsai.dexignzone.com/") /* rtl: var(--bs-breadcrumb-divider, "/") */; }
 
 .breadcrumb-item.active {
   color: var(--bs-breadcrumb-item-active-color); }
@@ -5010,7 +5051,7 @@ textarea.form-control-lg {
   z-index: var(--bs-tooltip-zindex);
   display: block;
   margin: var(--bs-tooltip-margin);
-  font-family: "poppins", sans-serif, sans-serif;
+  font-family: 'Noto Sans', sans-serif;
   font-style: normal;
   font-weight: 400;
   line-height: 1.5;
@@ -5110,7 +5151,7 @@ textarea.form-control-lg {
   z-index: var(--bs-popover-zindex);
   display: block;
   max-width: var(--bs-popover-max-width);
-  font-family: "poppins", sans-serif, sans-serif;
+  font-family: 'Noto Sans', sans-serif;
   font-style: normal;
   font-weight: 400;
   line-height: 1.5;
@@ -11375,6 +11416,8 @@ svg.pulse-svg {
     margin-right: 7px; }
     .header-right .header-media img {
       width: 100%;
+      height: 100%;
+      object-fit:cover;
       border-radius: 100%; }
     @media only screen and (max-width: 35.9375rem) {
       .header-right .header-media {
@@ -18080,7 +18123,7 @@ svg.pulse-svg {
   font-family: 'Open Sans', sans-serif; }
 
 [data-typography="poppins"] {
-  font-family: 'poppins', sans-serif; }
+  font-family: 'Noto Sans', sans-serif;  }
 
 [data-typography="cairo"] {
   font-family: 'Cairo', sans-serif; }
@@ -29781,8 +29824,11 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     margin-bottom: 20px;
     display: inline-block; }
     .author-profile .author-media img {
-      width: 130px;
-      border-radius: 100%; }
+        object-fit: cover;
+        width: 150px;
+        border-radius: 100%;
+        height: 150px;
+    }
   .author-profile .author-info .title {
     font-size: 15px;
     font-weight: 500;

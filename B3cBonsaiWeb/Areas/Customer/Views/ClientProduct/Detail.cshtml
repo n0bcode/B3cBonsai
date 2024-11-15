@@ -1,4 +1,12 @@
 ﻿@model SanPham
+@using Azure.Core
+@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Routing
+@using System.Net 
+@using Microsoft.AspNetCore.Mvc 
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+
 <!-- breadcrumb start -->
 <section class="breadcrumb-area">
     <div class="container">
@@ -30,10 +38,10 @@
                     <!-- Product slider start -->
                     <div class="product-detail-slider product-details-tb product-details">
                         <a href="product-template7.html" class="next-prev-product prev">
-                            <span>Prev</span>
+                           @*  <span>Prev</span> *@
                         </a>
                         <a href="product-template2.html" class="next-prev-product next">
-                            <span>Next</span>
+                            @* <span>Next</span> *@
                         </a>
                         <!-- Product slider start -->
                         <div class="product-detail-img product-detail-img-bottom">
@@ -87,27 +95,28 @@
                                 <div class="product-info">
                                     <div class="pro-prlb pro-sale">
                                         <div class="price-box">
-                                            <span class="new-price">Rs. 21.00</span>
-                                            <span class="old-price">Rs. 25.00</span>
-                                            <span class="percent-count">16</span>
+                                            <span style="font-size: 29px" class="new-price">@String.Format("{0:0,0} VNĐ", Model.Gia).Replace(",", ".")</span>
+
+                                            @* <span class="old-price">Rs. 25.00</span>
+                                            <span class="percent-count">16</span> *@
                                         </div>
                                     </div>
                                 </div>
                                 <div class="product-info">
                                     <div class="product-inventory">
                                         <div class="stock-inventory stock-more">
-                                            <p class="text-success">Hurry up! only
-                                                <span class="available-stock bg-success">4</span>
-                                                <span>products left in stock!</span>
+                                            <p class="text-success"> Mô tả: @Model.MoTa
+                                               @*  <span class="available-stock bg-success">4</span>
+                                                <span>products left in stock!</span> *@
                                             </p>
                                         </div>
                                         <div class="product-variant">
-                                            <h6>Availability:</h6>
+                                            @* <h6>Availability:</h6> *@
                                             <span class="stock-qty in-stock text-success">
-                                                <span>In stock<i class="bi bi-check2"></i></span>
+                                                @* <span>In stock<i class="bi bi-check2"></i></span> *@
                                             </span>
                                             <span class="stock-qty out-stock text-danger collapse" style="display:none;">
-                                                <span>Out of stock</span>
+                                                @* <span>Out of stock</span> *@
                                             </span>
                                         </div>
                                     </div>
@@ -115,11 +124,11 @@
                                 <div class="product-info">
                                     <form method="post" class="cart">
                                         <div class="product-quantity-action">
-                                            <h6>Quantity:</h6>
+                                            <h6>Số lượng:</h6>
                                             <div class="product-quantity">
                                                 <div class="cart-plus-minus">
                                                     <button class="dec qtybutton minus"><i class="fa-solid fa-minus"></i></button>
-                                                    <input type="text" name="quantity" value="1" min="1">
+                                                    <input type="text" name="quantity" value="1" min="1" max="Model.SoLuong">
                                                     <button class="inc qtybutton plus"><i class="fa-solid fa-plus"></i></button>
                                                 </div>
                                             </div>
@@ -131,10 +140,10 @@
                                         <!-- pro-deatail button start -->
                                         <div class="pro-detail-button">
                                             <button type="button" onclick="location. href='/Customer/Cart'" class="btn add-to-cart ajax-spin-cart">
-                                            <span class="cart-title">Add to cart</span>
+                                            <span class="cart-title">Thêm vào giỏ</span>
                                             </button>
                                             <a href="cart-empty.html" class="btn btn-cart btn-theme">
-                                                <span>Buy now</span>
+                                                <span>Mua Ngay</span>
                                             </a>
                                         </div>
                                         <!-- pro-deatail button start -->
@@ -144,7 +153,7 @@
                                                 <span class="wishlist-icon action-wishlist tile-actions--btn wishlist-btn">
                                                     <span class="add-wishlist"><i class="bi bi-heart"></i></span>
                                                 </span>
-                                                <span class="wishlist-text">Wishlist</span>
+                                                <span class="wishlist-text">Yêu thích</span>
                                             </a>
                                         </div>
                                         <!-- pro-deatail wishlist end -->
@@ -152,8 +161,8 @@
                                 </div>
                                 <div class="product-info">
                                     <div class="form-group">
-                                        <a href="#deliver-modal" data-bs-toggle="modal">Delivery &amp; return</a>
-                                        <a href="#que-modal" data-bs-toggle="modal">Ask a question</a>
+                                        <a href="#deliver-modal" data-bs-toggle="modal">Giao hàng &amp; trở lại</a>
+                                        <a href="#que-modal" data-bs-toggle="modal">Đặt một câu hỏi</a>
                                     </div>
                                 </div>
                                 <div class="modal fade deliver-modal" id="deliver-modal" tabindex="-1" style="display: none;"
@@ -241,34 +250,59 @@
                                 </div>
                                 <!-- que-modal end -->
                                 <div class="product-info">
-                                    <p><span>🚚</span> Item will be delivered on or before <span id="ten-days-ahead">Mar 3 2024</span></p>
+                                    <p><span>🚚</span> Hàng sẽ được giao vào hoặc trước <span id="ten-days-ahead">Ngày 3 tháng 3 năm 2024</span></p>
                                 </div>
                                 <div class="product-info">
-                                    <div class="product-sku">
+                                    @* <div class="product-sku">
                                         <h6>SKU:</h6>
                                         <span class="variant-sku">abccd-13</span>
-                                    </div>
+                                    </div> *@
                                 </div>
-                                <div class="product-info">
-                                    <div class="share-icons">
-                                        <h6>Share:</h6>
-                                        <div class="pro-social">
-                                            <ul class="social-icon">
-                                                <li>
-                                                    <a href="https://www.facebook.com/" class="facebook"><i class="fab fa-facebook-f"></i></a>
-                                                </li>
-                                                <li>
-                                                    <a href="https://twitter.com/" class="twitter"><i class="fab fa-twitter"></i></a>
-                                                </li>
-                                                <li>
-                                                    <a href="https://web.telegram.org/" class="twitter"><i class="fab fa-telegram"></i></a>
-                                                </li>
-                                                <li>
-                                                    <a href="https://in.pinterest.com/" class="pinterest"><i class="fab fa-pinterest-p"></i></a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
+                                <div class="pro-social">
+                                    <ul class="social-icon">
+                                        <li>
+                                            @{
+                                                var currentUrl = $"{HttpContextAccessor?.HttpContext?.Request.Scheme}://{HttpContextAccessor?.HttpContext?.Request.Host}{HttpContextAccessor?.HttpContext?.Request.Path}{HttpContextAccessor?.HttpContext?.Request.QueryString}";
+
+                                                // Đảm bảo currentUrl không bị null
+                                                if (string.IsNullOrEmpty(currentUrl))
+                                                {
+                                                    currentUrl = "https://default-url.com";  // Thay thế URL mặc định nếu currentUrl không hợp lệ
+                                                }
+
+                                                var encodedUrl = WebUtility.UrlEncode(currentUrl);
+
+                                                // Kiểm tra các giá trị model có hợp lệ
+                                                var productTitle = Model?.TenSanPham ?? "Tên sản phẩm mặc định";  // Nếu không có tên, sử dụng tên mặc định
+                                                var productDescription = Model?.MoTa ?? "Mô tả sản phẩm mặc định";  // Nếu không có mô tả, sử dụng mô tả mặc định
+                                                var productImage = Model?.HinhAnhs?.FirstOrDefault()?.LinkAnh ?? "https://default-image-url.com/image.jpg";  // Hình ảnh mặc định nếu không có
+                                            }
+
+                                            <!-- Open Graph Meta Tags -->
+                                            <meta property="og:url" content="@currentUrl" />
+                                            <meta property="og:title" content="@productTitle" />
+                                            <meta property="og:description" content="@productDescription" />
+                                            <meta property="og:image" content="@productImage" />
+                                            <meta property="og:site_name" content="Tên website của bạn" />
+                                            <meta property="og:type" content="product" /> <!-- Thêm og:type cho sản phẩm -->
+
+                                            <a href="https://www.facebook.com/sharer/sharer.php?u=@encodedUrl" class="facebook" target="_blank">
+                                                <i class="fab fa-facebook-f"></i>
+                                            </a>
+                                        </li>
+
+
+
+                                        <li>
+                                            <a href="https://twitter.com/" class="twitter" target="_blank"><i class="fab fa-twitter"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="https://web.telegram.org/" class="telegram" target="_blank"><i class="fab fa-telegram"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="https://in.pinterest.com/" class="pinterest" target="_blank"><i class="fab fa-pinterest-p"></i></a>
+                                        </li>
+                                    </ul>
                                 </div>
                                 <div class="product-info">
                                     <div class="product-payment-image">
@@ -283,7 +317,7 @@
                                                 <a asp-area="Customer" asp-controller="Home" asp-action="Index"><svg xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="pi-american-express" viewBox="0 0 38 24" width="38" height="24"><title id="american-express">American Express</title><path fill="#000" d="M35 0H3C1.3 0 0 1.3 0 3v18c0 1.7 1.4 3 3 3h32c1.7 0 3-1.3 3-3V3c0-1.7-1.4-3-3-3Z" opacity=".07"></path><path fill="#006FCF" d="M35 1c1.1 0 2 .9 2 2v18c0 1.1-.9 2-2 2H3c-1.1 0-2-.9-2-2V3c0-1.1.9-2 2-2h32Z"></path><path fill="#FFF" d="M22.012 19.936v-8.421L37 11.528v2.326l-1.732 1.852L37 17.573v2.375h-2.766l-1.47-1.622-1.46 1.628-9.292-.02Z"></path><path fill="#006FCF" d="M23.013 19.012v-6.57h5.572v1.513h-3.768v1.028h3.678v1.488h-3.678v1.01h3.768v1.531h-5.572Z"></path><path fill="#006FCF" d="m28.557 19.012 3.083-3.289-3.083-3.282h2.386l1.884 2.083 1.89-2.082H37v.051l-3.017 3.23L37 18.92v.093h-2.307l-1.917-2.103-1.898 2.104h-2.321Z"></path><path fill="#FFF" d="M22.71 4.04h3.614l1.269 2.881V4.04h4.46l.77 2.159.771-2.159H37v8.421H19l3.71-8.421Z"></path><path fill="#006FCF" d="m23.395 4.955-2.916 6.566h2l.55-1.315h2.98l.55 1.315h2.05l-2.904-6.566h-2.31Zm.25 3.777.875-2.09.873 2.09h-1.748Z"></path><path fill="#006FCF" d="M28.581 11.52V4.953l2.811.01L32.84 9l1.456-4.046H37v6.565l-1.74.016v-4.51l-1.644 4.494h-1.59L30.35 7.01v4.51h-1.768Z"></path></svg></a>
                                             </li>
                                             <li>
-                                                <a asp-area="Customer" asp-controller="Home" asp-action="Index"><svg viewBox="0 0 38 24" xmlns="http://www.w3.org/2000/svg" width="38" height="24" role="img" aria-labelledby="pi-paypal"><title id="paypal">PayPal</title><path opacity=".07" d="M35 0H3C1.3 0 0 1.3 0 3v18c0 1.7 1.4 3 3 3h32c1.7 0 3-1.3 3-3V3c0-1.7-1.4-3-3-3z"></path><path fill="#fff" d="M35 1c1.1 0 2 .9 2 2v18c0 1.1-.9 2-2 2H3c-1.1 0-2-.9-2-2V3c0-1.1.9-2 2-2h32"></path><path fill="#003087" d="M23.9 8.3c.2-1 0-1.7-.6-2.3-.6-.7-1.7-1-3.1-1h-4.1c-.3 0-.5.2-.6.5L14 15.6c0 .2.1.4.3.4H17l.4-3.4 1.8-2.2 4.7-2.1z"></path><path fill="#3086C8" d="M23.9 8.3l-.2.2c-.5 2.8-2.2 3.8-4.6 3.8H18c-.3 0-.5.2-.6.5l-.6 3.9-.2 1c0 .2.1.4.3.4H19c.3 0 .5-.2.5-.4v-.1l.4-2.4v-.1c0-.2.3-.4.5-.4h.3c2.1 0 3.7-.8 4.1-3.2.2-1 .1-1.8-.4-2.4-.1-.5-.3-.7-.5-.8z"></path><path fill="#012169" d="M23.3 8.1c-.1-.1-.2-.1-.3-.1-.1 0-.2 0-.3-.1-.3-.1-.7-.1-1.1-.1h-3c-.1 0-.2 0-.2.1-.2.1-.3.2-.3.4l-.7 4.4v.1c0-.3.3-.5.6-.5h1.3c2.5 0 4.1-1 4.6-3.8v-.2c-.1-.1-.3-.2-.5-.2h-.1z"></path></svg></a>
+                                                <svg viewBox="0 0 38 24" xmlns="http://www.w3.org/2000/svg" width="38" height="24" role="img" aria-labelledby="pi-paypal"><title id="paypal">PayPal</title><path opacity=".07" d="M35 0H3C1.3 0 0 1.3 0 3v18c0 1.7 1.4 3 3 3h32c1.7 0 3-1.3 3-3V3c0-1.7-1.4-3-3-3z"></path><path fill="#fff" d="M35 1c1.1 0 2 .9 2 2v18c0 1.1-.9 2-2 2H3c-1.1 0-2-.9-2-2V3c0-1.1.9-2 2-2h32"></path><path fill="#003087" d="M23.9 8.3c.2-1 0-1.7-.6-2.3-.6-.7-1.7-1-3.1-1h-4.1c-.3 0-.5.2-.6.5L14 15.6c0 .2.1.4.3.4H17l.4-3.4 1.8-2.2 4.7-2.1z"></path><path fill="#3086C8" d="M23.9 8.3l-.2.2c-.5 2.8-2.2 3.8-4.6 3.8H18c-.3 0-.5.2-.6.5l-.6 3.9-.2 1c0 .2.1.4.3.4H19c.3 0 .5-.2.5-.4v-.1l.4-2.4v-.1c0-.2.3-.4.5-.4h.3c2.1 0 3.7-.8 4.1-3.2.2-1 .1-1.8-.4-2.4-.1-.5-.3-.7-.5-.8z"></path><path fill="#012169" d="M23.3 8.1c-.1-.1-.2-.1-.3-.1-.1 0-.2 0-.3-.1-.3-.1-.7-.1-1.1-.1h-3c-.1 0-.2 0-.2.1-.2.1-.3.2-.3.4l-.7 4.4v.1c0-.3.3-.5.6-.5h1.3c2.5 0 4.1-1 4.6-3.8v-.2c-.1-.1-.3-.2-.5-.2h-.1z"></path></svg>
                                             </li>
                                         </ul>
                                     </div>

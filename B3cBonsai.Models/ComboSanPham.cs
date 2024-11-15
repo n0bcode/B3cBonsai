@@ -10,6 +10,7 @@ namespace B3cBonsai.Models
     {
         [Key]
         [Display(Name = "ID Combo")]
+        [ValidateNever]
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Tên combo không được để trống.")]
@@ -19,6 +20,9 @@ namespace B3cBonsai.Models
 
         [Display(Name = "Mô Tả")]
         public string MoTa { get; set; }
+
+        [Display(Name = "Hình ảnh Combo")]
+        public string? LinkAnh { get; set; }
 
         [Required(ErrorMessage = "Giảm giá không được để trống.")]
         [Range(1, 99, ErrorMessage = "Giảm giá phải từ 1 đến 99.")]

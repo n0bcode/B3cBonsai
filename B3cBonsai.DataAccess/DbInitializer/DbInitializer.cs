@@ -166,7 +166,8 @@ namespace B3cBonsai.DataAccess.DbInitializer
                 {
                     TenCombo = "Combo " + i,
                     MoTa = "Combo sản phẩm " + i,
-                    TongGia = new Random().Next(100000, 2000000)
+                    TongGia = new Random().Next(100000, 2000000),
+                    LinkAnh = RandomData_DB.Instance.RandomImageBonsai()
                 });
             }
             _db.ComboSanPhams.AddRange(comboSanPhams);
@@ -249,7 +250,7 @@ namespace B3cBonsai.DataAccess.DbInitializer
                     Duong = RandomData_DB.Instance.rdAddress(),
                     Tinh = RandomData_DB.Instance.rdAddress(),
                     MaBuuDien = rd.Next(1000, 9999).ToString(),
-                    TongTienDonHang = rd.Next(20000,50000)
+                    TongTienDonHang = rd.Next(20000, 50000)
                 });
             }
             _db.DonHangs.AddRange(donHangs);
