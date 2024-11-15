@@ -8,10 +8,11 @@ function loadDataTable() {
             "dataSrc": "data"
         },
         "columns": [
+            {data: 'id',"className":"text-center"},
             {
                 data: null,
                 "render": function (data) {
-                    return `<a class="products" role="button" onclick="loadDetailWithDelete('${data.id}')" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    return `<a class="products" role="button" onclick="loadDetailWithDelete('${data.id}')" data-bs-toggle="modal" data-bs-target="#exampleModal1">
                                 <img src="${data.hinhAnhs.length > 0 ? data.hinhAnhs[0].linkAnh : '/images/product/default.jpg'}" class="avatar avatar-md" alt="">
                                 <div>
                                     <h6>${data.tenSanPham || 'N/A'}</h6>
@@ -26,7 +27,7 @@ function loadDataTable() {
             { data: "ngaySuaDoi", "render": function (data) { return new Date(data).toLocaleDateString(); } },
             {
                 data: "trangThai", "render": function (data) {
-                    return `<span class="badge ${data ? 'badge-success' : 'badge-danger'}">${data ? "Đang hoạt động" : "Đã bị khóa"}</span>`;
+                    return `<span  onclick="changeStatus(${data.id})" class="badge ${data ? 'badge-success' : 'badge-danger'}">${data ? "Đang hoạt động" : "Đã bị khóa"}</span>`;
                 }
             },
             {
@@ -35,7 +36,7 @@ function loadDataTable() {
                     return `
                             <div class="d-flex gap-2">
                                 <a onclick="loadViewUpsert('${data.id}')" class="btn btn-primary shadow btn-xs sharp me-1" data-bs-toggle="offcanvas" href="#upsertObject"><i class="fas fa-pencil-alt"></i></a>
-                                <button class="btn btn-danger shadow btn-xs sharp me-1" onclick="deleteProduct(${data.id})"> <i class="fa-solid fa-trash"></i> </button>
+                                <button class="btn btn-danger shadow btn-xs sharp me-1"> <i class="fa-solid fa-trash"></i> </button>
                             </div>
                     `;
                 }
@@ -109,70 +110,12 @@ const loadDetailWithDelete = (id) => {
         url: `/Employee/ManagerProduct/DetailWithDelete?id=${id}`,
         method: 'GET',
         success: (data) => {
-            renderDataInView(data.data);
-
+            $('#contentDWD').html(data);
         },
         error: (xhr) => {
             toastr.error("Lỗi tải thông tin đối tượng")
         }
     })
-}
-
-// render dữ liệu ra view
-const renderDataInView = (data) => {
-    // Đảm bảo data không null
-    console.log(data);
-
-    if (!data) {
-        console.error('No data received');
-        return;
-    }
-
-    // Thêm modal- prefix cho các ID để khớp với modal
-    $('#modal-productName').text(data.tenSanPham || 'N/A');
-    $('#modal-productCategory').text(data.tenDanhMuc || 'N/A');
-    $('#modal-productPrice').text(
-        (data.gia || 0).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })
-    );
-    $('#modal-productQuantity').text(data.soLuong || '0');
-    $('#modal-productDescription').text(data.moTa || 'Không có mô tả');
-
-    // Xóa nội dung cũ trong carousel-inner
-    const carouselInner = $('#productImageCarousel .carousel-inner');
-    carouselInner.empty();
-
-    // Lặp qua danh sách hình ảnh và thêm các slide
-    data.hinhAnhs.forEach((url, index) => {
-        const isActive = index === 0 ? 'active' : '';
-        const slide = `
-        <div class="carousel-item ${isActive}">
-            <img src="${url.linkAnh}" class="d-block w-100" alt="Product Image ${index + 1}" style="height: 20rem; object-fit: cover;">
-        </div>`;
-        carouselInner.append(slide);
-    });
-
-
-    // Xóa nội dung cũ trong video player
-    const videoPlayer = $('#productVideo');
-    videoPlayer.empty();
-
-    // Lấy URL video đầu tiên và thêm vào source của video player
-    const videoSource = `<source src="${data.videos[0].linkVideo}" type="video/mp4">`;
-    videoPlayer.append(videoSource);
-
-    // Nếu có nhiều video, hiển thị danh sách nút hoặc thumbnail để người dùng chọn video
-    if (data.videos.length > 1) {
-        const thumbnailContainer = $('#thumbnailContainer');
-        thumbnailContainer.empty(); // Xóa nội dung cũ nếu có
-
-        data.videos.forEach((videoUrl, index) => {
-            const thumbnail = `
-            <button class="btn btn-outline-primary me-2" onclick="changeVideo('${videoUrl}')">
-                Video ${index + 1}
-            </button>`;
-            thumbnailContainer.append(thumbnail);
-        });
-    }
 }
 
 function changeVideo(videoUrl) {
@@ -196,19 +139,19 @@ const loadViewUpsert = (id) => {
 
 
 
-function deleteProduct(id) {
+function changeStatus(id) {
     Swal.fire({
         title: "Bạn có chắc chắn?",
         text: "Bạn sẽ không thể khôi phục lại sản phẩm này!",
-        icon: "warning",
+        type: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
         confirmButtonText: "Vâng, xóa đi!"
     }).then((result) => {
-        if (result.isConfirmed) {
+        if (result.value) {
             $.ajax({
-                url: "/Employee/ManagerProduct/Delete",
+                url: "/Employee/ManagerProduct/ChangeStatus",
                 method: "POST",
                 data: { id: id },
                 success: function (response) {
