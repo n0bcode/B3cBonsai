@@ -43,12 +43,37 @@
                 <div class="log-acc-page">
                     <div class="contact-form-list">
                         <form method="post">
-                            <div asp-validation-summary="All" class="alert alert-danger" role="alert"></div>
+                            @{    var hasErrors = ViewData.ModelState.Any(x => x.Value.Errors.Any());}@if (hasErrors){    <div asp-validation-summary="All" class="alert alert-danger" role="alert"></div>}
                             <ul class="form-fill">
                                 <li class="form-fill-li Email">
                                     <label>Địa chỉ email</label>
                                     <input asp-for="Input.Email" class="form-control" autocomplete="email" placeholder="Địa chỉ email">
                                     <span asp-validation-for="Input.Email" class="text-danger"></span>
+                                </li>
+                                <li class="form-fill-li ">
+                                    <label>Họ tên</label>
+                                    <input asp-for="Input.HoTen" class="form-control" autocomplete="on" placeholder="Họ tên">
+                                    <span asp-validation-for="Input.HoTen" class="text-danger"></span>
+                                </li>
+                                <li class="form-fill-li ">
+                                    <label>Giới tính</label>
+                                    <select asp-for="Input.GioiTinh" class="form-control" autocomplete="on" placeholder="Giới tính">
+                                        <option disabled selected>-Chọn giới tính-</option>
+                                        <option value="true">Nam</option>
+                                        <option value="false">Nữ</option>
+                                        <option value="">Khác</option>
+                                    </select>
+                                    <span asp-validation-for="Input.GioiTinh" class="text-danger"></span>
+                                </li>
+                                <li class="form-fill-li ">
+                                    <label>Số điện thoại</label>
+                                    <input asp-for="Input.SoDienThoai" class="form-control" autocomplete="on" placeholder="Số điện thoại">
+                                    <span asp-validation-for="Input.SoDienThoai" class="text-danger"></span>
+                                </li>
+                                <li class="form-fill-li ">
+                                    <label>Ngày sinh</label>
+                                    <input asp-for="Input.NgaySinh" class="form-control" autocomplete="on" placeholder="Ngày sinh">
+                                    <span asp-validation-for="Input.NgaySinh" class="text-danger"></span>
                                 </li>
                                 <li class="form-fill-li Password">
                                     <label>Mật khẩu</label>
@@ -62,11 +87,9 @@
                                 </li>
                                 <li class="form-fill-li Role">
                                     <label>Chọn vai trò</label>
-                                    <div class="form-floating mb-3 col-md-6">
-                                        <select asp-for="Input.Role" asp-items="@Model.Input.RoleList" class="form-select">
-                                            <option disabled selected>-Select Role-</option>
-                                        </select>
-                                    </div>
+                                    <select asp-for="Input.Role" asp-items="@Model.Input.RoleList" class="form-select">
+                                        <option disabled selected>-Chọn vai trò-</option>
+                                    </select>
                                 </li>
                             </ul>
                             <div class="form-action-button">

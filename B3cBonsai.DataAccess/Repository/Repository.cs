@@ -26,7 +26,7 @@ namespace B3cBonsai.DataAccess.Repository
             dbSet.Add(entity);
         }
 
-        public T Get(Expression<Func<T, bool>> filter, string? includeProperties = null, bool tracked = false)
+        public async Task<T> Get(Expression<Func<T, bool>> filter, string? includeProperties = null, bool tracked = false)
         {
             IQueryable<T> query;
             if (tracked)
@@ -36,7 +36,7 @@ namespace B3cBonsai.DataAccess.Repository
             }
             else
             {
-
+                query = dbSet.AsNoTracking();
             }
             {
                 query = dbSet.AsNoTracking();
@@ -81,11 +81,6 @@ namespace B3cBonsai.DataAccess.Repository
         public void RemoveRange(IEnumerable<T> entity)
         {
             dbSet.RemoveRange(entity);
-        }
-
-        public void Update(T entity)
-        {
-            throw new NotImplementedException();
         }
     }
 }

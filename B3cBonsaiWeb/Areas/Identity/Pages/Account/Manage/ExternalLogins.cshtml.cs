@@ -1,5 +1,5 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
+﻿// Được cấp phép cho .NET Foundation theo một hoặc nhiều thỏa thuận.
+// .NET Foundation cấp phép tệp này cho bạn theo giấy phép MIT.
 #nullable disable
 
 using System;
@@ -32,26 +32,26 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account.Manage
         }
 
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        ///     API này hỗ trợ cơ sở hạ tầng giao diện người dùng mặc định của ASP.NET Core Identity và không có mục đích sử dụng trực tiếp
+        ///     từ mã của bạn. API này có thể thay đổi hoặc bị loại bỏ trong các bản phát hành sau.
         /// </summary>
         public IList<UserLoginInfo> CurrentLogins { get; set; }
 
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        ///     API này hỗ trợ cơ sở hạ tầng giao diện người dùng mặc định của ASP.NET Core Identity và không có mục đích sử dụng trực tiếp
+        ///     từ mã của bạn. API này có thể thay đổi hoặc bị loại bỏ trong các bản phát hành sau.
         /// </summary>
         public IList<AuthenticationScheme> OtherLogins { get; set; }
 
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        ///     API này hỗ trợ cơ sở hạ tầng giao diện người dùng mặc định của ASP.NET Core Identity và không có mục đích sử dụng trực tiếp
+        ///     từ mã của bạn. API này có thể thay đổi hoặc bị loại bỏ trong các bản phát hành sau.
         /// </summary>
         public bool ShowRemoveButton { get; set; }
 
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        ///     API này hỗ trợ cơ sở hạ tầng giao diện người dùng mặc định của ASP.NET Core Identity và không có mục đích sử dụng trực tiếp
+        ///     từ mã của bạn. API này có thể thay đổi hoặc bị loại bỏ trong các bản phát hành sau.
         /// </summary>
         [TempData]
         public string StatusMessage { get; set; }
@@ -61,7 +61,7 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Không thể tải người dùng với ID '{_userManager.GetUserId(User)}'.");
             }
 
             CurrentLogins = await _userManager.GetLoginsAsync(user);
@@ -84,27 +84,27 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Không thể tải người dùng với ID '{_userManager.GetUserId(User)}'.");
             }
 
             var result = await _userManager.RemoveLoginAsync(user, loginProvider, providerKey);
             if (!result.Succeeded)
             {
-                StatusMessage = "The external login was not removed.";
+                StatusMessage = "Đăng nhập ngoài đã không được xóa.";
                 return RedirectToPage();
             }
 
             await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "The external login was removed.";
+            StatusMessage = "Đăng nhập ngoài đã được xóa.";
             return RedirectToPage();
         }
 
         public async Task<IActionResult> OnPostLinkLoginAsync(string provider)
         {
-            // Clear the existing external cookie to ensure a clean login process
+            // Xóa cookie ngoài hiện tại để đảm bảo quy trình đăng nhập sạch sẽ
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
-            // Request a redirect to the external login provider to link a login for the current user
+            // Yêu cầu chuyển hướng tới nhà cung cấp đăng nhập ngoài để liên kết một đăng nhập cho người dùng hiện tại
             var redirectUrl = Url.Page("./ExternalLogins", pageHandler: "LinkLoginCallback");
             var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl, _userManager.GetUserId(User));
             return new ChallengeResult(provider, properties);
@@ -115,27 +115,27 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Không thể tải người dùng với ID '{_userManager.GetUserId(User)}'.");
             }
 
             var userId = await _userManager.GetUserIdAsync(user);
             var info = await _signInManager.GetExternalLoginInfoAsync(userId);
             if (info == null)
             {
-                throw new InvalidOperationException($"Unexpected error occurred loading external login info.");
+                throw new InvalidOperationException($"Đã xảy ra lỗi không mong muốn khi tải thông tin đăng nhập ngoài.");
             }
 
             var result = await _userManager.AddLoginAsync(user, info);
             if (!result.Succeeded)
             {
-                StatusMessage = "The external login was not added. External logins can only be associated with one account.";
+                StatusMessage = "Đăng nhập ngoài không thể được thêm. Các đăng nhập ngoài chỉ có thể được liên kết với một tài khoản.";
                 return RedirectToPage();
             }
 
-            // Clear the existing external cookie to ensure a clean login process
+            // Xóa cookie ngoài hiện tại để đảm bảo quy trình đăng nhập sạch sẽ
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
-            StatusMessage = "The external login was added.";
+            StatusMessage = "Đăng nhập ngoài đã được thêm.";
             return RedirectToPage();
         }
     }

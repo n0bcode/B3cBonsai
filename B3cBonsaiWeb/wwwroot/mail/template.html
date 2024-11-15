@@ -1,0 +1,88 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interface Template</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Các biến màu sắc và kiểu dáng */
+        :root {
+            --body-font-color: #383431;
+            --body-font-size: 16px;
+            --body-bgcolor: #ffffff;
+            --body-font-family: 'Noto Sans', sans-serif;
+            --heading-font-color: #383431;
+            --heading-font-family: 'Noto Sans', sans-serif;
+            --section-heading-font-color: #383431;
+            --section-heading-font-family: 'Merriweather', sans-serif;
+            --paragraph-font-color: #808080;
+            --primary-font-color: #557e30;
+            --secondary-font-color: #eae7c4;
+            --extra-font-color: #f9f8f2;
+            --extra-bgcolor: #f7f7f7;
+            --extra-bgcolor2: #E63946;
+            --border-color: rgba(128, 128, 128, 0.2);
+            --border-radius: 0px;
+            --box-shadow-outer: 0 0 15px #00000026;
+        }
+
+        body {
+            color: var(--body-font-color);
+            background-color: var(--body-bgcolor);
+            font-size: var(--body-font-size);
+            font-family: var(--body-font-family);
+        }
+
+        h1, h2 {
+            color: var(--heading-font-color);
+            font-family: var(--heading-font-family);
+        }
+
+        .section-heading {
+            color: var(--section-heading-font-color);
+            font-family: var(--section-heading-font-family);
+            font-weight: 700;
+        }
+
+        .text-muted {
+            color: var(--paragraph-font-color);
+        }
+
+        .info-label {
+            color: var(--primary-font-color);
+            font-weight: bold;
+        }
+
+        .message-box {
+            background-color: var(--extra-bgcolor);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow-outer);
+        }
+
+        .btn-primary {
+            background-color: var(--extra-bgcolor2);
+            border: none;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="message-box">
+            <h2 class="section-heading">Chủ đề: <span class="info-label">{0}</span></h2>
+            <p><span class="info-label">Thời gian:</span> {1}</p>
+            <p><span class="info-label">Tên:</span> {2}</p>
+            <p><span class="info-label">Email:</span> {3}</p>
+            <p class="text-muted"><span class="info-label">Tin nhắn:</span> {4}</p>
+            <a href="{5}" class="btn btn-primary mt-3">Phản hồi</a>
+        </div>
+    </div>
+
+    <!-- Thư viện Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

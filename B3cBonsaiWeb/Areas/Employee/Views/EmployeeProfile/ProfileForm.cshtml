@@ -1,0 +1,72 @@
+﻿@model NguoiDungUngDung
+<div class="card profile-card card-bx m-b30">
+    <div class="card-header">
+        <h6 class="title">Cài đặt tài khoản</h6>
+    </div>
+    <form class="profile-form" method="post" enctype="multipart/form-data" id="formProfile" onsubmit="return submitProfileForm(event)">
+        <!-- Thêm enctype để tải lên tệp -->
+        @{    var hasErrors = ViewData.ModelState.Any(x => x.Value.Errors.Any());}@if (hasErrors){    <div asp-validation-summary="All" class="alert alert-danger" role="alert"></div>}
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-6 m-b30">
+                    <label asp-for="Id" class="form-label">Mã người dùng</label>
+                    <input type="text" class="form-control" asp-for="Id" required>
+                    <span asp-validate-for="Id" class="text-danger"></span>
+                </div>
+                <div class="col-sm-6 m-b30">
+                    <label asp-for="HoTen" class="form-label">Họ Tên</label>
+                    <input type="text" class="form-control" asp-for="HoTen" required>
+                    <span asp-validate-for="HoTen" class="text-danger"></span>
+                </div>
+                <div class="col-sm-6 m-b30">
+                    <label asp-for="NgaySinh" class="form-label">Ngày Sinh</label>
+                    <input type="date" class="form-control" asp-for="NgaySinh">
+                    <span asp-validate-for="NgaySinh" class="text-danger"></span>
+                </div>
+                <div class="col-sm-6 m-b30">
+                    <label asp-for="SoDienThoai" class="form-label">Số Điện Thoại</label>
+                    <input type="text" class="form-control" asp-for="SoDienThoai">
+                    <span asp-validate-for="SoDienThoai" class="text-danger"></span>
+                </div>
+                <div class="col-sm-6 m-b30">
+                    <label asp-for="GioiTinh" class="form-label">Giới Tính</label>
+                    <select class="default-select form-control" asp-for="GioiTinh">
+                        <option value="">Chọn giới tính</option>
+                        <option value="true">Nam</option>
+                        <option value="false">Nữ</option>
+                        <option value="null">Khác</option>
+                    </select>
+                </div>
+                <div class="col-sm-6 m-b30">
+                    <label asp-for="CCCD" class="form-label">Số CCCD</label>
+                    <input type="text" class="form-control" asp-for="CCCD">
+                    <span asp-validate-for="CCCD" class="text-danger"></span>
+                </div>
+                <div class="col-sm-6 m-b30">
+                    <label asp-for="DiaChi" class="form-label">Địa Chỉ</label>
+                    <input type="text" class="form-control" asp-for="DiaChi">
+                    <span asp-validate-for="DiaChi" class="text-danger"></span>
+                </div>
+                <div class="col-sm-6 m-b30">
+                    <label asp-for="MoTa" class="form-label">Mô Tả</label>
+                    <input class="form-control" asp-for="MoTa" />
+                    <span asp-validate-for="MoTa" class="text-danger"></span>
+                </div>
+                <div class="col-sm-6 m-b30">
+                    <label asp-for="NgayTao" class="form-label">Ngày Tạo</label>
+                    <input type="text" class="form-control" asp-for="NgayTao" disabled>
+                    <span asp-validate-for="NgayTao" class="text-danger"></span>
+                </div>
+                <div class="col-sm-6 m-b30">
+                    <label asp-for="Email" class="form-label">Email</label>
+                    <input type="email" class="form-control" asp-for="Email"> <!-- Email có thể đặt là trường tĩnh -->
+                    <span asp-validate-for="Email" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <button type="submit" class="btn btn-primary">CẬP NHẬT</button>
+            <a href="/Identity/Account/ResetPassword" class="btn-link">Quên mật khẩu?</a>
+        </div>
+    </form>
+</div>

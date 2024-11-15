@@ -7,7 +7,6 @@
 	<!-- row -->
 	<div class="page-titles">
 		<ol class="breadcrumb">
-			<li><h5 class="bc-title">Finance</h5></li>
 			<li class="breadcrumb-item">
 				<a href="javascript:void(0)">
 					<svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -23,310 +22,23 @@
 	</div>
 	<div class="container-fluid">
 		<div class="row">
-			<div class="col-xxl-3 col-xl-4">
-				<div class="card h-auto">
-					<div class="card-header">
-						<h4 class="heading mb-0">Thêm/Sửa Combo Sản Phẩm</h4>
-					</div>
-					<div class="card-body">
-						<form class="form-combo">
-							<!-- Tên Combo -->
-							<div class="form-group mb-3">
-								<label class="font-w500">Tên Combo<span class="text-danger">*</span></label>
-								<input type="text" class="form-control" name="tenCombo" placeholder="Tên Combo">
-							</div>
-
-							<!-- Giảm Giá -->
-							<div class="form-group mb-3">
-								<label>Giảm Giá (%)<span class="text-danger">*</span></label>
-								<input type="number" class="form-control" name="giamGia" min="1" max="99" placeholder="Nhập giảm giá">
-							</div>
-
-							<!-- Sản phẩm với số lượng -->
-							<div class="form-group mb-3">
-								<label>Chọn sản phẩm và số lượng:</label>
-								<select id="sanPhamSelect" class="select2 form-control" name="sanPham[]" multiple="multiple" data-placeholder="Chọn sản phẩm" style="width:100%">
-									<option value="1">Sản phẩm A</option>
-									<option value="2">Sản phẩm B</option>
-									<option value="3">Sản phẩm C</option>
-									<!-- Thêm các sản phẩm khác -->
-								</select>
-							</div>
-
-							<div class="form-group mb-3">
-								<label>Tổng giá đơn hàng</label>
-								<input class="form-control" type="number" value="10000" readonly/>
-							</div>
-							<!-- Chứa các trường nhập số lượng cho sản phẩm -->
-							<div id="chiTietComboContainer"></div>
-
-							<!-- Nút xác nhận -->
-							<button type="submit" class="btn btn-primary mb-3">Xác Nhận</button>
-						</form>
-					</div>
-				</div>
+			<div class="col-xxl-3 col-xl-4" id="viewFormUpsert" >
+				@await Html.PartialAsync("Upsert")
 			</div>
 			<div class="col-xxl-9 col-xl-8">
 				<div class="card">
 					<div class="card-body p-0">
 						<div class="table-responsive active-projects manage-client">
 							<div class="tbl-caption">
-								<h4 class="heading mb-0">Finance</h4>
-							</div>
-							<table id="empoloyees-tbl1" class="table">
-								<thead>
-									<tr>
-										<th>Account Title</th>
-										<th>Amount</th>
-										<th>Account No</th>
-										<th>Branch Code</th>
-										<th>Branch Name</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr>
-										<td>
-											<a href="javascript:void(0)" class="text-primary">Saving</a>
-										</td>
-										<td><span>500 $</span></td>
-										<td>
-											<span>1234500000000</span>
-										</td>
-										<td>
-											<span>1234</span>
-										</td>
-										<td>
-											<span>Bank Of Uk</span>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<a href="javascript:void(0)" class="text-primary">Salary </a>
-										</td>
-										<td><span>700 $</span></td>
-										<td>
-											<span>678900000000</span>
-										</td>
-										<td>
-											<span>5678</span>
-										</td>
-										<td>
-											<span>Bank Of Lundon</span>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<a href="javascript:void(0)" class="text-primary">Fixed deposit</a>
-										</td>
-										<td><span>700 $</span></td>
-										<td>
-											<span>678900000000</span>
-										</td>
-										<td>
-											<span>5678</span>
-										</td>
-										<td>
-											<span>Bank Of Lundon</span>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<a href="javascript:void(0)" class="text-primary">Recurring deposit</a>
-										</td>
-										<td><span>6000 $</span></td>
-										<td>
-											<span>678900000000</span>
-										</td>
-										<td>
-											<span>5678</span>
-										</td>
-										<td>
-											<span>Bank Of India</span>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<a href="javascript:void(0)" class="text-primary">Saving</a>
-										</td>
-										<td><span>500 $</span></td>
-										<td>
-											<span>1234500000000</span>
-										</td>
-										<td>
-											<span>1234</span>
-										</td>
-										<td>
-											<span>Bank Of Uk</span>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<a href="javascript:void(0)" class="text-primary">Salary </a>
-										</td>
-										<td><span>700 $</span></td>
-										<td>
-											<span>678900000000</span>
-										</td>
-										<td>
-											<span>5678</span>
-										</td>
-										<td>
-											<span>Bank Of Lundon</span>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<a href="javascript:void(0)" class="text-primary">Fixed deposit</a>
-										</td>
-										<td><span>700 $</span></td>
-										<td>
-											<span>678900000000</span>
-										</td>
-										<td>
-											<span>5678</span>
-										</td>
-										<td>
-											<span>Bank Of Lundon</span>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<a href="javascript:void(0)" class="text-primary">Fixed deposit</a>
-										</td>
-										<td><span>700 $</span></td>
-										<td>
-											<span>678900000000</span>
-										</td>
-										<td>
-											<span>5678</span>
-										</td>
-										<td>
-											<span>Bank Of Lundon</span>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<a href="javascript:void(0)" class="text-primary">Salary </a>
-										</td>
-										<td><span>700 $</span></td>
-										<td>
-											<span>678900000000</span>
-										</td>
-										<td>
-											<span>5678</span>
-										</td>
-										<td>
-											<span>Bank Of Lundon</span>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<a href="javascript:void(0)" class="text-primary">Fixed deposit</a>
-										</td>
-										<td><span>700 $</span></td>
-										<td>
-											<span>678900000000</span>
-										</td>
-										<td>
-											<span>5678</span>
-										</td>
-										<td>
-											<span>Bank Of Lundon</span>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<a href="javascript:void(0)" class="text-primary">Fixed deposit</a>
-										</td>
-										<td><span>700 $</span></td>
-										<td>
-											<span>678900000000</span>
-										</td>
-										<td>
-											<span>5678</span>
-										</td>
-										<td>
-											<span>Bank Of Lundon</span>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<a href="javascript:void(0)" class="text-primary">Recurring deposit</a>
-										</td>
-										<td><span>6000 $</span></td>
-										<td>
-											<span>678900000000</span>
-										</td>
-										<td>
-											<span>5678</span>
-										</td>
-										<td>
-											<span>Bank Of India</span>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<a href="javascript:void(0)" class="text-primary">Recurring deposit</a>
-										</td>
-										<td><span>6000 $</span></td>
-										<td>
-											<span>678900000000</span>
-										</td>
-										<td>
-											<span>5678</span>
-										</td>
-										<td>
-											<span>Bank Of India</span>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<a href="javascript:void(0)" class="text-primary">Fixed deposit</a>
-										</td>
-										<td><span>700 $</span></td>
-										<td>
-											<span>678900000000</span>
-										</td>
-										<td>
-											<span>5678</span>
-										</td>
-										<td>
-											<span>Bank Of Lundon</span>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<a href="javascript:void(0)" class="text-primary">Salary </a>
-										</td>
-										<td><span>700 $</span></td>
-										<td>
-											<span>678900000000</span>
-										</td>
-										<td>
-											<span>5678</span>
-										</td>
-										<td>
-											<span>Bank Of Lundon</span>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<a href="javascript:void(0)" class="text-primary">Fixed deposit</a>
-										</td>
-										<td><span>700 $</span></td>
-										<td>
-											<span>678900000000</span>
-										</td>
-										<td>
-											<span>5678</span>
-										</td>
-										<td>
-											<span>Bank Of Lundon</span>
-										</td>
-									</tr>
-								</tbody>
 
-							</table>
+								<button class="btn btn-success rounded" onclick="loadViewUpsert('')">+ Thêm</button>
+							</div>
+							<div class="table-responsive p-3 datatables">
+								<table id="empoloyees-tbl1" class="table display">
+									<thead>
+									</thead>
+								</table>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -335,33 +47,75 @@
 	</div>
 </div>
 
-<!-- Thêm thư viện jQuery và Select2 -->
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+@section Scripts {
+	 <!-- Thêm thư viện jQuery và Select2 -->
+	<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+	<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 
-<script>
-    $(document).ready(function () {
-        // Khởi tạo Select2 với giới hạn lựa chọn
-        $('#sanPhamSelect').select2({
-            maximumSelectionLength: 5
-        });
+	<script>
 
-        // Xử lý khi chọn sản phẩm
-        $('#sanPhamSelect').on('change', function () {
-            var selectedProducts = $(this).val();
-            $('#chiTietComboContainer').empty(); // Xóa các trường nhập cũ
+		$(document).ready(function () {
+			// Khởi tạo Select2 với giới hạn lựa chọn
+			$('#sanPhamSelect').select2({
+				maximumSelectionLength: 5
+			});
 
-            // Tạo trường nhập số lượng cho từng sản phẩm
-            selectedProducts.forEach(function (productId) {
-                var productName = $('#sanPhamSelect option[value="' + productId + '"]').text();
-                $('#chiTietComboContainer').append(`
-                        <div class="form-group mb-3">
-                            <label>${productName} - Số lượng:</label>
-                            <input type="number" name="soLuong[${productId}]" min="1" class="form-control" placeholder="Nhập số lượng">
-                        </div>
-                    `);
-            });
-        });
+			// Xử lý khi chọn sản phẩm
+			$('#sanPhamSelect').on('change', function () {
+				var selectedProducts = $(this).val();
+				$('#chiTietComboContainer').empty(); // Xóa các trường nhập cũ
+
+				// Tạo trường nhập số lượng cho từng sản phẩm
+				selectedProducts.forEach(function (productId) {
+					var productName = $('#sanPhamSelect option[value="' + productId + '"]').text();
+					$('#chiTietComboContainer').append(`
+							<div class="form-group mb-3">
+								<label>${productName} - Số lượng:</label>
+								<input type="number" name="soLuong[${productId}]" min="1" class="form-control" placeholder="Nhập số lượng">
+							</div>
+						`);
+				});
+			});
+		});
+
+		function actionUpsertCombo(event) {
+    event.preventDefault();
+
+    var formData = new FormData(document.getElementById('formUpsertCombo'));
+
+    // Kiểm tra và log dữ liệu FormData
+    $('#chiTietComboContainer input[type="number"]').each(function () {
+        var productId = $(this).attr("name").match(/\d+/)[0];
+        var quantity = $(this).val();
+        formData.append(`soLuong[${productId}]`, quantity);
     });
-</script>
+
+    // Kiểm tra dữ liệu đã được thêm vào formData đúng chưa
+    for (var pair of formData.entries()) {
+        console.log(pair[0]+ ', ' + pair[1]); 
+    }
+
+    $.ajax({
+        url: `/Employee/ManagerCombo/Upsert`,
+        data: formData,
+        method: 'POST',
+        processData: false, // Không xử lý dữ liệu
+        contentType: false, // Không cần thiết lập contentType
+        success: (data) => {
+            if (data.success) {
+                toastr.success(data.message);
+            } else {
+                $('#viewFormUpsert').html(data.data);
+                toastr.error(data.message);
+            }
+        },
+        error: (xhr) => {
+            toastr.error("Có lỗi xảy ra: " + xhr.responseText);
+        }
+    });
+}
+
+	</script>
+
+	<script src="~/js/employee/managerCombo.js" asp-append-version="true"></script>
+}
