@@ -153,7 +153,7 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Cố gắng đăng nhập không hợp lệ.");
+                    ModelState.AddModelError(string.Empty, "Tài khoản bạn truy cập không nằm trong hệ thống.");
                     return Page();
                 }
             }
