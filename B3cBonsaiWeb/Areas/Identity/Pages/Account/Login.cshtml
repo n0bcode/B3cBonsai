@@ -55,6 +55,17 @@
                                     <span asp-validation-for="Input.Password" class="text-danger"></span>
                                 </li>
                             </ul>
+
+                            <br />
+                            <!-- Thêm ô reCAPTCHA -->
+                            <div class="g-recaptcha" data-sitekey="6LdnYnMqAAAAAIqMXz4csz5Zw_kR3ARtWht9wjY2"></div>
+
+                            <!-- đây là link js của ô captcha với ngôn ngữ tiếng Việt -->
+                            <script src="https://www.google.com/recaptcha/api.js?hl=vi" async defer></script>
+
+
+
+
                             <div class="form-action-button">
                                 <div class="button-forget">
                                     <button type="submit" class="btn btn-style2">Đăng nhập</button>

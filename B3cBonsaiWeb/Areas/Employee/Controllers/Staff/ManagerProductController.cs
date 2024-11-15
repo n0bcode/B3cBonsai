@@ -3,6 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using B3cBonsai.DataAccess.Data;
 using B3cBonsai.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
 {
@@ -10,10 +15,12 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
     public class ManagerProductController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public ManagerProductController(ApplicationDbContext context)
+        public ManagerProductController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         [Authorize]
@@ -22,83 +29,170 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
             return View();
         }
 
-
-
+        // GET: Upsert (create or edit product)
         [HttpGet]
         public async Task<IActionResult> Upsert(int? id)
         {
-            if (id == null)
+            // Retrieve categories for dropdown list
+            ViewBag.DanhMucOptions = await _context.DanhMucSanPhams
+                .Select(d => new SelectListItem
+                {
+                    Value = d.Id.ToString(),
+                    Text = d.TenDanhMuc
+                })
+                .ToListAsync();
+
+            if (!id.HasValue)
             {
                 return PartialView(new SanPham());
             }
-            var product = await _context.SanPhams.FindAsync(id);
 
-            if (product == null) {
+            var product = await _context.SanPhams.FindAsync(id);
+            if (product == null)
+            {
                 return PartialView(new SanPham());
-            } 
-            return View(product);
+            }
+
+            return PartialView(product);
         }
 
+        // POST: Upsert (lưu hoặc cập nhật sản phẩm)
         [HttpPost]
-        public IActionResult Upsert([FromBody] SanPham model)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Upsert(SanPham model, IFormFile[] HinhAnhs)
         {
-            if (!ModelState.IsValid)
-                return Json(new { success = false, message = "Dữ liệu không hợp lệ." });
-
-            try
+            if (ModelState.IsValid)
             {
                 if (model.Id == 0)
                 {
+                    model.TrangThai = true;
                     _context.SanPhams.Add(model);
+                    await _context.SaveChangesAsync();
+
+                    if (HinhAnhs != null && HinhAnhs.Any())
+                    {
+                        foreach (var file in HinhAnhs)
+                        {
+                            if (file.Length > 0)
+                            {
+                                var filePath = Path.Combine(_webHostEnvironment.WebRootPath, "images", "product", file.FileName);
+                                using (var stream = new FileStream(filePath, FileMode.Create))
+                                {
+                                    await file.CopyToAsync(stream);
+                                }
+
+                                var image = new HinhAnhSanPham
+                                {
+                                    SanPhamId = model.Id,
+                                    LinkAnh = "/images/product/" + file.FileName
+                                };
+                                _context.HinhAnhSanPhams.Add(image);
+                            }
+                        }
+                        await _context.SaveChangesAsync();
+                        TempData["ThanhCong"] = "Sản phẩm đã được thêm thành công!";
+                    }
                 }
                 else
                 {
-                    _context.SanPhams.Update(model);
+                    var existingProduct = await _context.SanPhams.FindAsync(model.Id);
+                    if (existingProduct != null)
+                    {
+                        // Cập nhật thông tin sản phẩm
+                        existingProduct.TenSanPham = model.TenSanPham;
+                        existingProduct.DanhMucId = model.DanhMucId;
+                        existingProduct.SoLuong = model.SoLuong;
+                        existingProduct.Gia = model.Gia;
+                        existingProduct.MoTa = model.MoTa;
+
+                        // Cập nhật sản phẩm vào cơ sở dữ liệu
+                        _context.SanPhams.Update(existingProduct);
+                        await _context.SaveChangesAsync();
+
+                        TempData["ThanhCong"] = "Sản phẩm đã được sửa thành công!";
+
+                        // Nếu người dùng không thêm hình ảnh mới, không cần xóa hình ảnh cũ
+                        if (HinhAnhs != null && HinhAnhs.Any())
+                        {
+                            // Lấy danh sách hình ảnh cũ của sản phẩm
+                            var existingImages = await _context.HinhAnhSanPhams
+                                .Where(x => x.SanPhamId == model.Id)
+                                .ToListAsync();
+
+                            // Xóa những hình ảnh cũ (xóa cả trong cơ sở dữ liệu và file system)
+                            foreach (var image in existingImages)
+                            {
+                                var filePath = Path.Combine(_webHostEnvironment.WebRootPath, image.LinkAnh.TrimStart('/'));
+                                if (System.IO.File.Exists(filePath))
+                                {
+                                    System.IO.File.Delete(filePath); // Xóa hình ảnh khỏi file system
+                                }
+                                _context.HinhAnhSanPhams.Remove(image); // Xóa hình ảnh khỏi cơ sở dữ liệu
+                            }
+                            await _context.SaveChangesAsync();
+
+                            // Xử lý hình ảnh mới mà người dùng đã tải lên
+                            foreach (var file in HinhAnhs)
+                            {
+                                if (file.Length > 0)
+                                {
+                                    var filePath = Path.Combine(_webHostEnvironment.WebRootPath, "images", "product", file.FileName);
+                                    using (var stream = new FileStream(filePath, FileMode.Create))
+                                    {
+                                        await file.CopyToAsync(stream);
+                                    }
+
+                                    var newImage = new HinhAnhSanPham
+                                    {
+                                        SanPhamId = model.Id,
+                                        LinkAnh = "/images/product/" + file.FileName
+                                    };
+                                    _context.HinhAnhSanPhams.Add(newImage); // Thêm hình ảnh mới vào cơ sở dữ liệu
+                                }
+                            }
+                            await _context.SaveChangesAsync();
+
+                            TempData["ThanhCong"] = "Sản phẩm đã được sửa thành công!";
+                        }
+                        else
+                        {
+                            // Nếu không có ảnh mới, giữ nguyên ảnh cũ mà không làm gì cả
+                            // Không cần làm gì thêm trong trường hợp này, các hình ảnh cũ sẽ không bị xóa
+                        }
+                    }
                 }
-                _context.SaveChanges();
-                return Json(new { success = true });
+
+
+                return RedirectToAction("Index", "ManagerProduct");
             }
-            catch (Exception ex)
-            {
-                return Json(new { success = false, message = "Lỗi: " + ex.Message });
-            }
+            return RedirectToAction("Index", "ManagerProduct");
         }
 
 
-        public IActionResult DetailWithDelete()
-        {
-            return PartialView("_DetailWithDelete");
-        }
 
+        // GET: Product details with option to delete
         [HttpGet]
         public async Task<IActionResult> DetailWithDelete(int id)
         {
-
-            if (id == null || id <= 0)
-            {
-                return Json(new { error = "Id không hợp lệ" });
-            }
-
             var product = await _context.SanPhams
-                        .Include(a => a.HinhAnhs)
-                        .Include(a => a.DanhMuc)
-                        .Include(a => a.Videos)
-                        .Select(a => new
-                        {
-                            a.Id,
-                            a.TenSanPham,
-                            a.Gia,
-                            a.MoTa,
-                            a.DanhMuc.TenDanhMuc,
-                            a.SoLuong,
-                            a.NgayTao,
-                            a.NgaySuaDoi,
-                            a.TrangThai,
-                            Videos = a.Videos.Select(v => new { v.LinkVideo }).ToList(),
-                            HinhAnhs = a.HinhAnhs.Select(ha => new { ha.LinkAnh }).ToList()
-
-                        })
-                        .FirstOrDefaultAsync(a => a.Id == id);
+                .Include(a => a.HinhAnhs)
+                .Include(a => a.DanhMuc)
+                .Include(a => a.Videos)
+                .Select(a => new
+                {
+                    a.Id,
+                    a.TenSanPham,
+                    a.Gia,
+                    a.MoTa,
+                    a.DanhMuc.TenDanhMuc,
+                    a.SoLuong,
+                    a.NgayTao,
+                    a.NgaySuaDoi,
+                    a.TrangThai,
+                    Videos = a.Videos.Select(v => new { v.LinkVideo }).ToList(),
+                    HinhAnhs = a.HinhAnhs.Select(ha => new { ha.LinkAnh }).ToList()
+                })
+                .FirstOrDefaultAsync(a => a.Id == id);
 
             if (product == null)
             {
@@ -108,11 +202,11 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
             return Json(new { data = product });
         }
 
+        // GET: Retrieve all active products
         [HttpGet]
         public IActionResult GetAll()
         {
             var products = _context.SanPhams
-                .Where(a => a.TrangThai == true)
                 .Include(sp => sp.HinhAnhs)
                 .Include(sp => sp.DanhMuc)
                 .Select(sp => new
@@ -132,8 +226,7 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
             return Json(new { data = products });
         }
 
-
-
+        // POST: Delete product (soft delete by marking as inactive)
         [HttpPost]
         public IActionResult Delete(int id)
         {
@@ -143,7 +236,7 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
 
             try
             {
-                product.TrangThai = false;
+                product.TrangThai = false; // Mark product as inactive
                 _context.SanPhams.Update(product);
                 _context.SaveChanges();
                 return Json(new { success = true });
@@ -154,5 +247,4 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
             }
         }
     }
-
 }
