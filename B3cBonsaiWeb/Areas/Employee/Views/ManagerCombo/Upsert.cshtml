@@ -3,7 +3,7 @@
 
 <div class="card h-auto">
     <div class="card-header">
-        <h4 class="heading mb-0">Thêm/Sửa Combo Sản Phẩm</h4>
+        <h4 class="heading mb-0">@(Model == null || Model.Id == 0 ? "Thêm" : "Sửa") Combo sản phẩm</h4>
     </div>
     <div class="card-body">
         <form class="form-combo" id="formUpsertCombo" onsubmit="return actionUpsertCombo(event)">
