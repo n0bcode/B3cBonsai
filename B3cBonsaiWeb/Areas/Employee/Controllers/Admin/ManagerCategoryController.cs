@@ -5,6 +5,8 @@ using B3cBonsai.Models;
 using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using DocumentFormat.OpenXml.Drawing.Diagrams;
 
 namespace B3cBonsaiWeb.Areas.Employee.Controllers.Admin
 {
@@ -25,57 +27,53 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Admin
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllCategories()
-        {
-            var categories = await _unitOfWork.DanhMucSanPham.GetAll();
-            return Json(new { data = categories.ToList() });
-        }
-
-        [HttpGet]
         public async Task<IActionResult> Upsert(int? id)
         {
             DanhMucSanPham danhMuc = new DanhMucSanPham();
             if (id == null)
             {
-                return PartialView("Upsert", danhMuc);
+                return PartialView(danhMuc);
             }
             else
             {
                 danhMuc = await Task.FromResult(_unitOfWork.DanhMucSanPham.GetFirstOrDefault(u => u.Id == id));
                 if (danhMuc == null)
                 {
-                    return NotFound();
+                    return PartialView(danhMuc);
                 }
-                return PartialView("Upsert", danhMuc);
+                return PartialView(danhMuc);
             }
         }
-
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Upsert(DanhMucSanPham danhMuc)
         {
             if (ModelState.IsValid)
             {
-                if (danhMuc.Id == 0)
+                if (danhMuc == null || danhMuc.Id == 0)
                 {
-                    _unitOfWork.DanhMucSanPham.Add(danhMuc);
-                    TempData["success"] = "Thêm danh mục sản phẩm thành công";
+                    _unitOfWork.DanhMucSanPham.Add(danhMuc); // Sử dụng AddAsync để giúp với async
                 }
                 else
                 {
                     _unitOfWork.DanhMucSanPham.Update(danhMuc);
-                    TempData["success"] = "Cập nhật danh mục sản phẩm thành công";
                 }
-                await Task.Run(() => _unitOfWork.Save());
 
+                _unitOfWork.Save(); // Thay đổi Save thành SaveAsync
 
-                return Json(new { success = true, message = TempData["success"].ToString() });
+                return Json(new { success = true, message = "Thao tác thành công" });
             }
 
             return Json(new { success = false, message = "Có lỗi xảy ra khi thêm/cập nhật danh mục sản phẩm." });
         }
 
 
+        #region//GET API
+        [HttpGet]
+        public async Task<IActionResult> GetAllCategories()
+        {
+            var categories = await _unitOfWork.DanhMucSanPham.GetAll();
+            return Json(new { data = categories.ToList() });
+        }
 
         [HttpPost]
         public async Task<IActionResult> Delete(int id, int? newCategoryId)
@@ -94,13 +92,13 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Admin
                 return Json(new { success = false, message = "Cần có ít nhất 2 danh mục, không thể xóa." });
             }
 
- 
+
             var productsInCategory = (await _unitOfWork.SanPham.GetAll(p => p.DanhMucId == id)).ToList();
             if (productsInCategory.Count > 0)
             {
                 if (newCategoryId.HasValue)
                 {
- 
+
                     foreach (var product in productsInCategory)
                     {
                         product.DanhMucId = newCategoryId.Value;
@@ -119,7 +117,39 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Admin
 
             return Json(new { success = true, message = "Xóa danh mục thành công." });
         }
+        [HttpGet]
+        public async Task<IActionResult> GetOtherCategory(int? id)
+        {
+            if (id == null)
+            {
+                return Json(new { success = false, content = "Không nhận được dữ liệu tìm kiếm" });
+            }
+            DanhMucSanPham? danhMucSanPham = await _unitOfWork.DanhMucSanPham.Get(filter: dm => dm.Id == id);
+            if (danhMucSanPham == null)
+            {
+                return Json(new { success = false, content = "Không tìm thấy dữ liệu trong hệ thống" });
+            }
+            IEnumerable<SelectListItem> otherCategory = (await _unitOfWork.DanhMucSanPham.GetAll(filter: dm => dm.Id != id)).Select(dm => new SelectListItem() { Value = dm.Id.ToString(), Text = dm.TenDanhMuc });
+            return Json(new { success = true, data = otherCategory, amount = (await _unitOfWork.SanPham.GetAll(filter: sp => sp.DanhMucId == id)).Count() });
+        }
 
+        public async Task<IActionResult> DeleteAndTransferToOtherCategory(int? id, int? idChange)
+        {
+            if (id == null && idChange == null)
+            {
+                return Json(new { success = false, content = "Không nhận được dữ liệu thay đổi" });
+            }
+            foreach (SanPham sanPham in (await _unitOfWork.SanPham.GetAll(filter: dm => dm.DanhMucId == id)))
+            {
+                sanPham.DanhMucId = idChange.Value;
+            }
+            _unitOfWork.Save();
+
+            _unitOfWork.DanhMucSanPham.Remove(await _unitOfWork.DanhMucSanPham.Get(filter: dm => dm.Id == id));
+            _unitOfWork.Save();
+            return Json(new { success = true, content = "Bạn đã thay đổi nội dung thành công" });
+        }
+        #endregion
 
     }
 }

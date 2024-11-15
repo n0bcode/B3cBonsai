@@ -3,12 +3,6 @@
     Layout = "~/Areas/Employee/Views/Shared/_Layout.cshtml";
 }
 
-<!-- Thêm thư viện Bootstrap và jQuery -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
 <div class="content-body">
     <div class="page-titles">
@@ -16,21 +10,26 @@
     </div>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-xxl-3 col-xl-4">
-                <button class="btn btn-primary mb-3" onclick="openUpsertModal()">+ Thêm Danh Mục</button>
+            <div class="col-xxl-3 col-xl-4" id="viewFormUpsert">
+                @await Html.PartialAsync("Upsert",new DanhMucSanPham())
             </div>
             <div class="col-xxl-9 col-xl-8">
                 <div class="card">
                     <div class="card-body">
-                        <table id="categoryTable" class="table display">
-                            <thead>
-                                <tr>
-                                    <th>ID Danh Mục</th>
-                                    <th>Tên Danh Mục</th>
-                                    <th>Hành Động</th>
-                                </tr>
-                            </thead>
-                        </table>
+                        <div class="tbl-caption">
+                            <button class="btn btn-success rounded" onclick="loadViewUpsert('')">+ Thêm</button>
+                        </div>
+                        <div class="table-responsive p-3 datatables">
+                            <table id="categoryTable" class="table display">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Tên danh mục</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -38,81 +37,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="upsertModal" tabindex="-1" aria-labelledby="upsertModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="upsertModalLabel">Thêm/Sửa Danh Mục Sản Phẩm</h5>
-                <!-- Nút X đóng modal -->
-                <button type="button" class="close" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body" id="modalBody">
-                <!-- Content loaded via AJAX will appear here -->
-            </div>
-            <div class="modal-footer">
-                <!-- Nút đóng modal -->
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 @section Scripts {
-    <script>
-        $(document).ready(function () {
-            $('#categoryTable').DataTable({
-                "ajax": {
-                    "url": "/Employee/ManagerCategory/GetAllCategories",
-                    "type": "GET",
-                    "datatype": "json"
-                },
-                "columns": [
-                    { "data": "id" },
-                    { "data": "tenDanhMuc" },
-                    {
-                        "data": "id",
-                        "render": function (data) {
-                            return `
-                                <button class="btn btn-success" onclick="editCategory(${data})">Sửa</button>
-                                <button class="btn btn-danger" onclick="deleteCategory(${data})">Xóa</button>
-                            `;
-                        }
-                    }
-                ]
-            });
-        });
-
-        function openUpsertModal(id = null) {
-            let url = `/Employee/ManagerCategory/Upsert/${id ?? ""}`;
-            $('#modalBody').load(url, function () {
-                $('#upsertModal').modal('show');
-            });
-        }
-
-        function editCategory(id) {
-            openUpsertModal(id);
-        }
-
-        function deleteCategory(id) {
-            if (confirm("Bạn có chắc chắn muốn xóa danh mục này không?")) {
-                $.ajax({
-                    url: `/Employee/ManagerCategory/Delete/${id}`,
-                    type: 'POST',
-                    success: function (data) {
-                        if (data.success) {
-                            $('#categoryTable').DataTable().ajax.reload(); // Tải lại bảng
-                            toastr.success(data.message); // Hiển thị thông báo thành công
-                        } else {
-                            toastr.error(data.message); // Hiển thị thông báo lỗi
-                        }
-                    },
-                    error: function () {
-                        toastr.error("Đã xảy ra lỗi khi xóa danh mục.");
-                    }
-                });
-            }
-        }
-    </script>
+    <script src="~/js/employee/managerCategory.js" asp-append-version="true" ></script>
 }
