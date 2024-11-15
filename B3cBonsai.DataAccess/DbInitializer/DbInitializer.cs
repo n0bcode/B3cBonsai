@@ -231,7 +231,7 @@ namespace B3cBonsai.DataAccess.DbInitializer
             Random rd = new Random();
             var donHangs = new List<DonHang>();
 
-            for (int i = 1; i <= 30; i++)
+            for (int i = 1; i <= 2000; i++)
             {
                 // Lấy danh sách người dùng
                 var nguoiDungIds = _db.NguoiDungUngDungs.Select(u => u.Id).ToList();
@@ -241,16 +241,16 @@ namespace B3cBonsai.DataAccess.DbInitializer
                 {
                     NguoiDungId = nguoiDungId,
                     NhanVienId = _db.NguoiDungUngDungs.First().Id, // Giữ nguyên
-                    NgayDatHang = DateTime.Now.AddDays(-rd.Next(0, 30)),
+                    NgayDatHang = DateTime.Now.AddDays(-rd.Next(30, 365)),
                     TrangThaiDonHang = new[] { SD.StatusInProcess, SD.StatusPending, SD.StatusCancelled, SD.StatusShipped, SD.StatusApproved }[rd.Next(5)],
-                    NgayNhanHang = DateTime.Now.AddDays(rd.Next(1, 7)),
+                    NgayNhanHang = DateTime.Now.AddDays(rd.Next(0, 30)),
                     TenNguoiNhan = RandomData_DB.Instance.rdName(),
                     SoDienThoai = RandomData_DB.Instance.RandomPhone(),
                     ThanhPho = RandomData_DB.Instance.rdAddress(),
                     Duong = RandomData_DB.Instance.rdAddress(),
                     Tinh = RandomData_DB.Instance.rdAddress(),
-                    TongTienDonHang = rd.Next(1000000, 9999999),
-                    MaBuuDien = rd.Next(1000, 9999).ToString()
+                    MaBuuDien = rd.Next(1000, 9999).ToString(),
+                    TongTienDonHang = rd.Next(20000, 50000)
                 });
             }
             _db.DonHangs.AddRange(donHangs);
