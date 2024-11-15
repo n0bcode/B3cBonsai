@@ -1,7 +1,7 @@
-﻿@model B3cBonsai.Models.SanPham
+﻿@model SanPhamVM
 
 <div class="offcanvas-header">
-    <h5 class="modal-title" id="#gridSystemModal">@((Model.Id == 0) ? "Thêm sản phẩm" : "Cập nhật sản phẩm")</h5>
+    <h5 class="modal-title" id="#gridSystemModal">@((Model == null || Model.SanPham == null || Model.SanPham.Id == 0) ? "Thêm sản phẩm" : "Cập nhật sản phẩm")</h5>
     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close">
         <i class="fa-solid fa-xmark"></i>
     </button>
@@ -30,59 +30,65 @@
                 </div>
 
                 <div class="col-xl-6 mb-3">
-                    <label asp-for="TenSanPham" class="form-label">Tên sản phẩm <span class="text-danger">*</span></label>
-                    <input asp-for="TenSanPham" class="form-control" required />
-                    <span asp-validation-for="TenSanPham" class="text-danger"></span>
+                    <label asp-for="SanPham.Id" class="form-label">Tên sản phẩm <span class="text-danger">*</span></label>
+                    <input asp-for="SanPham.Id" class="form-control" />
                 </div>
 
                 <div class="col-xl-6 mb-3">
-                    <label asp-for="DanhMucId" class="form-label">Danh mục</label>
-                    <select asp-for="DanhMucId" class="default-select form-control" asp-items="ViewBag.DanhMucOptions" required>
+                    <label asp-for="SanPham.TenSanPham" class="form-label">Tên sản phẩm <span class="text-danger">*</span></label>
+                    <input asp-for="SanPham.TenSanPham" class="form-control" required />
+                    <span asp-validation-for="SanPham.TenSanPham" class="text-danger"></span>
+                </div>
+
+                <div class="col-xl-6 mb-3">
+                    <label asp-for="SanPham.DanhMucId" class="form-label">Danh mục</label>
+                    <select asp-for="SanPham.DanhMucId" class="default-select form-control" asp-items="@Model.DanhMucSanPham" required>
                         <option value="">Chọn danh mục</option>
                     </select>
-                    <span asp-validation-for="DanhMucId" class="text-danger"></span>
+                    <span asp-validation-for="SanPham.DanhMucId" class="text-danger"></span>
                 </div>
 
                 <div class="col-xl-6 mb-3">
-                    <label asp-for="SoLuong" class="form-label">Số lượng</label>
-                    <input asp-for="SoLuong" class="form-control" required />
-                    <span asp-validation-for="SoLuong" class="text-danger"></span>
+                    <label asp-for="SanPham.SoLuong" class="form-label">Số lượng</label>
+                    <input asp-for="SanPham.SoLuong" class="form-control" required min="100"/>
+                    <span asp-validation-for="SanPham.SoLuong" class="text-danger"></span>
                 </div>
 
                 <div class="col-xl-6 mb-3">
-                    <label asp-for="Gia" class="form-label">Giá</label>
-                    <input asp-for="Gia" class="form-control" required />
-                    <span asp-validation-for="Gia" class="text-danger"></span>
+                    <label asp-for="SanPham.Gia" class="form-label">Giá</label>
+                    <input asp-for="SanPham.Gia" class="form-control" required min="10000" />
+                    <span asp-validation-for="SanPham.Gia" class="text-danger"></span>
+                </div>
+
+                <div class="col-xl-6 mb-3">
+                    <label asp-for="SanPham.TrangThai" class="form-label">Trạng thái</label>
+                    <select asp-for="SanPham.TrangThai" class="default-select form-control" required>
+                        <option value="true">Đang bán</option>
+                        <option value="false">Ngừng bán</option>
+                    </select>
+                    <span asp-validation-for="SanPham.TrangThai" class="text-danger"></span>
+                </div>
+
+
+                <div class="col-xl-6 mb-3">
+                    <label asp-for="SanPham.NgayTao" class="form-label">Ngày tạo</label>
+                    <input asp-for="SanPham.NgayTao" type="date" class="form-control" readonly />
+                </div>
+
+                <div class="col-xl-6 mb-3">
+                    <label asp-for="SanPham.NgaySuaDoi" class="form-label">Ngày sửa đổi</label>
+                    <input asp-for="SanPham.NgaySuaDoi" type="date" class="form-control" readonly />
                 </div>
 
                 <div class="col-xl-12 mb-3">
-                    <label asp-for="MoTa" class="form-label">Mô tả</label>
-                    <textarea asp-for="MoTa" rows="4" class="form-control" required></textarea>
-                    <span asp-validation-for="MoTa" class="text-danger"></span>
-                </div>
-
-                <div class="col-xl-6 mb-3">
-                    <label asp-for="NgayTao" class="form-label">Ngày tạo</label>
-                    <input asp-for="NgayTao" type="date" class="form-control" readonly />
-                </div>
-
-                <div class="col-xl-6 mb-3">
-                    <label asp-for="NgaySuaDoi" class="form-label">Ngày sửa đổi</label>
-                    <input asp-for="NgaySuaDoi" type="date" class="form-control" readonly />
-                </div>
-
-                <div class="col-xl-6 mb-3">
-                    <label asp-for="TrangThai" class="form-label">Trạng thái</label>
-                    <select asp-for="TrangThai" class="default-select form-control" required>
-                        <option value="true">Hoạt động</option>
-                        <option value="false">Ngừng hoạt động</option>
-                    </select>
-                    <span asp-validation-for="TrangThai" class="text-danger"></span>
+                    <label asp-for="SanPham.MoTa" class="form-label">Mô tả</label>
+                    <textarea asp-for="SanPham.MoTa" rows="4" class="form-control" required></textarea>
+                    <span asp-validation-for="SanPham.MoTa" class="text-danger"></span>
                 </div>
             </div>
             <div class="d-flex justify-content-between">
                 <button type="button" class="btn btn-danger light" data-bs-dismiss="offcanvas">Hủy</button>
-                <button type="submit" class="btn btn-primary">@((Model.Id == 0) ? "Thêm" : "Cập nhật")</button>
+                <button type="submit" class="btn btn-primary">@((Model == null || Model.SanPham == null || Model.SanPham.Id == 0) ? "Thêm" : "Cập nhật")</button>
             </div>
         </form>
     </div>
@@ -106,13 +112,13 @@
             success: function(response) {
                 if (response.success) {
                     // Nếu thêm thành công, hiển thị thông báo thành công
-                    toastr.success(response.content, response.title, { timeOut: 5000 });
+                    toastr.success("Thêm sản phẩm thành công", "Thêm", { timeOut: 5000 });
                     dataTable.ajax.reload();
                 } else {
                     $('#upsertObject').html(response.data);
 
                     // Thông báo lỗi với toastr
-                    toastr.error(response.content, response.title, { timeOut: 5000 });
+                    toastr.error("Lỗi thêm sản phẩm, vui lòng kiểm tra dữ liệu nhập vào!", "Lỗi", { timeOut: 5000 });
                 }
             },
             error: function(xhr, status, error) {
