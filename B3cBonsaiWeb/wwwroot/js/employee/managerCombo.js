@@ -91,39 +91,6 @@ const loadDetailWithDelete = (id) => {
         }
     })
 }
-
-/*const DeleteDWD = (id) => {
-    Swal.fire({
-        title: "Bạn có chắc?",
-        text: "Bạn sẽ không thể khôi phục lại thông tin bị xóa!",
-        type: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Vâng, xóa đi!"
-    }).then((result) => {
-        if (result.value) {
-            $.ajax({
-                url: `/Employee/ManagerCombo/Delete?id=${id}`,
-                method: 'GET',
-                success: (data) => {
-                    Swal.fire({
-                        title: "Đã xóa!",
-                        text: "Thông tin đối được chọn đã bị xóa.",
-                        type: "success"
-                    });
-                    dataTable.ajax.reload();
-                },
-                error: (xhr) => {
-                    toastr.error("Lỗi xóa thông tin đối tượng")
-                }
-            })
-        } else {
-            toastr.info("Bạn đã hủy xác nhận xóa");
-        }
-    });
-}
-*/
 function deleteCombo(id) {
     console.log("Đang xóa combo với ID:", id);
     Swal.fire({
