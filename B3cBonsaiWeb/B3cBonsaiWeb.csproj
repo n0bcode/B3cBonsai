@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\js\customer\**" />
+    <Content Remove="wwwroot\js\customer\**" />
+    <EmbeddedResource Remove="wwwroot\js\customer\**" />
+    <None Remove="wwwroot\js\customer\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Areas\Employee\Views\Shared\_Layout.cshtml~RFeb5e55.TMP" />
   </ItemGroup>
 

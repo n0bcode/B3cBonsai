@@ -1,0 +1,46 @@
+﻿@model B3cBonsai.Models.DanhMucSanPham
+
+<div>
+    <form id="upsertCategoryForm" asp-action="Upsert" method="post">
+        <input type="hidden" asp-for="Id" />
+
+        <div class="form-group">
+            <label asp-for="TenDanhMuc" class="font-weight-bold">Tên Danh Mục</label>
+            <input asp-for="TenDanhMuc" class="form-control" placeholder="Nhập tên danh mục" required />
+            <span asp-validation-for="TenDanhMuc" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Lưu</button>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        $('#upsertCategoryForm').on('submit', function (event) {
+            event.preventDefault();
+
+            $.ajax({
+                url: '@Url.Action("Upsert", "ManagerCategory", new { area = "Employee" })',
+                type: 'POST',
+                data: $(this).serialize(),
+                success: function (data) {
+                    if (data.success) {
+                        toastr.success(data.message); // Hiển thị thông báo thành công
+                        $('#upsertModal').modal('hide'); // Đóng modal
+                        $('#categoryTable').DataTable().ajax.reload(); // Tải lại bảng
+                    } else {
+                        toastr.error(data.message); // Hiển thị lỗi trong toastr
+                    }
+                },
+                error: function () {
+                    toastr.error("Đã xảy ra lỗi khi lưu danh mục."); // Hiển thị thông báo lỗi
+                }
+            });
+        });
+
+        // Sử dụng jQuery để đóng modal khi click vào X hoặc Đóng
+        $('#upsertModal .close, #upsertModal .btn-secondary').on('click', function () {
+            $('#upsertModal').modal('hide');
+        });
+    </script>
+}
