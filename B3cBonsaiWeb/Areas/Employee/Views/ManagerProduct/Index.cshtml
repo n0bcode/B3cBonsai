@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Danh sách sản phẩm";
+    ViewData["Title"] = "Danh mục sản phẩm";
     Layout = "~/Areas/Employee/Views/Shared/_Layout.cshtml";
 }
 
@@ -56,133 +56,34 @@
     </div>
 }
 
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" style="width: 70%; margin-top: 2rem;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">
-                    Thông tin sản phẩm
-                </h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <section id="contentDWD">
-                    <div class="row">
-                        <!-- Phần hình ảnh và video -->
-                        <div class="col-md-6">
-                            <!-- Carousel cho hình ảnh -->
-                            <div id="productImageCarousel" class="carousel slide mb-3" data-bs-ride="carousel">
-                                <div class="carousel-inner">
-                                    <!-- Các hình ảnh sẽ được thêm động bằng JavaScript -->
-                                </div>
-                                <button class="carousel-control-prev" type="button"
-                                    data-bs-target="#productImageCarousel" data-bs-slide="prev">
-                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                </button>
-                                <button class="carousel-control-next" type="button"
-                                    data-bs-target="#productImageCarousel" data-bs-slide="next">
-                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                </button>
-                            </div>
 
-                            <!-- Video player -->
-                            @* <div class="ratio ratio-16x9 mb-3">
-                                <video id="productVideo" controls>
-                                    <source src="" type="video/mp4">
-                                </video>
-                            </div> *@
-                        </div>
-
-                        <!-- Thông tin chi tiết sản phẩm -->
-                        <div class="col-md-6">
-                            <div class="product-details p-3">
-                                <h4 class="mb-4">Thông tin chi tiết</h4>
-                                <div class="info-group mb-3">
-                                    <label class="text-muted">Tên sản phẩm</label>
-                                    <h5 id="modal-productName" class="mb-0"></h5>
-                                </div>
-                                <div class="info-group mb-3">
-                                    <label class="text-muted">Danh mục</label>
-                                    <h5 id="modal-productCategory" class="mb-0"></h5>
-                                </div>
-                                <div class="info-group mb-3">
-                                    <label class="text-muted">Giá</label>
-                                    <h5 id="modal-productPrice" class="mb-0 text-primary"></h5>
-                                </div>
-                                <div class="info-group mb-3">
-                                    <label class="text-muted">Số lượng</label>
-                                    <h5 id="modal-productQuantity" class="mb-0"></h5>
-                                </div>
-                                <div class="info-group">
-                                    <label class="text-muted">Mô tả</label>
-                                    <p id="modal-productDescription" class="mb-0"></p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Thumbnail images -->
-                        <div class="col-12 mt-3">
-                            <div class="d-flex gap-2 flex-wrap" id="thumbnailContainer">
-                                <!-- Thumbnails sẽ được thêm động -->
-                            </div>
+@section detailWithDelete {
+    <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="detailWithDelete" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-center" style="width: 75%;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="detailWithDelete">Thông tin sản phẩm</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div id="contentDWD">
+                    <div id="preloader">
+                        <div class="lds-ripple">
+                            <div></div>
+                            <div></div>
                         </div>
                     </div>
-                </section>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát</button>
-               @*  <button type="button" class="btn btn-primary">Save changes</button> *@
+                </div>
             </div>
         </div>
     </div>
-</div>
-
+}
 
 
 <!-- Modal -->
 
 
 @section Scripts {
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="~/js/employee/ManagerProduct.js" asp-append-version="true"></script>
 }
 
 
-
-@if (TempData["SuccessMessage"] != null)
-{
-    <div class="alert alert-success">
-        @TempData["SuccessMessage"]
-    </div>
-}
-
-
-
-<script src="/lib/jquery/dist/jquery.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-
-@if (TempData["ThanhCong"] != null)
-{
-    <script type="text/javascript">
-        $(document).ready(function () {
-            toastr.options = {
-                "closeButton": true,
-                "progressBar": true
-            };
-            toastr.success('@TempData["ThanhCong"]');
-        });
-    </script>
-}
-
-@if (TempData["ThatBai"] != null)
-{
-    <script type="text/javascript">
-        $(document).ready(function () {
-            toastr.options = {
-                "closeButton": true,
-                "progressBar": true
-            };
-            toastr.error('@TempData["ThatBai"]');
-        });
-    </script>
-}

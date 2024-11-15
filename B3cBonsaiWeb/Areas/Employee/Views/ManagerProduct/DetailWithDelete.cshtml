@@ -1,95 +1,85 @@
-﻿
-<div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="detailWithDelete" aria-hidden="true">
-	<div class="modal-dialog modal-dialog-center" style="width: 75%;">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h1 class="modal-title fs-5" id="detailWithDelete">Thông tin nhân viên</h1>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-			</div>
-			<div class="modal-body">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-xl-3 col-lg-4">
-                            <div class="clearfix">
-                                <div class="card card-bx profile-card author-profile m-b30">
-                                    <div class="card-body">
-                                        <div class="p-5">
-                                            <div class="author-profile">
-                                                <div class="author-media">
-                                                    <div style="height: 300px; overflow-y: auto;">
-                                                        <img src="~/images/product/default.jpg" alt="Hình ảnh sản phẩm mặc định" style="width: 100%; margin-bottom: 10px;">
-                                                        <img src="~/images/product/default.jpg" alt="Hình ảnh sản phẩm" style="width: 100%; margin-bottom: 10px;">
-                                                        <!-- Thêm nhiều hình ảnh giả định nếu cần -->
-                                                    </div>
-                                                </div>
-                                                <div class="author-info">
-                                                    <h6 class="title">Tên Sản Phẩm</h6>
-                                                    <span>Giá: 1,000,000 đ</span>
-                                                </div>
-                                            </div>
+﻿@model B3cBonsai.Models.SanPham
+
+<div class="modal-body">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-3 col-lg-4">
+                <div class="clearfix">
+                    <div class="card card-bx profile-card author-profile m-b30">
+                        <div class="card-body">
+                            <div class="p-5">
+                                <div class="author-profile">
+                                    <div class="author-media">
+                                        <div style="height: 300px; overflow-y: auto;">
+                                            <!-- Hiển thị hình ảnh từ HinhAnhs nếu có -->
+                                            @if (Model.HinhAnhs != null && Model.HinhAnhs.Any())
+                                            {
+                                                foreach (var hinhAnh in Model.HinhAnhs)
+                                                {
+                                                    <img src="@hinhAnh.LinkAnh" alt="Hình ảnh sản phẩm" style="width: 100%; margin-bottom: 10px;" />
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <img src="~/images/product/default.jpg" alt="Hình ảnh sản phẩm mặc định" style="width: 100%; margin-bottom: 10px;" />
+                                            }
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-9 col-lg-8">
-                            <div class="card profile-card card-bx m-b30">
-                                <div class="card-header">
-                                    <h6 class="title">Thông tin sản phẩm (Mã: 12345)</h6>
-                                </div>
-                                <form class="profile-form">
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-sm-6 m-b30">
-                                                <label class="form-label">Tên sản phẩm</label>
-                                                <input readonly type="text" class="form-control" value="Tên Sản Phẩm">
-                                            </div>
-                                            <div class="col-sm-6 m-b30">
-                                                <label class="form-label">Giá</label>
-                                                <input readonly type="text" class="form-control" value="1,000,000 đ">
-                                            </div>
-                                            <div class="col-sm-6 m-b30">
-                                                <label class="form-label">Trọng lượng</label>
-                                                <input readonly type="text" class="form-control" value="500g">
-                                            </div>
-                                            <div class="col-sm-6 m-b30">
-                                                <label class="form-label">Kích thước</label>
-                                                <input readonly type="text" class="form-control" value="20 x 10 x 5 cm">
-                                            </div>
-                                            <div class="col-sm-6 m-b30">
-                                                <label class="form-label">Số lượng</label>
-                                                <input readonly type="text" class="form-control" value="100">
-                                            </div>
-                                            <div class="col-sm-6 m-b30">
-                                                <label class="form-label">Trạng thái</label>
-                                                <input readonly type="text" class="form-control" value="Đang hoạt động">
-                                            </div>
-                                            <div class="col-sm-12 m-b30">
-                                                <label class="form-label">Mô tả</label>
-                                                <textarea class="form-control" rows="3" readonly>Đây là mô tả sản phẩm.</textarea>
-                                            </div>
-                                            <div class="col-sm-6 m-b30">
-                                                <label class="form-label">Ngày tạo</label>
-                                                <input readonly type="text" class="form-control" value="01/01/2024">
-                                            </div>
-                                            <div class="col-sm-6 m-b30">
-                                                <label class="form-label">Ngày cập nhật</label>
-                                                <input readonly type="text" class="form-control" value="15/10/2024">
-                                            </div>
-                                        </div>
+                                    <div class="author-info">
+                                        <h6 class="title">@Model.TenSanPham</h6>
+                                        <span>Giá: @Model.Gia.ToString("N0") đ</span>
                                     </div>
-                                </form>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
-
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-danger light" data-bs-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary" id="deleteObject">Xóa đối tượng</button>
-			</div>
-		</div>
-	</div>
+            </div>
+            <div class="col-xl-9 col-lg-8">
+                <div class="card profile-card card-bx m-b30">
+                    <div class="card-header">
+                        <h6 class="title">Thông tin sản phẩm (Mã: @Model.Id)</h6>
+                    </div>
+                    <form class="profile-form">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-6 m-b30">
+                                    <label asp-for="TenSanPham" class="form-label"></label>
+                                    <input asp-for="TenSanPham" readonly class="form-control" />
+                                </div>
+                                <div class="col-sm-6 m-b30">
+                                    <label asp-for="Gia" class="form-label"></label>
+                                    <input asp-for="Gia" readonly class="form-control" value="@Model.Gia.ToString("N0") đ" />
+                                </div>
+                                <div class="col-sm-6 m-b30">
+                                    <label asp-for="SoLuong" class="form-label"></label>
+                                    <input asp-for="SoLuong" readonly class="form-control" />
+                                </div>
+                                <div class="col-sm-6 m-b30">
+                                    <label asp-for="MoTa" class="form-label"></label>
+                                    <textarea asp-for="MoTa" class="form-control" rows="3" readonly></textarea>
+                                </div>
+                                <div class="col-sm-6 m-b30">
+                                    <label asp-for="NgayTao" class="form-label"></label>
+                                    <input asp-for="NgayTao" readonly class="form-control" />
+                                </div>
+                                <div class="col-sm-6 m-b30">
+                                    <label asp-for="NgaySuaDoi" class="form-label"></label>
+                                    <input asp-for="NgaySuaDoi" readonly class="form-control" />
+                                </div>
+                                <div class="col-sm-6 m-b30">
+                                    <label asp-for="TrangThai" class="form-label"></label>
+                                    <input asp-for="TrangThai" readonly class="form-control" value="@(Model.TrangThai ? "Đang hoạt động" : "Ngừng hoạt động")" />
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-danger light" data-bs-dismiss="modal">Đóng</button>
+    <button type="button" class="btn btn-primary" id="deleteObject">Xóa đối tượng</button>
 </div>
