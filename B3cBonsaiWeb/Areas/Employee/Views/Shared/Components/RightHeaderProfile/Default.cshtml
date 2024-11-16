@@ -5,7 +5,7 @@
 		<a class="nav-link" href="javascript:void(0);" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 			<div class="header-info2 d-flex align-items-center">
 				<div class="header-media">
-					<img src="@(Url.Content(Model.LinkAnh))" alt="">
+					<img src="@(Url.Content(Model.LinkAnh))" alt="" onerror="this.src='/images/user/default.png'" />
 				</div>
 				<div class="header-info">
 					<h6>@Model.HoTen</h6>

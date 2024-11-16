@@ -84,8 +84,8 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required]
-            [EmailAddress]
+            [Required(ErrorMessage = "Email là trường bắt buộc.")]
+            [EmailAddress(ErrorMessage = "Địa chỉ email không hợp lệ.")]
             [Display(Name = "Email")]
             public string Email { get; set; }
 
@@ -93,8 +93,8 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [Required(ErrorMessage = "Vui lòng nhập mặt khẩu cho tài khoản đang tạo.")]
+            [StringLength(100, ErrorMessage = "Mặt khẩu phải có ít nhất {2} và nhiều nhất {1} độ dài kí tự.", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Mật khẩu")]
             [RegularExpression(@"^(?=.*[A-Z]).*$", ErrorMessage = "Mật khẩu phải có ít nhất một ký tự viết hoa.")]
@@ -106,20 +106,23 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
             /// </summary>
             [DataType(DataType.Password)]
             [Display(Name = "Xác nhận mật khẩu")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            [Compare("Password", ErrorMessage = "Mật khẩu và mật khẩu xác nhận không khớp.")]
             public string ConfirmPassword { get; set; }
 
-            [Required]
             [DataType(DataType.Text)]
-            [Display(Name = "Họ tên người dùng")]
+            [Required(ErrorMessage = "Họ tên không được để trống.")]
+            [StringLength(54, ErrorMessage = "Họ tên không được vượt quá 54 ký tự.")]
+            [Display(Name = "Họ Tên")]
+            [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Họ tên chỉ được chứa chữ cái và khoảng trắng.")]
             public string HoTen {  get; set; }
 
 
             [Display(Name = "Giới tính")]
             public bool GioiTinh { get; set; }
 
-            [DataType(DataType.Text)]
-            [Display(Name = "Số điện thoại")]
+            [StringLength(18, ErrorMessage = "Số điện thoại không được vượt quá 18 ký tự.")]
+            [Display(Name = "Số Điện Thoại")]
+            [RegularExpression(@"^\+?\d{1,3}?[-.\s]?\(?\d{1,3}\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}$", ErrorMessage = "Số điện thoại không hợp lệ.")]
             public string SoDienThoai { get; set; }
 
             [DataType(DataType.Date)]
@@ -210,7 +213,7 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
 
                     string messageBody = string.Format(HtmlBody,
                         subject,
-                        String.Format("{0:ddd, d MMMM yyyy}", DateTime.Now),
+                        String.Format("{0:ddd, d MMMM yyyy}", DateTime.UtcNow),
                         user.UserName,
                         user.Email,
                         Message,
@@ -218,7 +221,7 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
                         );*/
                     #endregion
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email", $"Vui lòng xác nhận tài khoản của bạn <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>nhấn vào đây</a>.");
+                    await _emailSender.SendEmailAsync(Input.Email, "Xác nhận email", $"Vui lòng xác nhận tài khoản của bạn <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>nhấn vào đây</a>.");
 
                     TempData["successToastr"] = "Đăng ký thành công";
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)

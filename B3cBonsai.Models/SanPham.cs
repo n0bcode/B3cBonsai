@@ -15,12 +15,14 @@ namespace B3cBonsai.Models
         [Required(ErrorMessage = "Tên sản phẩm không được để trống.")]
         [StringLength(54, ErrorMessage = "Tên sản phẩm không được vượt quá 54 ký tự.")]
         [Display(Name = "Tên Sản Phẩm")]
+        [RegularExpression(@"^[a-zA-Z0-9\s]+$", ErrorMessage = "Tên sản phẩm chỉ được chứa chữ cái, số và khoảng trắng.")]
         public string TenSanPham { get; set; }
 
         [Display(Name = "Danh Mục")]
         public int DanhMucId { get; set; }
 
         [Display(Name = "Mô Tả")]
+        [RegularExpression(@"^[a-zA-Z0-9\s]+$", ErrorMessage = "Mô tả chỉ được chứa chữ cái, số và khoảng trắng.")]
         public string MoTa { get; set; }
 
         [Range(0, int.MaxValue, ErrorMessage = "Số lượng phải là số nguyên không âm.")]
@@ -32,10 +34,10 @@ namespace B3cBonsai.Models
         public int Gia { get; set; }
 
         [Display(Name = "Ngày Tạo")]
-        public DateTime NgayTao { get; set; } = DateTime.Now;
+        public DateTime NgayTao { get; set; } = DateTime.UtcNow;
 
         [Display(Name = "Ngày Sửa Đổi")]
-        public DateTime NgaySuaDoi { get; set; } = DateTime.Now;
+        public DateTime NgaySuaDoi { get; set; } = DateTime.UtcNow;
 
         [Required(ErrorMessage = "Trạng thái không được để trống.")]
         [Display(Name = "Trạng Thái")]

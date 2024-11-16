@@ -19,7 +19,7 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
         {
 			_context = unitOfWork;
         }
-        [Authorize]
+        [Authorize(Roles = $"{SD.Role_Admin},{SD.Role_Staff}")]
         public IActionResult Index()
         {
             // Đếm số lượng đơn hàng theo từng tình trạng
@@ -42,6 +42,7 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
         }
 
 
+        [Authorize(Roles = $"{SD.Role_Admin},{SD.Role_Staff}")]
         public IActionResult OrderSummary()
         {
 
@@ -100,8 +101,8 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
             }
 
             // Kiểm tra điều kiện ngược lại cho tình trạng thanh toán
-            if ((donHang.TrangThaiThanhToan == SD.PaymentStatusApproved && statusPayment == SD.PaymentStatusPending) ||
-                (donHang.TrangThaiThanhToan == SD.PaymentStatusRejected && statusPayment != SD.PaymentStatusPending))
+            if ((donHang.TrangThaiThanhToan == SD.PaymentStatusApproved) ||
+                (donHang.TrangThaiThanhToan == SD.PaymentStatusRejected))
             {
                 return Json(new { success = false, title = "Lỗi", content = "Không thể thay đổi tình trạng thanh toán theo hướng ngược lại!" });
             }
@@ -124,8 +125,9 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
             }
 
             // Kiểm tra điều kiện ngược lại cho tình trạng đơn hàng
-            if ((donHang.TrangThaiDonHang == SD.StatusShipped && statusOrder == SD.StatusPending) ||
-                (donHang.TrangThaiDonHang == SD.StatusCancelled && statusOrder != SD.StatusRefunded))
+            if ((donHang.TrangThaiDonHang == SD.StatusShipped) ||
+                (donHang.TrangThaiDonHang == SD.StatusCancelled) ||
+                (donHang.TrangThaiDonHang == SD.StatusRefunded))
             {
                 return Json(new { success = false, title = "Lỗi", content = "Không thể thay đổi tình trạng đơn hàng theo hướng ngược lại!" });
             }

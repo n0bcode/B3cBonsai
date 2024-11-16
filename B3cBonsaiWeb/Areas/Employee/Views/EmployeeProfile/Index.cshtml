@@ -14,9 +14,9 @@
                             <div class="p-5">
                                 <div class="author-profile">
                                     <div class="author-media">
-                                        <img src="@Url.Content(Model.LinkAnh)" alt="">
+                                        <img src="@Url.Content(Model.LinkAnh)" alt="" onerror="this.src='/images/user/default.png'">
                                         <div class="upload-link" title="" data-toggle="tooltip" data-placement="right" data-original-title="update">
-											<input type="file" class="update-flie">
+                                            <input type="file" class="update-flie" accept="image/*">
                                             <i class="fa fa-camera"></i>
                                         </div>
                                     </div>

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using B3cBonsai.Utility.Extentions;
+using B3cBonsai.Utility;
 
 namespace B3cBonsaiWeb.Areas.Employee.Controllers
 {
@@ -24,7 +25,7 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers
             _webHostEnvironment = webHostEnvironment;
             _db = db;
         }
-        [Authorize]
+        [Authorize(Roles = $"{SD.Role_Admin},{SD.Role_Staff}")]
         public async Task<IActionResult> Index()
         {
             var nguoi = await _unitOfWork.NguoiDungUngDung.Get(x => x.Id == User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString());
