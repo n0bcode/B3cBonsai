@@ -2,14 +2,9 @@
 var dataTableProduct;
 let currentPage = 1;
 let pageSize = 5;
-$.ajax({
-    url: '/employee/ManagerUser/getall',
-    success: function (data) {
-        console.log(data); // Check if data is being returned correctly
-    }
-});
+
 function loadDataTable() {
-    dataTable = $('#empoloyees-tbl').DataTable({
+    dataTable = $('#empoloyeesDatatale').DataTable({
         "ajax": { url: '/employee/ManagerUser/getall' },
         "columns": [
             {
@@ -35,17 +30,32 @@ function loadDataTable() {
                 data: null,
                 "render": function (data) {
                     return `<div class="d-flex">
-                        <select onchange="updateUserRole('${data.id}', this.value)" class="form-control">
-                            <option value="Admin" ${data.vaiTro.includes('Admin') ? 'selected' : ''}>Admin</option>
-                            <option value="Customer" ${data.vaiTro.includes('Customer') ? 'selected' : ''}>Khách hàng</option>
-                            <option value="Staff" ${data.vaiTro.includes('Staff') ? 'selected' : ''}>Nhân viên</option>
-                        </select>
-                    </div>`;
+                                <select onchange="updateUserRole('${data.id}', this.value)" class="form-control">
+                                    <option value="Admin" ${data.vaiTro.includes('Admin') ? 'selected' : ''}>Admin</option>
+                                    <option value="Customer" ${data.vaiTro.includes('Customer') ? 'selected' : ''}>Khách hàng</option>
+                                    <option value="Staff" ${data.vaiTro.includes('Staff') ? 'selected' : ''}>Nhân viên</option>
+                                </select>
+                            </div>`;
                 }
             }
-        ]
+        ],
+        "language": {
+            "sSearch": "Tìm kiếm:",
+            "lengthMenu": "Hiển thị _MENU_ mục",
+            "info": "Hiển thị _START_ đến _END_ trong tổng số _TOTAL_ mục",
+            "paginate": {
+                "first": "<<",
+                "last": ">>",
+                "next": ">",
+                "previous": "<"
+            },
+            "zeroRecords": "Không tìm thấy kết quả nào",
+            "infoEmpty": "Không có mục nào để hiển thị",
+            "infoFiltered": "(lọc từ _MAX_ mục)"
+        }
     });
-    dataTableProduct = $('#product-tbl').DataTable({
+
+    dataTableProduct = $('#productDashboard').DataTable({
         "ajax": {
             url: '/Employee/Dashboard/SanPhamList',
             dataSrc: 'data'
@@ -68,42 +78,175 @@ function loadDataTable() {
                 "render": function (data) {
                     return data.trangThai ? 'Đang bán' : 'Ngừng bán';
                 }
-            },
-            {
-                data: null,
-                "render": function (data) {
-                    return `<a href="javascript:void(0)" onclick="viewProductDetail(${data.id})">Chi tiết</a>`;
-                }
             }
-        ]
+        ],
+        "language": {
+            "sSearch": "Tìm kiếm:",
+            "lengthMenu": "Hiển thị _MENU_ mục",
+            "info": "Hiển thị _START_ đến _END_ trong tổng số _TOTAL_ mục",
+            "paginate": {
+                "first": "<<",
+                "last": ">>",
+                "next": ">",
+                "previous": "<"
+            },
+            "zeroRecords": "Không tìm thấy kết quả nào",
+            "infoEmpty": "Không có mục nào để hiển thị",
+            "infoFiltered": "(lọc từ _MAX_ mục)"
+        }
     });
-    dataTableDonHang = $('#donhang-tbl').DataTable({
+    dataTableDonHang = $('#donhangDatatable').DataTable({
         "ajax": {
-            url: '/Employee/Dashboard/DonHangList?top=10',
-            dataSrc: 'data'
+            url: '/Employee/ManagerOrder/getall',
+            dataSrc: 'data' // Ensure data is loaded directly if it's an array
         },
         "columns": [
-            { data: 'id', "visible": false },
-            { data: 'tenNguoiNhan', "width": "20%" },
-            { data: 'soDienThoai', "width": "15%" },
-            { data: 'duong', "width": "20%", "render": function (data) { return data || 'N/A'; } },
-            { data: 'thanhPho', "width": "15%", "render": function (data) { return data || 'N/A'; } },
             {
-                data: 'tongTienDonHang',
-                "width": "15%",
-                "render": function (data) {
-                    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(data);
+                data: 'id',
+                "title": "#",
+                "render": function (data, type, row, meta) {
+                    return `<span >${meta.row + 1}</span>`;
+                },
+                "className": "text-center"
+            },
+            {
+                data: 'tenNguoiNhan',
+                "title": "Tên người nhận",
+                "render": function (data, type, row) {
+                    return `<div class="products">
+                                <div>
+                                    <h6>${decodeURIComponent(data) || 'N/A'}</h6>
+                                    <span>INV-${row.id || 'N/A'}</span>
+                                </div>
+                            </div>`;
                 }
             },
-            { data: 'trangThaiDonHang', "width": "10%", "render": function (data) { return data || 'N/A'; } },
+            {
+                data: 'trangThaiDonHang',
+                "title": "Trạng thái đơn hàng",
+                "render": function (data) {
+                    let statusClass = '';
+                    let statusText = '';
+
+                    switch (data) {
+                        case 'Pending':
+                            statusClass = 'text-warning';
+                            statusText = 'Đang chờ';
+                            break;
+                        case 'Approved':
+                            statusClass = 'text-success';
+                            statusText = 'Đã duyệt';
+                            break;
+                        case 'Processing':
+                            statusClass = 'text-info';
+                            statusText = 'Đang xử lý';
+                            break;
+                        case 'Shipped':
+                            statusClass = 'text-primary';
+                            statusText = 'Đã giao hàng';
+                            break;
+                        case 'Cancelled':
+                            statusClass = 'text-danger';
+                            statusText = 'Đã hủy';
+                            break;
+                        case 'Refunded':
+                            statusClass = 'text-secondary';
+                            statusText = 'Đã hoàn tiền';
+                            break;
+                        default:
+                            statusClass = 'text-muted';
+                            statusText = 'Không xác định';
+                    }
+
+                    return `<span class="${statusClass}">${statusText}</span>`;
+                }
+            },
             {
                 data: 'ngayDatHang',
-                "width": "15%",
+                "title": "Ngày đặt hàng",
                 "render": function (data) {
-                    return new Date(data).toLocaleDateString('vi-VN');
+                    return `<span>${new Date(data).toLocaleDateString('vi-VN')}</span>`;
+                }
+            },
+            {
+                data: 'ngayNhanHang',
+                "title": "Ngày nhận hàng",
+                "render": function (data) {
+                    return `<span>${new Date(data).toLocaleDateString('vi-VN')}</span>`;
+                }
+            },
+            {
+                data: 'chiTietDonHangs',
+                "title": "Sản phẩm của đơn",
+                "render": function (data) {
+                    if (Array.isArray(data) && data.length > 0) {
+                        return `<div class="avatar-list avatar-list-stacked">` +
+                            data.map(sanPham => {
+                                // Check if hinhAnhs is defined and is an array, then access the first image
+                                const firstImage = Array.isArray(sanPham.sanPham.hinhAnhs) && sanPham.sanPham.hinhAnhs.length > 0 ? sanPham.sanPham.hinhAnhs[0]?.linkAnh : null;
+                                return firstImage ?
+                                    `<img src="${firstImage}" class="avatar rounded-circle" style="width: 40px; height: 40px;" alt="Product Image">` :
+                                    '<span></span>';
+                            }).join('') +
+                            `</div>`;
+                    }
+                    return `<span>Không có hình ảnh</span>`;
+                }
+            },
+            {
+                data: 'trangThaiThanhToan',
+                "title": "Trạng thái thanh toán",
+                "render": function (data) {
+                    let statusClass = '';
+                    let statusText = '';
+
+                    switch (data) {
+                        case 'Pending':
+                            statusClass = 'text-warning';
+                            statusText = 'Đang chờ';
+                            break;
+                        case 'Approved':
+                            statusClass = 'text-success';
+                            statusText = 'Đã duyệt';
+                            break;
+                        case 'ApprovedForDelayedPayment':
+                            statusClass = 'text-info';
+                            statusText = 'Duyệt thanh toán chậm';
+                            break;
+                        case 'Rejected':
+                            statusClass = 'text-danger';
+                            statusText = 'Từ chối';
+                            break;
+                        default:
+                            statusClass = 'text-muted';
+                            statusText = 'Không xác định';
+                    }
+
+                    return `<span class="${statusClass}">${statusText}</span>`;
+                }
+            },
+            {
+                data: 'tongTienDonHang',
+                "title": "Thanh toán",
+                "render": function (data) {
+                    return `<span>${data.toLocaleString('vi-VN')} VNĐ</span>`;
                 }
             }
-        ]
+        ],
+        "language": {
+            "sSearch": "Tìm kiếm:",
+            "lengthMenu": "Hiển thị _MENU_ mục",
+            "info": "Hiển thị _START_ đến _END_ trong tổng số _TOTAL_ mục",
+            "paginate": {
+                "first": "<<",
+                "last": ">>",
+                "next": ">",
+                "previous": "<"
+            },
+            "zeroRecords": "Không tìm thấy kết quả nào",
+            "infoEmpty": "Không có mục nào để hiển thị",
+            "infoFiltered": "(lọc từ _MAX_ mục)"
+        }
     });
 
 }
