@@ -1,0 +1,137 @@
+﻿@using System.Security.Claims
+@using X.PagedList.Mvc.Core
+@model X.PagedList.IPagedList<SanPham>
+
+@{
+    string? UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    var pLRO = new PagedListRenderOptions
+            {
+                UlElementClasses = ["pagination-page-box"],
+                LiElementClasses = ["number"],
+                PageClasses = ["theme-glink"],
+                ActiveLiElementClass = "active",
+                LinkToPreviousPageFormat = "<i class='fa-solid fa-angle-left'></i>",
+                LinkToNextPageFormat = "<i class='fa-solid fa-angle-right'></i>",
+                PreviousElementClass = "page-prev",
+                NextElementClass = "page-next",
+                DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+                DisplayLinkToNextPage = PagedListDisplayMode.Always,
+                ClassToApplyToFirstListItemInPager = "first",
+                ClassToApplyToLastListItemInPager = "last",
+            };
+}
+
+<div class="collection-category">
+    <div class="row">
+        <div class="col">
+            <div class="collection-wrap">
+                <ul class="product-view-ul">
+                    @foreach (var product in Model)
+                    {
+                        <li class="pro-item-li">
+                            <div class="single-product-wrap">
+                                <div class="product-image banner-hover">
+                                    <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail" asp-route-id="@product.Id" class="pro-img">
+                                        <img onerror="this.src='/images/product/default.jpg'" src="@(product.HinhAnhs.FirstOrDefault()?.LinkAnh ?? @Url.Content("~/images/product/default/jpg") )" class="img-fluid img1 mobile-img1" alt="p1" style="width: 300px; height: 300px; object-fit: contain;">
+                                        <img onerror="this.src='/images/product/default.jpg'" src="@(product.HinhAnhs.Skip(1).FirstOrDefault()?.LinkAnh ?? @Url.Content("~/images/product/default/jpg") )" class="img-fluid img2 mobile-img2" alt="p2" style="width: 300px; height: 300px; object-fit: contain;">
+
+                                    </a>
+                                    <div class="product-action product-cart-btn">
+                                        <a href="#add-to-cart" class="add-to-cart">
+                                            <span class="cart-title">
+                                                <span class="add-c-title">
+                                                     <span class="tooltip-text">Thêm vào giỏ</span>
+                                                    <span class="cart-icon"><i class="feather-shopping-bag"></i></span>
+                                                    <span class="add-title">Thêm vào giỏ</span>
+                                                </span>
+                                            </span>
+                                        </a>
+                                    </div>
+                                    <div class="product-action">
+                                        <a href="/Customer/Wishlist/Index" class="wishlist">
+                                             <span class="tooltip-text">Yêu thích</span>
+                                            <span class="pro-action-icon"><i class="feather-heart"></i></span>
+                                        </a>
+                                        <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview">
+                                            <span class="tooltip-text">
+                                        Xem nhanh
+                                        </span>
+                                            <span class="pro-action-icon"><i class="feather-eye"></i></span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="product-caption">
+                                    <div class="product-content">
+                                        <div class="product-title">
+                                            <div class="pro-title-price">
+                                                <h6><a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail">@product.TenSanPham</a></h6>
+                                                <div class="product-price">
+                                                    <div class="price-box">
+                                                        <span class="new-price">@String.Format("{0:0,0} VND", product.Gia).Replace(",", ".")</span>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div class="product-name">
+                                                <a class="product-type" asp-area="Customer" asp-controller="ClientProduct" asp-action="Index">Số lượng: @product.SoLuong</a>
+                                                <a class="product-vendor" asp-area="Customer" asp-controller="ClientProduct" asp-action="Index">B3cBonsai</a>
+                                            </div>
+                                        </div>
+                                        <div class="product-ratting">
+                                            <span class="pro-ratting">
+                                                <i class="fa-regular fa-star"></i>
+                                                <i class="fa-regular fa-star"></i>
+                                                <i class="fa-regular fa-star"></i>
+                                                <i class="fa-regular fa-star"></i>
+                                                <i class="fa-regular fa-star"></i>
+                                            </span>
+                                        </div>
+                                        <div class="product-description">
+                                            <p>Mô tả: @product.MoTa</p>
+                                        </div>
+                                        <div class="product-action">
+                                            <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview">
+                                                <span class="tooltip-text">Xem nhanh</span>
+                                                <span class="pro-action-icon"><i class="feather-eye"></i></span>
+                                            </a>
+                                            <a href="#add-to-cart" class="add-to-cart">
+                                                <span class="cart-title">
+                                                    <span class="add-c-title">
+                                                        <span class="tooltip-text">Thêm vào giỏ</span>
+                                                        <span class="cart-icon"><i class="feather-shopping-bag"></i></span>
+                                                        <span class="add-title">Thêm vào giỏ</span>
+                                                    </span>
+                                                </span>
+                                            </a>
+                                            <a href="/Customer/Wishlist/Index" class="wishlist">
+                                                <span class="tooltip-text">Yêu thích</span>
+                                                <span class="pro-action-icon"><i class="feather-heart"></i></span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    }
+
+
+                </ul>
+            </div>
+            <div class="paginatoin-area">
+                @Html.PagedListPager(
+                         Model,
+                         page => Url.Action("ListPagedProduct", new
+                         {
+                             page,
+                             findText = TempData["findText"],
+                             selectedCategories = TempData["selectedCategories"],
+                             minPrice = TempData["minPrice"],
+                             maxPrice = TempData["maxPrice"],
+                             inStock = TempData["inStock"],
+                             SortBy = TempData["SortBy"]
+                         }), pLRO
+                         )
+            </div>
+        </div>
+    </div>
+</div>
