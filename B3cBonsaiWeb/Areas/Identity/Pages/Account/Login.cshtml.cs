@@ -67,8 +67,8 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required]
-            [EmailAddress]
+            [Required(ErrorMessage = "Vui lòng nhập thông tin email truy cập.")]
+            [EmailAddress(ErrorMessage = "Vui lòng nhập đúng định dạng tài khoản email.")]
             public string Email { get; set; }
 
             /// <summary>

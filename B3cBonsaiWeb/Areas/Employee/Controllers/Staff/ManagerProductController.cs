@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using B3cBonsai.Models.ViewModels;
+using B3cBonsai.Utility;
 
 namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
 {
@@ -25,7 +26,7 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
             _webHostEnvironment = webHostEnvironment;
         }
 
-        [Authorize]
+        [Authorize(Roles = $"{SD.Role_Admin},{SD.Role_Staff}")]
         public IActionResult Index()
         {
             return View();

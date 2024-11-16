@@ -3,7 +3,8 @@ using B3cBonsai.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using B3cBonsai.Utility.Extentions; //Chứa lớp ControllerExtentions để tải lại dữ liệu hiển thị
+using B3cBonsai.Utility.Extentions;
+using B3cBonsai.Utility; //Chứa lớp ControllerExtentions để tải lại dữ liệu hiển thị
 
 namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
 {
@@ -14,7 +15,7 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
         public ManagerComboController(ApplicationDbContext db) { 
             _db = db;
         }
-        [Authorize]
+        [Authorize(Roles = $"{SD.Role_Admin},{SD.Role_Staff}")]
         public IActionResult Index()
         {
             return View();

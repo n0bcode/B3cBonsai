@@ -135,7 +135,7 @@ function handleCategoryDeletion(categoryId) {
                         });
 
                         Swal.fire({
-                            title: "Bạn có chắc chắn?",
+                            title: "Có " + response.amount + " sản phẩm mang danh mục này. \n" + "Bạn có chắc chắn?",
                             text: "Số lượng sản phẩm trong danh mục này: " + response.amount +
                                 ". Bạn cần chọn danh mục thay thế để chuyển sản phẩm trước khi xóa.",
                             type: "warning",

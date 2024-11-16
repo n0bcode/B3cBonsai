@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using DocumentFormat.OpenXml.Drawing.Diagrams;
+using B3cBonsai.Utility;
 
 namespace B3cBonsaiWeb.Areas.Employee.Controllers.Admin
 {
@@ -20,7 +21,7 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Admin
             _unitOfWork = unitOfWork;
         }
 
-        [Authorize]
+        [Authorize(Roles = SD.Role_Admin)]
         public IActionResult Index()
         {
             return View();

@@ -20,17 +20,17 @@
                 }
 
                 <div class="row justify-content-center mb-3">
-                    <div class="col-md-3 text-center">
+                    @* <div class="col-md-3 text-center">
                         <img class="img-thumbnail" src="~/images/product/default.jpg" alt="Hình ảnh sản phẩm" style="height:100px;width:100%;object-fit:contain" />
-                    </div>
-                    <div class="col-md-9">
+                    </div> *@
+                    <div class="col-md-12">
                         <label class="form-label">Chọn hình ảnh</label>
                         <input type="file" name="HinhAnhs" class="form-control" multiple accept="image/*" />
                     </div>
                 </div>
 
                 <div class="col-xl-6 mb-3">
-                    <label asp-for="SanPham.Id" class="form-label">Tên sản phẩm <span class="text-danger">*</span></label>
+                    <label asp-for="SanPham.Id" class="form-label">Mã sản phẩm <span class="text-danger">*</span></label>
                     <input asp-for="SanPham.Id" class="form-control" />
                 </div>
 
@@ -50,7 +50,7 @@
 
                 <div class="col-xl-6 mb-3">
                     <label asp-for="SanPham.SoLuong" class="form-label">Số lượng</label>
-                    <input asp-for="SanPham.SoLuong" class="form-control" required min="100"/>
+                    <input asp-for="SanPham.SoLuong" class="form-control" required min="1"/>
                     <span asp-validation-for="SanPham.SoLuong" class="text-danger"></span>
                 </div>
 

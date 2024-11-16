@@ -127,6 +127,28 @@ $('select').on('focus', function () {
 });
 
 const changeStatusOrder = (id, statusOrder) => {
+
+    $.ajax({
+        url: `/Employee/ManagerOrder/ChangeStatusOrder?id=${id}&statusOrder=${statusOrder}`,
+        method: 'POST',
+        success: (data) => {
+            if (data.success) {
+                Swal.fire({
+                    title: "Chỉnh sửa",
+                    text: "Bạn đã chỉnh sửa thành công!",
+                    type: "success"
+                });
+                dataTable.ajax.reload();
+            } else {
+                Swal.fire({
+                    title: data.title,
+                    text: data.content,
+                    type: "info"
+                });
+                dataTable.ajax.reload();
+            }
+        }
+    });/*
     Swal.fire({
         title: "Chỉnh sửa",
         text: "Bạn có muốn thay đổi tình trạng?",
@@ -138,35 +160,36 @@ const changeStatusOrder = (id, statusOrder) => {
         cancelButtonText: "Hủy"
     }).then((result) => {
         if (result.value) {
-            $.ajax({
-                url: `/Employee/ManagerOrder/ChangeStatusOrder?id=${id}&statusOrder=${statusOrder}`,
-                method: 'POST',
-                success: (data) => {
-                    if (data.success) {
-                        Swal.fire({
-                            title: "Chỉnh sửa",
-                            text: "Bạn đã chỉnh sửa thành công!",
-                            type: "success"
-                        });
-                        dataTable.ajax.reload();
-                    } else {
-                        Swal.fire({
-                            title: data.title,
-                            text: data.content,
-                            type: "info"
-                        });
-                        dataTable.ajax.reload();
-                    }
-                }
-            });
         } else {
             toastr.info("Bạn hủy hàng động thay đổi tình trạng.");
             dataTable.ajax.reload();
         }
-    });
+    });*/
 };
 
 const changeStatusPayment = (id, statusPayment) => {
+    $.ajax({
+        url: `/Employee/ManagerOrder/ChangeStatusPayment?id=${id}&statusPayment=${statusPayment}`,
+        method: 'POST',
+        data: (id = id, statusPayment = statusPayment),
+        success: (data) => {
+            if (data.success) {
+                Swal.fire({
+                    title: "Chỉnh sửa",
+                    text: "Bạn đã chỉnh sửa thành công!",
+                    type: "success"
+                });
+                dataTable.ajax.reload();
+            } else {
+                Swal.fire({
+                    title: data.title,
+                    text: data.content,
+                    type: "info"
+                });
+                dataTable.ajax.reload();
+            }
+        }
+    });/*
     Swal.fire({
         title: "Chỉnh sửa",
         text: "Bạn có muốn thay đổi tình trạng?",
@@ -178,31 +201,9 @@ const changeStatusPayment = (id, statusPayment) => {
         cancelButtonText: "Hủy"
     }).then((result) => {
         if (result.value) {
-            $.ajax({
-                url: `/Employee/ManagerOrder/ChangeStatusPayment?id=${id}&statusPayment=${statusPayment}`,
-                method: 'POST',
-                data: (id = id, statusPayment = statusPayment),
-                success: (data) => {
-                    if (data.success) {
-                        Swal.fire({
-                            title: "Chỉnh sửa",
-                            text: "Bạn đã chỉnh sửa thành công!",
-                            type: "success"
-                        });
-                        dataTable.ajax.reload();
-                    } else {
-                        Swal.fire({
-                            title: data.title,
-                            text: data.content,
-                            type: "info"
-                        });
-                        dataTable.ajax.reload();
-                    }
-                }
-            });
         } else {
             toastr.info("Bạn hủy hàng động thay đổi tình trạng.");
             dataTable.ajax.reload();
         }
-    });
+    });*/
 };

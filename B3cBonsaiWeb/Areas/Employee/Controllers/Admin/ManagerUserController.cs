@@ -50,7 +50,7 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Admin
             _emailSender = emailSender;
         }
 
-        [Authorize]
+        [Authorize(Roles = $"{SD.Role_Admin},{SD.Role_Staff}")]
         public IActionResult Index()
         {
             return View();
@@ -262,6 +262,10 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Admin
         [HttpPost]
         public async Task<IActionResult> UpdateUserRole(string userId, string newRole)
         {
+            if (!User.IsInRole(SD.Role_Admin))
+            {
+                return Json(new { success = false, message = "Bạn không có quyền này." });
+            }
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
             {

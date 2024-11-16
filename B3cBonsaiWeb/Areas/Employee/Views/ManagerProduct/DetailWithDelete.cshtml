@@ -49,15 +49,15 @@
                                 </div>
                                 <div class="col-sm-6 m-b30">
                                     <label asp-for="Gia" class="form-label"></label>
-                                    <input asp-for="Gia" readonly class="form-control" value="@Model.Gia.ToString("N0") đ" />
+                                    <input asp-for="Gia" type="text" readonly class="form-control" value="@Model.Gia.ToString("N0") đ" />
                                 </div>
                                 <div class="col-sm-6 m-b30">
                                     <label asp-for="SoLuong" class="form-label"></label>
                                     <input asp-for="SoLuong" readonly class="form-control" />
                                 </div>
                                 <div class="col-sm-6 m-b30">
-                                    <label asp-for="MoTa" class="form-label"></label>
-                                    <textarea asp-for="MoTa" class="form-control" rows="3" readonly></textarea>
+                                    <label asp-for="TrangThai" class="form-label"></label>
+                                    <input asp-for="TrangThai" type="text" readonly class="form-control" value="@(Model.TrangThai ? "Đang hoạt động" : "Ngừng hoạt động")" />
                                 </div>
                                 <div class="col-sm-6 m-b30">
                                     <label asp-for="NgayTao" class="form-label"></label>
@@ -67,9 +67,9 @@
                                     <label asp-for="NgaySuaDoi" class="form-label"></label>
                                     <input asp-for="NgaySuaDoi" readonly class="form-control" />
                                 </div>
-                                <div class="col-sm-6 m-b30">
-                                    <label asp-for="TrangThai" class="form-label"></label>
-                                    <input asp-for="TrangThai" readonly class="form-control" value="@(Model.TrangThai ? "Đang hoạt động" : "Ngừng hoạt động")" />
+                                <div class="col-sm-12 m-b30">
+                                    <label asp-for="MoTa" class="form-label"></label>
+                                    <textarea asp-for="MoTa" class="form-control" rows="3" readonly></textarea>
                                 </div>
                             </div>
                         </div>

@@ -7,7 +7,7 @@ function loadDataTable() {
                 data: null,
                 "render": function (data) {
                     return `<a onclick="loadDetailWithDelete('${data.id}')" data-bs-toggle="modal" data-bs-target="#exampleModal1" class="products">
-                                <img src="${data.linkAnh || '/images/user/default.png'}" class="avatar avatar-md" alt="">
+                                <img src="${data.linkAnh || '/images/user/default.png'}" class="avatar avatar-md" alt="" onerror="this.src='/images/user/default.png'">
                                 <div>
                                     <h6>${data.hoTen || 'N/A'}</h6>
                                     <span>${data.userName || 'N/A'}</span>
