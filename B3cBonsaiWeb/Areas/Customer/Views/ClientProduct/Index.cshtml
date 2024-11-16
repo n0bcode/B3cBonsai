@@ -103,8 +103,8 @@
                                                         <div class="single-product-wrap">
                                                             <div class="product-image banner-hover">
                                                                 <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail" asp-route-id="@product.Id" class="pro-img">
-                                                                    <img src="@(product.HinhAnhs.FirstOrDefault()?.LinkAnh ?? @Url.Content("~/images/product/default/jpg") )" class="img-fluid img1 mobile-img1" alt="p1" style="width: 300px; height: 300px; object-fit: contain;">
-                                                                    <img src="@(product.HinhAnhs.Skip(1).FirstOrDefault()?.LinkAnh ?? @Url.Content("~/images/product/default/jpg") )" class="img-fluid img2 mobile-img2" alt="p2" style="width: 300px; height: 300px; object-fit: contain;">
+                                                                    <img onerror="this.src='/images/product/default.jpg'" src="@(product.HinhAnhs.FirstOrDefault()?.LinkAnh ?? @Url.Content("~/images/product/default/jpg") )" class="img-fluid img1 mobile-img1" alt="p1" style="width: 300px; height: 300px; object-fit: contain;">
+                                                                    <img onerror="this.src='/images/product/default.jpg'" src="@(product.HinhAnhs.Skip(1).FirstOrDefault()?.LinkAnh ?? @Url.Content("~/images/product/default/jpg") )" class="img-fluid img2 mobile-img2" alt="p2" style="width: 300px; height: 300px; object-fit: contain;">
 
                                                                 </a>
                                                                 <div class="product-action product-cart-btn">
@@ -326,16 +326,21 @@
                                                 </div>
                                                 <!-- Product-Categories end -->
                                                 <div class="shop-sidebar sidebar-filter">
-                                                    <h6 class="shop-title">Filter</h6>
+                                                    <h6 class="shop-title">Bộ lọc</h6>
                                                     <a href="javascript:void(0)" class="shop-title shop-title-lg">
-                                                        Lọc
+                                                       Bộ lọc
                                                     </a>
                                                     <div class="filter-info">
                                                         <span class="filter-count-text">
-                                                            23 sản phẩm
+                                                            @ViewBag.ProductCount sản phẩm
                                                         </span>
-                                                        <span class="loading-spinner"><svg aria-hidden="true" focusable="false" role="presentation" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg"><circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle></svg></span>
+                                                        <span class="loading-spinner">
+                                                            <svg aria-hidden="true" focusable="false" role="presentation" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+                                                                <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+                                                            </svg>
+                                                        </span>
                                                     </div>
+
                                                 </div>
                                                 <div class="shop-sidebar sidebar-price">
                                                     <h6 class="shop-title">Giá</h6>

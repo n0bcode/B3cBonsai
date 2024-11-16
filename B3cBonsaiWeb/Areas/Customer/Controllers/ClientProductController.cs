@@ -19,10 +19,21 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
         // Hiển thị danh sách sản phẩm
         public async Task<IActionResult> Index()
         {
-            var products = await _unitOfWork.SanPham.GetAll(includeProperties: "DanhMuc,HinhAnhs", filter: x => x.TrangThai);
+            // Lấy tất cả sản phẩm có trạng thái hợp lệ
+            var products = await _unitOfWork.SanPham.GetAll(
+                includeProperties: "DanhMuc,HinhAnhs",
+                filter: x => x.TrangThai
+            );
+
+            // Đếm số lượng sản phẩm
+            int productCount = products.Count();
+
+            // Truyền dữ liệu xuống View
+            ViewBag.ProductCount = productCount;
 
             return View(products);
         }
+
 
         // Hiển thị chi tiết sản phẩm
         public async Task<IActionResult> Detail(int id)

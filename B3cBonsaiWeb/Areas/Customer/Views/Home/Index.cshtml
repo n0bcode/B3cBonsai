@@ -1,4 +1,6 @@
-﻿@{
+﻿@model IEnumerable<B3cBonsai.Models.SanPham>
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -91,7 +93,7 @@
                     </div>
                     <div class="slider-text-content container">
                         <div class="slider-text-info slider-content-center slider-text-center">
-                            <h2><span>Trồng cây và cứu trái đất</span></h2>
+                            <h2><span>Trồng cây và thanh lọc không khí</span></h2>
                             <p>Hãy nghĩ đến những chú chim và những chú ong.</p>
                             <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Index" class="mobile-btn btn btn-style">Cửa hàng</a>
                         </div>
@@ -160,115 +162,29 @@
                     </div>
                 </div>
                 <div class="cat-slider owl-carousel owl-theme" id="category-slider">
-                    <div class="item">
-                        <div class="category-wrap banner-hover">
-                            <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Index" class="cat-img-title banner-img">
-                                <div class="cat-img">
-                                    <img src="~/customer/img/cat/home-1-cate1.jpg" class="img-fluid" alt="cat-1">
-                                </div>
-                                <div class="cat-content-info">
-                                    <div class="cat-content">
-                                        <h6><span class="cat-title">Snake plant</span></h6>
-                                        <span class="cat-count">12 Items</span>
+                    @foreach (var product in Model)
+                    {
+                        <div class="item">
+                            <div class="category-wrap banner-hover">
+                                <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail" asp-route-id="@product.Id" class="cat-img-title banner-img">
+                                    <div class="cat-img">
+                                        <img src="@(product.HinhAnhs.FirstOrDefault()?.LinkAnh ?? @Url.Content("~/images/product/default/jpg") )" class="img-fluid" alt="p1" style="width: 300px; height: 300px; object-fit: contain;">
                                     </div>
-                                    <div class="category-button">
-                                        <span class="button-block"><i class="feather-plus"></i></span>
+                                    <div class="cat-content-info">
+                                        <div class="cat-content">
+                                            <h6><span class="cat-title">@product.TenSanPham</span></h6>
+                                            <span class="cat-count">@String.Format("{0:0,0} VND", product.Gia).Replace(",", ".")</span>
+                                        </div>
+                                        <div class="category-button">
+                                            <span class="button-block"><i class="feather-plus"></i></span>
+                                        </div>
                                     </div>
-                                </div>
-                            </a>
+                                </a>
+                            </div>
                         </div>
-                    </div>
-                    <div class="item">
-                        <div class="category-wrap banner-hover">
-                            <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Index" class="cat-img-title banner-img">
-                                <div class="cat-img">
-                                    <img src="~/customer/img/cat/home-1-cate2.jpg" class="img-fluid" alt="cat-2">
-                                </div>
-                                <div class="cat-content-info">
-                                    <div class="cat-content">
-                                        <h6><span class="cat-title">Radermachera</span></h6>
-                                        <span class="cat-count">12 Items</span>
-                                    </div>
-                                    <div class="category-button">
-                                        <span class="button-block"><i class="feather-plus"></i></span>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class="category-wrap banner-hover">
-                            <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Index" class="cat-img-title banner-img">
-                                <div class="cat-img">
-                                    <img src="~/customer/img/cat/home-1-cate3.jpg" class="img-fluid" alt="cat-3">
-                                </div>
-                                <div class="cat-content-info">
-                                    <div class="cat-content">
-                                        <h6><span class="cat-title">Strelitzia nicolai</span></h6>
-                                        <span class="cat-count">12 Items</span>
-                                    </div>
-                                    <div class="category-button">
-                                        <span class="button-block"><i class="feather-plus"></i></span>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class="category-wrap banner-hover">
-                            <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Index" class="cat-img-title banner-img">
-                                <div class="cat-img">
-                                    <img src="~/customer/img/cat/home-1-cate4.jpg" class="img-fluid" alt="cat-4">
-                                </div>
-                                <div class="cat-content-info">
-                                    <div class="cat-content">
-                                        <h6><span class="cat-title">Monstera plant</span></h6>
-                                        <span class="cat-count">12 Items</span>
-                                    </div>
-                                    <div class="category-button">
-                                        <span class="button-block"><i class="feather-plus"></i></span>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class="category-wrap banner-hover">
-                            <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Index" class="cat-img-title banner-img">
-                                <div class="cat-img">
-                                    <img src="~/customer/img/cat/home-1-cate5.jpg" class="img-fluid" alt="cat-5">
-                                </div>
-                                <div class="cat-content-info">
-                                    <div class="cat-content">
-                                        <h6><span class="home-1-cat-title">Bromeliads</span></h6>
-                                        <span class="cat-count">12 Items</span>
-                                    </div>
-                                    <div class="category-button">
-                                        <span class="button-block"><i class="feather-plus"></i></span>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class="category-wrap banner-hover">
-                            <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Index" class="cat-img-title banner-img">
-                                <div class="cat-img">
-                                    <img src="~/customer/img/cat/home-1-cate6.jpg" class="img-fluid" alt="cat-6">
-                                </div>
-                                <div class="cat-content-info">
-                                    <div class="cat-content">
-                                        <h6><span class="cat-title">Fruit plants</span></h6>
-                                        <span class="cat-count">12 Items</span>
-                                    </div>
-                                    <div class="category-button">
-                                        <span class="button-block"><i class="feather-plus"></i></span>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
+                    }
                 </div>
+
             </div>
         </div>
     </div>
@@ -289,30 +205,30 @@
             <div class="banner-text">
                 <div class="section-capture">
                     <div class="section-title">
-                        <h2>Hãy bảo vệ trái đất của chúng ta cho thế hệ tiếp theo</h2>
+                        <h2>Cây bonsai là biểu tượng của sự kiên nhẫn và sự tỉ mỉ.</h2>
                     </div>
                 </div>
                 <div class="info-details">
-                    <p class="description">Nếu bạn sử dụng trang web này thường xuyên và muốn giúp duy trì trang web trên Internet, vui lòng cân nhắc quyên góp một khoản tiền nhỏ để giúp thanh toán hóa đơn lưu trữ và băng thông..</p>
+                    <p class="description">Cây bonsai là một nghệ thuật tạo hình cây cảnh truyền thống, xuất phát từ Nhật Bản, với mục tiêu tạo ra những cây nhỏ gọn nhưng lại mang đầy đủ vẻ đẹp của cây trưởng thành. Cây bonsai không chỉ là một loại cây cảnh đơn thuần, mà là biểu tượng của sự kiên nhẫn và sự tỉ mỉ..</p>
                     <div class="info-block">
                         <ul class="info-ul">
                             <li class="info-li">
                                 <div class="info-text">
-                                    <span class="info-title">Tên</span>
+                                    <span class="info-title">Cây Bonsai</span>
                                     <div class="text-item">
                                         <p>
-                                            Làm sạch không khí
+                                            Sạch không khí
                                         </p>
-                                        <p>Cây cao su</p>    @* jkdfgbjkdbf *@
+                                        <p>Trang trí nhà</p>    @* jkdfgbjkdbf *@
                                     </div>
                                 </div>
                             </li>
                             <li class="info-li">
                                 <div class="info-text">
-                                    <span class="info-title">Gia đình</span>
+                                    <span class="info-title">Môi trường sống</span>
                                     <div class="text-item">
-                                        <p>Tự nhiên</p>
-                                        <p>Moraceae</p>
+                                        <p>Ngoài tự nhiên</p>
+                                        <p>Trong vường nhân tạo</p>
                                     </div>
                                 </div>
                             </li>

@@ -52,7 +52,7 @@
                                     @foreach(var image in Model.HinhAnhs)
                                     {
                                         <div class="slick-slide ">
-                                            <a href="@image.LinkAnh" class="product-single">
+                                            <a onerror="this.src='/images/product/default.jpg'" href="@image.LinkAnh" class="product-single">
                                                 <figure class="zoom" onmousemove="zoom(event)"
                                                         style="background-image: url('@Url.Content(@image.LinkAnh)');">
                                                     <img src="@image.LinkAnh" class="img-fluid" alt="pro-1">
@@ -69,7 +69,7 @@
                                     @foreach (var image in Model.HinhAnhs)
                                     {
                                         <div class="slick-slide ">
-                                            <a href="javascript:void(0)" class="product-single--thumbnail">
+                                            <a onerror="this.src='/images/product/default.jpg'" href="javascript:void(0)" class="product-single--thumbnail">
                                                 <img src="@image.LinkAnh" class="img-fluid" alt="pro-1">
                                             </a>
                                         </div>
@@ -105,22 +105,23 @@
                                 <div class="product-info">
                                     <div class="product-inventory">
                                         <div class="stock-inventory stock-more">
-                                            <p class="text-success"> Mô tả: @Model.MoTa
-                                               @*  <span class="available-stock bg-success">4</span>
-                                                <span>products left in stock!</span> *@
+                                            <p class="text-success">
+                                                Mô tả: @Model.MoTa
                                             </p>
                                         </div>
-                                        <div class="product-variant">
-                                            @* <h6>Availability:</h6> *@
-                                            <span class="stock-qty in-stock text-success">
-                                                @* <span>In stock<i class="bi bi-check2"></i></span> *@
-                                            </span>
-                                            <span class="stock-qty out-stock text-danger collapse" style="display:none;">
-                                                @* <span>Out of stock</span> *@
-                                            </span>
+                                        <div class="stock-inventory stock-more">
+                                            <p class="text-success">
+                                                Danh mục: @Model.DanhMuc.TenDanhMuc
+                                            </p>
+                                        </div>
+                                        <div class="stock-inventory stock-more">
+                                            <p class="text-success">
+                                                Kho: @Model.SoLuong
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="product-info">
                                     <form method="post" class="cart">
                                         <div class="product-quantity-action">
