@@ -1,5 +1,4 @@
-﻿@model IEnumerable<B3cBonsai.Models.SanPham>
-
+﻿
 
 <!-- breadcrumb start -->
 <section class="breadcrumb-area">
@@ -91,113 +90,8 @@
                         </div>
                         <!-- shop-top-bar end -->
                         <!-- special-product start -->
-                        <div class="special-product grid-3">
-                            <div class="collection-category">
-                                <div class="row">
-                                    <div class="col">
-                                        <div class="collection-wrap">
-                                            <ul class="product-view-ul">
-                                                @foreach (var product in Model)
-                                                {
-                                                    <li class="pro-item-li">
-                                                        <div class="single-product-wrap">
-                                                            <div class="product-image banner-hover">
-                                                                <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail" asp-route-id="@product.Id" class="pro-img">
-                                                                    <img onerror="this.src='/images/product/default.jpg'" src="@(product.HinhAnhs.FirstOrDefault()?.LinkAnh ?? @Url.Content("~/images/product/default/jpg") )" class="img-fluid img1 mobile-img1" alt="p1" style="width: 300px; height: 300px; object-fit: contain;">
-                                                                    <img onerror="this.src='/images/product/default.jpg'" src="@(product.HinhAnhs.Skip(1).FirstOrDefault()?.LinkAnh ?? @Url.Content("~/images/product/default/jpg") )" class="img-fluid img2 mobile-img2" alt="p2" style="width: 300px; height: 300px; object-fit: contain;">
-
-                                                                </a>
-                                                                <div class="product-action product-cart-btn">
-                                                                    <a href="#add-to-cart" class="add-to-cart">
-                                                                        <span class="cart-title">
-                                                                            <span class="add-c-title">
-                                                                               @*  <span class="tooltip-text">Thêm vào giỏ</span> *@
-                                                                                <span class="cart-icon"><i class="feather-shopping-bag"></i></span>
-                                                                                <span class="add-title">Thêm vào giỏ</span>
-                                                                            </span>
-                                                                        </span>
-                                                                    </a>
-                                                                </div>
-                                                                <div class="product-action">
-                                                                    <a href="/Customer/Wishlist/Index" class="wishlist">
-                                                                       @*  <span class="tooltip-text">Yêu thích</span> *@
-                                                                        <span class="pro-action-icon"><i class="feather-heart"></i></span>
-                                                                    </a>
-                                                                    <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview">
-                                                                        @* <span class="tooltip-text">
-                                                                            Xem nhanh
-                                                                        </span> *@
-                                                                        <span class="pro-action-icon"><i class="feather-eye"></i></span>
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                            <div class="product-caption">
-                                                                <div class="product-content">
-                                                                    <div class="product-title">
-                                                                        <div class="pro-title-price">
-                                                                            <h6><a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail">@product.TenSanPham</a></h6>
-                                                                            <div class="product-price">
-                                                                                <div class="price-box">
-                                                                                    <span class="new-price">@String.Format("{0:0,0} VND", product.Gia).Replace(",", ".")</span>
-                                                                                </div>
-
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="product-name">
-                                                                            <a class="product-type" asp-area="Customer" asp-controller="ClientProduct" asp-action="Index">Số lượng: @product.SoLuong</a>
-                                                                            <a class="product-vendor" asp-area="Customer" asp-controller="ClientProduct" asp-action="Index">B3cBonsai</a>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="product-ratting">
-                                                                        <span class="pro-ratting">
-                                                                            <i class="fa-regular fa-star"></i>
-                                                                            <i class="fa-regular fa-star"></i>
-                                                                            <i class="fa-regular fa-star"></i>
-                                                                            <i class="fa-regular fa-star"></i>
-                                                                            <i class="fa-regular fa-star"></i>
-                                                                        </span>
-                                                                    </div>
-                                                                    <div class="product-description">
-                                                                        <p>Mô tả: @product.MoTa</p>
-                                                                    </div>
-                                                                    <div class="product-action">
-                                                                        <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview">
-                                                                            <span class="tooltip-text">Xem nhanh</span>
-                                                                            <span class="pro-action-icon"><i class="feather-eye"></i></span>
-                                                                        </a>
-                                                                        <a href="#add-to-cart" class="add-to-cart">
-                                                                            <span class="cart-title">
-                                                                                <span class="add-c-title">
-                                                                                     <span class="tooltip-text">Thêm vào giỏ</span> 
-                                                                                    <span class="cart-icon"><i class="feather-shopping-bag"></i></span>
-                                                                                    <span class="add-title">Thêm vào giỏ</span>
-                                                                                </span>
-                                                                            </span>
-                                                                        </a>
-                                                                        <a href="/Customer/Wishlist/Index" class="wishlist">
-                                                                            <span class="tooltip-text">Yêu thích</span>
-                                                                            <span class="pro-action-icon"><i class="feather-heart"></i></span>
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                }
-
-
-                                            </ul>
-                                        </div>
-                                        <div class="paginatoin-area">
-                                            <ul class="pagination-page-box">
-                                                <li class="number active"><a href="javascript:void(0)" class="theme-glink">1</a></li>
-                                                <li class="number"><a href="javascript:void(0)" class="gradient-text">2</a></li>
-                                                <li class="page-next"><a href="javascript:void(0)" class="theme-glink"><i class="fa -solid fa-angle-right"></i></a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="special-product grid-3" id="gridViewListProduct">
+                            
                         </div>
                     </div>
                     <div class="pro-grli-wrap product-sidebar">
@@ -211,351 +105,7 @@
                                     <!-- button end -->
                                     <!-- filter-form start -->
                                     <div class="facets">
-                                        <form class="facets-form">
-                                            <div class="facets-wrapper">
-                                                <!-- Product-Categories start -->
-                                                <div class="shop-sidebar">
-                                                    <h6 class="shop-title">Thể loại</h6>
-                                                    <a href="#collapse-5" data-bs-toggle="collapse" class="shop-title shop-title-lg">Thể loại<i class="fa fa-angle-down"></i></a>
-                                                    <div class="collapse show shop-element" id="collapse-5">
-                                                        <ul class="brand-ul scrollbar">
-                                                            <li class="cat-checkbox">
-                                                                <label class="checkbox-label">
-                                                                    <input type="checkbox" class="cust-checkbox">
-                                                                    <span class="check-name">Cỏ lúa mì</span>
-                                                                    <span class="count-check">(12)</span>
-                                                                    <span class="cust-check"></span>
-                                                                </label>
-                                                            </li>
-                                                            <li class="cat-checkbox">
-                                                                <label class="checkbox-label">
-                                                                    <input type="checkbox" class="cust-checkbox">
-                                                                    <span class="check-name">
-                                                                        Lâu đài xương rồng
-                                                                    </span>
-                                                                    <span class="count-check">(12)</span>
-                                                                    <span class="cust-check"></span>
-                                                                </label>
-                                                            </li>
-                                                            <li class="cat-checkbox">
-                                                                <label class="checkbox-label 64gb">
-                                                                    <input type="checkbox" value="64gb" class="cust-checkbox">
-                                                                    <span class="check-name">Cọ cau</span>
-                                                                    <span class="count-check">(12)</span>
-                                                                    <span class="cust-check"></span>
-                                                                </label>
-                                                            </li>
-                                                            <li class="cat-checkbox">
-                                                                <label class="checkbox-label 500gb">
-                                                                    <input type="checkbox" value="500gb" class="cust-checkbox">
-                                                                    <span class="check-name">Bộ sưu tập</span>
-                                                                    <span class="count-check">(12)</span>
-                                                                    <span class="cust-check"></span>
-                                                                </label>
-                                                            </li>
-                                                            <li class="cat-checkbox">
-                                                                <label class="checkbox-label 1tb">
-                                                                    <input type="checkbox" value="1tb" class="cust-checkbox">
-                                                                    <span class="check-name">
-                                                                        Bộ sưu tập còn lại
-                                                                    </span>
-                                                                    <span class="count-check">(12)</span>
-                                                                    <span class="cust-check"></span>
-                                                                </label>
-                                                            </li>
-                                                            <li class="cat-checkbox">
-                                                                <label class="checkbox-label 2tb">
-                                                                    <input type="checkbox" value="2tb" class="cust-checkbox">
-                                                                    <span class="check-name">Danh sách bộ sưu tập</span>
-                                                                    <span class="count-check">(12)</span>
-                                                                    <span class="cust-check"></span>
-                                                                </label>
-                                                            </li>
-                                                            <li class="cat-checkbox">
-                                                                <label class="checkbox-label 3tb">
-                                                                    <input type="checkbox" value="3tb" class="cust-checkbox">
-                                                                    <span class="check-name">Danh sách bộ sưu tập còn lại</span>
-                                                                    <span class="count-check">(12)</span>
-                                                                    <span class="cust-check"></span>
-                                                                </label>
-                                                            </li>
-                                                            <li class="cat-checkbox">
-                                                                <label class="checkbox-label 3tb">
-                                                                    <input type="checkbox" value="3tb" class="cust-checkbox">
-                                                                    <span class="check-name">Quyền thu thập</span>
-                                                                    <span class="count-check">(12)</span>
-                                                                    <span class="cust-check"></span>
-                                                                </label>
-                                                            </li>
-                                                            <li class="cat-checkbox">
-                                                                <label class="checkbox-label 3tb">
-                                                                    <input type="checkbox" value="3tb" class="cust-checkbox">
-                                                                    <span class="check-name">Cây rắn</span>
-                                                                    <span class="count-check">(12)</span>
-                                                                    <span class="cust-check"></span>
-                                                                </label>
-                                                            </li>
-                                                            <li class="cat-checkbox">
-                                                                <label class="checkbox-label 3tb">
-                                                                    <input type="checkbox" value="3tb" class="cust-checkbox">
-                                                                    <span class="check-name">Strelitzia nicolai</span>
-                                                                    <span class="count-check">(12)</span>
-                                                                    <span class="cust-check"></span>
-                                                                </label>
-                                                            </li>
-                                                            <li class="cat-checkbox">
-                                                                <label class="checkbox-label 3tb">
-                                                                    <input type="checkbox" value="3tb" class="cust-checkbox">
-                                                                    <span class="check-name">cây Nicolai</span>
-                                                                    <span class="count-check">(12)</span>
-                                                                    <span class="cust-check"></span>
-                                                                </label>
-                                                            </li>
-                                                            <li class="cat-checkbox">
-                                                                <label class="checkbox-label 3tb">
-                                                                    <input type="checkbox" value="3tb" class="cust-checkbox">
-                                                                    <span class="check-name">
-                                                                        Cây lô hội
-                                                                    </span>
-                                                                    <span class="count-check">(12)</span>
-                                                                    <span class="cust-check"></span>
-                                                                </label>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                                <!-- Product-Categories end -->
-                                                <div class="shop-sidebar sidebar-filter">
-                                                    <h6 class="shop-title">Bộ lọc</h6>
-                                                    <a href="javascript:void(0)" class="shop-title shop-title-lg">
-                                                       Bộ lọc
-                                                    </a>
-                                                    <div class="filter-info">
-                                                        <span class="filter-count-text">
-                                                            @ViewBag.ProductCount sản phẩm
-                                                        </span>
-                                                        <span class="loading-spinner">
-                                                            <svg aria-hidden="true" focusable="false" role="presentation" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
-                                                                <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
-                                                            </svg>
-                                                        </span>
-                                                    </div>
-
-                                                </div>
-                                                <div class="shop-sidebar sidebar-price">
-                                                    <h6 class="shop-title">Giá</h6>
-                                                    <a href="#collapse-3" data-bs-toggle="collapse" class="shop-title shop-title-lg">Giá</a>
-                                                    <div class="filter-info">
-                                                        <span class="shop-price">Giá cao nhất là 1000000 VND</span>
-                                                        <facet-remove><a asp-area="Customer" asp-controller="ClientProduct" asp-action="Index" class="reset-text">Đặt lại</a></facet-remove>
-                                                    </div>
-                                                    <!-- Product-price start -->
-                                                    <div class="collapse price-wrap" id="collapse-3">
-                                                        <price-range class="price-range">
-                                                            <div class="price-range-group group-range">
-                                                                <input type="range" class="range" min="0" max="2100000" value="0" id="range1">
-                                                                <input type="range" class="range" min="0" max="2100000" value="2100000" id="range2">
-                                                            </div>
-                                                            <div class="price-input-group group-input">
-                                                                <div class="price-range-input input-price">
-                                                                    <label class="label-text">Từ</label>
-                                                                    <span class="price-value">₫</span>
-                                                                    <span id="demo1" class="price-field">0</span>
-                                                                </div>
-                                                                <span class="price-range-delimeter">-</span>
-                                                                <div class="price-range-input input-price">
-                                                                    <label class="label-text">Đến</label>
-                                                                    <span class="price-value">₫</span>
-                                                                    <span id="demo2" class="price-field">2,100,000</span>
-                                                                </div>
-                                                            </div>
-                                                        </price-range>
-                                                    </div>
-
-                                                    <!-- Product-price end -->
-                                                    <!-- product-type start -->
-                                                    <div class="shop-sidebar sidebar-open">
-                                                        <h6 class="shop-title">Màu sắc</h6>
-                                                        <a href="#collapse-6" data-bs-toggle="collapse" class="shop-title shop-title-lg">Màu sắc<i class="fa fa-angle-down"></i></a>
-                                                        <div class="filter-info">
-                                                            <span class="shop-price">0 đã chọn</span>
-                                                            <facet-remove>
-                                                                <a href="collection-list-right.html" class="reset-text">Đặt lại</a>
-                                                            </facet-remove>
-                                                        </div>
-                                                        <div class="collapse shop-element shop-flavor" id="collapse-6">
-                                                            <ul class="brand-ul scrollbar">
-                                                                <li class="cat-checkbox">
-                                                                    <label class="checkbox-label 16gb">
-                                                                        <input type="checkbox" value="16gb" class="cust-checkbox">
-                                                                        <span class="check-name">Cỏ lúa mì</span>
-                                                                        <span class="count-check">(12)</span>
-                                                                        <span class="cust-check"></span>
-                                                                    </label>
-                                                                </li>
-                                                                <li class="cat-checkbox">
-                                                                    <label class="checkbox-label 32gb">
-                                                                        <input type="checkbox" value="32gb" class="cust-checkbox">
-                                                                        <span class="check-name">Xương rồng lâu năm</span>
-                                                                        <span class="count-check">(12)</span>
-                                                                        <span class="cust-check"></span>
-                                                                    </label>
-                                                                </li>
-                                                                <li class="cat-checkbox">
-                                                                    <label class="checkbox-label 64gb">
-                                                                        <input type="checkbox" value="64gb" class="cust-checkbox">
-                                                                        <span class="check-name">Cây cọ Areca</span>
-                                                                        <span class="count-check">(12)</span>
-                                                                        <span class="cust-check"></span>
-                                                                    </label>
-                                                                </li>
-                                                                <li class="cat-checkbox">
-                                                                    <label class="checkbox-label 500gb">
-                                                                        <input type="checkbox" value="500gb" class="cust-checkbox">
-                                                                        <span class="check-name">Bộ sưu tập</span>
-                                                                        <span class="count-check">(12)</span>
-                                                                        <span class="cust-check"></span>
-                                                                    </label>
-                                                                </li>
-                                                                <li class="cat-checkbox">
-                                                                    <label class="checkbox-label 1tb">
-                                                                        <input type="checkbox" value="1tb" class="cust-checkbox">
-                                                                        <span class="check-name">Bộ sưu tập trái</span>
-                                                                        <span class="count-check">(12)</span>
-                                                                        <span class="cust-check"></span>
-                                                                    </label>
-                                                                </li>
-                                                                <li class="cat-checkbox">
-                                                                    <label class="checkbox-label 2tb">
-                                                                        <input type="checkbox" value="2tb" class="cust-checkbox">
-                                                                        <span class="check-name">Danh sách bộ sưu tập</span>
-                                                                        <span class="count-check">(12)</span>
-                                                                        <span class="cust-check"></span>
-                                                                    </label>
-                                                                </li>
-                                                                <li class="cat-checkbox">
-                                                                    <label class="checkbox-label 3tb">
-                                                                        <input type="checkbox" value="3tb" class="cust-checkbox">
-                                                                        <span class="check-name">Danh sách bộ sưu tập trái</span>
-                                                                        <span class="count-check">(12)</span>
-                                                                        <span class="cust-check"></span>
-                                                                    </label>
-                                                                </li>
-                                                                <li class="cat-checkbox">
-                                                                    <label class="checkbox-label 3tb">
-                                                                        <input type="checkbox" value="3tb" class="cust-checkbox">
-                                                                        <span class="check-name">Cây rắn</span>
-                                                                        <span class="count-check">(12)</span>
-                                                                        <span class="cust-check"></span>
-                                                                    </label>
-                                                                </li>
-                                                                <li class="cat-checkbox">
-                                                                    <label class="checkbox-label 3tb">
-                                                                        <input type="checkbox" value="3tb" class="cust-checkbox">
-                                                                        <span class="check-name">Cây Nicolai</span>
-                                                                        <span class="count-check">(12)</span>
-                                                                        <span class="cust-check"></span>
-                                                                    </label>
-                                                                </li>
-                                                                <li class="cat-checkbox">
-                                                                    <label class="checkbox-label 3tb">
-                                                                        <input type="checkbox" value="3tb" class="cust-checkbox">
-                                                                        <span class="check-name">Strelitzia Nicolai</span>
-                                                                        <span class="count-check">(12)</span>
-                                                                        <span class="cust-check"></span>
-                                                                    </label>
-                                                                </li>
-                                                                <li class="cat-checkbox">
-                                                                    <label class="checkbox-label 3tb">
-                                                                        <input type="checkbox" value="3tb" class="cust-checkbox">
-                                                                        <span class="check-name">Cây lô hội</span>
-                                                                        <span class="count-check">(12)</span>
-                                                                        <span class="cust-check"></span>
-                                                                    </label>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-
-                                                    <!-- product-type end -->
-                                                </div>
-                                                <div class="shop-sidebar sidebar-product">
-                                                    <h6 class="shop-title">Loại sản phẩm</h6>
-                                                    <a href="#reset" data-bs-toggle="collapse" class="shop-title shop-title-lg">Loại sản phẩm</a>
-                                                    <div class="filter-info">
-                                                        <span class="shop-price no-js-hidden">0 đã chọn</span>
-                                                        <facet-remove>
-                                                            <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Index" class="reset-text">Đặt lại</a>
-                                                        </facet-remove>
-                                                    </div>
-                                                    <div class="collapse filter-element" id="reset">
-                                                        <ul class="brand-ul scrollbar">
-                                                            <li class="brand-li">
-                                                                <label class="cust-checkbox-label">
-                                                                    <input type="checkbox" name="cust-checkbox" class="cust-checkbox">
-                                                                    <span class="filter-name">Cây cối</span>
-                                                                    <span class="count-check">(23)</span>
-                                                                    <span class="cust-check"></span>
-                                                                </label>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                                <div class="shop-sidebar sidebar-wedget">
-                                                    <h6 class="shop-title">Tình trạng hàng hóa</h6>
-                                                    <a href="#collapse-1" class="shop-title shop-title-lg" data-bs-toggle="collapse">Tình trạng hàng hóa</a>
-                                                    <div class="filter-info">
-                                                        <span class="shop-price no-js-hidden">0 đã chọn</span>
-                                                        <facet-remove>
-                                                            <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Index" class="reset-text">Đặt lại</a>
-                                                        </facet-remove>
-                                                    </div>
-                                                    <div class="collapse filter-element" id="collapse-1">
-                                                        <ul class="brnad-ul scrollbar">
-                                                            <li class="availability">
-                                                                <label class="cust-checkbox-label availability in-stock">
-                                                                    <input type="checkbox" name="filter.v.availability" value="1" class="cust-checkbox">
-                                                                    <span class="filter-name">Có sẵn</span>
-                                                                    <span class="count-check">(23)</span>
-                                                                    <span class="cust-check"></span>
-                                                                </label>
-                                                            </li>
-                                                            <li class="availability">
-                                                                <label class="cust-checkbox-label availability in-stock">
-                                                                    <input type="checkbox" name="filter.v.availability" value="1" class="cust-checkbox">
-                                                                    <span class="filter-name">Hết hàng</span>
-                                                                    <span class="count-check">(1)</span>
-                                                                    <span class="cust-check"></span>
-                                                                </label>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-
-                                                <div class="shop-sidebar sidebar-wedget">
-                                                    <h6 class="shop-title">Thương hiệu</h6>
-                                                    <a href="#collapse-2" data-bs-toggle="collapse" class="shop-title shop-title-lg">Brand</a>
-                                                    <div class="filter-info">
-                                                        <span class="shop-price no-js-hidden">0 đã chọn</span>
-                                                        <facet-remove>
-                                                            <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Index" class="reset-text">Đặt lại</a>
-                                                        </facet-remove>
-                                                    </div>
-                                                    <div class="collapse filter-element" id="collapse-2">
-                                                        <ul class="brand-ul scrollbar">
-                                                            <li class="brand-li">
-                                                                <label class="cust-checkbox-label">
-                                                                    <input type="checkbox" name="cust-checkbox" class="cust-checkbox">
-                                                                    <span class="filter-name">B3cBonsai</span>
-                                                                    <span class="count-check">(23)</span>
-                                                                    <span class="cust-check"></span>
-                                                                </label>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </form>
+                                        @await Component.InvokeAsync("LeftBarFilter")
                                     </div>
                                     <!-- filter-form end -->
                                 </div>
@@ -578,3 +128,54 @@
     </div>
 </section>
 <!-- collection end -->
+@section Scripts {
+    <script>
+        const loadGridViewProduct = () => {
+            $.ajax({
+                url: '/customer/clientproduct/ListPagedProduct',
+                method: 'GET',
+                data: {},
+                success: function (data) {
+                    $('#gridViewListProduct').html(data)
+                },
+                error: (xhr) => {
+                    console.log(xhr)
+                }
+            });
+        }
+        $(document).ready(function() {
+            loadGridViewProduct();
+            $(document).on('click', '.pagination-container .pagination-page-box a', function(event) {
+                event.preventDefault();
+                $.ajax({
+                    url: $(this).attr('href'),
+                    method: 'GET',
+                    success: (data) => {
+                        $('#gridViewListProduct').html(data);
+                    },
+                    error: (xhr) => {
+                        createAlert({ title: "Thông báo", content: "Lỗi load dữ liệu, vui lòng thử lại sau", type: 'warning', timeout: 5000 });
+                    }
+                });
+            });
+
+            $(document).on('submit', '#filterProductForm', function(event) {
+                event.preventDefault();
+
+                // Lấy dữ liệu từ form
+                var formData = $(this).serialize();
+                $.ajax({
+                    url: `/customer/clientproduct/ListPagedProduct`,
+                    method: "GET",
+                    data: formData,
+                    success: (data) => {
+                        $('#gridViewListProduct').html(data)
+                    },
+                    error: (xhr) => {
+                        console.log(xhr)
+                    }
+                });
+            });
+        });
+    </script>
+}

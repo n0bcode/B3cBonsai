@@ -1,0 +1,111 @@
+﻿@model FilterValueVM
+
+<form id="filterProductForm" class="facets-form">
+    <div class="facets-wrapper">
+        <div class="shop-sidebar sidebar-price">
+            <h6 class="shop-title mb-2">Tìm kiếm theo tên</h6>
+            <input name="findText form-control" placeholder="Tìm kiếm theo tên..." />
+        </div>
+        <!-- Product-Categories start -->
+        <div class="shop-sidebar">
+            <h6 class="shop-title">Thể loại</h6>
+            <a href="#collapse-5" data-bs-toggle="collapse" class="shop-title shop-title-lg">Thể loại <i class="fa fa-angle-down"></i></a>
+            <div class="collapse show shop-element" id="collapse-5">
+                <ul class="brand-ul scrollbar">
+                    @foreach (var category in Model.Categories)
+                    {
+                        <li class="cat-checkbox">
+                            <label class="checkbox-label">
+                                <input name="selectedCategories" type="checkbox" class="cust-checkbox" value="@category.Id">
+                                <span class="check-name">@category.TenDanhMuc</span>
+                                <span class="count-check"> (@category.SanPhams.Count()) </span> <!-- Cập nhật số lượng theo nhu cầu -->
+                                <span class="cust-check"></span>
+                            </label>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+
+        <div class="shop-sidebar sidebar-price">
+            <h6 class="shop-title">Giá</h6>
+            <a href="#collapse-3" data-bs-toggle="collapse" class="shop-title shop-title-lg">Giá</a>
+            <div class="filter-info">
+                <span class="shop-price">Giá cao nhất là @Model.MaximumPrice đ</span>
+                <facet-remove>
+                    <a asp-controller="Product" asp-action="Index" class="reset-text">Cài lại</a>
+                </facet-remove>
+            </div>
+            <!-- Product-price start -->
+            <div class="collapse price-wrap" id="collapse-3">
+                <price-range class="price-range">
+                    <div class="price-range-group group-range">
+                        <input type="range" name="minPrice" class="range" min="@Model.MinimumPrice" max="@Model.MaximumPrice" value="@Model.MinimumPrice" id="range1">
+                        <input type="range" name="maxPrice" class="range" min="@Model.MinimumPrice" max="@Model.MaximumPrice" value="@Model.MaximumPrice" id="range2">
+                    </div>
+                    <div class="price-input-group group-input">
+                        <div class="price-range-input input-price">
+                            <label class="label-text">Từ</label>
+                            <span id="demo1" class="price-field">@Model.MinimumPrice</span>
+                            <span class="price-value"> đ</span>
+                        </div>
+                        <span class="price-range-delimeter">-</span>
+                        <div class="price-range-input input-price">
+                            <label class="label-text">Đến</label>
+                            <span id="demo2" class="price-field">@Model.MaximumPrice</span>
+                            <span class="price-value"> đ</span>
+                        </div>
+                    </div>
+                </price-range>
+            </div>
+            <!-- Product-price end -->
+        </div>
+
+        <div class="shop-sidebar sidebar-wedget">
+            <h6 class="shop-title">Sẵn có</h6>
+            <a href="#collapse-1" class="shop-title shop-title-lg" data-bs-toggle="collapse">Sẵn có</a>
+            <div class="filter-info">
+                <span class="shop-price no-js-hidden">@Model.InStock đã chọn </span>
+                <facet-remove>
+                    <a asp-controller="Product" asp-action="Index" class="reset-text">Cài lại</a>
+                </facet-remove>
+            </div>
+            <div class="collapse filter-element" id="collapse-1">
+                <ul class="brand-ul scrollbar">
+                    <li class="availability">
+                        <label class="cust-checkbox-label availability in-stock">
+                            <input type="checkbox" name="inStock" value="1" class="cust-checkbox">
+                            <span class="filter-name">Còn hàng</span>
+                            <span class="count-check"> (@Model.InStock) </span>
+                            <span class="cust-check"></span>
+                        </label>
+                    </li>
+                    <li class="availability">
+                        <label class="cust-checkbox-label availability out-of-stock">
+                            <input type="checkbox" name="inStock" value="0" class="cust-checkbox">
+                            <span class="filter-name">Hết hàng</span>
+                            <span class="count-check"> (@Model.OutOfStock) </span>
+                            <span class="cust-check"></span>
+                        </label>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="shop-sidebar sidebar-price">
+            <label class="h6 text-bold pb-2" for="SortBy">Sắp xếp theo: </label>
+            <select class="nice-select form-select" name="SortBy" id="">
+                <option value="manual">Nổi bật</option>
+                <option value="best-selling">Bán chạy nhất</option>
+                <option value="title-ascending">Theo bảng chữ cái, A-Z</option>
+                <option value="title-descending">Theo bảng chữ cái, Z-A</option>
+                <option value="price-ascending">Giá, từ thấp đến cao</option>
+                <option value="price-descending">Giá, từ cao đến thấp</option>
+                <option value="created-descending">Ngày, từ mới đến cũ</option>
+                <option value="created-ascending">Ngày, từ cũ đến mới</option>
+            </select>
+        </div>
+        <div class="shop-sidebar sidebar-price">
+            <button type="submit" class="form-control btn btn-success bg-gradient">Tìm kiếm</button>
+        </div>
+    </div>
+</form>
