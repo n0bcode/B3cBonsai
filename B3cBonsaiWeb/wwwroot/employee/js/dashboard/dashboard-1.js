@@ -765,6 +765,13 @@
 					// Khởi tạo và lưu biểu đồ mới vào biến window.chart
 					window.chart = new ApexCharts(document.querySelector("#projectChart"), options);
 					window.chart.render();
+
+					// Đưa thông số ra hiển thị
+					$('#amountInProcess').html(data.data[0]);
+					$('#amountPending').html(data.data[1]);
+					$('#amountCancelled').html(data.data[2]);
+					$('#amountShipped').html(data.data[3]);
+					$('#amountApproved').html(data.data[4]);
 				});
 		};
 

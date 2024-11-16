@@ -13,9 +13,8 @@
 					Home
 				</a>
 			</li>
-			<li class="breadcrumb-item active"><a href="javascript:void(0)">Dashboard</a></li>
+			<li class="breadcrumb-item active"><a href="javascript:void(0)">Tổng quan</a></li>
 		</ol>
-		<a class="text-primary fs-13" data-bs-toggle="offcanvas" href="#upsertObject1" role="button" aria-controls="upsertObject1">+ Add Task</a>
 	</div>
 	<div class="container-fluid">
 		<div class="row">
@@ -131,9 +130,10 @@
 					</div>
 					<div class="col-xl-3 col-md-6 up-shd">
 						<div class="card">
-							<div class="card-header pb-0 border-0">
+							<div class="card-header pb-0 border-0 d-flex row">
 								<h4 class="heading mb-0">Tình Trạng Đơn Hàng</h4>
-								<select class="default-select status-select normal-select">
+
+								<select class="default-select status-select normal-select form-select">
 									<option value="Today">Hôm nay</option>
 									<option value="Week">Tuần</option>
 									<option value="Month">Tháng</option>
@@ -148,45 +148,45 @@
 											<svg class="me-2" width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
 												<rect y="0.5" width="12" height="12" rx="3" fill="var(--primary)" />
 											</svg>
-											Approved
+											Đã xác nhận
 										</p>
-										<span>125 Projects</span>
+										<span><span id="amountApproved"></span> Đơn hàng</span>
 									</div>
 									<div class="project-media">
 										<p class="mb-0">
 											<svg class="me-2" width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
 												<rect y="0.5" width="12" height="12" rx="3" fill="#3AC977" />
 											</svg>
-											Cancelled
+											Đã hủy
 										</p>
-										<span>125 Projects</span>
+										<span><span id="amountCancelled"></span> Đơn hàng</span>
 									</div>
 									<div class="project-media">
 										<p class="mb-0">
 											<svg class="me-2" width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
 												<rect y="0.5" width="12" height="12" rx="3" fill="#FF5E5E" />
 											</svg>
-											Status Pending
+											Đang chờ
 										</p>
-										<span>125 Projects</span>
+										<span><span id="amountPending"></span> Đơn hàng</span>
 									</div>
 									<div class="project-media">
 										<p class="mb-0">
 											<svg class="me-2" width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
 												<rect y="0.5" width="12" height="12" rx="3" fill="#FF9F00" />
 											</svg>
-											In Process
+											Đang giao
 										</p>
-										<span>125 Projects</span>
+										<span><span id="amountInProcess"></span> Đơn hàng</span>
 									</div>
 									<div class="project-media">
 										<p class="mb-0">
 											<svg class="me-2" width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
 												<rect y="0.5" width="12" height="12" rx="3" fill="#ffb8c6" />
 											</svg>
-											Shipped
+											Đã giao
 										</p>
-										<span>125 Projects</span>
+										<span><span id="amountShipped"></span> Đơn hàng</span>
 									</div>
 								</div>
 							</div>
@@ -201,7 +201,7 @@
 					</div>
 					<div class="card-body px-0 overflow-hidden">
 						<div class="total-earning">
-							<h2>$6,743.00</h2>
+							<h2>@( String.Format("{0:n0}",((int)TempData["total"] - (int)TempData["totalLoss"]))  ) đ</h2>
 							<ul class="nav nav-underline mb-3 earning-tab earning-chart" id="pills-tab1" role="tablist">
 								<li class="nav-item px-2" role="presentation">
 									<button class="nav-link py-2 px-0 border-3 m-0 active" data-series="day" id="pills-day-tab1" data-bs-toggle="pill" data-bs-target="#pills-day1" type="button" role="tab" aria-selected="true">Ngày</button>
@@ -226,25 +226,21 @@
 					<div class="card-body p-0">
 						<div class="table-responsive active-projects shorting">
 
-							<div class="tbl-caption">
+							<div class="tbl-caption d-flex justify-content-between">
 								<h4 class="heading mb-0">Đơn hàng gần đây</h4>
+								<a class="btn btn-primary btn-sm" href="/Employee/ManagerOrder/Index" role="button" aria-controls="upsertObject">Quản lý</a>
+
 							</div>
-							<table id="donhang-tbl" class="table ItemsCheckboxSec">
-								<thead>
-									<tr>
-										<th>ID Đơn Hàng</th>
-										<th>Tên Người Nhận</th>
-										<th>Số Điện Thoại</th>
-										<th>Địa Chỉ</th>
-										<th>Thành Phố</th>
-										<th>Tổng Tiền</th>
-										<th>Trạng Thái Đơn Hàng</th>
-										<th>Ngày Đặt Hàng</th>
-									</tr>
-								</thead>
-								<tbody></tbody>
+							<div class="table-responsive p-3 datatables">
+								<table id="donhangDatatable" class="table display">
+									<thead>
+										<tr>
+										</tr>
+									</thead>
+									<tbody></tbody>
 								
-							</table>
+								</table>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -254,36 +250,38 @@
 					<div class="card-header border-0">
 						<h4 class="heading mb-0">Top sản phẩm được bán chạy</h4>
 						<div class="d-flex align-items-center cs-settiong">
-							<span>SORT BY:</span>
+
+							<div>
+								<a class="btn btn-primary btn-sm" href="/Employee/ManagerProduct/Index" role="button" aria-controls="upsertObject">Quản lý</a>
+							</div>
+							@* <span>SORT BY:</span>
 							<select class="default-select status-select normal-select">
 								<option value="Today">Ngày</option>
 								<option value="Week">Tuần</option>
 								<option value="Month">Tháng</option>
-							</select>
+							</select> *@
 						</div>
 					</div>
 					<div class="card-body p-0">
 						<div class="table-responsive active-projects active-projects ItemsCheckboxSec selling-product shorting">
-							<table id="product-tbl" class="table display">
-								<thead>
-									<tr>
-										<th>
-											<div class="form-check custom-checkbox ms-0">
-												<input type="checkbox" class="form-check-input checkAllInput" id="checkAll1">
-												<label class="form-check-label" for="checkAll1">Tên Sản Phẩm</label>
-											</div>
-										</th>
-										<th>Số Lượng</th>
-										<th>Giá</th>
-										<th>Ngày Tạo</th>
-										<th>Tình Trạng</th>
-										<th>Chi Tiết</th>
-									</tr>
-								</thead>
-								<tbody>
+							<div class="table-responsive p-3 datatables">
+								<table id="productDashboard" class="table display">
+									<thead>
+										<tr>
+											<th>
+												Tên Sản Phẩm
+											</th>
+											<th>Số Lượng</th>
+											<th>Giá</th>
+											<th>Ngày Tạo</th>
+											<th>Tình Trạng</th>
+										</tr>
+									</thead>
+									<tbody>
 									
-								</tbody>
-							</table>
+									</tbody>
+								</table>
+							</div>
 						</div>
 					</div>
 					</div>
@@ -296,11 +294,11 @@
 							<div class="tbl-caption">
 								<h4 class="heading mb-0">Danh sách người dùng</h4>
 								<div>
-									<a class="btn btn-primary btn-sm" data-bs-toggle="offcanvas" href="/Employee/ManagerUser/Index" role="button" aria-controls="upsertObject">Quản lý</a>
+									<a class="btn btn-primary btn-sm" href="/Employee/ManagerUser/Index" role="button" aria-controls="upsertObject">Quản lý</a>
 								</div>
 							</div>
 							<div class="table-responsive p-3 datatables">
-								<table id="empoloyees-tbl" class="display table">
+								<table id="empoloyeesDatatale" class="display table">
 									<thead>
 										<tr>
 											<th>Tên nhân viên</th>

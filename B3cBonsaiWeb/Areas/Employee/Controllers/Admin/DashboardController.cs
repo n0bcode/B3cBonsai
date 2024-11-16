@@ -20,7 +20,7 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Admin
 			_unitOfWork = unitOfWork;
 		}
 
-		[Authorize]
+		[Authorize(Roles = SD.Role_Admin)]
 		public async Task<IActionResult> Index()
 		{
 			IEnumerable<DonHang> donHangs = await _unitOfWork.DonHang.GetAll();
@@ -48,7 +48,7 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Admin
 			return View();
 		}
 
-		public List<SanPham> LaySanPhamBanChayNhat(int soLuongSanPham)
+		public IActionResult LaySanPhamBanChayNhat(int soLuongSanPham)
 		{
 			var chiTietDonHangs = _unitOfWork.ChiTietDonHang.GetAll().Result;
 			var sanPhams = _unitOfWork.SanPham.GetAll().Result;
@@ -72,7 +72,7 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Admin
 			topSanPhams.ForEach(sp =>
 				sp.SoLuong = sanPhamBanChay.First(x => x.SanPhamId == sp.Id).TongSoLuongBan);
 
-			return topSanPhams;
+			return Json(new { data = topSanPhams });
 		}
 
 		#region API Calls
@@ -149,7 +149,7 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Admin
 
 			return Json(new
 			{
-				name = "Net Profit",
+				name = "Đơn hàng",
 				data = columnData,
 				categories = categories
 			});
@@ -198,7 +198,7 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Admin
 
 			return Json(new
 			{
-				labels = orderStatuses.Keys.ToList(),
+				labels = new string[] {"Đang giao", "Đang chờ", "Bị hủy","Đã giao","Đã xác nhận"}.ToList(),
 				data = orderStatuses.Values.ToList()
 			});
 		}
