@@ -2600,6 +2600,23 @@ ul.sit-map-ul li.site-map-li .site-main-title ul.site-sub-link li.site-title a::
     background-color: var(--primary-font-color);
 }
 
+.paginatoin-area ul.pagination-page-box li span {
+    color: var(--paragraph-font-color);
+    height: 30px;
+    width: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    line-height: 0;
+}
+.paginatoin-area ul.pagination-page-box li.active span {
+    color: var(--body-bgcolor);
+    background-color: var(--primary-font-color);
+}
+
 /*=====================================
     cart empty css
 ======================================*/
