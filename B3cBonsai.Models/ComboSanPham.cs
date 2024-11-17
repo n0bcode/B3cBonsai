@@ -33,6 +33,8 @@ namespace B3cBonsai.Models
         [Display(Name = "Tổng Giá")]
         public int TongGia { get; set; }
 
+        public bool TrangThai { get; set; } = true;
+
         [ValidateNever]
         [Display(Name = "Chi Tiết Combo")]
         public virtual ICollection<ChiTietCombo> ChiTietCombos { get; set; } // Khai báo quan hệ 1-n với chi tiết combo
