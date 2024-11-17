@@ -18,18 +18,24 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly ApplicationDbContext _db;
-        public EmployeeProfileController(UserManager<IdentityUser> userManager,IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment, ApplicationDbContext db)
+        private readonly IHttpContextAccessor _contextAccessor;
+        public EmployeeProfileController(UserManager<IdentityUser> userManager,
+                                         IUnitOfWork unitOfWork,
+                                         IWebHostEnvironment webHostEnvironment,
+                                         ApplicationDbContext db,
+                                         IHttpContextAccessor httpContextAccessor)
         {
             _userManager = userManager;
             _unitOfWork = unitOfWork;
             _webHostEnvironment = webHostEnvironment;
             _db = db;
+            _contextAccessor = httpContextAccessor;
         }
         [Authorize(Roles = $"{SD.Role_Admin},{SD.Role_Staff}")]
         public async Task<IActionResult> Index()
         {
-            var nguoi = await _unitOfWork.NguoiDungUngDung.Get(x => x.Id == User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString());
-            nguoi.VaiTro = User.FindFirst(ClaimTypes.Role).Value.ToString();
+            var nguoi = await _unitOfWork.NguoiDungUngDung.Get(x => x.Id == User.FindFirstValue(ClaimTypes.NameIdentifier));
+            nguoi.VaiTro = User.FindFirstValue(ClaimTypes.Role);
             return View(nguoi);
         }
         [Authorize]
@@ -85,7 +91,7 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers
 
                 string wwwRootPath = _webHostEnvironment.WebRootPath;
 
-                var nguoi = await _unitOfWork.NguoiDungUngDung.Get(x => x.Id == User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString());
+                var nguoi = await _unitOfWork.NguoiDungUngDung.Get(x => x.Id == User.FindFirstValue(ClaimTypes.NameIdentifier));
 
                 string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
                 string nguoiDungUngDungPath = Path.Combine("images", "user", "user-" + nguoi.Id);
