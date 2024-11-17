@@ -1,9 +1,7 @@
-﻿@using System.Security.Claims
-@using X.PagedList.Mvc.Core
+﻿@using X.PagedList.Mvc.Core
 @model X.PagedList.IPagedList<SanPham>
 
 @{
-    string? UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
     var pLRO = new PagedListRenderOptions
             {
                 UlElementClasses = ["pagination-page-box"],
@@ -37,10 +35,10 @@
 
                                     </a>
                                     <div class="product-action product-cart-btn">
-                                        <a href="#add-to-cart" class="add-to-cart">
+                                        <a onclick="addToCart(@product.Id,null,1,'@SD.ObjectDetailOrder_SanPham')" href="#add-to-cart" class="add-to-cart">
                                             <span class="cart-title">
                                                 <span class="add-c-title">
-                                                     <span class="tooltip-text">Thêm vào giỏ</span>
+                                                    <span class="tooltip-text">Thêm vào giỏ</span>
                                                     <span class="cart-icon"><i class="feather-shopping-bag"></i></span>
                                                     <span class="add-title">Thêm vào giỏ</span>
                                                 </span>

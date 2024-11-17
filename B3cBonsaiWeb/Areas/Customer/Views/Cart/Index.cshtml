@@ -1,9 +1,9 @@
-﻿@{
+﻿@model List<GioHang>
+@{
     ViewData["Title"] = "Home Page";
 }
-@model IEnumerable<Object>
 
-@if (Model != null) {
+@if (!(Model == null || Model.Count() == 0)) {
 <!-- breadcrumb start -->
 <section class="breadcrumb-area">
     <div class="container">
@@ -44,155 +44,64 @@
                                         <span class="cart-item-title">Item</span>
                                     </span>
                                 </div>
-                                <div class="item-wrap">
-                                    <ul class="cart-wrap">
-                                        <!-- cart-info start -->
-                                        <li class="item-info">
-                                            <!-- cart-img start -->
-                                            <div class="item-img">
-                                                <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail">
-                                                    <img src="~/customer/img/menu/home1-pro-banner1.jpg" class="img-fluid" alt="cart-1">
-                                                </a>
-                                            </div>
-                                            <!-- cart-img end -->
-                                            <!-- cart-title start -->
-                                            <div class="item-text">
-                                                <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail">Castle cactus - Green</a>
-                                                <span class="item-option">
-                                                    <span class="item-title">Color:</span>
-                                                    <span class="item-type">Black</span>
-                                                </span>
-                                                <span class="item-option">
-                                                    <span class="item-price">Rs. 11.00</span>
-                                                </span>
-                                            </div>
-                                            <!-- cart-title send -->
-                                        </li>
-                                        <!-- cart-info end -->
-                                        <!-- cart-qty start -->
-                                        <li class="item-qty">
-                                            <div class="product-quantity-action">
-                                                <div class="product-quantity">
-                                                    <div class="cart-plus-minus">
-                                                        <button class="dec qtybutton minus"><i class="fa-solid fa-minus"></i></button>
-                                                        <input type="text" name="quantity" value="1">
-                                                        <button class="inc qtybutton plus"><i class="fa-solid fa-plus"></i></button>
+                                    <div class="item-wrap">
+                                        @foreach (var item in Model)
+                                        {
+                                            <ul class="cart-wrap">
+                                                <!-- cart-info start -->
+                                                <li class="item-info">
+                                                    <!-- cart-img start -->
+                                                    <div class="item-img">
+                                                        <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail" asp-route-id="@(item.MaCombo ?? item.MaSanPham)">
+                                                            <img src="~/customer/img/menu/home1-pro-banner1.jpg" class="img-fluid" alt="@(item.SanPham?.TenSanPham ?? item.ComboSanPham?.TenCombo)">
+                                                        </a>
                                                     </div>
-                                                </div>
-                                            </div>
-                                            <div class="item-remove">
-                                                <span class="remove-wrap">
-                                                    <a href="javascript:void(0)" class="text-danger">Remove</a>
-                                                </span>
-                                            </div>
-                                        </li>
-                                        <!-- cart-qty end -->
-                                        <!-- cart-price start -->
-                                        <li class="item-price">
-                                            <span class="amount full-price">Rs. 11.00</span>
-                                        </li>
-                                        <!-- cart-price end -->
-                                    </ul>
-                                    <ul class="cart-wrap">
-                                        <!-- cart-info start -->
-                                        <li class="item-info">
-                                            <!-- cart-img start -->
-                                            <div class="item-img">
-                                                <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail">
-                                                    <img src="~/customer/img/menu/home1-pro-banner2.jpg" class="img-fluid" alt="cart-2">
-                                                </a>
-                                            </div>
-                                            <!-- cart-img end -->
-                                            <!-- cart-title start -->
-                                            <div class="item-text">
-                                                <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail">Majesty palm</a>
-                                                <span class="item-option">
-                                                    <span class="item-title">Color:</span>
-                                                    <span class="item-type">White</span>
-                                                </span>
-                                                <span class="item-option">
-                                                    <span class="item-price">Rs. 25.00</span>
-                                                </span>
-                                            </div>
-                                            <!-- cart-title send -->
-                                        </li>
-                                        <!-- cart-info end -->
-                                        <!-- cart-qty start -->
-                                        <li class="item-qty">
-                                            <div class="product-quantity-action">
-                                                <div class="product-quantity">
-                                                    <div class="cart-plus-minus">
-                                                        <button class="dec qtybutton minus"><i class="fa-solid fa-minus"></i></button>
-                                                        <input type="text" name="quantity" value="1">
-                                                        <button class="inc qtybutton plus"><i class="fa-solid fa-plus"></i></button>
+                                                    <!-- cart-img end -->
+                                                    <!-- cart-title start -->
+                                                    <div class="item-text">
+                                                        <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail" asp-route-id="@(item.MaCombo ?? item.MaSanPham)">
+                                                            @(item.SanPham?.TenSanPham ?? item.ComboSanPham?.TenCombo)
+                                                        </a>
+                                                        <span class="item-option">
+                                                            <span class="item-title">Loại:</span>
+                                                            <span class="item-type">@item.LoaiDoiTuong</span>
+                                                        </span>
+                                                        <span class="item-option">
+                                                            <span class="item-price">
+                                                                @String.Format("{0:n0}", item.Gia) VNĐ
+                                                            </span>
+                                                        </span>
                                                     </div>
-                                                    <span class="dec qtybtn"></span>
-                                                    <span class="inc qtybtn"></span>
-                                                </div>
-                                            </div>
-                                            <div class="item-remove">
-                                                <span class="remove-wrap">
-                                                    <a href="javascript:void(0)" class="text-danger">Remove</a>
-                                                </span>
-                                            </div>
-                                        </li>
-                                        <!-- cart-qty end -->
-                                        <!-- cart-price start -->
-                                        <li class="item-price">
-                                            <span class="amount full-price">Rs. 25.00</span>
-                                        </li>
-                                        <!-- cart-price end -->
-                                    </ul>
-                                    <ul class="cart-wrap">
-                                        <!-- cart-info start -->
-                                        <li class="item-info">
-                                            <!-- cart-img start -->
-                                            <div class="item-img">
-                                                <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail">
-                                                    <img src="~/customer/img/menu/home1-pro-banner3.jpg" class="img-fluid" alt="cart-3">
-                                                </a>
-                                            </div>
-                                            <!-- cart-img end -->
-                                            <!-- cart-title start -->
-                                            <div class="item-text">
-                                                <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail">Strelitzia nicolai</a>
-                                                <span class="item-option">
-                                                    <span class="item-title">Color:</span>
-                                                    <span class="item-type">Red</span>
-                                                </span>
-                                                <span class="item-option">
-                                                    <span class="item-price">Rs. 24.00</span>
-                                                </span>
-                                            </div>
-                                            <!-- cart-title send -->
-                                        </li>
-                                        <!-- cart-info end -->
-                                        <!-- cart-qty start -->
-                                        <li class="item-qty">
-                                            <div class="product-quantity-action">
-                                                <div class="product-quantity">
-                                                    <div class="cart-plus-minus">
-                                                        <button class="dec qtybutton minus"><i class="fa-solid fa-minus"></i></button>
-                                                        <input type="text" name="quantity" value="1">
-                                                        <button class="inc qtybutton plus"><i class="fa-solid fa-plus"></i></button>
+                                                    <!-- cart-title end -->
+                                                </li>
+                                                <!-- cart-info end -->
+                                                <!-- cart-qty start -->
+                                                <li class="item-qty">
+                                                    <div class="product-quantity-action">
+                                                        <div class="product-quantity">
+                                                            <div class="cart-plus-minus">
+                                                                <button onclick="decreaseQuantity(@(item.Id))" class="dec qtybutton minus" data-cart-id="@item.Id"><i class="fa-solid fa-minus"></i></button>
+                                                                <input type="text" name="quantity" value="@item.SoLuong" readonly />
+                                                                <button onclick="increaseQuantity(@(item.Id))" class="inc qtybutton plus" data-cart-id="@item.Id"><i class="fa-solid fa-plus"></i></button>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <span class="dec qtybtn"></span>
-                                                    <span class="inc qtybtn"></span>
-                                                </div>
-                                            </div>
-                                            <div class="item-remove">
-                                                <span class="remove-wrap">
-                                                    <a href="javascript:void(0)" class="text-danger">Remove</a>
-                                                </span>
-                                            </div>
-                                        </li>
-                                        <!-- cart-qty end -->
-                                        <!-- cart-price start -->
-                                        <li class="item-price">
-                                            <span class="amount full-price">Rs. 24.00</span>
-                                        </li>
-                                        <!-- cart-price end -->
-                                    </ul>
+                                                    <div class="item-remove">
+                                                        <span class="remove-wrap">
+                                                            <a href="javascript:void(0)" class="text-danger remove-item" data-cart-id="@item.Id">Xóa</a>
+                                                        </span>
+                                                    </div>
+                                                </li>
+                                                <!-- cart-qty end -->
+                                                <!-- cart-price start -->
+                                                <li class="item-price">
+                                                    <span class="amount full-price">
+                                                        @String.Format("{0:n0}", item.Gia) VNĐ
+                                                    </span>
+                                                </li>
+                                                <!-- cart-price end -->
+                                            </ul>
+                                        }
                                 </div>
                                 <div class="cart-buttons">
                                     <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Index" class="btn-style2">Continue shopping</a>
@@ -354,7 +263,7 @@
                                 <h2><span>Cart empty</span></h2>
                                 <p>Sorry your cart has currently no more products, click on 'here' given below for continue browsing.</p>
                                 <p>Continue browsing
-                                    <a asp-area="Customer" asp-controller="ClientCustomer" asp-action="Index">here</a>.
+                                    <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Index">here</a>.
                                 </p>
                             </div>
                         </div>
@@ -419,8 +328,8 @@
                                                             </div>
                                                         </div>
                                                         <div class="product-name">
-                                                            <a class="product-type" asp-area="Customer" asp-controller="ClientCustomer" asp-action="Index">Strelitzia</a>
-                                                            <a class="product-vendor" asp-area="Customer" asp-controller="ClientCustomer" asp-action="Index">B3cBonsai</a>
+                                                            <a class="product-type" asp-area="Customer" asp-controller="ClientProduct" asp-action="Index">Strelitzia</a>
+                                                            <a class="product-vendor" asp-area="Customer" asp-controller="ClientProduct" asp-action="Index">B3cBonsai</a>
                                                         </div>
                                                     </div>
                                                     <div class="product-ratting">
@@ -495,8 +404,8 @@
                                                             </div>
                                                         </div>
                                                         <div class="product-name">
-                                                            <a class="product-type" asp-area="Customer" asp-controller="ClientCustomer" asp-action="Index">Aloe vera</a>
-                                                            <a class="product-vendor" asp-area="Customer" asp-controller="ClientCustomer" asp-action="Index">B3cBonsai</a>
+                                                            <a class="product-type" asp-area="Customer" asp-controller="ClientProduct" asp-action="Index">Aloe vera</a>
+                                                            <a class="product-vendor" asp-area="Customer" asp-controller="ClientProduct" asp-action="Index">B3cBonsai</a>
                                                         </div>
                                                     </div>
                                                     <div class="product-ratting">
@@ -571,8 +480,8 @@
                                                             </div>
                                                         </div>
                                                         <div class="product-name">
-                                                            <a class="product-type" asp-area="Customer" asp-controller="ClientCustomer" asp-action="Index">Evergreen</a>
-                                                            <a class="product-vendor" asp-area="Customer" asp-controller="ClientCustomer" asp-action="Index">B3cBonsai</a>
+                                                            <a class="product-type" asp-area="Customer" asp-controller="ClientProduct" asp-action="Index">Evergreen</a>
+                                                            <a class="product-vendor" asp-area="Customer" asp-controller="ClientProduct" asp-action="Index">B3cBonsai</a>
                                                         </div>
                                                     </div>
                                                     <div class="product-ratting">
@@ -647,8 +556,8 @@
                                                             </div>
                                                         </div>
                                                         <div class="product-name">
-                                                            <a class="product-type" asp-area="Customer" asp-controller="ClientCustomer" asp-action="Index">Grass</a>
-                                                            <a class="product-vendor" asp-area="Customer" asp-controller="ClientCustomer" asp-action="Index">B3cBonsai</a>
+                                                            <a class="product-type" asp-area="Customer" asp-controller="ClientProduct" asp-action="Index">Grass</a>
+                                                            <a class="product-vendor" asp-area="Customer" asp-controller="ClientProduct" asp-action="Index">B3cBonsai</a>
                                                         </div>
                                                     </div>
                                                     <div class="product-ratting">
@@ -723,8 +632,8 @@
                                                             </div>
                                                         </div>
                                                         <div class="product-name">
-                                                            <a class="product-type" asp-area="Customer" asp-controller="ClientCustomer" asp-action="Index">Castle</a>
-                                                            <a class="product-vendor" asp-area="Customer" asp-controller="ClientCustomer" asp-action="Index">B3cBonsai</a>
+                                                            <a class="product-type" asp-area="Customer" asp-controller="ClientProduct" asp-action="Index">Castle</a>
+                                                            <a class="product-vendor" asp-area="Customer" asp-controller="ClientProduct" asp-action="Index">B3cBonsai</a>
                                                         </div>
                                                     </div>
                                                     <div class="product-ratting">
@@ -799,8 +708,8 @@
                                                             </div>
                                                         </div>
                                                         <div class="product-name">
-                                                            <a class="product-type" asp-area="Customer" asp-controller="ClientCustomer" asp-action="Index">Paradise</a>
-                                                            <a class="product-vendor" asp-area="Customer" asp-controller="ClientCustomer" asp-action="Index">B3cBonsai</a>
+                                                            <a class="product-type" asp-area="Customer" asp-controller="ClientProduct" asp-action="Index">Paradise</a>
+                                                            <a class="product-vendor" asp-area="Customer" asp-controller="ClientProduct" asp-action="Index">B3cBonsai</a>
                                                         </div>
                                                     </div>
                                                     <div class="product-ratting">
@@ -875,8 +784,8 @@
                                                             </div>
                                                         </div>
                                                         <div class="product-name">
-                                                            <a class="product-type" asp-area="Customer" asp-controller="ClientCustomer" asp-action="Index">Snake</a>
-                                                            <a class="product-vendor" asp-area="Customer" asp-controller="ClientCustomer" asp-action="Index">B3cBonsai</a>
+                                                            <a class="product-type" asp-area="Customer" asp-controller="ClientProduct" asp-action="Index">Snake</a>
+                                                            <a class="product-vendor" asp-area="Customer" asp-controller="ClientProduct" asp-action="Index">B3cBonsai</a>
                                                         </div>
                                                     </div>
                                                     <div class="product-ratting">
@@ -950,8 +859,8 @@
                                                             </div>
                                                         </div>
                                                         <div class="product-name">
-                                                            <a class="product-type" asp-area="Customer" asp-controller="ClientCustomer" asp-action="Index">Palm</a>
-                                                            <a class="product-vendor" asp-area="Customer" asp-controller="ClientCustomer" asp-action="Index">B3cBonsai</a>
+                                                            <a class="product-type" asp-area="Customer" asp-controller="ClientProduct" asp-action="Index">Palm</a>
+                                                            <a class="product-vendor" asp-area="Customer" asp-controller="ClientProduct" asp-action="Index">B3cBonsai</a>
                                                         </div>
                                                     </div>
                                                     <div class="product-ratting">
@@ -1026,8 +935,8 @@
                                                             </div>
                                                         </div>
                                                         <div class="product-name">
-                                                            <a class="product-type" asp-area="Customer" asp-controller="ClientCustomer" asp-action="Index">Howea</a>
-                                                            <a class="product-vendor" asp-area="Customer" asp-controller="ClientCustomer" asp-action="Index">B3cBonsai</a>
+                                                            <a class="product-type" asp-area="Customer" asp-controller="ClientProduct" asp-action="Index">Howea</a>
+                                                            <a class="product-vendor" asp-area="Customer" asp-controller="ClientProduct" asp-action="Index">B3cBonsai</a>
                                                         </div>
                                                     </div>
                                                     <div class="product-ratting">
@@ -1062,7 +971,7 @@
                                     </div>
                                 </div>
                                 <div class="collection-button">
-                                    <a asp-area="Customer" asp-controller="ClientCustomer" asp-action="Index" class="btn btn-style">View product</a>
+                                    <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Index" class="btn btn-style">View product</a>
                                 </div>
                             </div>
                             <div class="swiper-buttons">
