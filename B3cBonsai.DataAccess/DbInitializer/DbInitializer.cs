@@ -108,8 +108,8 @@ namespace B3cBonsai.DataAccess.DbInitializer
                     Email = generatedEmail,
                     PasswordHash = BCrypt.Net.BCrypt.HashPassword(rd.Next(100000, 9999999).ToString()),
                     LinkAnh = RandomData_DB.Instance._UserImage(),
-                    NgayTao = DateTime.Now,
-                    NgaySinh = DateTime.Now.AddDays(-rd.Next(5000, 7200))
+                    NgayTao = DateTime.UtcNow,
+                    NgaySinh = DateTime.UtcNow.AddDays(-rd.Next(5000, 7200))
                 });
             }
 
@@ -149,7 +149,7 @@ namespace B3cBonsai.DataAccess.DbInitializer
                     MoTa = RandomData_DB.Instance.RandomProductDescription(),
                     SoLuong = random.Next(1, 100),
                     Gia = random.Next(10000, 1000000),
-                    NgayTao = DateTime.Now,
+                    NgayTao = DateTime.UtcNow,
                     TrangThai = true
                 });
             }
@@ -241,9 +241,9 @@ namespace B3cBonsai.DataAccess.DbInitializer
                 {
                     NguoiDungId = nguoiDungId,
                     NhanVienId = _db.NguoiDungUngDungs.First().Id, // Giữ nguyên
-                    NgayDatHang = DateTime.Now.AddDays(-rd.Next(30, 365)),
+                    NgayDatHang = DateTime.UtcNow.AddDays(-rd.Next(30, 365)),
                     TrangThaiDonHang = new[] { SD.StatusInProcess, SD.StatusPending, SD.StatusCancelled, SD.StatusShipped, SD.StatusApproved }[rd.Next(5)],
-                    NgayNhanHang = DateTime.Now.AddDays(rd.Next(0, 30)),
+                    NgayNhanHang = DateTime.UtcNow.AddDays(rd.Next(0, 30)),
                     TenNguoiNhan = RandomData_DB.Instance.rdName(),
                     SoDienThoai = RandomData_DB.Instance.RandomPhone(),
                     ThanhPho = RandomData_DB.Instance.rdAddress(),
