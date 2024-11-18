@@ -174,7 +174,7 @@ namespace B3cBonsai.DataAccess
         // Random ngày thuê nhân viên
         public DateTime RandomHiredDate()
         {
-            return DateTime.Now.AddDays(-rd.Next(365, 1825)); // Từ 1 đến 5 năm trước
+            return DateTime.UtcNow.AddDays(-rd.Next(365, 1825)); // Từ 1 đến 5 năm trước
         }
         // Random số điện thoại
         public string RandomPhone()
