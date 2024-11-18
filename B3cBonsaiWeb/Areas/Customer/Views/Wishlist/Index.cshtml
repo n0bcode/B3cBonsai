@@ -2,9 +2,9 @@
     ViewData["Title"] = "Trang chủ";
 }
 
-@model IEnumerable<Object>
+@model IEnumerable<DanhSachYeuThich>
 
-@if (Model != null)
+@if (Model != null || Model.Count() != 0)
 {
     <!-- breadcrumb start -->
     <section class="breadcrumb-area">
@@ -39,161 +39,40 @@
                             <div class="wishlist-details">
                                 <div class="wishlist-item">
                                     <span class="wishlist-head">Danh sách yêu thích của tôi:</span>
-                                    <span class="sp-link-title">5 Sản phẩm</span>
-                                </div>
-                                <div class="wishlist-all-pro">
-                                    <div class="wishlist-pro">
-                                        <div class="wishlist-pro-image">
-                                            <a href="product.html">
-                                                <img src="~/customer/img/menu/home1-pro-banner1.jpg" class="img-fluid" alt="p-1">
-                                            </a>
-                                        </div>
-                                        <div class="pro-details">
-                                            <h6>
-                                                <a href="product-template2.html">Xương rồng Castle - Màu xanh</a>
-                                            </h6>
-                                        </div>
-                                    </div>
-                                    <div class="qty-item">
-                                        <a asp-area="Customer" asp-controller="Cart" asp-action="Index" class="add-wishlist">Thêm vào giỏ hàng</a>
-                                        <a href="/Customer/Payment/Index" class="add-wishlist">Mua ngay</a>
-                                    </div>
-                                    <div class="all-pro-price">
-                                        <div class="price-box">
-                                            <span class="new-price">Rs. 21.00</span>
-                                            <span class="old-price">Rs. 25.00</span>
-                                        </div>
-                                        <span class="wishalist-icon"><i class="fa fa-heart text-danger"></i></span>
-                                    </div>
+                                    <span class="sp-link-title">@Model.Count() Sản phẩm</span>
                                 </div>
                             </div>
                         </div>
-                        <div class="wishlist-area">
-                            <div class="wishlist-details">
-                                <div class="wishlist-all-pro">
-                                    <div class="wishlist-pro">
-                                        <div class="wishlist-pro-image">
-                                            <a href="product.html">
-                                                <img src="~/customer/img/menu/home1-pro-banner2.jpg" class="img-fluid" alt="p-2">
-                                            </a>
+                        @foreach (var item in Model) {
+                            <div class="wishlist-area">
+                                <div class="wishlist-details">
+                                    <div class="wishlist-all-pro">
+                                        <div class="wishlist-pro">
+                                            <div class="wishlist-pro-image">
+                                                <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail" asp-route-id="@(item.SanPhamId)">
+                                                    <img src="@item.SanPham.HinhAnhs.FirstOrDefault().LinkAnh" class="img-fluid" alt="p-2">
+                                                </a>
+                                            </div>
+                                            <div class="pro-details">
+                                                <h6>
+                                                    <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail" asp-route-id="@(item.SanPhamId)">@(item.SanPham.TenSanPham)</a>
+                                                </h6>
+                                            </div>
                                         </div>
-                                        <div class="pro-details">
-                                            <h6>
-                                                <a href="product-template2.html">Cây lưỡi hổ</a>
-                                            </h6>
+                                        <div class="qty-item">
+                                            <a href="javascript:void(0)" onclick="addToCart(@item.SanPhamId,null,1,'@SD.ObjectDetailOrder_SanPham')" class="add-wishlist">Thêm vào giỏ hàng</a>
+                                            <a href="/Customer/Payment/Index" class="add-wishlist">Mua ngay</a>
                                         </div>
-                                    </div>
-                                    <div class="qty-item">
-                                        <a asp-area="Customer" asp-controller="Cart" asp-action="Index" class="add-wishlist">Thêm vào giỏ hàng</a>
-                                        <a href="/Customer/Payment/Index" class="add-wishlist">Mua ngay</a>
-                                    </div>
-                                    <div class="all-pro-price">
-                                        <div class="price-box">
-                                            <span class="new-price">Rs. 54.00</span>
-                                            <span class="old-price">Rs. 65.00</span>
+                                        <div class="all-pro-price">
+                                            <div class="price-box">
+                                                <span class="new-price">@(String.Format("{0:n0}",item.SanPham.Gia)) VNĐ</span>
+                                            </div>
+                                            <span class="wishalist-icon"><i class="fa fa-heart text-danger"></i></span>
                                         </div>
-                                        <span class="wishalist-icon"><i class="fa fa-heart text-danger"></i></span>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="wishlist-area">
-                            <div class="wishlist-details">
-                                <div class="wishlist-all-pro">
-                                    <div class="wishlist-pro">
-                                        <div class="wishlist-pro-image">
-                                            <a href="product.html">
-                                                <img src="~/customer/img/menu/home1-pro-banner3.jpg" class="img-fluid" alt="p-3">
-                                            </a>
-                                        </div>
-                                        <div class="pro-details">
-                                            <h6>
-                                                <a href="product-template2.html">Cây thiên điểu</a>
-                                            </h6>
-                                        </div>
-                                    </div>
-                                    <div class="qty-item">
-                                        <a asp-area="Customer" asp-controller="Cart" asp-action="Index" class="add-wishlist">Thêm vào giỏ hàng</a>
-                                        <a href="/Customer/Payment/Index" class="add-wishlist">Mua ngay</a>
-                                    </div>
-                                    <div class="all-pro-price">
-                                        <div class="price-box">
-                                            <span class="new-price">Rs. 21.00</span>
-                                            <span class="old-price">Rs. 45.00</span>
-                                        </div>
-                                        <span class="wishalist-icon"><i class="fa fa-heart text-danger"></i></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="wishlist-area">
-                            <div class="wishlist-details">
-                                <div class="wishlist-all-pro">
-                                    <div class="wishlist-pro">
-                                        <div class="wishlist-pro-image">
-                                            <a href="product.html">
-                                                <img src="~/customer/img/menu/home1-pro-banner4.jpg" class="img-fluid" alt="p-4">
-                                            </a>
-                                        </div>
-                                        <div class="pro-details">
-                                            <h6>
-                                                <a href="product-template2.html">Cây vạn niên thanh</a>
-                                            </h6>
-                                        </div>
-                                    </div>
-                                    <div class="qty-item">
-                                        <a asp-area="Customer" asp-controller="Cart" asp-action="Index" class="add-wishlist">Thêm vào giỏ hàng</a>
-                                        <a href="/Customer/Payment/Index" class="add-wishlist">Mua ngay</a>
-                                    </div>
-                                    <div class="all-pro-price">
-                                        <div class="price-box">
-                                            <span class="new-price">Rs. 24.00</span>
-                                            <span class="old-price">Rs. 29.00</span>
-                                        </div>
-                                        <span class="wishalist-icon"><i class="fa fa-heart text-danger"></i></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="wishlist-area">
-                            <div class="wishlist-details">
-                                <div class="wishlist-all-pro">
-                                    <div class="wishlist-pro">
-                                        <div class="wishlist-pro-image">
-                                            <a href="product.html">
-                                                <img src="~/customer/img/menu/home1-pro-banner5.jpg" class="img-fluid" alt="p-5">
-                                            </a>
-                                        </div>
-                                        <div class="pro-details">
-                                            <h6>
-                                                <a href="product-template2.html">Cỏ lúa mì</a>
-                                            </h6>
-                                        </div>
-                                    </div>
-                                    <div class="qty-item">
-                                        <a asp-area="Customer" asp-controller="Cart" asp-action="Index" class="add-wishlist">Thêm vào giỏ hàng</a>
-                                        <a href="/Customer/Payment/Index" class="add-wishlist">Mua ngay</a>
-                                    </div>
-                                    <div class="all-pro-price">
-                                        <div class="price-box">
-                                            <span class="new-price">Rs. 24.00</span>
-                                            <span class="old-price">Rs. 50.00</span>
-                                        </div>
-                                        <span class="wishalist-icon"><i class="fa fa-heart text-danger"></i></span>
-                                    </div>
-                                </div>
-                                <div class="other-link">
-                                    <ul class="other-ul">
-                                        <li class="wishlist-other-link">
-                                            <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Index" class="btn btn-style2">Tiếp tục mua sắm</a>
-                                        </li>
-                                        <li class="wishlist-other-link">
-                                            <a href="wishlist-empty.html" class="btn btn-style2">Xóa danh sách yêu thích</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
+                        }
                     </div>
                     <!-- wishlist-page end -->
                 </div>
