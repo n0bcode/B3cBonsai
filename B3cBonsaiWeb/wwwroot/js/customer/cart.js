@@ -18,28 +18,30 @@ toastr.options = {
 };
 
     // Thêm sản phẩm vào giỏ hàng
-    function addToCart(sanPhamId, comboId, soLuong, loaiDoiTuong) {
-        $.ajax({
-            url: '/Customer/Cart/Add',
-            type: 'POST',
-            data: {
-                sanPhamId: sanPhamId,
-                comboId: comboId,
-                soLuong: soLuong,
-                loaiDoiTuong: loaiDoiTuong
-            },
-            success: function (response) {
-                if (response.success) {
-                    toastr.success('Thêm vào giỏ hàng thành công!');
-                } else {
-                    toastr.error(response.message);
-                }
-            },
-            error: function () {
-                toastr.error('Đã xảy ra lỗi, vui lòng thử lại.');
+function addToCart(sanPhamId, comboId, soLuong, loaiDoiTuong) {
+    /*console.log(sanPhamId);
+    console.log(comboId);*/
+    $.ajax({
+        url: '/Customer/Cart/Add',
+        type: 'POST',
+        data: {
+            sanPhamId: sanPhamId,
+            comboId: comboId,
+            soLuong: soLuong,
+            loaiDoiTuong: loaiDoiTuong
+        },
+        success: function (response) {
+            if (response.success) {
+                toastr.success('Thêm vào giỏ hàng thành công!');
+            } else {
+                toastr.error(response.message);
             }
-        });
-    }
+        },
+        error: function () {
+            toastr.error('Đã xảy ra lỗi, vui lòng thử lại.');
+        }
+    });
+}
 // Tăng số lượng sản phẩm trong giỏ hàng
 function increaseQuantity(cartId) {
     $.ajax({
@@ -53,6 +55,9 @@ function increaseQuantity(cartId) {
                 const pricePerItem = parseInt(itemRow.find('.item-price .amount').text().replace(/\D/g, ''));
                 const newTotal = response.total;
                 itemRow.find('.full-price').text(`${newTotal.toLocaleString()} VNĐ`);
+
+                const formCart = $(`#shipping-calculator`).closest('.cart-page.section-pt');
+                formCart.find('.amount.total-price').text(`${response.totalAll.toLocaleString()} VNĐ`);
 
                 // Tăng số lượng trên giao diện
                 /*const quantityInput = itemRow.find('input[name="quantity"]');
@@ -83,6 +88,8 @@ function decreaseQuantity(cartId) {
                 const newTotal = response.total;
                 itemRow.find('.full-price').text(`${newTotal.toLocaleString()} VNĐ`);
 
+                const formCart = $(`#shipping-calculator`).closest('.cart-page.section-pt');
+                formCart.find('.amount.total-price').text(`${response.totalAll.toLocaleString()} VNĐ`);
                 // Giảm số lượng trên giao diện
                 /*const quantityInput = itemRow.find('input[name="quantity"]');
                 const currentQuantity = parseInt(quantityInput.val());
@@ -110,6 +117,9 @@ function decreaseQuantity(cartId) {
             data: { cartId: cartId },
             success: function (response) {
                 if (response.success) {
+                    const itemRow = $(`[data-cart-id="${cartId}"]`).closest('ul.cart-wrap');
+                    formCart.find('.amount.total-price').text(`${response.totalAll.toLocaleString()} VNĐ`);
+                    itemRow.remove();
                     toastr.success('Đã xóa sản phẩm khỏi giỏ hàng!');
                 } else {
                     toastr.error(response.message);
@@ -126,3 +136,38 @@ function decreaseQuantity(cartId) {
     // increaseQuantity(1);
     // decreaseQuantity(1);
     // removeFromCart(1);
+// Load thanh giỏ hàng xem nhanh
+function loadRightBarCart() {
+    $.ajax({
+        url: '/Customer/Cart/RightBarCart',
+        type: 'GET',
+        success: (response) => {
+            $('#viewRightBarCart').html(response);
+        },
+        error: (xhr) => {
+            toastr.info("Lỗi tạo giỏ hàng nhanh, vui lòng thử lại sau.");
+        }
+    })
+}
+
+// Đưa dữ liệu giỏ hàng xem nhanh vào
+// Lấy phần tử giỏ hàng
+const cartDrawer = document.getElementById('cart-drawer');
+
+// Hàm kiểm tra class và gọi hàm khi có sự thay đổi
+function checkCartDrawer() {
+    if (cartDrawer.classList.contains('active')) {
+        loadRightBarCart();
+    }
+}
+
+// Theo dõi sự thay đổi class
+const observer = new MutationObserver(checkCartDrawer);
+
+// Bắt đầu theo dõi sự thay đổi class
+observer.observe(cartDrawer, { attributes: true });
+
+// Ví dụ về cách thêm class "active" (bạn có thể thay đổi theo cách bạn làm)
+document.querySelector('.drawer-close-btn').addEventListener('click', () => {
+    cartDrawer.classList.toggle('active');
+});
