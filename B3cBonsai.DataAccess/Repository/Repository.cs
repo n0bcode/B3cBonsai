@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using Org.BouncyCastle.Asn1;
 
 namespace B3cBonsai.DataAccess.Repository
 {
@@ -82,5 +83,15 @@ namespace B3cBonsai.DataAccess.Repository
         {
             dbSet.RemoveRange(entity);
         }
+
+        public async Task<bool> ExistsAsync(Expression<Func<T, bool>> filter)
+        {
+            if (filter == null)
+                throw new ArgumentNullException(nameof(filter));
+
+            IQueryable<T> query = dbSet;
+            return await query.AnyAsync(filter);
+        }
+
     }
 }
