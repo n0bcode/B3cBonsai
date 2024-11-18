@@ -5,7 +5,8 @@ const loadGridViewProduct = () => {
         method: 'GET',
         data: {},
         success: function (data) {
-            $('#gridViewListProduct').html(data)
+            $('#gridViewListProduct').html(data);
+            applyLikeAction();
         },
         error: (xhr) => {
             console.log(xhr)
@@ -21,6 +22,7 @@ $(document).ready(function () {
             method: 'GET',
             success: (data) => {
                 $('#gridViewListProduct').html(data);
+                applyLikeAction();
             },
             error: (xhr) => {
                 createAlert({ title: "Thông báo", content: "Lỗi load dữ liệu, vui lòng thử lại sau", type: 'warning', timeout: 5000 });
@@ -38,7 +40,8 @@ $(document).ready(function () {
             method: "GET",
             data: formData,
             success: (data) => {
-                $('#gridViewListProduct').html(data)
+                $('#gridViewListProduct').html(data);
+                applyLikeAction();
             },
             error: (xhr) => {
                 console.log(xhr)
