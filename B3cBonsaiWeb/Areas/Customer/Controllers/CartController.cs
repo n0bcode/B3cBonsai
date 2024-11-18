@@ -3,10 +3,12 @@ using B3cBonsai.DataAccess.Repository.IRepository;
 using B3cBonsai.Models;
 using B3cBonsai.Utility;
 using B3cBonsai.Utility.Extentions;
+using DocumentFormat.OpenXml.Presentation;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace B3cBonsaiWeb.Areas.Customer.Controllers
 {
@@ -41,6 +43,25 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
             return View(cartItems);
         }
 
+        public async Task<IActionResult> RightBarCart()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                if (User.IsInRole(SD.Role_Customer))
+                {
+                    string? maKhachHang = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                    var cartItems = GetCartItems(maKhachHang);
+                    if (cartItems != null) 
+                    {
+                        return PartialView(cartItems);
+                    }
+                } else
+                {
+                    return PartialView("YouAreNotCustomer");
+                }
+            }
+            return PartialView("NotLoggedIn");
+        }
         #region // Tính năng chủ yếu của giỏ hàng
         // Helper method for retrieving cart items
         private IList<GioHang> GetCartItems(string maKhachHang)
@@ -60,7 +81,7 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
             {
                 item.SoLuong++;
                 HttpContext.Session.SetComplexData(SD.SessionCart, cartItems);
-                return Json(new { success = true, total = item.SoLuong * item.Gia });
+                return Json(new { success = true, total = item.SoLuong * item.Gia, totalAll = cartItems.Sum(ci => ci.SoLuong * ci.Gia) });
             }
             return Json(new { success = false, message = "Không tìm thấy sản phẩm trong giỏ hàng." });
         }
@@ -77,7 +98,7 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
                 {
                     item.SoLuong--;
                     HttpContext.Session.SetComplexData(SD.SessionCart, cartItems);
-                    return Json(new { success = true, total = item.SoLuong * item.Gia });
+                    return Json(new { success = true, total = item.SoLuong * item.Gia, totalAll = cartItems.Sum(ci => ci.SoLuong * ci.Gia) });
                 }
                 return Json(new { success = false, message = "Số lượng không thể giảm dưới 1." });
             }
@@ -97,7 +118,7 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
                 return Json(new { success = false, message = "Bạn không phải là khách hàng để thêm sản phẩm vào giỏ hàng." });
             }
             // Khởi tạo số lượng mặc định là 0 nếu không có giá trị
-            soLuong = soLuong ?? 0;
+            soLuong = soLuong ?? 1;
 
             // Nếu loại đối tượng không tồn tại, trả về kết quả trống
             if (string.IsNullOrEmpty(loaiDoiTuong))
@@ -105,7 +126,23 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
                 return Json(new { success = false, message = "Không xác nhận được đối tượng bạn vừa thêm." });
             }
 
-            // Xử lý sản phẩm
+            // Kiểm tra sản phẩm đã thêm
+            if (loaiDoiTuong == SD.ObjectDetailOrder_SanPham)
+            {
+                var checkSp = cartItems.FirstOrDefault(ci => ci.MaSanPham == sanPhamId);
+                if (checkSp != null)
+                {
+                    return Json(new { success = false, message = "Sản phẩm đã thêm vào giỏ hàng." });
+                }
+            } else if(loaiDoiTuong == SD.ObjectDetailOrder_Combo) {
+                var checkCbo = cartItems.FirstOrDefault(ci => ci.MaCombo == comboId);
+                if (checkCbo != null)
+                {
+                    return Json(new { success = false, message = "Sản phẩm đã thêm vào giỏ hàng." });
+                }
+            }
+
+                // Xử lý sản phẩm
             if (loaiDoiTuong == SD.ObjectDetailOrder_SanPham)
             {
                 if (sanPhamId == null)
@@ -123,7 +160,16 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
                 {
                     return Json(new { success = false, message = "Sản phẩm không còn khả dụng." });
                 }
-                cartItems.Add(new GioHang() {Id = new Random().Next(0,int.MaxValue), MaSanPham = comboId, SoLuong = soLuong.Value, MaKhachHang = maKhachHang, SanPham = sanPham, Gia = sanPham.Gia, LoaiDoiTuong = loaiDoiTuong });
+                cartItems.Add(new GioHang()
+                {
+                    Id = new Random().Next(0, int.MaxValue),
+                    MaSanPham = sanPhamId,
+                    SoLuong = soLuong.Value,
+                    MaKhachHang = maKhachHang,
+                    SanPham = sanPham,
+                    Gia = sanPham.Gia,
+                    LoaiDoiTuong = loaiDoiTuong
+                });
             }
             // Xử lý combo sản phẩm
             else if (loaiDoiTuong == SD.ObjectDetailOrder_Combo)
@@ -143,7 +189,16 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
                 {
                     return Json(new { success = false, message = "Combo sản phẩm không còn khả dụng." });
                 }
-                cartItems.Add(new GioHang() { Id = new Random().Next(0, int.MaxValue), MaCombo = comboId, SoLuong = soLuong.Value, MaKhachHang = maKhachHang, ComboSanPham = comboSanPham, Gia = comboSanPham.TongGia, LoaiDoiTuong = loaiDoiTuong });
+                cartItems.Add(new GioHang()
+                {
+                    Id = new Random().Next(0, int.MaxValue),
+                    MaCombo = comboId,
+                    SoLuong = soLuong.Value,
+                    MaKhachHang = maKhachHang,
+                    ComboSanPham = comboSanPham,
+                    Gia = comboSanPham.TongGia,
+                    LoaiDoiTuong = loaiDoiTuong
+                });
             }
             else
             {
@@ -169,9 +224,15 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
             {
                 cartItems.Remove(item);
                 HttpContext.Session.SetComplexData(SD.SessionCart, cartItems);
-                return Json(new { success = true });
+                return Json(new { success = true, totalAll = cartItems.Sum(ci => ci.SoLuong * ci.Gia) });
             }
             return Json(new { success = false, message = "Không tìm thấy sản phẩm để xóa." });
+        }
+        [HttpPost]
+        public async Task<IActionResult> ClearCart()
+        {
+            HttpContext.Session.SetComplexData(SD.SessionCart, new List<GioHang>());
+            return View(nameof(Index));
         }
         #endregion
     }
