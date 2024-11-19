@@ -9,6 +9,7 @@
     }
 }
 
+<link rel="stylesheet" href="//cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css" />
 <!-- breadcrumb start -->
 <section class="breadcrumb-area">
     <div class="container">
@@ -39,17 +40,7 @@
                 <div class="password-block">
                     <!-- order profile start -->
                     <div class="profile-info">
-                        <div class="account-profile">
-                            <div class="pro-img">
-                                <a href="javascript:void(0)">
-                                    <img src="~/customer/img/testi/test-1.jpg" class="img-fluid" alt="testi-1">
-                                </a>
-                            </div>
-                            <div class="profile-text">
-                                <h6>Miranda joy</h6>
-                                <span>Joined April 06, 2024</span>
-                            </div>
-                        </div>
+                        @await Component.InvokeAsync("AccountProfile")
                         <div class="account-detail">
                             <partial name="_ManageNav" />
                         </div>
@@ -66,7 +57,8 @@
     </div>
 </section>
 <!-- profile end -->
-
 @section Scripts {
+    <script src="//cdn.datatables.net/2.1.8/js/dataTables.min.js" asp-append-version="true"></script>
+    <script src="~/js/identity/clientOrder.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
 }
