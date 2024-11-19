@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using B3cBonsai.DataAccess.Repository.IRepository;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace B3cBonsaiWeb.Areas.Customer.Controllers
 {
@@ -6,6 +9,11 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
     //Quản lý các chức năng liên quan đến thông tin người dùng
     public class ClientProfileController : Controller
     {
+        private readonly IUnitOfWork _unitOfWork;
+        public ClientProfileController(IUnitOfWork unitOfWork)
+        {
+            _unitOfWork = unitOfWork;
+        }
         public IActionResult Index()
         {
             return View();
@@ -30,5 +38,18 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
         {
             return View();
         }
+
+        #region//GET APIS
+        [Authorize]
+        public async Task<IActionResult> ClientOrderTable()
+        {
+            string? MaNguoiDung = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (MaNguoiDung == null)
+            {
+                return RedirectToPage("/");
+            }
+            return Json(new {data = (await _unitOfWork.DonHang.GetAll(filter: dh => dh.NguoiDungId == MaNguoiDung)).ToList() });
+        }
+        #endregion
     }
 }
