@@ -66,8 +66,25 @@
                                 </ul>
                                 <br />
                                 <!-- Thêm ô reCAPTCHA -->
-                                <div class="g-recaptcha" data-sitekey="6LdnYnMqAAAAAIqMXz4csz5Zw_kR3ARtWht9wjY2"></div>
-                                <script src="https://www.google.com/recaptcha/api.js?hl=vi" async defer></script>
+                                @* <div class="g-recaptcha" data-sitekey="6LdnYnMqAAAAAIqMXz4csz5Zw_kR3ARtWht9wjY2"></div>
+                            <span id="captcha-error" class="text-danger" style="display: none;">Vui lòng xác nhận reCAPTCHA.</span>
+
+                            <script src="https://www.google.com/recaptcha/api.js?hl=vi" async defer></script>
+
+                            <script>
+                            document.querySelector("form").addEventListener("submit", function (e) {
+                            // Lấy giá trị của reCAPTCHA
+                            var captchaResponse = grecaptcha.getResponse();
+
+                            // Nếu chưa xác nhận reCAPTCHA
+                            if (!captchaResponse) {
+                            e.preventDefault(); // Ngăn không cho gửi biểu mẫu
+                            document.getElementById("captcha-error").style.display = "block"; // Hiển thị thông báo lỗi
+                            } else {
+                            document.getElementById("captcha-error").style.display = "none"; // Ẩn thông báo lỗi nếu đã xác nhận
+                            }
+                            });
+                            </script> *@
                                 <div class="form-action-button">
                                     <div class="button-forget">
                                         <button type="submit" class="btn btn-style2">Đăng nhập</button>
