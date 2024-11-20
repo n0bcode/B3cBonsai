@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -21,6 +22,7 @@ namespace B3cBonsai.Models
 
         public int SanPhamId { get; set; }
 
+        [JsonIgnore]
         [ValidateNever]
         [ForeignKey("SanPhamId")]
         public virtual SanPham SanPham { get; set; } // Khai báo quan hệ với sản phẩm
