@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace B3cBonsai.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class addOriginStructureDb : Migration
+    public partial class addSExtradaryStructureDb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -70,7 +70,8 @@ namespace B3cBonsai.DataAccess.Migrations
                     MoTa = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LinkAnh = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     GiamGia = table.Column<int>(type: "int", nullable: false),
-                    TongGia = table.Column<int>(type: "int", nullable: false)
+                    TongGia = table.Column<int>(type: "int", nullable: false),
+                    TrangThai = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -203,7 +204,7 @@ namespace B3cBonsai.DataAccess.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     NguoiDungId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    NhanVienId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    NhanVienId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     NgayDatHang = table.Column<DateTime>(type: "datetime2", nullable: false),
                     NgayNhanHang = table.Column<DateTime>(type: "datetime2", nullable: true),
                     TongTienDonHang = table.Column<double>(type: "float", nullable: false),
@@ -235,8 +236,7 @@ namespace B3cBonsai.DataAccess.Migrations
                         name: "FK_DonHangs_AspNetUsers_NhanVienId",
                         column: x => x.NhanVienId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -353,6 +353,39 @@ namespace B3cBonsai.DataAccess.Migrations
                         principalTable: "SanPhams",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GioHangs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    MaSanPham = table.Column<int>(type: "int", nullable: true),
+                    MaCombo = table.Column<int>(type: "int", nullable: true),
+                    SoLuong = table.Column<int>(type: "int", nullable: false),
+                    MaKhachHang = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    LoaiDoiTuong = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GioHangs", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_GioHangs_AspNetUsers_MaKhachHang",
+                        column: x => x.MaKhachHang,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_GioHangs_ComboSanPhams_MaCombo",
+                        column: x => x.MaCombo,
+                        principalTable: "ComboSanPhams",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_GioHangs_SanPhams_MaSanPham",
+                        column: x => x.MaSanPham,
+                        principalTable: "SanPhams",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -529,6 +562,21 @@ namespace B3cBonsai.DataAccess.Migrations
                 column: "NhanVienId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_GioHangs_MaCombo",
+                table: "GioHangs",
+                column: "MaCombo");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GioHangs_MaKhachHang",
+                table: "GioHangs",
+                column: "MaKhachHang");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GioHangs_MaSanPham",
+                table: "GioHangs",
+                column: "MaSanPham");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_HinhAnhSanPhams_SanPhamId",
                 table: "HinhAnhSanPhams",
                 column: "SanPhamId");
@@ -572,6 +620,9 @@ namespace B3cBonsai.DataAccess.Migrations
                 name: "DanhSachYeuThichs");
 
             migrationBuilder.DropTable(
+                name: "GioHangs");
+
+            migrationBuilder.DropTable(
                 name: "HinhAnhSanPhams");
 
             migrationBuilder.DropTable(
@@ -581,13 +632,13 @@ namespace B3cBonsai.DataAccess.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "ComboSanPhams");
-
-            migrationBuilder.DropTable(
                 name: "DonHangs");
 
             migrationBuilder.DropTable(
                 name: "BinhLuans");
+
+            migrationBuilder.DropTable(
+                name: "ComboSanPhams");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
