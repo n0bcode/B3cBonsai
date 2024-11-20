@@ -249,7 +249,6 @@ namespace B3cBonsai.DataAccess.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NhanVienId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("SoDienThoai")
@@ -764,9 +763,7 @@ namespace B3cBonsai.DataAccess.Migrations
 
                     b.HasOne("B3cBonsai.Models.NguoiDungUngDung", "NhanVien")
                         .WithMany()
-                        .HasForeignKey("NhanVienId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("NhanVienId");
 
                     b.Navigation("NguoiDungUngDung");
 
