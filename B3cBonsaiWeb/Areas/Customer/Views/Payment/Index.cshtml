@@ -24,7 +24,7 @@
         <div class="row">
             <div class="col">
                 <div class="checkout-area">
-                    <!-- Form Thông Tin Người Nhận -->
+                    <!-- Chi tiết thanh toán -->
                     <div class="billing-area">
                         <form id="paymentForm" method="post" asp-action="SubmitOrder" asp-area="Customer" asp-controller="Payment">
                             <h2>Chi tiết người nhận</h2>
@@ -51,95 +51,90 @@
                                 </ul>
                             </div>
                         </form>
-                        <div class="billing-details">
-                            <form>
-                                <h2>Chi tiết giao hàng</h2>
-                                <ul class="shipping-form pro-submit">
-                                    <li class="check-box label-info">
-                                        <label class="box-area">
-                                            <span class="text">Giao đến địa chỉ khác?</span>
-                                            <input type="checkbox" class="cust-checkbox">
-                                            <span class="cust-check"></span>
-                                        </label>
-                                    </li>
-                                    <li class="comment-area">
-                                        <label>Ghi chú đơn hàng (Không bắt buộc)</label>
-                                        <textarea name="comments" rows="5" cols="80"></textarea>
-                                    </li>
-                                </ul>
-                            </form>
-                        </div>
                     </div>
-                </div>
 
-                <div class="order-area">
-                    <div class="check-pro">
-                        <h2>Sản phẩm trong giỏ hàng (@Model?.Count)</h2>
-                        <ul class="check-ul">
-                            @if (Model != null && Model.Count > 0)
-                            {
-                                foreach (var item in Model)
+                    <div class="order-area">
+                        <div class="check-pro">
+                            <h2>Sản phẩm trong giỏ hàng (@Model?.Count)</h2>
+                            <ul class="check-ul">
+                                @if (Model != null && Model.Count > 0)
                                 {
-                                    <li>
-                                        <div class="check-pro-img">
-                                            <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail" asp-route-id="@item.SanPham?.Id">
-                                                @* <img src="@item.SanPham?.HinhAnhs.FirstOrDefault().LinkAnh" class="img-fluid" alt="@item.SanPham?.TenSanPham"> *@
-                                            </a>
-                                        </div>
-                                        <div class="check-content">
-                                            <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail" asp-route-id="@item.SanPham?.Id">
-                                                @(item.SanPham?.TenSanPham ?? item.ComboSanPham?.TenCombo)
-                                            </a>
-                                            <span class="check-code">
-                                                <span>Mã sản phẩm:</span>
-                                                <span>@item.SanPham?.Id</span>
-                                            </span>
-                                            <div class="check-qty-pric">
-                                                <span class="check-qty">@item.SoLuong X</span>
-                                                <span class="check-price">@String.Format("{0:n0}", item.Gia * item.SoLuong) VNĐ</span>
+                                    foreach (var item in Model)
+                                    {
+                                        <li>
+                                            <div class="check-pro-img">
+                                                <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail" asp-route-id="@item.SanPham?.Id">
+                                                    <img src="@item.LinkAnh" onerror="this.src='/images/product/default.jpg'" class="img-fluid" alt="@item.SanPham?.TenSanPham">
+                                                </a>
                                             </div>
-                                        </div>
-                                    </li>
-
+                                            <div class="check-content">
+                                                <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail" asp-route-id="@item.SanPham?.Id">
+                                                    @(item.SanPham?.TenSanPham ?? item.ComboSanPham?.TenCombo)
+                                                </a>
+                                                <span class="check-code">
+                                                    <span>Mã sản phẩm:</span>
+                                                    <span>@item.SanPham?.Id</span>
+                                                </span>
+                                                <div class="check-qty-pric">
+                                                    <span class="check-qty">@item.SoLuong X</span>
+                                                    <span class="check-price">@String.Format("{0:n0}", item.Gia * item.SoLuong) VNĐ</span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    }
                                 }
-                            }
-                            else
-                            {
-                                <li>Không có sản phẩm nào trong giỏ hàng</li>
-                            }
+                                else
+                                {
+                                    <li>Không có sản phẩm nào trong giỏ hàng</li>
+                                }
+                            </ul>
+                        </div>
+
+                        <h2>Đơn hàng của bạn</h2>
+                        <ul class="order-history">
+                            <li class="order-details">
+                                <span>Tổng cộng:</span>
+                                <span>@String.Format("{0:n0}", Model?.Sum(item => item.SoLuong * item.Gia) ?? 0) VNĐ</span>
+                            </li>
                         </ul>
-                    </div>
 
-                    <h2>Đơn hàng của bạn</h2>
-                    <ul class="order-history">
-                        <li class="order-details">
-                            <span>Tổng cộng:</span>
-                            <span>@String.Format("{0:n0}", Model?.Sum(item => item.SoLuong * item.Gia) ?? 0) VNĐ</span>
-                        </li>
-                    </ul>
-
-                    <div class="payment-methods">
-                        <h2>Phương thức thanh toán</h2>
-                        <div class="payment-options">
-                            <label class="box-area">
-                                <input type="radio" name="paymentMethod" value="Card" id="paymentCard" />
-                                <span class="text">Thanh toán bằng thẻ</span>
-                            </label>
-                            <label class="box-area">
-                                <input type="radio" name="paymentMethod" value="Cash" id="paymentCash" />
-                                <span class="text">Thanh toán khi nhận hàng</span>
-                            </label>
+                        <form>
+                            <ul class="order-form pro-submit">
+                                <li class="label-info">
+                                    <label class="box-area">
+                                        <span class="text">Thanh toán bằng thẻ</span>
+                                        <input type="radio" name="paymentMethod" value="Card" id="paymentCard" class="cust-checkbox">
+                                        <span class="cust-check"></span>
+                                    </label>
+                                </li>
+                                <li class="label-info">
+                                    <label class="box-area">
+                                        <span class="text">Thanh toán khi nhận hàng</span>
+                                        <input type="radio" name="paymentMethod" value="Cash" id="paymentCash" class="cust-checkbox">
+                                        <span class="cust-check"></span>
+                                    </label>
+                                </li>
+                                <li class="pay-icon">
+                                    <a href="javascript:void(0)"><i class="fa-solid fa-credit-card"></i></a>
+                                    <a href="javascript:void(0)"><i class="fa-brands fa-cc-visa"></i></a>
+                                    <a href="javascript:void(0)"><i class="fa-brands fa-cc-paypal"></i></a>
+                                    <a href="javascript:void(0)"><i class="fa-brands fa-cc-mastercard"></i></a>
+                                </li>
+                            </ul>
+                        </form>
+                        <div class="payment-methods">
+                            <div class="checkout-btn">
+                                <button type="button" onclick="processPayment()" class="btn btn-style2">Đặt hàng</button>
+                            </div>
                         </div>
-                        <div class="checkout-btn">
-                            <button type="button" onclick="processPayment()" class="btn btn-style2">Đặt hàng</button>
-                        </div>
-
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
 </section>
+
 
 @section Scripts {
 <script>

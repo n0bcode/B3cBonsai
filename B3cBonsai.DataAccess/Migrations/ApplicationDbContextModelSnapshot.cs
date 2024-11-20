@@ -300,6 +300,9 @@ namespace B3cBonsai.DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("LinkAnh")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("LoaiDoiTuong")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");

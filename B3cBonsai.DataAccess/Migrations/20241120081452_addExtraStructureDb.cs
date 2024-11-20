@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace B3cBonsai.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class addSExtradaryStructureDb : Migration
+    public partial class addExtraStructureDb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -365,7 +365,8 @@ namespace B3cBonsai.DataAccess.Migrations
                     MaCombo = table.Column<int>(type: "int", nullable: true),
                     SoLuong = table.Column<int>(type: "int", nullable: false),
                     MaKhachHang = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    LoaiDoiTuong = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    LoaiDoiTuong = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LinkAnh = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
