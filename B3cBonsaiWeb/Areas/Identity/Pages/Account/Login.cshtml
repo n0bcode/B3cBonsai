@@ -4,91 +4,93 @@
 @{
     ViewData["Title"] = "Đăng nhập";
 }
-<!-- breadcrumb start -->
-<section class="breadcrumb-area">
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                <div class="breadcrumb-index">
-                    <!-- breadcrumb-list start -->
-                    <ul class="breadcrumb-ul">
-                        <li class="breadcrumb-li">
-                            <a class="breadcrumb-link" href="/">Trang chủ</a>
-                        </li>
-                        <li class="breadcrumb-li">
-                            <span class="breadcrumb-text">Tài khoản</span>
-                        </li>
-                    </ul>
-                    <!-- breadcrumb-list end -->
+
+@if (HttpContext.Session.GetString(SD.ViewAccess) == SD.CustomerAccess)
+{
+    <!-- breadcrumb start -->
+    <section class="breadcrumb-area">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="breadcrumb-index">
+                        <!-- breadcrumb-list start -->
+                        <ul class="breadcrumb-ul">
+                            <li class="breadcrumb-li">
+                                <a class="breadcrumb-link" href="/">Trang chủ</a>
+                            </li>
+                            <li class="breadcrumb-li">
+                                <span class="breadcrumb-text">Tài khoản</span>
+                            </li>
+                        </ul>
+                        <!-- breadcrumb-list end -->
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
-<!-- breadcrumb end -->
-<!-- customer-page start -->
-<section class="customer-page section-ptb">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <!-- tiêu đề đăng nhập tài khoản bắt đầu -->
-                <div class="section-capture">
-                    <div class="section-title">
-                        <h2><span>Đăng nhập tài khoản</span></h2>
+    </section>
+    <!-- breadcrumb end -->
+    <!-- customer-page start -->
+    <section class="customer-page section-ptb">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- tiêu đề đăng nhập tài khoản bắt đầu -->
+                    <div class="section-capture">
+                        <div class="section-title">
+                            <h2><span>Đăng nhập tài khoản</span></h2>
+                        </div>
                     </div>
-                </div>
-                <!-- tiêu đề đăng nhập tài khoản kết thúc -->
-                <!-- bắt đầu đăng nhập tài khoản -->
-                <div class="log-acc-page">
-                    <div class="contact-form-list">
-                        <form method="post">
-                            @{    var hasErrors = ViewData.ModelState.Any(x => x.Value.Errors.Any());}@if (hasErrors){    <div asp-validation-summary="All" class="alert alert-danger" role="alert"></div>}
-                            <ul class="form-fill">
-                                <li class="form-fill-li Email">
-                                    <label>Địa chỉ Email</label>
-                                    <input asp-for="Input.Email" class="form-control" autocomplete="email" placeholder="Địa chỉ Email">
-                                    <span asp-validation-for="Input.Email" class="text-danger"></span>
-                                </li>
-                                <li class="form-fill-li Password">
-                                    <label>Mật khẩu</label>
-                                    <input asp-for="Input.Password" class="form-control" autocomplete="current-password" placeholder="Mật khẩu">
-                                    <span asp-validation-for="Input.Password" class="text-danger"></span>
-                                </li>
-                            </ul>
-
-                            <br />
-                            <!-- Thêm ô reCAPTCHA -->
-                            <div class="g-recaptcha" data-sitekey="6LdnYnMqAAAAAIqMXz4csz5Zw_kR3ARtWht9wjY2"></div>
-
-                            <!-- đây là link js của ô captcha với ngôn ngữ tiếng Việt -->
-                            <script src="https://www.google.com/recaptcha/api.js?hl=vi" async defer></script>
-
-
-
-
-                            <div class="form-action-button">
-                                <div class="button-forget">
-                                    <button type="submit" class="btn btn-style2">Đăng nhập</button>
-                                    <a asp-page="./ForgotPassword">Quên mật khẩu?</a>
+                    <!-- tiêu đề đăng nhập tài khoản kết thúc -->
+                    <!-- bắt đầu đăng nhập tài khoản -->
+                    <div class="log-acc-page">
+                        <div class="contact-form-list">
+                            <form method="post">
+                                @{
+                                    var hasErrors = ViewData.ModelState.Any(x => x.Value.Errors.Any());
+                                }
+                                @if (hasErrors)
+                                {
+                                    <div asp-validation-summary="All" class="alert alert-danger" role="alert"></div>
+                                }
+                                <ul class="form-fill">
+                                    <li class="form-fill-li Email">
+                                        <label>Địa chỉ Email</label>
+                                        <input asp-for="Input.Email" class="form-control" autocomplete="email" placeholder="Địa chỉ Email">
+                                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                                    </li>
+                                    <li class="form-fill-li Password">
+                                        <label>Mật khẩu</label>
+                                        <input asp-for="Input.Password" class="form-control" autocomplete="current-password" placeholder="Mật khẩu">
+                                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                                    </li>
+                                </ul>
+                                <br />
+                                <!-- Thêm ô reCAPTCHA -->
+                                <div class="g-recaptcha" data-sitekey="6LdnYnMqAAAAAIqMXz4csz5Zw_kR3ARtWht9wjY2"></div>
+                                <script src="https://www.google.com/recaptcha/api.js?hl=vi" async defer></script>
+                                <div class="form-action-button">
+                                    <div class="button-forget">
+                                        <button type="submit" class="btn btn-style2">Đăng nhập</button>
+                                        <a asp-page="./ForgotPassword">Quên mật khẩu?</a>
+                                    </div>
                                 </div>
+                            </form>
+                        </div>
+                        <div class="acc-wrapper">
+                            <h6>Bạn đã có tài khoản chưa?</h6>
+                            <div class="account-optional">
+                                <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Tạo tài khoản mới</a>
                             </div>
-                        </form>
-                    </div>
-                    <div class="acc-wrapper">
-                        <h6>Bạn đã có tài khoản chưa?</h6>
-                        <div class="account-optional">
-                            <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" >Tạo tài khoản mới</a>
+                        </div>
+                        <div class="acc-wrapper">
+                            <h6>Bạn là nhân viên?</h6>
+                            <div class="account-optional">
+                                <a asp-area="Identity" asp-page="/Account/Login" asp-route-viewAccess="@SD.StaffAccess">Đăng nhập ở đây</a>
+                            </div>
                         </div>
                     </div>
-                    <div class="acc-wrapper">
-                        <h6>Bạn là nhân viên?</h6>
-                        <div class="account-optional">
-                            <a asp-area="Identity" asp-page="/Account/Login" asp-route-typeUser="employee">Đăng nhập ở đây</a>
-                        </div>
-                    </div>
+                    <!-- kết thúc đăng nhập tài khoản -->
                 </div>
-                <!-- kết thúc đăng nhập tài khoản -->
-            </div>
             <div class="col-md-12 text-center pt-4">
                 <section>
                     <h3>Sử dụng dịch vụ khác để đăng nhập.</h3>
@@ -102,29 +104,149 @@
                                 </a> để hỗ trợ đăng nhập qua các dịch vụ bên ngoài.
                             </p>
                         </div>
-                    }
-                    else
-                    {
-                        <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-                            <div>
-                                <p>
-                                    @foreach (var provider in Model.ExternalLogins!)
-                                    {
-                                        <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Đăng nhập bằng tài khoản @provider.DisplayName">
-                                            @provider.DisplayName
-                                        </button>
-                                    }
-                                </p>
-                            </div>
-                        </form>
-                    }
+                        }
+                        else
+                        {
+                            <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                                <div>
+                                    <p>
+                                        @foreach (var provider in Model.ExternalLogins!)
+                                        {
+                                            <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Đăng nhập bằng tài khoản @provider.DisplayName">
+                                                @provider.DisplayName
+                                            </button>
+                                        }
+                                    </p>
+                                </div>
+                            </form>
+                        }
                 </section>
             </div>
-
         </div>
-    </div>
-</section>
-<!-- customer-page end -->
+    </section>
+    <!-- customer-page end -->
+}
+else
+{
+    Layout = null;
+    <partial name="_EmployeeHeaderCSS" />
+
+    <body class="vh-100">
+        <div class="authincation h-100">
+            <div class="container-fluid h-100">
+                <div class="row h-100">
+                    <!-- Phần form đăng nhập -->
+                    <div class="col-lg-6 col-md-12 col-sm-12 mx-auto align-self-center">
+                        <div class="login-form">
+                            <div class="text-center">
+                                <h3 class="title">Đăng Nhập Nhân Viên</h3>
+                                <p>Vui lòng đăng nhập vào tài khoản nhân viên của bạn.</p>
+                            </div>
+                            <form method="post">
+                                <div class="mb-4">
+                                    <label asp-for="Input.Email" class="mb-1 text-dark">Email</label>
+                                    <input asp-for="Input.Email" class="form-control" placeholder="Nhập email của bạn" required autocomplete="email">
+                                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                                </div>
+                                <div class="mb-4 position-relative">
+                                    <label asp-for="Input.Password" class="mb-1 text-dark">Mật khẩu</label>
+                                    <input asp-for="Input.Password" id="dz-password" class="form-control" placeholder="Nhập mật khẩu của bạn" required autocomplete="current-password">
+                                    <span class="show-pass eye">
+                                        <i class="fa fa-eye-slash" id="eye-slash"></i>
+                                        <i class="fa fa-eye" id="eye"></i>
+                                    </span>
+                                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                                </div>
+                                <!-- Ghi nhớ tài khoản và quên mật khẩu -->
+                                <div class="form-row d-flex justify-content-between mt-4 mb-2">
+                                    <div class="mb-4">
+                                        <div class="form-check custom-checkbox mb-3">
+                                            <input type="checkbox" class="form-check-input" id="customCheckBox1">
+                                            <label class="form-check-label" for="customCheckBox1">Ghi nhớ tùy chọn của tôi</label>
+                                        </div>
+                                    </div>
+                                    <div class="mb-4">
+                                        <a asp-page="/Account/ForgotPassword" asp-route-viewAccess="@SD.CustomerAccess" class="btn-link text-primary">Quên mật khẩu?</a>
+                                    </div>
+                                </div>
+                                <!-- Nút đăng nhập -->
+                                <div class="text-center mb-4">
+                                    <button type="submit" class="btn btn-primary btn-block">Đăng Nhập</button>
+                                </div>
+                                <!-- Đăng nhập bằng mạng xã hội -->
+                                <h6 class="login-title"><span>Hoặc tiếp tục với</span></h6>
+                                <div class="mb-3">
+                                    <ul class="d-flex align-self-center justify-content-center">
+                                        <li><a target="_blank" href="https://www.facebook.com/" class="fab fa-facebook-f btn-facebook"></a></li>
+                                        <li><a target="_blank" href="https://www.google.com/" class="fab fa-google-plus-g btn-google-plus mx-2"></a></li>
+                                        <li><a target="_blank" href="https://www.linkedin.com/" class="fab fa-linkedin-in btn-linkedin me-2"></a></li>
+                                        <li><a target="_blank" href="https://twitter.com/" class="fab fa-twitter btn-twitter"></a></li>
+                                    </ul>
+                                </div>
+                                <!-- Tùy chọn đăng ký -->
+                                <p class="text-center">
+                                    Chưa có tài khoản?
+                                    <a asp-page="/Account/Register" asp-route-viewAccess="@SD.StaffAccess" class="btn-link text-primary">Đăng ký</a>
+                                </p>
+                                <p class="text-center">
+                                    Bạn là khách hàng?
+                                    <a asp-area="Identity" asp-page="/Account/Login" asp-route-viewAccess="@SD.CustomerAccess" class="btn-link text-primary">Đăng nhập</a>
+                                </p>
+                            </form>
+                            <div class="col-md-12 text-center pt-4">
+                                <section>
+                                    <h3>Sử dụng dịch vụ khác để đăng nhập.</h3>
+                                    <hr />
+                                    @if ((Model.ExternalLogins?.Count ?? 0) == 0)
+                                    {
+                                        <div>
+                                            <p>
+                                                Không có dịch vụ xác thực bên ngoài nào được cấu hình. Xem bài viết này <a href="https://go.microsoft.com/fwlink/?LinkID=532715">
+                                                    hướng dẫn về cách thiết lập ứng dụng ASP.NET này
+                                                </a> để hỗ trợ đăng nhập qua các dịch vụ bên ngoài.
+                                            </p>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                                            <div>
+                                                <p>
+                                                    @foreach (var provider in Model.ExternalLogins!)
+                                                    {
+                                                        <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Đăng nhập bằng tài khoản @provider.DisplayName">
+                                                            @provider.DisplayName
+                                                        </button>
+                                                    }
+                                                </p>
+                                            </div>
+                                        </form>
+                                    }
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Phần giới thiệu hoặc hình ảnh -->
+                    <div class="col-xl-6 col-sm-6">
+                        <div class="pages-left h-100">
+                            <div class="login-content">
+                                <a href="/">
+                                    <img src="~/customer/img/logo/logo.png" alt="Logo Công Ty" class="logo" height="40">
+                                </a>
+                                <p>Chào mừng bạn đến với cổng thông tin nhân viên. Vui lòng đăng nhập để truy cập tài khoản của bạn và bắt đầu quản lý các công việc của mình.</p>
+                            </div>
+                            <div class="login-media text-center">
+                                <img src="~/employee/images/login.png" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <partial name="_EmployeeFooterJs" />
+    </body>
+}
+
 
 
 
