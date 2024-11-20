@@ -258,3 +258,26 @@ function removeFromCartQuick(cartId) {
         }
     });
 }
+
+
+function toggleCheckoutButton() {
+    const isChecked = $('#agreeTerms').is(':checked'); // Kiểm tra checkbox
+    const hasItems = $('.cart-items').children().length > 0; // Kiểm tra số lượng sản phẩm
+
+    if (isChecked && hasItems) {
+        $('#checkoutButton').removeClass('disabled'); // Bật nút
+    } else {
+        $('#checkoutButton').addClass('disabled'); // Tắt nút
+    }
+}
+
+function navigateToPayment() {
+    // Kiểm tra nếu nút đang bị disabled thì không làm gì cả
+    if ($('#checkoutButton').hasClass('disabled')) {
+        toastr.error("Vui lòng kiểm tra giỏ hàng hoặc đồng ý với điều khoản.");
+        return;
+    }
+
+    // Điều hướng tới trang thanh toán
+    window.location.href = '/Customer/Payment';
+}

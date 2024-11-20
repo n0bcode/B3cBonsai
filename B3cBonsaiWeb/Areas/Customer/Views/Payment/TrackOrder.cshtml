@@ -1,4 +1,4 @@
-﻿
+﻿@model DonHang
 <!-- breadcrumb start -->
 <section class="breadcrumb-area">
     <div class="container">
@@ -22,6 +22,7 @@
 </section>
 <!-- breadcrumb end -->
 <!-- tracking start -->
+<!-- tracking start -->
 <section class="track-block  section-ptb">
     <div class="container">
         <div class="row">
@@ -30,43 +31,88 @@
                     <div class="track-price">
                         <ul class="track-order">
                             <li class="track-li">
-                                <h6>Id đơn hàng của bạn là: 121</h6>
+                                <h6>Mã đơn hàng của bạn: @Model.Id</h6>
                             </li>
                             <li class="track-li">
-                                <span class="track-status">Trạng thái:</span>
-                                Được chọn bởi chuyển phát nhanh
+                                <span class="track-TrangThaiDonHang">Tình trạng:</span>
+
+                                @{
+                                    string textClass = "";
+                                    string textText = "";
+                                        
+                                    switch (Model.TrangThaiDonHang)
+                                    {
+                                        case SD.StatusPending:
+                                            textClass = "text-warning"; // Class cho trạng thái Pending
+                                            textText = "Đang chờ"; // Tiếng Việt cho Pending
+                                            break;
+                                        case SD.StatusApproved:
+                                            textClass = "text-info"; // Class cho trạng thái Approved
+                                            textText = "Đã phê duyệt"; // Tiếng Việt cho Approved
+                                            break;
+                                        case SD.StatusInProcess:
+                                            textClass = "text-primary"; // Class cho trạng thái In Process
+                                            textText = "Đang xử lý"; // Tiếng Việt cho In Process
+                                            break;
+                                        case SD.StatusShipped:
+                                            textClass = "text-secondary"; // Class cho trạng thái Shipped
+                                            textText = "Đã vận chuyển"; // Tiếng Việt cho Shipped
+                                            break;
+                                        case SD.StatusCancelled:
+                                            textClass = "text-danger"; // Class cho trạng thái Cancelled
+                                            textText = "Đã hủy"; // Tiếng Việt cho Cancelled
+                                            break;
+                                        case SD.StatusRefunded:
+                                            textClass = "text-dark"; // Class cho trạng thái Refunded
+                                            textText = "Đã hoàn tiền"; // Tiếng Việt cho Refunded
+                                            break;
+                                        default:
+                                            textClass = "text-light"; // Class cho trạng thái mặc định
+                                            textText = "Không xác định"; // Tiếng Việt cho trạng thái không xác định
+                                            break;
+                                    }
+                                }
+                                <span class="text @textClass light border-0">@textText</span>
                             </li>
                         </ul>
                     </div>
                     <div class="track-info">
                         <div class="track-content">
-                            <div class="track-wrap active">
+                            <!-- Pending -->
+                            <div class="track-wrap @(Model.TrangThaiDonHang == SD.StatusPending || Model.TrangThaiDonHang == SD.StatusApproved || Model.TrangThaiDonHang == SD.StatusInProcess || Model.TrangThaiDonHang == SD.StatusShipped ? "active" : "")">
+                                <span class="track-icon"><i class="fa fa-hourglass-start"></i></span>
+                                <span class="track-text">Chờ xử lý</span>
+                            </div>
+                            <!-- Approved -->
+                            <div class="track-wrap @(Model.TrangThaiDonHang == SD.StatusApproved || Model.TrangThaiDonHang == SD.StatusInProcess || Model.TrangThaiDonHang == SD.StatusShipped? "active" : "")">
                                 <span class="track-icon"><i class="fa fa-check"></i></span>
-                                <span class="track-text">Đơn hàng đã được xác nhận</span>
+                                <span class="track-text">Đã phê duyệt</span>
                             </div>
-                            <div class="track-wrap active">
-                                <span class="track-icon"><i class="fa fa-user"></i></span>
-                                <span class="track-text">
-                                    Được chọn bởi chuyển phát nhanh
-                                </span>
+                            <!-- Processing -->
+                            <div class="track-wrap @(Model.TrangThaiDonHang == SD.StatusInProcess || Model.TrangThaiDonHang == SD.StatusShipped ? "active" : "")">
+                                <span class="track-icon"><i class="fa fa-cogs"></i></span>
+                                <span class="track-text">Đang xử lý</span>
                             </div>
-                            <div class="track-wrap">
+                            <!-- Shipped -->
+                            <div class="track-wrap @(Model.TrangThaiDonHang == SD.StatusShipped ? "active" : "")">
                                 <span class="track-icon"><i class="fa fa-truck"></i></span>
-                                <span class="track-text">
-                                    Trên đường đi
-                                </span>
+                                <span class="track-text">Đã vận chuyển</span>
                             </div>
-                            <div class="track-wrap">
-                                <span class="track-icon"><i class="fa fa-archive"></i></span>
-                                <span class="track-text">
-                                    Sẵn sàng để đón
-                                </span>
+                            <!-- Cancelled -->
+                            <div class="track-wrap @(Model.TrangThaiDonHang == SD.StatusCancelled ? "active" : "")">
+                                <span class="track-icon"><i class="fa fa-times-circle"></i></span>
+                                <span class="track-text">Đã hủy</span>
+                            </div>
+                            <!-- Refunded -->
+                            <div class="track-wrap @(Model.TrangThaiDonHang == SD.StatusRefunded ? "active" : "")">
+                                <span class="track-icon"><i class="fa fa-undo"></i></span>
+                                <span class="track-text">Đã hoàn tiền</span>
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
     </div>
 </section>
-<!-- tracking end -->
