@@ -24,7 +24,7 @@ namespace B3cBonsai.Models
         public virtual NguoiDungUngDung NguoiDungUngDung { get; set; } // Khai báo quan hệ với người dùng
 
         [Display(Name = "ID Nhân Viên")]
-        public string NhanVienId { get; set; }
+        public string? NhanVienId { get; set; }
 
         [ValidateNever]
         [ForeignKey("NhanVienId")]

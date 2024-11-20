@@ -69,14 +69,14 @@
             <div class="drawer-block drawer-ship-text">
                 <label class="box-area">
                     <span class="text">Tôi đã đọc và đồng ý với <a asp-area="Customer" asp-controller="Home" asp-action="Policy">hợp đồng &amp; điều khoản.</a></span>
-                    <input type="checkbox" class="cust-checkbox">
+                    <input type="checkbox" class="cust-checkbox" id="agreeTerms" onchange="toggleCheckoutButton()">
                     <span class="cust-check"></span>
                 </label>
             </div>
             <div class="drawer-block drawer-cart-checkout">
                 <div class="cart-checkout-btn">
                     <button type="button" onclick="location.href='/Customer/Cart'" name="checkout" class="btn btn-style2">Xem giỏ hàng</button>
-                    <button type="button" onclick="location.href='/Customer/Payment'" class="checkout btn btn-style2 disabled">Đặt hàng</button>
+                    <button type="button" onclick="navigateToPayment()" id="checkoutButton" class="checkout btn btn-style2 disabled">Đặt hàng</button>
                 </div>
             </div>
         </div>

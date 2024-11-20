@@ -126,7 +126,7 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
                 return Json(new { success = false, message = "Không xác nhận được đối tượng bạn vừa thêm." });
             }
 
-            // Kiểm tra sản phẩm đã thêm
+            // Kiểm tra tồn tại sản phẩm hoặc combo
             if (loaiDoiTuong == SD.ObjectDetailOrder_SanPham)
             {
                 var checkSp = cartItems.FirstOrDefault(ci => ci.MaSanPham == sanPhamId);
