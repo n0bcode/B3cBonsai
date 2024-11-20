@@ -37,5 +37,11 @@ namespace B3cBonsai.Utility
 
         //Tên Session chứa dữ liệu giỏ hàng
         public const string SessionCart = "SessionShoppingCart";
+
+        //Tên Session loại view truy cập hiển thị
+        public const string ViewAccess = "ViewAccess";
+
+        public const string CustomerAccess = "CustomerAccess";
+        public const string StaffAccess = "StaffAccess";
     }
 }

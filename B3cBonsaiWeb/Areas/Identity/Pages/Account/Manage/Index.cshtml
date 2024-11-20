@@ -8,36 +8,55 @@
 <div class="billing-area">
     <partial name="_StatusMessage" for="StatusMessage" />
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-12">
             <form id="profile-form" method="post">
                 <div class="pro-add-title">
                     <h6>@ViewData["Title"]</h6>
                 </div>
                 <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-
-                <ul class="billing-form">
-                    @* <li class="billing-li">
-                        <label>Tên</label>
-                        <input asp-for="Input.FullName" type="text" class="form-control" placeholder="Tên" required />
-                    <span asp-validation-for="Input.FullName" class="text-danger"></span>
-                    </li>
-                    <li class="billing-li">
-                        <label>Email</label>
-                        <input asp-for="Input.Email" type="email" class="form-control" placeholder="Địa chỉ email" required />
-                        <span asp-validation-for="Input.Email" class="text-danger"></span>
-                    </li> *@
-                    <li class="billing-li">
-                        <label>Số điện thoại</label>
-                        <input asp-for="Input.PhoneNumber" type="text" class="form-control" placeholder="Số điện thoại" required />
-                        <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
-                    </li>
-                </ul>
-
-                <ul class="pro-submit">
-                    <li>
-                        <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">Cập nhật hồ sơ</button>
-                    </li>
-                </ul>
+                <div class="billing-form">
+                    <ul class="input-2">
+                        <li class="billing-li">
+                            <label>Họ tên</label>
+                            <input asp-for="Input.HoTen" type="text" class="form-control" placeholder="Họ tên" required />
+                            <span asp-validation-for="Input.HoTen" class="text-danger"></span>
+                        </li>
+                        <li class="billing-li">
+                            <label>Ngày sinh</label>
+                            <input asp-for="Input.NgaySinh" type="date" class="form-control" placeholder="Ngày sinh" />
+                            <span asp-validation-for="Input.NgaySinh" class="text-danger"></span>
+                        </li>
+                        <li class="billing-li">
+                            <label>Giới tính</label>
+                            <select asp-for="Input.GioiTinh" class="form-control">
+                                <option value="">-- Chọn giới tính --</option>
+                                <option value="true">Nam</option>
+                                <option value="false">Nữ</option>
+                            </select>
+                            <span asp-validation-for="Input.GioiTinh" class="text-danger"></span>
+                        </li>
+                        <li class="billing-li">
+                            <label>Số CCCD</label>
+                            <input asp-for="Input.CCCD" type="text" class="form-control" placeholder="Số CCCD" />
+                            <span asp-validation-for="Input.CCCD" class="text-danger"></span>
+                        </li>
+                        <li class="billing-li">
+                            <label>Số điện thoại</label>
+                            <input asp-for="Input.PhoneNumber" type="text" class="form-control" placeholder="Số điện thoại" />
+                            <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                        </li>
+                        <li class="billing-li">
+                            <label>Địa chỉ</label>
+                            <input asp-for="Input.DiaChi" type="text" class="form-control" placeholder="Địa chỉ" required />
+                            <span asp-validation-for="Input.DiaChi" class="text-danger"></span>
+                        </li>
+                    </ul>
+                    <ul class="pro-submit">
+                        <li>
+                            <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">Cập nhật hồ sơ</button>
+                        </li>
+                    </ul>
+                </div>
             </form>
         </div>
     </div>

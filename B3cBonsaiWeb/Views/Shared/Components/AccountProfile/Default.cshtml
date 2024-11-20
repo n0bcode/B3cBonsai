@@ -1,0 +1,14 @@
+﻿@model NguoiDungUngDung
+
+
+<div class="account-profile">
+    <div class="pro-img">
+        <a href="javascript:void(0)">
+            <img src="@(Model?.LinkAnh == null ? "/images/user/default.png" : Model.LinkAnh)" class="img-fluid" alt="testi-1">
+        </a>
+    </div>
+    <div class="profile-text">
+        <h6>@Model.HoTen</h6>
+        <span>Tham gia vào @Model.NgayTao.ToString("dd/MM/yyyy")</span>
+    </div>
+</div>

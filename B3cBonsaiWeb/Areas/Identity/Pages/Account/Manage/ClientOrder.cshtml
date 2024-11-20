@@ -1,0 +1,21 @@
+﻿@page
+@model B3cBonsaiWeb.Areas.Identity.Pages.Account.Manage.ClientOrderModel
+@{
+    ViewData["Title"] = "Đơn hàng cá nhân";
+    ViewData["ActivePage"] = ManageNavPages.ClientOrder;
+}
+
+
+    <div class="pro-add-title">
+        <h6>Đơn hàng</h6>
+    </div>
+    <table class="table table-hover" id="clientOrderTable">
+        <thead>
+            <tr>
+                <th>Mã đơn hàng</th>
+                <th>Ngày mua</th>
+                <th>Trạng thái</th>
+                <th>Tổng cộng</th>
+            </tr>
+        </thead>
+    </table>
