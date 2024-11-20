@@ -1,98 +1,52 @@
-﻿@{
-    ViewData["Title"] = "Trang Chủ";
-}
+﻿@model List<GioHang>
 
-<!-- breadcrumb start -->
 <section class="breadcrumb-area">
     <div class="container">
         <div class="col">
             <div class="row">
                 <div class="breadcrumb-index">
-                    <!-- breadcrumb-list start -->
                     <ul class="breadcrumb-ul">
                         <li class="breadcrumb-li">
                             <a class="breadcrumb-link" asp-area="Customer" asp-controller="Home" asp-action="Index">Trang Chủ</a>
                         </li>
                         <li class="breadcrumb-li">
-                            <span class="breadcrumb-text">Thanh Toán 1</span>
+                            <span class="breadcrumb-text">Thanh Toán</span>
                         </li>
                     </ul>
-                    <!-- breadcrumb-list end -->
                 </div>
             </div>
         </div>
     </div>
 </section>
-<!-- breadcrumb end -->
-<!-- checkout-area start -->
+
 <section class="section-ptb">
     <div class="container">
         <div class="row">
             <div class="col">
                 <div class="checkout-area">
+                    <!-- Form Thông Tin Người Nhận -->
                     <div class="billing-area">
-                        <form>
-                            <h2>Chi tiết thanh toán</h2>
+                        <form id="paymentForm" method="post" asp-action="SubmitOrder" asp-area="Customer" asp-controller="Payment">
+                            <h2>Chi tiết người nhận</h2>
                             <div class="billing-form">
                                 <ul class="input-2">
                                     <li class="billing-li">
                                         <label>Tên</label>
-                                        <input type="text" name="f-name" placeholder="Tên">
+                                        <input type="text" name="receiverName" placeholder="Tên người nhận" required>
                                     </li>
                                     <li class="billing-li">
-                                        <label>Họ</label>
-                                        <input type="text" name="l-name" placeholder="Họ">
+                                        <label>Địa chỉ</label>
+                                        <input type="text" name="receiverAddress" placeholder="Địa chỉ giao hàng" required>
                                     </li>
                                 </ul>
                                 <ul class="billing-ul">
                                     <li class="billing-li">
-                                        <label>Tên công ty (Không bắt buộc)</label>
-                                        <input type="text" name="company details" placeholder="Tên công ty">
-                                    </li>
-                                    <li class="billing-li">
-                                        <label>Quốc gia</label>
-                                        <select>
-                                            <option>Chọn quốc gia</option>
-                                            <option>United country</option>
-                                            <option>Russia</option>
-                                            <option>Italy</option>
-                                            <option>France</option>
-                                            <option>Ukraine</option>
-                                            <option>Germany</option>
-                                            <option>India</option>
-                                            <option>Australia</option>
-                                            <option>Canada</option>
-                                        </select>
-                                    </li>
-                                    <li class="billing-li">
-                                        <label>Địa chỉ đường phố</label>
-                                        <input type="text" name="address" placeholder="Địa chỉ đường phố">
-                                    </li>
-                                    <li class="billing-li">
-                                        <label>Căn hộ, phòng, đơn vị v.v. (Không bắt buộc)</label>
-                                        <input type="text" name="--">
-                                    </li>
-                                    <li class="billing-li">
-                                        <label>Thị trấn / Thành phố</label>
-                                        <input type="text" name="city">
-                                    </li>
-                                    <li class="billing-li">
-                                        <label>Bang / Quốc gia</label>
-                                        <input type="text" name="--">
-                                    </li>
-                                    <li class="billing-li">
-                                        <label>Mã bưu điện / Zip</label>
-                                        <input type="text" name="--">
-                                    </li>
-                                </ul>
-                                <ul class="input-2">
-                                    <li class="billing-li">
-                                        <label>Địa chỉ email</label>
-                                        <input type="text" name="mail" placeholder="Địa chỉ email">
+                                        <label>Thành phố</label>
+                                        <input type="text" name="city" placeholder="Thành phố" required>
                                     </li>
                                     <li class="billing-li">
                                         <label>Số điện thoại</label>
-                                        <input type="text" name="phone" placeholder="Số điện thoại">
+                                        <input type="number" name="receiverPhone" placeholder="Số điện thoại" required>
                                     </li>
                                 </ul>
                             </div>
@@ -116,113 +70,130 @@
                             </form>
                         </div>
                     </div>
-                    <div class="order-area">
-                        <div class="check-pro">
-                            <h2>Trong giỏ hàng của bạn (2)</h2>
-                            <ul class="check-ul">
-                                <li>
-                                    <div class="check-pro-img">
-                                        <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail">
-                                            <img src="~/customer/img/menu/home1-pro-banner1.jpg" class="img-fluid" alt="cart-1">
-                                        </a>
-                                    </div>
-                                    <div class="check-content">
-                                        <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail">Xương rồng Castle - Màu xanh lá</a>
-                                        <span class="check-code">
-                                            <span>Mã sản phẩm:</span>
-                                            <span>CA70051541B</span>
-                                        </span>
-                                        <div class="check-qty-pric">
-                                            <span class="check-qty">4 X</span>
-                                            <span class="check-price">Rs. 11.00</span>
+                </div>
+
+                <div class="order-area">
+                    <div class="check-pro">
+                        <h2>Sản phẩm trong giỏ hàng (@Model?.Count)</h2>
+                        <ul class="check-ul">
+                            @if (Model != null && Model.Count > 0)
+                            {
+                                foreach (var item in Model)
+                                {
+                                    <li>
+                                        <div class="check-pro-img">
+                                            <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail" asp-route-id="@item.SanPham?.Id">
+                                                @* <img src="@item.SanPham?.HinhAnhs.FirstOrDefault().LinkAnh" class="img-fluid" alt="@item.SanPham?.TenSanPham"> *@
+                                            </a>
                                         </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="check-pro-img">
-                                        <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail">
-                                            <img src="~/customer/img/menu/home1-pro-banner2.jpg" class="img-fluid" alt="cart-2">
-                                        </a>
-                                    </div>
-                                    <div class="check-content">
-                                        <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail">Strelitzia nicolai</a>
-                                        <span class="check-code">
-                                            <span>Mã sản phẩm:</span>
-                                            <span>CA70051541B</span>
-                                        </span>
-                                        <div class="check-qty-pric">
-                                            <span class="check-qty">4 X</span>
-                                            <span class="check-price">Rs. 21.00</span>
+                                        <div class="check-content">
+                                            <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail" asp-route-id="@item.SanPham?.Id">
+                                                @(item.SanPham?.TenSanPham ?? item.ComboSanPham?.TenCombo)
+                                            </a>
+                                            <span class="check-code">
+                                                <span>Mã sản phẩm:</span>
+                                                <span>@item.SanPham?.Id</span>
+                                            </span>
+                                            <div class="check-qty-pric">
+                                                <span class="check-qty">@item.SoLuong X</span>
+                                                <span class="check-price">@String.Format("{0:n0}", item.Gia * item.SoLuong) VNĐ</span>
+                                            </div>
                                         </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                        <h2>Đơn hàng của bạn</h2>
-                        <ul class="order-history">
-                            <li class="order-details">
-                                <span>Sản phẩm:</span>
-                                <span>Tổng cộng</span>
-                            </li>
-                            <li class="order-details">
-                                <span>Kẹo hạt chocolate</span>
-                                <span>Rs. 44.00</span>
-                            </li>
-                            <li class="order-details">
-                                <span>Bánh donut</span>
-                                <span>Rs. 84.00</span>
-                            </li>
-                            <li class="order-details">
-                                <span>Tổng phụ</span>
-                                <span>Rs. 128,00</span>
-                            </li>
-                            <li class="order-details">
-                                <span>Phí vận chuyển</span>
-                                <span>Miễn phí vận chuyển</span>
-                            </li>
-                            <li class="order-details">
-                                <span>Tổng cộng</span>
-                                <span>Rs. 128,00</span>
-                            </li>
+                                    </li>
+
+                                }
+                            }
+                            else
+                            {
+                                <li>Không có sản phẩm nào trong giỏ hàng</li>
+                            }
                         </ul>
-                        <form>
-                            <ul class="order-form pro-submit">
-                                <li class="label-info">
-                                    <label class="box-area">
-                                        <span class="text">Chuyển khoản ngân hàng trực tiếp</span>
-                                        <input type="checkbox" class="cust-checkbox">
-                                        <span class="cust-check"></span>
-                                    </label>
-                                </li>
-                                <li class="label-info">
-                                    <label class="box-area">
-                                        <span class="text">Paypal</span>
-                                        <input type="checkbox" class="cust-checkbox">
-                                        <span class="cust-check"></span>
-                                    </label>
-                                </li>
-                                <li class="label-info">
-                                    <label class="box-area">
-                                        <span class="text">Thanh toán khi nhận hàng</span>
-                                        <input type="checkbox" class="cust-checkbox">
-                                        <span class="cust-check"></span>
-                                    </label>
-                                </li>
-                                <li class="pay-icon">
-                                    <a href="javascript:void(0)"><i class="fa-solid fa-credit-card"></i></a>
-                                    <a href="javascript:void(0)"><i class="fa-brands fa-cc-visa"></i></a>
-                                    <a href="javascript:void(0)"><i class="fa-brands fa-cc-paypal"></i></a>
-                                    <a href="javascript:void(0)"><i class="fa-brands fa-cc-mastercard"></i></a>
-                                </li>
-                            </ul>
-                        </form>
-                        <div class="checkout-btn">
-                            <a href="/Customer/Payment/OrderComplete" class="btn-style2 checkout disabled">Đặt hàng</a>
+                    </div>
+
+                    <h2>Đơn hàng của bạn</h2>
+                    <ul class="order-history">
+                        <li class="order-details">
+                            <span>Tổng cộng:</span>
+                            <span>@String.Format("{0:n0}", Model?.Sum(item => item.SoLuong * item.Gia) ?? 0) VNĐ</span>
+                        </li>
+                    </ul>
+
+                    <div class="payment-methods">
+                        <h2>Phương thức thanh toán</h2>
+                        <div class="payment-options">
+                            <label class="box-area">
+                                <input type="radio" name="paymentMethod" value="Card" id="paymentCard" />
+                                <span class="text">Thanh toán bằng thẻ</span>
+                            </label>
+                            <label class="box-area">
+                                <input type="radio" name="paymentMethod" value="Cash" id="paymentCash" />
+                                <span class="text">Thanh toán khi nhận hàng</span>
+                            </label>
                         </div>
+                        <div class="checkout-btn">
+                            <button type="button" onclick="processPayment()" class="btn btn-style2">Đặt hàng</button>
+                        </div>
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
-<!-- checkout-area end -->
+
+@section Scripts {
+<script>
+    function processPayment() {
+        const selectedMethod = $('input[name="paymentMethod"]:checked').val();
+
+        if (!selectedMethod) {
+            Swal.fire({
+                title: 'Lỗi!',
+                text: 'Vui lòng chọn phương thức thanh toán.',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+            return;
+        }
+
+        const formData = $('#paymentForm').serialize(); // Serialize form data
+
+        const url = selectedMethod === 'Card'
+            ? '/Customer/Payment/ProcessCardPayment'
+            : '/Customer/Payment/ProcessCashPayment';
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: formData,
+            success: function (response) {
+                if (response.success) {
+                    Swal.fire({
+                        title: 'Thành công!',
+                        text: response.message,
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    }).then(() => {
+                        window.location.href = response.redirectUrl;
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'Lỗi!',
+                        text: response.message,
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            },
+            error: function (xhr) {
+                Swal.fire({
+                    title: 'Lỗi!',
+                    text: xhr.responseJSON?.message || 'Không thể kết nối đến máy chủ. Vui lòng thử lại.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            }
+        });
+    }
+</script>
+}
