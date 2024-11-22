@@ -81,22 +81,20 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Admin
         [HttpPost]
         public async Task<IActionResult> Upsert(NguoiDungUngDungVM nguoi, IFormFile? file, string? VaiTro)
         {
-
-            var isCreatingNewUser = nguoi.NguoiDungUngDung.ThaoTac;
             var existingUser = await _unitOfWork.NguoiDungUngDung.Get(x => x.Id == nguoi.NguoiDungUngDung.Id);
-            if (!isCreatingNewUser && existingUser == null)
-            {
-                return Json(new { success = false, title = "Lỗi xác thực", content = "Dữ liệu đã bị thay đổi bởi người dùng khác. Vui lòng tải lại trang." });
-            }
+            var isCreatingNewUser = nguoi.NguoiDungUngDung.ThaoTac;
 
-            if ((isCreatingNewUser || existingUser?.CCCD != nguoi.NguoiDungUngDung.CCCD) &&
-                await _unitOfWork.NguoiDungUngDung.Get(x => x.CCCD == nguoi.NguoiDungUngDung.CCCD && x.Id != nguoi.NguoiDungUngDung.Id) != null)
+            // Check if the user already exists based on CCCD and Email
+            if (isCreatingNewUser ||
+               (existingUser?.CCCD != nguoi.NguoiDungUngDung.CCCD &&
+                await _unitOfWork.NguoiDungUngDung.Get(x => x.CCCD == nguoi.NguoiDungUngDung.CCCD && x.Id != nguoi.NguoiDungUngDung.Id) != null))
             {
                 ModelState.AddModelError("CCCD", "Số mã CCCD đã có trong hệ thống!");
             }
 
-            if ((isCreatingNewUser || existingUser?.Email != nguoi.NguoiDungUngDung.Email) &&
-                await _unitOfWork.NguoiDungUngDung.Get(x => x.Email == nguoi.NguoiDungUngDung.Email && x.Id != nguoi.NguoiDungUngDung.Id) != null)
+            if (isCreatingNewUser ||
+               (existingUser?.Email != nguoi.NguoiDungUngDung.Email &&
+                await _unitOfWork.NguoiDungUngDung.Get(x => x.Email == nguoi.NguoiDungUngDung.Email && x.Id != nguoi.NguoiDungUngDung.Id) != null))
             {
                 ModelState.AddModelError("Email", "Email đã có trong hệ thống!");
             }
@@ -112,7 +110,6 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Admin
             {
                 var user = CreateUser();
                 await _userStore.SetUserNameAsync(user, nguoi.NguoiDungUngDung.UserName, CancellationToken.None);
-                //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 await _userManager.SetEmailAsync(user, nguoi.NguoiDungUngDung.Email);
 
                 user.HoTen = nguoi.NguoiDungUngDung.HoTen;
@@ -128,27 +125,19 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Admin
                 {
                     foreach (var error in createUserResult.Errors)
                         ModelState.AddModelError(string.Empty, error.Description);
-                    return View(nguoi);
+                    nguoi.DanhSachVaiTro = GetRoleList();
+                    var viewHtml = await this.RenderViewAsync("Upsert", nguoi, true);
+                    return Json(new { success = false, title = "Lỗi xác thực", content = "Dữ liệu không hợp lệ.", data = viewHtml });
                 }
 
-                if (!string.IsNullOrEmpty(VaiTro))
-                    await _userManager.AddToRoleAsync(user, VaiTro);
-                else
-                    await _userManager.AddToRoleAsync(user, SD.Role_Customer);
+                var roleToAssign = string.IsNullOrEmpty(VaiTro) ? SD.Role_Customer : VaiTro;
+                await _userManager.AddToRoleAsync(user, roleToAssign);
             }
             else
             {
-
-                _unitOfWork.NguoiDungUngDung.Update(nguoi.NguoiDungUngDung);
-                _unitOfWork.Save();
+                _unitOfWork.NguoiDungUngDung.UpdateUserInfoAndImage(nguoi.NguoiDungUngDung, file);
             }
 
-            if (file != null)
-            {
-                nguoi.NguoiDungUngDung.LinkAnh = await SaveUserImage(file, nguoi.NguoiDungUngDung.Id);
-            }
-
-            _unitOfWork.NguoiDungUngDung.Update(nguoi.NguoiDungUngDung);
             _unitOfWork.Save();
 
             return Json(new { success = true, title = "Thông báo", content = "Cập nhật thông tin thành công." });

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using B3cBonsai.Utility;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace B3cBonsai.Models
         [Required(ErrorMessage = "Họ tên không được để trống.")]
         [StringLength(54, ErrorMessage = "Họ tên không được vượt quá 54 ký tự.")]
         [Display(Name = "Họ Tên")]
-        [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Họ tên chỉ được chứa chữ cái và khoảng trắng.")]
+        [RegularExpression(SD.ValidateStringName, ErrorMessage = "Họ tên chỉ được chứa chữ cái và khoảng trắng.")]
         public string HoTen { get; set; }
 
         [Display(Name = "Ngày Sinh")]
@@ -33,7 +34,7 @@ namespace B3cBonsai.Models
 
         [StringLength(1024, ErrorMessage = "Địa chỉ không được vượt quá 1024 ký tự.")]
         [Display(Name = "Địa Chỉ")]
-        [RegularExpression(@"^[a-zA-Z0-9\s]+$", ErrorMessage = "Địa chỉ chỉ được chứa chữ cái, số và khoảng trắng.")]
+        [RegularExpression(SD.ValidateString, ErrorMessage = "Địa chỉ chỉ được chứa chữ cái, số và khoảng trắng.")]
         [Required(ErrorMessage = "Vui lòng nhập thông tin địa chỉ người dùng.")]
         public string DiaChi { get; set; }
 
@@ -46,7 +47,7 @@ namespace B3cBonsai.Models
         public DateTime NgayTao { get; set; } = DateTime.UtcNow;
 
         [Display(Name = "Mô Tả")]
-        [RegularExpression(@"^[a-zA-Z0-9\s]+$", ErrorMessage = "Mô tả chỉ được chứa chữ cái, số và khoảng trắng.")]
+        [RegularExpression(SD.ValidateString, ErrorMessage = "Mô tả chỉ được chứa chữ cái, số và khoảng trắng.")]
         public string? MoTa { get; set; }
 
 

@@ -207,7 +207,7 @@
                                             <div class="product-quantity">
                                                 <div class="cart-plus-minus">
                                                     <button class="dec qtybutton minus"><i class="fa-solid fa-minus"></i></button>
-                                                    <input type="text" name="quantity" value="1" min="1" max="@Model.SoLuong">
+                                                    <input type="text" name="quantity" value="1" min="1" max="@Model.SoLuong" id="qualityInput" />
                                                     <button class="inc qtybutton plus"><i class="fa-solid fa-plus"></i></button>
                                                 </div>
                                             </div>
@@ -218,7 +218,7 @@
                                     <div class="product-actions">
                                         <!-- pro-deatail button start -->
                                         <div class="pro-detail-button">
-                                            <button type="button" onclick="location. href='/Customer/Cart'" class="btn add-to-cart ajax-spin-cart">
+                                            <button type="button" onclick="addToCart(1,null,document.getElementById('qualityInput').value,'@SD.ObjectDetailOrder_SanPham')" class="btn add-to-cart ajax-spin-cart">
                                                 <span class="cart-title">Thêm vào giỏ</span>
                                             </button>
                                             <a href="cart-empty.html" class="btn btn-cart btn-theme">
