@@ -4,7 +4,7 @@
 
 @model IEnumerable<DanhSachYeuThich>
 
-@if (Model != null || Model.Count() != 0)
+@if (Model != null && Model.Count() != 0)
 {
     <!-- breadcrumb start -->
     <section class="breadcrumb-area">
@@ -18,7 +18,7 @@
                                 <a class="breadcrumb-link" asp-area="Customer" asp-controller="Home" asp-action="Index">Trang chủ</a>
                             </li>
                             <li class="breadcrumb-li">
-                                <span class="breadcrumb-text">danh sách yêu thích</span>
+                                <span class="breadcrumb-text">Danh sách yêu thích</span>
                             </li>
                         </ul>
                         <!-- breadcrumb-list end -->
@@ -80,8 +80,7 @@
         </div>
     </section>
     <!-- wishlist-product end -->
-}
-else
+} else
 {
     <!-- breadcrumb start -->
     <section class="breadcrumb-area">

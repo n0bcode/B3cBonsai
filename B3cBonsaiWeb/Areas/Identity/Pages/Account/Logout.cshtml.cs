@@ -5,6 +5,7 @@
 using System;
 using System.Threading.Tasks;
 using B3cBonsai.Models;
+using B3cBonsai.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -24,8 +25,10 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
             _logger = logger;
         }
 
-        public async Task<IActionResult> OnPost(string returnUrl = null)
+        public async Task<IActionResult> OnPost(string returnUrl = null, string? viewAccess = SD.CustomerAccess)
         {
+            HttpContext.Session.SetString(SD.ViewAccess, viewAccess);
+
             await _signInManager.SignOutAsync();
             _logger.LogInformation("User logged out.");
             TempData["successToastr"] = "Đăng xuất thành công";

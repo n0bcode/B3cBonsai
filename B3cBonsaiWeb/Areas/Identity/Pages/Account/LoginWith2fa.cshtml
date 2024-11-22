@@ -3,7 +3,8 @@
 @{
     ViewData["Title"] = "Xác thực hai yếu tố";
 }
-
+@if (HttpContext.Session.GetString(SD.ViewAccess) == SD.CustomerAccess)
+{
 <!-- breadcrumb start -->
 <section class="breadcrumb-area">
     <div class="container">
@@ -74,7 +75,80 @@
         </div>
     </div>
 </section>
-<!-- customer-page end -->
+    <!-- customer-page end -->
+}
+else
+{
+    Layout = null;
+    <partial name="_EmployeeHeaderCSS" />
+    <body class="vh-100">
+        <div class="authincation h-100">
+            <div class="container-fluid h-100">
+                <div class="row h-100">
+                    <!-- Nội dung xác thực hai yếu tố -->
+                    <div class="col-lg-6 col-md-12 col-sm-12 mx-auto align-self-center">
+                        <section class="customer-page section-ptb">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-12 row justify-content-center">
+                                        <h1>@ViewData["Title"]</h1>
+                                        <hr />
+                                        <p>Đăng nhập của bạn được bảo vệ bằng ứng dụng xác thực. Nhập mã xác thực của bạn bên dưới.</p>
+
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <form method="post" asp-route-returnUrl="@Model.ReturnUrl">
+                                                    <input asp-for="RememberMe" type="hidden" />
+                                                    <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                                                    <div class="form-floating mb-3">
+                                                        <input asp-for="Input.TwoFactorCode" class="form-control" autocomplete="off" />
+                                                        <label asp-for="Input.TwoFactorCode" class="form-label"></label>
+                                                        <span asp-validation-for="Input.TwoFactorCode" class="text-danger"></span>
+                                                    </div>
+                                                    <div class="checkbox mb-3">
+                                                        <label asp-for="Input.RememberMachine" class="form-label">
+                                                            <input asp-for="Input.RememberMachine" />
+                                                            @Html.DisplayNameFor(m => m.Input.RememberMachine)
+                                                        </label>
+                                                    </div>
+                                                    <div>
+                                                        <button type="submit" class="w-100 btn btn-lg btn-primary">Đăng nhập</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+
+                                        <p>
+                                            Bạn không có quyền truy cập vào thiết bị xác thực của mình? Bạn có thể
+                                            <a id="recovery-code-login" asp-page="./LoginWithRecoveryCode" asp-route-returnUrl="@Model.ReturnUrl">đăng nhập bằng mã phục hồi</a>.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+
+                    <!-- Phần giới thiệu hoặc hình ảnh -->
+                    <div class="col-xl-6 col-sm-6">
+                        <div class="pages-left h-100">
+                            <div class="login-content">
+                                <a href="/">
+                                    <img src="~/customer/img/logo/logo.png" alt="Logo Công Ty" class="logo" height="40">
+                                </a>
+                                <p>Bảo vệ tài khoản của bạn với xác thực hai yếu tố. Nó giúp giữ an toàn cho thông tin của bạn.</p>
+                            </div>
+                            <div class="login-media text-center">
+                                <img src="~/employee/images/two-factor-authentication.png" alt="Xác thực hai yếu tố">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <partial name="_EmployeeFooterJs" />
+    </body>
+
+}
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }

@@ -4,6 +4,8 @@
     ViewData["Title"] = "Tài khoản bị khóa";
 }
 
+@if (HttpContext.Session.GetString(SD.ViewAccess) == SD.CustomerAccess)
+{
 <!-- breadcrumb start -->
 <section class="breadcrumb-area">
     <div class="container">
@@ -48,3 +50,49 @@
     </div>
 </section>
 <!-- customer-page end -->
+}
+else
+{
+    Layout = null;
+    <partial name="_EmployeeHeaderCSS" />
+    <body class="vh-100">
+        <div class="authincation h-100">
+            <div class="container-fluid h-100">
+                <div class="row h-100">
+                    <!-- Nội dung thông báo tài khoản bị khóa -->
+                    <div class="col-lg-6 col-md-12 col-sm-12 mx-auto align-self-center">
+                        <section class="customer-page section-ptb">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-12 row justify-content-center">
+                                        <header class="row justify-content-center text-center">
+                                            <h1 class="text-danger">@ViewData["Title"]</h1>
+                                            <p class="text-danger">Tài khoản này đã bị khóa, vui lòng thử lại sau.</p>
+                                        </header>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+
+                    <!-- Phần giới thiệu hoặc hình ảnh -->
+                    <div class="col-xl-6 col-sm-6">
+                        <div class="pages-left h-100">
+                            <div class="login-content">
+                                <a href="/">
+                                    <img src="~/customer/img/logo/logo.png" alt="Logo Công Ty" class="logo" height="40">
+                                </a>
+                                <p>Xin lỗi vì sự bất tiện này. Nếu bạn cần hỗ trợ thêm, vui lòng liên hệ với bộ phận hỗ trợ khách hàng của chúng tôi.</p>
+                            </div>
+                            <div class="login-media text-center">
+                                <img src="~/employee/images/account-locked.png" alt="Tài khoản bị khóa">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <partial name="_EmployeeFooterJs" />
+    </body>
+
+}

@@ -2,6 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
+using B3cBonsai.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -20,6 +21,11 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
         /// </summary>
         public void OnGet()
         {
+            // Lấy quyền truy cập từ session, nếu không có thì gán quyền mặc định
+            string viewAccess = HttpContext.Session.GetString(SD.ViewAccess) ?? SD.CustomerAccess;
+
+            // Lưu quyền truy cập vào session
+            HttpContext.Session.SetString(SD.ViewAccess, viewAccess);
         }
     }
 }

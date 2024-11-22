@@ -5,8 +5,8 @@
     ViewData["ActivePage"] = ManageNavPages.PersonalData;
 }
 
-<div class="pro-add-title">
-    <h3>@ViewData["Title"]</h3>
+<div class="pro-add-title mb-4">
+    <h6>@ViewData["Title"]</h6>
 </div>
 
 <div class="row">
@@ -15,7 +15,7 @@
         <p>
             <strong>Xóa dữ liệu này sẽ vĩnh viễn xóa tài khoản của bạn, và điều này không thể khôi phục.</strong>
         </p>
-        <form id="download-data" asp-page="DownloadPersonalData" method="post">
+        <form id="download-data" asp-page="DownloadPersonalData" method="post" class="mb-3">
             <button class="btn btn-primary" type="submit">Tải xuống</button>
         </form>
         <p>
@@ -23,6 +23,7 @@
         </p>
     </div>
 </div>
+
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

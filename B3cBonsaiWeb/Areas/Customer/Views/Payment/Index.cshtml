@@ -98,38 +98,42 @@
                             </li>
                         </ul>
 
-                        <form>
-                            <ul class="order-form pro-submit">
-                                <li class="label-info">
-                                    <label class="box-area">
-                                        <span class="text">Thanh toán bằng thẻ</span>
-                                        <input type="radio" name="paymentMethod" value="Card" id="paymentCard" class="cust-checkbox">
-                                        <span class="cust-check"></span>
-                                    </label>
-                                </li>
-                                <li class="label-info">
-                                    <label class="box-area">
-                                        <span class="text">Thanh toán khi nhận hàng</span>
-                                        <input type="radio" name="paymentMethod" value="Cash" id="paymentCash" class="cust-checkbox">
-                                        <span class="cust-check"></span>
-                                    </label>
-                                </li>
-                                <li class="pay-icon">
-                                    <a href="javascript:void(0)"><i class="fa-solid fa-credit-card"></i></a>
-                                    <a href="javascript:void(0)"><i class="fa-brands fa-cc-visa"></i></a>
-                                    <a href="javascript:void(0)"><i class="fa-brands fa-cc-paypal"></i></a>
-                                    <a href="javascript:void(0)"><i class="fa-brands fa-cc-mastercard"></i></a>
-                                </li>
-                            </ul>
-                        </form>
-                        <div class="payment-methods">
-                            <div class="checkout-btn">
-                                <button type="button" onclick="processPayment()" class="btn btn-style2">Đặt hàng</button>
+                    <div class="payment-methods">
+                        <h2>Phương thức thanh toán</h2>
+
+                            <form>
+                                <ul class="order-form pro-submit">
+                                    <li class="label-info">
+                                        <label class="box-area">
+                                            <span class="text">Thanh toán bằng thẻ</span>
+                                            <input type="radio" name="paymentMethod" value="Card" id="paymentCard" class="cust-checkbox">
+                                            <span class="cust-check"></span>
+                                        </label>
+                                    </li>
+                                    <li class="label-info">
+                                        <label class="box-area">
+                                            <span class="text">Thanh toán khi nhận hàng</span>
+                                            <input type="radio" name="paymentMethod" value="Cash" id="paymentCash" class="cust-checkbox">
+                                            <span class="cust-check"></span>
+                                        </label>
+                                    </li>
+                                    <li class="pay-icon">
+                                        <a href="javascript:void(0)"><i class="fa-solid fa-credit-card"></i></a>
+                                        <a href="javascript:void(0)"><i class="fa-brands fa-cc-visa"></i></a>
+                                        <a href="javascript:void(0)"><i class="fa-brands fa-cc-paypal"></i></a>
+                                        <a href="javascript:void(0)"><i class="fa-brands fa-cc-mastercard"></i></a>
+                                    </li>
+                                </ul>
+                            </form>
+                            <div class="payment-methods">
+                                <div class="checkout-btn">
+                                    <button type="button" onclick="processPayment()" class="btn btn-style2">Đặt hàng</button>
+                                </div>
                             </div>
-                        </div>
+
+
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
@@ -138,57 +142,62 @@
 
 @section Scripts {
 <script>
-    function processPayment() {
-        const selectedMethod = $('input[name="paymentMethod"]:checked').val();
+            function processPayment() {
+                const selectedMethod = $('input[name="paymentMethod"]:checked').val();
 
-        if (!selectedMethod) {
-            Swal.fire({
-                title: 'Lỗi!',
-                text: 'Vui lòng chọn phương thức thanh toán.',
-                icon: 'error',
-                confirmButtonText: 'OK'
-            });
-            return;
-        }
-
-        const formData = $('#paymentForm').serialize(); // Serialize form data
-
-        const url = selectedMethod === 'Card'
-            ? '/Customer/Payment/ProcessCardPayment'
-            : '/Customer/Payment/ProcessCashPayment';
-
-        $.ajax({
-            url: url,
-            type: 'POST',
-            data: formData,
-            success: function (response) {
-                if (response.success) {
-                    Swal.fire({
-                        title: 'Thành công!',
-                        text: response.message,
-                        icon: 'success',
-                        confirmButtonText: 'OK'
-                    }).then(() => {
-                        window.location.href = response.redirectUrl;
-                    });
-                } else {
+                if (!selectedMethod) {
                     Swal.fire({
                         title: 'Lỗi!',
-                        text: response.message,
+                        text: 'Vui lòng chọn phương thức thanh toán.',
                         icon: 'error',
                         confirmButtonText: 'OK'
                     });
+                    return;
                 }
-            },
-            error: function (xhr) {
-                Swal.fire({
-                    title: 'Lỗi!',
-                    text: xhr.responseJSON?.message || 'Không thể kết nối đến máy chủ. Vui lòng thử lại.',
-                    icon: 'error',
-                    confirmButtonText: 'OK'
+
+                const formData = $('#paymentForm').serialize(); // Serialize form data
+
+                const url = selectedMethod === 'Card'
+                    ? '/Customer/Payment/ProcessVNPayPayment' // URL xử lý VNPay
+                    : '/Customer/Payment/ProcessCashPayment'; // URL thanh toán COD
+
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: formData,
+                    success: function (response) {
+                        if (response.success) {
+                            if (response.redirectUrl) {
+                                // Đối với VNPay, redirect đến URL thanh toán
+                                window.location.href = response.redirectUrl;
+                            } else {
+                                Swal.fire({
+                                    title: 'Thành công!',
+                                    text: response.message,
+                                    icon: 'success',
+                                    confirmButtonText: 'OK'
+                                }).then(() => {
+                                    window.location.href = response.redirectUrl;
+                                });
+                            }
+                        } else {
+                            Swal.fire({
+                                title: 'Lỗi!',
+                                text: response.message,
+                                icon: 'error',
+                                confirmButtonText: 'OK'
+                            });
+                        }
+                    },
+                    error: function (xhr) {
+                        Swal.fire({
+                            title: 'Lỗi!',
+                            text: xhr.responseJSON?.message || 'Không thể kết nối đến máy chủ. Vui lòng thử lại.',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                    }
                 });
             }
-        });
-    }
-</script>
+    </script>
 }

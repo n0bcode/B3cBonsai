@@ -47,8 +47,10 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
         /// </summary>
         public string EmailConfirmationUrl { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(string email, string returnUrl = null)
+        public async Task<IActionResult> OnGetAsync(string email, string returnUrl = null, string? viewAccess = SD.CustomerAccess)
         {
+            HttpContext.Session.SetString(SD.ViewAccess, viewAccess);
+
             if (email == null)
             {
                 return RedirectToPage("/Index");

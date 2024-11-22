@@ -135,8 +135,10 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
 
         }
 
-        public async Task OnGetAsync(string returnUrl = null)
+        public async Task OnGetAsync(string returnUrl = null, string? viewAccess = SD.CustomerAccess)
         {
+            HttpContext.Session.SetString(SD.ViewAccess, viewAccess);
+
             Input = new()
             {
                 RoleList = _roleManager.Roles.Select(x => x.Name).Select(i => new SelectListItem
@@ -171,13 +173,18 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User created a new account with password.");
 
-                    if (!String.IsNullOrEmpty(Input.Role))
+                    // Lấy quyền truy cập từ session, nếu không có thì gán quyền mặc định
+                    string viewAccess = HttpContext.Session.GetString(SD.ViewAccess) ?? SD.CustomerAccess;
+
+                    if (viewAccess == SD.CustomerAccess)
                     {
-                        await _userManager.AddToRoleAsync(user, Input.Role);
+                        await _userManager.AddToRoleAsync(user, SD.Role_Customer);
                     }
                     else
                     {
-                        await _userManager.AddToRoleAsync(user, SD.Role_Customer);
+                        await _userManager.AddToRoleAsync(user, SD.Role_Staff);
+                        user.LockoutEnabled = true;
+                        user.LockoutEnd = DateTime.UtcNow.AddYears(100);
                     }
 
                     var userId = await _userManager.GetUserIdAsync(user);

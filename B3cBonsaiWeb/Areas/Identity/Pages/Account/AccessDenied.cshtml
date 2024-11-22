@@ -3,7 +3,8 @@
 @{
     ViewData["Title"] = "Access denied";
 }
-
+@if (HttpContext.Session.GetString(SD.ViewAccess) == SD.CustomerAccess)
+{
 <!-- breadcrumb start -->
 <section class="breadcrumb-area">
     <div class="container">
@@ -39,3 +40,43 @@
         </div>
     </div>
 </section>
+}
+else
+{
+    Layout = null;
+    <partial name="_EmployeeHeaderCSS" />
+
+    <body class="vh-100">
+        <div class="authincation h-100">
+            <div class="container-fluid h-100">
+                <div class="row h-100">
+                    <!-- Phần form đăng nhập -->
+                    <div class="col-lg-6 col-md-12 col-sm-12 mx-auto align-self-center">
+                        <div class="login-form">
+
+                            <h2>Cấm truy cập</h2>
+                            <p>Rất tiếc nhưng trang bạn đang không có quyền truy cập trang này.</p>
+                            <a asp-area="Customer" asp-controller="Home" asp-action="Index" class="btn btn-style2">Trở về Trang Chủ</a>
+                        </div>
+                    </div>
+                    <!-- Phần giới thiệu hoặc hình ảnh -->
+                    <div class="col-xl-6 col-sm-6">
+                        <div class="pages-left h-100">
+                            <div class="login-content">
+                                <a href="/">
+                                    <img src="~/customer/img/logo/logo.png" alt="Logo Công Ty" class="logo" height="40">
+                                </a>
+                                <p>Chào mừng bạn đến với cổng thông tin nhân viên. Vui lòng đăng nhập để truy cập tài khoản của bạn và bắt đầu quản lý các công việc của mình.</p>
+                            </div>
+                            <div class="login-media text-center">
+                                <img src="~/employee/images/login.png" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <partial name="_EmployeeFooterJs" />
+    </body>
+
+}
