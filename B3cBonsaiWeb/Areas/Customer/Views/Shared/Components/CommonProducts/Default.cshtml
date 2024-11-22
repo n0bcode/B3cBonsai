@@ -1,115 +1,174 @@
 ﻿@model IEnumerable<SanPham>
-@if (Model != null) {
-<!-- product start -->
-<section class="product-tab section-pt">
-    <div class="collection-category">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col">
-                    <div class="section-capture tab">
-                        <div class="section-title">
-                            <h2><span>Sản phẩm phổ biến</span></h2>
+@if (Model != null)
+{
+    <!-- product start -->
+    <section class="product-tab section-pt">
+        <div class="collection-category">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col">
+                        <div class="section-capture tab">
+                            <div class="section-title">
+                                <h2><span>Sản phẩm phổ biến</span></h2>
+                            </div>
                         </div>
-                    </div>
-                    <div class="collection-wrap">
-                        <div class="collection-slider swiper" id="new-product">
+                        <div class="collection-wrap">
+                            <div class="collection-slider swiper" id="new-product">
                                 <div class="swiper-wrapper">
                                     @foreach (var sanPham in Model)
-{
-    <div class="swiper-slide">
-        <div class="single-product-wrap">
-            <div class="product-image banner-hover">
-                <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail" class="pro-img">
-                    <img src="@(sanPham.HinhAnhs?.FirstOrDefault()?.LinkAnh ?? @Url.Content("~/images/product/default.jpg"))" class="img-fluid img1 mobile-img1" alt="p1">
-                    <img src="@(sanPham.HinhAnhs?.Skip(1).FirstOrDefault()?.LinkAnh ?? @Url.Content("~/images/product/default.jpg"))" class="img-fluid img2 mobile-img2" alt="p2">
-                </a>
-                <div class="product-action product-cart-btn">
-                    <a href="#add-to-cart" class="add-to-cart">
-                        <span class="cart-title">
-                            <span class="add-c-title">
-                                <span class="tooltip-text">Add to cart</span>
-                                <span class="cart-icon"><i class="feather-shopping-bag"></i></span>
-                                <span class="add-title">Add to cart</span>
-                            </span>
-                        </span>
-                    </a>
-                </div>
-                <div class="product-action">
-                    <a asp-area="Customer" asp-controller="Wishlist" asp-action="Index" class="wishlist">
-                        <span class="tooltip-text">Wishlist</span>
-                        <span class="pro-action-icon"><i class="feather-heart"></i></span>
-                    </a>
-                    <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview">
-                        <span class="tooltip-text">Quickview</span>
-                        <span class="pro-action-icon"><i class="feather-eye"></i></span>
-                    </a>
-                </div>
-            </div>
-            <div class="product-caption">
-                <div class="product-content">
-                    <div class="product-title">
-                        <div class="pro-title-price">
-                            <h6><a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail">@sanPham.TenSanPham</a></h6>
-                            <div class="product-price">
-                                <div class="price-box">
-                                    <span class="new-price">@sanPham.Gia.ToString("C")</span>  <!-- Format price as currency -->
+                                    {
+                                        <div class="swiper-slide">
+                                            <div class="single-product-wrap">
+                                                <div class="product-image banner-hover">
+                                                    <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail" asp-route-id="@sanPham.Id" class="pro-img">
+                                                        <div class="cat-img" style="position: relative; display: flex; justify-content: center; align-items: center;">
+                                                            <!-- Hình ảnh đầu tiên -->
+                                                            <img onerror="this.src='/images/product/default.jpg'"
+                                                                 src="@(sanPham.HinhAnhs.FirstOrDefault()?.LinkAnh ?? @Url.Content("~/images/product/default.jpg"))"
+                                                                 class="img-fluid img1 mobile-img1"
+                                                                 alt="@sanPham.TenSanPham"
+                                                                 style="width: 315px; height: 350px; border-radius: 5px; object-fit: cover;">
+                                                            <!-- Hình ảnh thứ hai -->
+                                                            <img onerror="this.src='/images/product/default.jpg'"
+                                                                 src="@(sanPham.HinhAnhs.Skip(1).FirstOrDefault()?.LinkAnh ?? @Url.Content("~/images/product/default.jpg"))"
+                                                                 class="img-fluid img2 mobile-img2"
+                                                                 alt="@sanPham.TenSanPham"
+                                                                 style="width: 315px; height: 350px; border-radius: 5px; object-fit: cover;">
+                                                        </div>
+                                                    </a>
+                                                    <div class="product-action">
+                                                        <a class="wishlist" data-id="@sanPham.Id" data-type="@SD.ObjectLike_SanPham">
+                                                            <span class="pro-action-icon likeAction"><i class="feather-heart"></i></span>
+                                                        </a>
+                                                        <!-- Nút Xem nhanh -->
+                                                        <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview" onclick="loadQuickView(@sanPham.Id)">
+                                                            <span class="tooltip-text">Xem nhanh</span>
+                                                            <span class="pro-action-icon"><i class="feather-eye"></i></span>
+                                                        </a>
+                                                    </div>
+                                                    <div class="product-action-wrapper">
+                                                        <div class="product-action product-cart-btn" style="display: flex; justify-content: center; align-items: center;">
+                                                            <a onclick="addToCart(@sanPham.Id,null,1,'@SD.ObjectDetailOrder_SanPham')" href="#add-to-cart" style="display: inline-block; padding: 15px; width: 200px; text-align: center;">
+                                                                <span class="cart-title">
+                                                                    <span class="add-c-title">
+                                                                       @*  <span class="tooltip-text">Thêm vào giỏ</span> *@
+                                                                        <span class="cart-icon"><i class="feather-shopping-bag"></i></span>
+                                                                        <span class="add-title">Thêm vào giỏ</span>
+                                                                    </span>
+                                                                </span>
+                                                            </a>
+                                                        </div>
+
+
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="product-caption">
+                                                    <div class="product-content">
+                                                        <div class="product-title">
+                                                            <div class="pro-title-price">
+                                                                <h6 class="cat-title">
+                                                                    <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail" asp-route-id="@sanPham.Id" style="color:#557e30; font-size: 19px;">
+                                                                        @sanPham.TenSanPham
+                                                                    </a>
+                                                                </h6>
+                                                                <div class="product-price">
+                                                                    <div class="price-box">
+                                                                        <span class="cat-count">@String.Format("{0:0,0} VND", sanPham.Gia).Replace(",", ".")</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="product-name">
+                                                                <a class="product-type" asp-area="Customer" asp-controller="ClientProduct" asp-action="Index">@sanPham.DanhMuc.TenDanhMuc</a>
+                                                                <a class="product-vendor" asp-area="Customer" asp-controller="ClientProduct" asp-action="Index">B3cBonsai</a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="product-ratting">
+                                                            <span class="pro-ratting">
+                                                                @for (int i = 0; i < 5; i++)
+                                                                {
+                                                                    <i class="fa-regular fa-star"></i>
+                                                                }
+                                                            </span>
+                                                        </div>
+                                                        <div class="product-description">
+                                                            <p>@sanPham.MoTa</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                                <div class="collection-button">
+                                    <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Index" class="btn btn-style">View product</a>
                                 </div>
                             </div>
-                        </div>
-                        <div class="product-name">
-                            <a class="product-type" asp-area="Customer" asp-controller="ClientProduct" asp-action="Index">@sanPham.DanhMuc.TenDanhMuc</a> <!-- Display product category -->
-                            <a class="product-vendor" asp-area="Customer" asp-controller="ClientProduct" asp-action="Index">B3cBonsai</a> <!-- Display product vendor -->
-                        </div>
-                    </div>
-                    <div class="product-ratting">
-                        <span class="pro-ratting">
-                            @for(int i = 0; i < 5; i++) 
-                            {
-                                <i class="fa-regular fa-star"></i>
-                            }
-                        </span>
-                    </div>
-                    <div class="product-description">
-                        <p>@sanPham.MoTa</p>  <!-- Display product description -->
-                    </div>
-                    <div class="product-action">
-                        <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview">
-                            <span class="tooltip-text">Quickview</span>
-                            <span class="pro-action-icon"><i class="feather-eye"></i></span>
-                        </a>
-                        <a href="#add-to-cart" class="add-to-cart" data-bs-toggle="modal" data-bs-target="#add-to-cart">
-                            <span class="tooltip-text">Add to cart</span>
-                            <span class="pro-action-icon"><i class="feather-shopping-bag"></i></span>
-                        </a>
-                        <a asp-area="Customer" asp-controller="Wishlist" asp-action="Index" class="wishlist">
-                            <span class="tooltip-text">Wishlist</span>
-                            <span class="pro-action-icon"><i class="feather-heart"></i></span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-}
+                            <div class="swiper-buttons">
+                                <div class="swiper-buttons-wrap">
+                                    <button class="swiper-prev swiper-prev-new"><span><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><polyline points="15 18 9 12 15 6"></polyline></svg></span></button>
+                                    <button class="swiper-next swiper-next-new"><span><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><polyline points="9 18 15 12 9 6"></polyline></svg></span></button>
+                                </div>
                             </div>
-                            <div class="collection-button">
-                                <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Index" class="btn btn-style">View product</a>
+                            <div class="swiper-dots">
+                                <div class="swiper-pagination swiper-pagination-new"></div>
                             </div>
-                        </div>
-                        <div class="swiper-buttons">
-                            <div class="swiper-buttons-wrap">
-                                <button class="swiper-prev swiper-prev-new"><span><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><polyline points="15 18 9 12 15 6"></polyline></svg></span></button>
-                                <button class="swiper-next swiper-next-new"><span><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><polyline points="9 18 15 12 9 6"></polyline></svg></span></button>
-                            </div>
-                        </div>
-                        <div class="swiper-dots">
-                            <div class="swiper-pagination swiper-pagination-new"></div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
-<!-- product end -->
+    </section>
+    <!-- product end -->
 }
+
+
+<style>
+    /* Ẩn các nút mặc định */
+    .product-action-wrapper {
+        display: none;
+        position: absolute; /* Đảm bảo chúng nằm trên hình ảnh sản phẩm */
+        top: 50%; /* Đặt vị trí vào giữa theo chiều dọc */
+        left: 50%; /* Đặt vị trí vào giữa theo chiều ngang */
+        transform: translate(-50%, -50%); /* Điều chỉnh để căn giữa chính xác */
+        width: 100%;
+    }
+
+    /* Hiển thị các nút khi hover vào hình ảnh sản phẩm */
+    .single-product-wrap:hover .product-action-wrapper {
+        display: flex;
+        justify-content: center; /* Căn giữa các nút theo chiều ngang */
+        align-items: flex-end; /* Đặt các nút ở cuối cùng của hình ảnh sản phẩm */
+        gap: 10px; /* Tạo khoảng cách giữa các nút */
+    }
+
+    /* Cải thiện giao diện các nút action */
+    .product-action-wrapper .product-action {
+        display: inline-block;
+        text-align: center;
+    }
+
+
+        /* Cải thiện giao diện của các icon */
+        .product-action-wrapper .product-action .pro-action-icon {
+            font-size: 20px;
+            color: #557e30;
+            background-color: transparent; /* Bỏ màu nền mặc định */
+            padding: 10px;
+            border-radius: 50%;
+            transition: background-color 0.3s ease, color 0.3s ease; /* Thêm hiệu ứng chuyển màu */
+        }
+
+            /* Thay đổi màu icon khi hover */
+            .product-action-wrapper .product-action .pro-action-icon:hover {
+                background-color: #557e30; /* Màu nền khi hover */
+                color: #fff; /* Màu icon đổi sang trắng khi hover */
+            }
+
+    /* Đảm bảo không bị chồng lấn */
+    .single-product-wrap {
+        position: relative;
+    }
+
+</style>

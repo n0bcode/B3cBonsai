@@ -1,0 +1,96 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model B3cBonsai.Models.SanPham
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h6 class="modal-quickview">Xem nhanh</h6>
+            <button type="button" class="close" data-bs-dismiss="modal"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body">
+            <!-- quickview-sliderstart -->
+            <div class="quickview-slider">
+                <div class="quick-view-tab">
+                    <div class="quick-block">
+                        <div class="quick-image">
+                            <!-- Hình ảnh đầu tiên -->
+                            <img onerror="this.src='/images/product/default.jpg'"
+                                 src="@(Model.HinhAnhs.FirstOrDefault()?.LinkAnh ?? @Url.Content("~/images/product/default.jpg"))"
+                                 class="img-fluid img1 mobile-img1"
+                                 alt="p1"
+                                 id="image1"
+                                 style="width: 315px; height: 355px; border-radius: 5px; object-fit: cover;  transition: opacity 0.5s ease-in-out; opacity: 1;"
+                                 onmouseover="this.src='@(Model.HinhAnhs.Skip(1).FirstOrDefault()?.LinkAnh ?? @Url.Content("~/images/product/default.jpg"))'"
+                                 onmouseout="this.src='@(Model.HinhAnhs.FirstOrDefault()?.LinkAnh ?? @Url.Content("~/images/product/default.jpg"))'">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- quick-view-content start -->
+            <div class="quick-view-content">
+                <div class="pro-nprist">
+
+                    <div class="product-title">
+                        <h6 style="font-size: 20px; font-weight: bold;">@Model.TenSanPham</h6>
+
+                    </div>
+                    <!-- product-title end -->
+                    <!-- product-price start -->
+                    <div class="product-price">
+                        <div class="price-box">
+                            <span class="new-price" style="font-size: 22px; color: #557e30; font-weight: bold;">
+                                @String.Format("{0:0,0} VND", Model.Gia).Replace(",", ".")
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- product-price end -->
+                    <!-- product-desc start -->
+                    <div class="product-desc">
+                        <p>Mô tả: @Model.MoTa</p>
+
+
+                        <p>Danh mục: @Model.DanhMuc?.TenDanhMuc</p>
+
+
+                        <p>Kho: @Model.SoLuong</p>
+                    </div>
+                    <br />
+                    
+
+
+                    <form method="post" class="cart">
+                        <div class="quick-view-select">
+                            <div class="quick-view-text">
+                                <div class="selector-wrapper">
+                                </div>
+                                <div class="selector-wrapper">
+                                    <div class="pro-qty-wrap">
+                                        <h6>Số lượng:</h6>
+                                        <div class="product-quantity">
+                                            <div class="cart-plus-minus">
+                                                <button class="dec qtybutton minus"><i class="fa-solid fa-minus"></i></button>
+                                                <input type="text" name="quantity" value="1" min="1" max="@Model.SoLuong">
+                                                <button class="inc qtybutton plus"><i class="fa-solid fa-plus"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="quickview-buttons">
+                            <button type="button" onclick="location.href='/Customer/Cart'" class="btn btn-style2">Mua Ngay</button>
+                           
+                        </div>
+                    </form>
+
+
+
+                    <!-- product-title end -->
+                </div>
+            </div>
+            <!-- quick-view-content end -->
+        </div>
+    </div>
+</div>

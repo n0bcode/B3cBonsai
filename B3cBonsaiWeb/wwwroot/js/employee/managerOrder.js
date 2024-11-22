@@ -63,11 +63,18 @@ function loadOrderDataTable() {
                     if (Array.isArray(data) && data.length > 0) {
                         return `<div class="avatar-list avatar-list-stacked">` +
                             data.map(sanPham => {
-                                // Check if hinhAnhs is defined and is an array, then access the first image
-                                const firstImage = Array.isArray(sanPham.sanPham.hinhAnhs) && sanPham.sanPham.hinhAnhs.length > 0 ? sanPham.sanPham.hinhAnhs[0]?.linkAnh : null;
-                                return firstImage ?
-                                    `<img src="${firstImage}" class="avatar rounded-circle" style="width: 40px; height: 40px;" alt="Product Image">` :
-                                    '<span></span>';
+                                if (sanPham.loaiDoiTuong == 'SanPham') {
+                                    // Check if hinhAnhs is defined and is an array, then access the first image
+                                    const firstImage = Array.isArray(sanPham.sanPham.hinhAnhs) && sanPham.sanPham.hinhAnhs.length > 0 ? sanPham.sanPham.hinhAnhs[0]?.linkAnh : null;
+                                    return firstImage ?
+                                        `<img src="${firstImage}" class="avatar rounded-circle" style="width: 40px; height: 40px;" alt="Product Image">` :
+                                        '<span></span>';
+                                } else {
+                                    const imageCombo = sanPham.combo.linkAnh.length > 0 ? sanPham.combo.linkAnh : null;
+                                    return imageCombo ?
+                                        `<img src="${imageCombo}" class="avatar rounded-circle" style="width: 40px; height: 40px;" alt="Combo Image">` :
+                                        '<span></span>';
+                                }
                             }).join('') +
                             `</div>`;
                     }

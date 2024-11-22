@@ -1,0 +1,109 @@
+﻿  @model IEnumerable<B3cBonsai.Models.SanPham>
+
+    <li class="menumega-li">
+        <div class="menu-product">
+            <ul class="menumegasup-ul">
+                @foreach (var product in Model.Take(3))
+                {
+                    <li class="menumegasup-li">
+                        <div class="product-menu-list">
+                            <div class="single-product-wrap">
+                                <div class="product-image">
+                                    <a asp-area="Customer"
+                                    asp-controller="ClientProduct"
+                                    asp-action="Detail"
+                                    asp-route-id="@product.Id"
+                                    class="pro-img">
+                                        <!-- Hình ảnh đầu tiên -->
+                                        <img onerror="this.src='/images/product/default.jpg'"
+                                        src="@(product.HinhAnhs.FirstOrDefault()?.LinkAnh ?? Url.Content("~/images/product/default.jpg"))"
+                                        class="img-fluid img1 mobile-img1"
+                                        alt="@product.TenSanPham"
+                                        style="width: 70px; height: 80px; border-radius: 5px; object-fit: cover;">
+                                        <!-- Hình ảnh thứ hai -->
+                                        <img onerror="this.src='/images/product/default.jpg'"
+                                        src="@(product.HinhAnhs.Skip(1).FirstOrDefault()?.LinkAnh ?? Url.Content("~/images/product/default.jpg"))"
+                                        class="img-fluid img2 mobile-img2"
+                                        alt="@product.TenSanPham"
+                                        style="width: 70px; height: 80px; border-radius: 5px; object-fit: cover;">
+                                    </a>
+                                </div>
+                                <div class="product-content">
+                                    <h6>
+                                        <a asp-area="Customer"
+                                        asp-controller="ClientProduct"
+                                        asp-action="Detail"
+                                        asp-route-id="@product.Id">
+                                            @product.TenSanPham
+                                        </a>
+                                    </h6>
+                                    <div class="price-box">
+                                        <span class="new-price">@String.Format("{0:0,0} VND", product.Gia).Replace(",", ".")</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                }
+            </ul>
+
+            <div class="menu-product-btn">
+                <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Index" class="menu-pro-link">
+                    Xem Thêm <i class="bi bi-chevron-right"></i>
+                </a>
+            </div>
+
+        </div>
+    </li>
+    <li class="menumega-li">
+        <div class="menu-product">
+            <ul class="menumegasup-ul">
+                @foreach (var product in Model.Skip(3).Take(3))
+                {
+                    <li class="menumegasup-li">
+                        <div class="product-menu-list">
+                            <div class="single-product-wrap">
+                                <div class="product-image">
+                                    <a asp-area="Customer"
+                                    asp-controller="ClientProduct"
+                                    asp-action="Detail"
+                                    asp-route-id="@product.Id"
+                                    class="pro-img">
+                                        <!-- Hình ảnh đầu tiên -->
+                                        <img onerror="this.src='/images/product/default.jpg'"
+                                        src="@(product.HinhAnhs.FirstOrDefault()?.LinkAnh ?? Url.Content("~/images/product/default.jpg"))"
+                                        class="img-fluid img1 mobile-img1"
+                                        alt="@product.TenSanPham"
+                                        style="width: 70px; height: 80px; border-radius: 5px; object-fit: cover;">
+                                        <!-- Hình ảnh thứ hai -->
+                                        <img onerror="this.src='/images/product/default.jpg'"
+                                        src="@(product.HinhAnhs.Skip(1).FirstOrDefault()?.LinkAnh ?? Url.Content("~/images/product/default.jpg"))"
+                                        class="img-fluid img2 mobile-img2"
+                                        alt="@product.TenSanPham"
+                                        style="width: 70px; height: 80px; border-radius: 5px; object-fit: cover;">
+                                    </a>
+                                </div>
+                                <div class="product-content">
+                                    <h6>
+                                        <a asp-area="Customer"
+                                        asp-controller="ClientProduct"
+                                        asp-action="Detail"
+                                        asp-route-id="@product.Id">
+                                            @product.TenSanPham
+                                        </a>
+                                    </h6>
+                                    <div class="price-box">
+                                        <span class="new-price">@String.Format("{0:0,0} VND", product.Gia).Replace(",", ".")</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                }
+
+            </ul>
+            <div class="menu-product-btn">
+                <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Index" class="menu-pro-link">Xem Thêm<i class="bi bi-chevron-right"></i></a>
+            </div>
+        </div>
+    </li>

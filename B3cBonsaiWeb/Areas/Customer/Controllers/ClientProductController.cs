@@ -9,6 +9,9 @@ using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using System.Globalization;
 using System.Text;
+using NuGet.ProjectModel;
+using B3cBonsai.Models.ViewModels;
+using B3cBonsai.Utility;
 
 namespace B3cBonsaiWeb.Areas.Customer.Controllers
 {
@@ -25,14 +28,27 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
             _logger = logger;
             _userManager = userManager;
         }
+
+        // Trang chủ: Hiển thị các sản phẩm mới nhất
         [HttpGet]
         public async Task<IActionResult> Index()
         {
+            // Lấy tất cả sản phẩm, bao gồm thông tin danh mục và hình ảnh liên quan
+            var products = await _unitOfWork.SanPham.GetAll(
+                includeProperties: "DanhMuc,HinhAnhs",
+                filter: x => x.TrangThai == true // Chỉ lấy sản phẩm có trạng thái là active
+            );
+
+            // Lấy 6 sản phẩm mới nhất
+            var latestProducts = products.OrderByDescending(x => x.NgayTao).Take(6).ToList();
+
+            // Truyền các sản phẩm mới nhất vào ViewBag để sử dụng trong view
+            ViewBag.LatestProducts = latestProducts;
+
             return View();
         }
-        [HttpGet]
 
-
+        // Danh sách sản phẩm có phân trang và bộ lọc
         [HttpGet]
         public async Task<IActionResult> ListPagedProduct(int? page, string? findText, int[]? selectedCategories, int? minPrice, int? maxPrice, bool? inStock, string? SortBy)
         {
@@ -53,7 +69,6 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
 
             if (!string.IsNullOrEmpty(findText))
             {
-                // Loại bỏ dấu từ findText và TenSanPham trước khi tìm kiếm
                 var normalizedFindText = RemoveDiacritics(findText.ToLower());
                 query = query.Where(x => RemoveDiacritics(x.TenSanPham.ToLower()).Contains(normalizedFindText));
             }
@@ -73,10 +88,11 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
                 query = inStock.Value ? query.Where(x => x.SoLuong > 0) : query.Where(x => x.SoLuong <= 0);
             }
 
+            // Sắp xếp theo yêu cầu
             switch (SortBy)
             {
                 case "best-selling":
-                    query = query.OrderByDescending(x => x.SoLuong); // Giả sử có thuộc tính SoldCount
+                    query = query.OrderByDescending(x => x.SoLuong); // Giả sử có trường SoLuong bán
                     break;
                 case "title-ascending":
                     query = query.OrderBy(x => x.TenSanPham);
@@ -91,24 +107,35 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
                     query = query.OrderByDescending(x => x.Gia);
                     break;
                 case "created-descending":
-                    query = query.OrderByDescending(x => x.NgayTao); // Giả sử có thuộc tính CreatedDate
+                    query = query.OrderByDescending(x => x.NgayTao);
                     break;
                 case "created-ascending":
                     query = query.OrderBy(x => x.NgayTao);
                     break;
-                default: // "manual"
+                default: // Sắp xếp theo ID (mặc định)
                     query = query.OrderBy(x => x.Id);
                     break;
             }
 
+            var queryCombo = (await _unitOfWork.ComboSanPham.GetAll()).ToList();
 
-
-            var listProduct = query;
-            var pagedListProduct = listProduct.OrderBy(x => x.Id).ToPagedList(pageNumber, pageSize);
+            List<SanPhamOrComboVM> sanPhamOrComboVMs = new List<SanPhamOrComboVM>();
+            // Gán dữ liệu hiển thị
+            foreach (SanPham sanPham in query)
+            {
+                sanPhamOrComboVMs.Add(new SanPhamOrComboVM() { SanPham = sanPham, LoaiDoiTuong =SD.ObjectDetailOrder_SanPham });
+            }
+            foreach (ComboSanPham comboSanPham in queryCombo)
+            {
+                sanPhamOrComboVMs.Add(new SanPhamOrComboVM() { ComboSanPham = comboSanPham, LoaiDoiTuong = SD.ObjectDetailOrder_Combo });
+            }
+            // Phân trang kết quả
+            /*var listProduct = query;*/
+            var pagedListProduct = sanPhamOrComboVMs.ToPagedList(pageNumber, pageSize);
             return PartialView(pagedListProduct);
         }
 
-
+        // Hàm loại bỏ dấu tiếng Việt trong chuỗi
         public static string RemoveDiacritics(string text)
         {
             var normalizedString = text.Normalize(NormalizationForm.FormD);
@@ -126,43 +153,43 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
             return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
         }
 
-
-
-        // Hiển thị chi tiết sản phẩm
+        // Chi tiết sản phẩm
         [HttpGet]
         public async Task<IActionResult> Detail(int id)
         {
+            // Lấy sản phẩm và các thông tin liên quan như danh mục, hình ảnh, bình luận, yêu thích
             var product = await _unitOfWork.SanPham.Get(
                 includeProperties: "DanhMuc,HinhAnhs,BinhLuans,DanhSachYeuThichs",
                 filter: x => x.TrangThai && x.Id == id
             );
 
-            // Lấy danh sách bình luận
+            if (product == null)
+            {
+                return NotFound(); // Sản phẩm không tìm thấy
+            }
+
+            // Lấy bình luận của sản phẩm
             var comments = await _unitOfWork.BinhLuan.GetAll(
                 filter: x => x.SanPhamId == id,
                 includeProperties: "NguoiDungUngDung"
             );
 
-
-
+            // Cập nhật mỗi bình luận với thông tin người dùng
             foreach (var comment in comments)
             {
-                // Nếu comment không có HoTen, lấy thông tin email và ảnh đại diện
                 if (comment.NguoiDungUngDung?.HoTen == null)
                 {
                     var user = await _userManager.FindByIdAsync(comment.NguoiDungUngDung.Id);
-                    comment.NguoiDungUngDung.HoTen = user?.UserName; // Hoặc lấy email
+                    comment.NguoiDungUngDung.HoTen = user?.UserName ?? "Anonymous"; // Nếu không có tên thì mặc định là "Anonymous"
                 }
             }
 
-            // Gửi cả thông tin sản phẩm và bình luận đến View
             ViewBag.Comments = comments;
 
-            // Cái này để thêm vào giỏ han
-            ViewBag.Product = product;
             return View(product);
         }
 
+        // Thêm bình luận cho sản phẩm
         [HttpPost]
         public async Task<IActionResult> AddComment(int productId, string commentContent)
         {
@@ -182,38 +209,36 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
 
                 var userId = User?.FindFirstValue(ClaimTypes.NameIdentifier);
 
-                // Cho phép NguoiDungId là null, nếu không có userId thì sẽ để giá trị null
                 var comment = new BinhLuan
                 {
                     SanPhamId = productId,
                     NoiDungBinhLuan = commentContent,
                     TinhTrang = true,
-                    NguoiDungId = userId // Nếu không có userId, giá trị này sẽ là null
+                    NguoiDungId = userId
                 };
 
                 _unitOfWork.BinhLuan.Add(comment);
                 _unitOfWork.Save();
 
-                // Lấy danh sách bình luận sau khi thêm bình luận mới
                 var comments = await _unitOfWork.BinhLuan.GetAll(
                     filter: x => x.SanPhamId == productId,
                     includeProperties: "NguoiDungUngDung"
                 );
 
-                // Trả về danh sách bình luận mới cùng thông báo thành công
                 return Json(new { success = true, message = "Bình luận đã được thêm thành công!", comments = comments });
             }
             catch (Exception ex)
             {
-                // Ghi lỗi chi tiết vào hệ thống log
                 _logger.LogError(ex, "Đã xảy ra lỗi khi xử lý bình luận.");
 
-                // Trả về thông báo lỗi cho người dùng
                 return Json(new { success = false, message = "Đã xảy ra lỗi. Vui lòng thử lại." });
             }
         }
 
-
-
+        // Xem nhanh thông tin sản phẩm
+        public async Task<IActionResult> QuickView(int? id)
+        {
+            return PartialView(await _unitOfWork.SanPham.Get(filter: sp => sp.Id == id, includeProperties: "DanhMuc,HinhAnhs"));
+        }
     }
 }

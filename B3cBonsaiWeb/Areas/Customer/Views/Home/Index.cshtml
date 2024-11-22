@@ -1,8 +1,9 @@
-﻿@model IEnumerable<B3cBonsai.Models.SanPham>
-
+﻿
 @{
     ViewData["Title"] = "Home Page";
 }
+
+
 
 <!-- offer-text start -->
 <section class="offer-text-area">
@@ -162,40 +163,8 @@
                     </div>
                 </div>
                 <div class="cat-slider owl-carousel owl-theme" id="category-slider">
-                    @foreach (var product in Model)
-                    {
-                        <div class="item">
-                            <div class="category-wrap banner-hover">
-                                <a asp-area="Customer"
-                                   asp-controller="ClientProduct"
-                                   asp-action="Detail"
-                                   asp-route-id="@product.Id"
-                                   class="cat-img-title banner-img">
-                                    <div class="cat-img" style="position: relative; display: flex; justify-content: center; align-items: center;">
-                                        <!-- Hình ảnh đầu tiên -->
-                                        <img onerror="this.src='/images/product/default.jpg'"
-                                             src="@(product.HinhAnhs.FirstOrDefault()?.LinkAnh ?? @Url.Content("~/images/product/default.jpg"))"
-                                             class="img-fluid img1 mobile-img1"
-                                             alt="p1"
-                                             id="image1"
-                                             style="width: 315px; height: 355px; border-radius: 5px; object-fit: cover;  transition: opacity 0.5s ease-in-out; opacity: 1;"
-                                             onmouseover="this.src='@(product.HinhAnhs.Skip(1).FirstOrDefault()?.LinkAnh ?? @Url.Content("~/images/product/default.jpg"))'"
-                                             onmouseout="this.src='@(product.HinhAnhs.FirstOrDefault()?.LinkAnh ?? @Url.Content("~/images/product/default.jpg"))'">
 
-                                    </div>
-                                    <div class="cat-content-info" style="text-align: center; margin-top: 10px;">
-                                        <div class="cat-content">
-                                            <h6><span class="cat-title">@product.TenSanPham</span></h6>
-                                            <span class="cat-count">@String.Format("{0:0,0} VND", product.Gia).Replace(",", ".")</span>
-                                        </div>
-                                        <div class="category-button" style="margin-top: 10px;">
-                                            <span class="button-block"><i class="feather-plus"></i></span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                    }
+                    @await Component.InvokeAsync("CategoryShop")
                 </div>
 
             </div>
@@ -264,8 +233,12 @@
         </div>
     </div>
 </section>
+
 <!-- home-info end -->
 @await Component.InvokeAsync("CommonProducts")
+
+
+
 <!-- banner start -->
 <section class="home-banner-grid section-ptb">
     <div class="container">
@@ -308,6 +281,7 @@
 <!-- banner end -->
 <!-- spring-service start -->
 <section class="spring-ser-area section-ptb" style="background-image: url('@Url.Content("~/customer/img/service/spring-bg.jpg")');">
+
     <div class="container">
         <div class="row">
             <div class="col">
