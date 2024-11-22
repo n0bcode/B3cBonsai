@@ -1,0 +1,15 @@
+﻿@using B3cBonsai.Models.ViewModels
+@model VnPaymentResponseModel
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Thanh toán thành công</title>
+</head>
+<body>
+    <h1>Thanh toán thành công!</h1>
+    <p>Mã đơn hàng: @Model.OrderId</p>
+    <p>Mã giao dịch: @Model.TransactionId</p>
+    <p>Trạng thái: @Model.VnPayResponseCode</p>
+</body>
+</html>

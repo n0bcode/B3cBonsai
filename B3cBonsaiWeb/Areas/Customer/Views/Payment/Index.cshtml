@@ -100,19 +100,37 @@
 
                     <div class="payment-methods">
                         <h2>Phương thức thanh toán</h2>
-                        <div class="payment-options">
-                            <label class="box-area">
-                                <input type="radio" name="paymentMethod" value="Card" id="paymentCard" />
-                                <span class="text">Thanh toán bằng thẻ</span>
-                            </label>
-                            <label class="box-area">
-                                <input type="radio" name="paymentMethod" value="Cash" id="paymentCash" />
-                                <span class="text">Thanh toán khi nhận hàng</span>
-                            </label>
-                        </div>
-                        <div class="checkout-btn">
-                            <button type="button" onclick="processPayment()" class="btn btn-style2">Đặt hàng</button>
-                        </div>
+
+                            <form>
+                                <ul class="order-form pro-submit">
+                                    <li class="label-info">
+                                        <label class="box-area">
+                                            <span class="text">Thanh toán bằng thẻ</span>
+                                            <input type="radio" name="paymentMethod" value="Card" id="paymentCard" class="cust-checkbox">
+                                            <span class="cust-check"></span>
+                                        </label>
+                                    </li>
+                                    <li class="label-info">
+                                        <label class="box-area">
+                                            <span class="text">Thanh toán khi nhận hàng</span>
+                                            <input type="radio" name="paymentMethod" value="Cash" id="paymentCash" class="cust-checkbox">
+                                            <span class="cust-check"></span>
+                                        </label>
+                                    </li>
+                                    <li class="pay-icon">
+                                        <a href="javascript:void(0)"><i class="fa-solid fa-credit-card"></i></a>
+                                        <a href="javascript:void(0)"><i class="fa-brands fa-cc-visa"></i></a>
+                                        <a href="javascript:void(0)"><i class="fa-brands fa-cc-paypal"></i></a>
+                                        <a href="javascript:void(0)"><i class="fa-brands fa-cc-mastercard"></i></a>
+                                    </li>
+                                </ul>
+                            </form>
+                            <div class="payment-methods">
+                                <div class="checkout-btn">
+                                    <button type="button" onclick="processPayment()" class="btn btn-style2">Đặt hàng</button>
+                                </div>
+                            </div>
+
 
                     </div>
                 </div>
