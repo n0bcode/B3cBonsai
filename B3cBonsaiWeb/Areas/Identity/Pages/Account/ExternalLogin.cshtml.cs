@@ -104,8 +104,10 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
             }
         }
 
-        public async Task<IActionResult> OnGetCallbackAsync(string returnUrl = null, string remoteError = null)
+        public async Task<IActionResult> OnGetCallbackAsync(string returnUrl = null, string remoteError = null, string? viewAccess = SD.CustomerAccess)
         {
+            HttpContext.Session.SetString(SD.ViewAccess, viewAccess);
+
             try
             {
                 returnUrl = returnUrl ?? Url.Content("~/");

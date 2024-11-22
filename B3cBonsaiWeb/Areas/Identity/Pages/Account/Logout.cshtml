@@ -4,6 +4,8 @@
     ViewData["Title"] = "Đăng xuất";
 }
 
+@if (HttpContext.Session.GetString(SD.ViewAccess) == SD.CustomerAccess)
+{
 <!-- breadcrumb start -->
 <section class="breadcrumb-area">
     <div class="container">
@@ -33,7 +35,7 @@
             <div class="col-md-12">
                 <!-- section title start -->
                 <div class="section-capture">
-                    <div class="section-title">
+                    <div class="section-title text-center">
                         <h2><span>@ViewData["Title"]</span></h2>
                     </div>
                 </div>
@@ -44,7 +46,7 @@
                         if (User.Identity?.IsAuthenticated ?? false)
                         {
                             <form class="form-inline d-flex justify-content-center" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
-                                <button type="submit" class="nav-link btn btn-link text-dark hover-">Nhấn vào đây để đăng xuất</button>
+                                <button type="submit" class="nav-link btn btn-link text-white bg-primary ">Nhấn vào đây để đăng xuất</button>
                             </form>
                         }
                         else
@@ -57,4 +59,64 @@
         </div>
     </div>
 </section>
-<!-- customer-page end -->
+    <!-- customer-page end -->
+}
+else
+{
+    Layout = null;
+    <partial name="_EmployeeHeaderCSS" />
+
+    <body class="vh-100">
+        <div class="authincation h-100">
+            <div class="container-fluid h-100">
+                <div class="row h-100">
+                    <!-- Nội dung đăng xuất -->
+                    <div class="col-lg-6 col-md-12 col-sm-12 mx-auto align-self-center">
+                        <section class="customer-page section-ptb">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-12 text-center">
+                                        <h1>@ViewData["Title"]</h1>
+                                        <hr />
+
+                                        <header class="row justify-content-center">
+                                            @{
+                                                if (User.Identity?.IsAuthenticated ?? false)
+                                                {
+                                                    <form class="form-inline d-flex justify-content-center" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
+                                                        <button type="submit" class="nav-link btn btn-link text-white bg-primary ">Nhấn vào đây để đăng xuất</button>
+                                                    </form>
+                                                }
+                                                else
+                                                {
+                                                    <p>Bạn đã đăng xuất thành công khỏi ứng dụng.</p>
+                                                }
+                                            }
+                                        </header>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+
+                    <!-- Phần giới thiệu hoặc hình ảnh -->
+                    <div class="col-xl-6 col-sm-6">
+                        <div class="pages-left h-100">
+                            <div class="login-content">
+                                <a href="/">
+                                    <img src="~/customer/img/logo/logo.png" alt="Logo Công Ty" class="logo" height="40">
+                                </a>
+                                <p>Chúng tôi khuyên bạn nên đăng xuất khi hoàn tất để bảo vệ tài khoản của mình.</p>
+                            </div>
+                            <div class="login-media text-center">
+                                <img src="~/employee/images/logout.png" alt="Đăng xuất">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <partial name="_EmployeeFooterJs" />
+    </body>
+
+}
