@@ -69,7 +69,7 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers
 
             if (ModelState.IsValid)
             {
-                _unitOfWork.NguoiDungUngDung.Update(nguoi);
+                _unitOfWork.NguoiDungUngDung.UpdateUserInfoAndImage(nguoi, null);
                 await _db.SaveChangesAsync();
 
                 var viewHtml = await this.RenderViewAsync("ProfileForm", nguoi, true);
@@ -93,26 +93,7 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers
 
                 var nguoi = await _unitOfWork.NguoiDungUngDung.Get(x => x.Id == User.FindFirstValue(ClaimTypes.NameIdentifier));
 
-                string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-                string nguoiDungUngDungPath = Path.Combine("images", "user", "user-" + nguoi.Id);
-                string finalPath = Path.Combine(wwwRootPath, nguoiDungUngDungPath);
-
-                if (!Directory.Exists(finalPath))
-                    Directory.CreateDirectory(finalPath);
-
-                if (!string.IsNullOrEmpty(nguoi.LinkAnh))
-                {
-                    string oldImagePath = Path.Combine(wwwRootPath, nguoi.LinkAnh);
-                    if (System.IO.File.Exists(oldImagePath))
-                        System.IO.File.Delete(oldImagePath);
-                }
-
-                using (var fileStream = new FileStream(Path.Combine(finalPath, fileName), FileMode.Create))
-                {
-                    file.CopyTo(fileStream);
-                }
-                nguoi.LinkAnh = '/' + Path.Combine(nguoiDungUngDungPath, fileName).Replace("\\", "/");
-                _unitOfWork.NguoiDungUngDung.Update(nguoi);
+                _unitOfWork.NguoiDungUngDung.UpdateUserInfoAndImage(nguoi, file);
                 _unitOfWork.Save();
                 return Json(new { success = true });
             }
