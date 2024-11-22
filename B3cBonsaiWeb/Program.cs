@@ -14,6 +14,7 @@ using Microsoft.Extensions.Options;
 using B3cBonsai.Utility;
 using B3cBonsai.Utility.Helper;
 using Microsoft.AspNetCore.Authentication.MicrosoftAccount;
+using B3cBonsaiWeb.Services;
 
 namespace B3cBonsaiWeb
 {
@@ -74,12 +75,20 @@ namespace B3cBonsaiWeb
                 });
 
             builder.Services.AddScoped<IDbInitializer, DbInitializer>();
+
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<IEmailSender, EmailSender>();
 
             builder.Services.AddHttpContextAccessor();
-
+            builder.Services.AddScoped<IVnPayService, VnPayService>();
+            builder.Services.AddSingleton<IVnPayService, VnPayService>();
             builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
+
+            builder.Services.AddSingleton<TelegramService>(sp =>
+            {
+                var token = builder.Configuration["TelegramBot:Token"];
+                return new TelegramService(token);
+            });
 
             var app = builder.Build();
 
@@ -106,6 +115,11 @@ namespace B3cBonsaiWeb
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
+
+            app.MapControllerRoute(
+            name: "customer",
+            pattern: "{area=Customer}/{controller=Payment}/{action=PaymentCallBack}/{id?}");
+
 
             app.Run();
 

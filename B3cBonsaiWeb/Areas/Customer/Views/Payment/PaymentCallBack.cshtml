@@ -1,0 +1,173 @@
+﻿
+@{
+    ViewData["Title"] = "PaymentCallBack";
+}
+<!-- breadcrumb start -->
+<section class="breadcrumb-area">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="breadcrumb-index">
+                    <!-- breadcrumb-list start -->
+                    <ul class="breadcrumb-ul">
+                        <li class="breadcrumb-li">
+                            <a class="breadcrumb-link" asp-area="Customer" asp-controller="Home" asp-action="Index">Trang chủ</a>
+                        </li>
+                        <li class="breadcrumb-li">
+                            <span class="breadcrumb-text">Hoàn tất đơn hàng</span>
+                        </li>
+                    </ul>
+                    <!-- breadcrumb-list end -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- breadcrumb end -->
+<!-- order-complete start -->
+<section class="order-complete section-ptb">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="order-area">
+                    <!-- order-price start -->
+                    <div class="order-price">
+                        <ul class="total-order">
+                            <li>
+                                <span class="order-no">Số đơn hàng: @Model.Id</span>
+                                <span class="order-date"><span>Ngày đặt hàng: @Model.NgayDatHang.ToString("dd/MM/yyyy HH:mm")</span></span>
+                            </li>
+                            <li>
+                                <span class="total-price">Tổng đơn hàng</span>
+                                <span class="amount">@Model.TongTienDonHang.ToString("N0") đ</span>
+                            </li>
+                            <li>
+                                <span class="status-label">Trạng thái đơn hàng:</span>
+                                @if (Model.TrangThaiDonHang == SD.StatusPending)
+                                {
+                                    <span class="text text-warning">Đang chờ xử lý</span>
+                                }
+                                else if (Model.TrangThaiDonHang == SD.StatusCancelled)
+                                {
+                                    <span class="text text-danger">Đã hủy</span>
+                                }
+                                else if (Model.TrangThaiDonHang == SD.StatusApproved)
+                                {
+                                    <span class="text text-success">Đã phê duyệt</span>
+                                }
+                                else
+                                {
+                                    <span class="text text-secondary">@Model.TrangThaiDonHang</span>
+                                }
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- order-price end -->
+                    <!-- order-details start -->
+                    <div class="order-details">
+                        <span class="text-success order-i"><i class="fa fa-check-circle"></i></span>
+                        <h4>Cảm ơn bạn đã đặt hàng</h4>
+                        <span class="order-s">Đơn hàng của bạn sẽ được xử lý và giao trong thời gian sớm nhất.</span>
+                        <a href="/Customer/Payment/TrackOrder?orderId=@Model.Id" class="tracking-link btn btn-style2">Chi tiết theo dõi</a>
+                    </div>
+                    <!-- order-details end -->
+                    <!-- order-items start -->
+                    @* <div class="order-items">
+                    <h6>Chi tiết sản phẩm trong đơn hàng</h6>
+                    <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                    <th>Sản phẩm</th>
+                    <th>Số lượng</th>
+                    <th>Giá</th>
+                    <th>Tổng</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var item in Model.ChiTietDonHangs)
+                    {
+                    <tr>
+                    <td>@(item.SanPham?.TenSanPham ?? item.Combo?.TenCombo ?? "Không xác định")</td>
+                    <td>@item.SoLuong</td>
+                    <td>@item.Gia.ToString("N0") đ</td>
+                    <td>@string.Format("{0:N0}", Convert.ToInt32(item.SoLuong) * Convert.ToInt32(item.Gia)) đ</td>
+
+                    </tr>
+                    }
+                    </tbody>
+
+                    </table>
+                    </div>
+                    *@
+                    <div class="order-delivery">
+                        <ul class="delivery-payment">
+                            <li class="delivery">
+                                <h6>Địa chỉ giao hàng</h6>
+                                <p><strong>Tên người nhận:</strong> @Model.TenNguoiNhan</p>
+                                <span class="order-span"><strong>Địa chỉ:</strong> @Model.Duong</span>
+                                <span class="order-span"><strong>Thành phố:</strong> @Model.ThanhPho</span>
+                                <span class="order-span"><strong>Tỉnh:</strong> @Model.Tinh</span>
+                                <span class="order-span"><strong>Mã bưu điện:</strong> @Model.MaBuuDien</span>
+                                <span class="order-span"><strong>Số điện thoại:</strong> @Model.SoDienThoai</span>
+                                <br />
+                            </li>
+                            <li class="pay">
+                                <h6>Tóm tắt thanh toán</h6>
+                                <p class="transition">Mã giao dịch: @Model.MaPhienThanhToan</p>
+                                <span class="order-span p-label">
+                                    <span class="n-price">Giá</span>
+                                    <span class="o-price">@Model.TongTienDonHang.ToString("N0") đ</span>
+                                </span>
+                                <span class="order-span p-label">
+                                    <span class="n-price">Phí vận chuyển</span>
+                                    <span class="o-price">8,000 đ</span>
+                                </span>
+                                <span class="order-span p-label">
+                                    <span class="n-price">Tổng cộng</span>
+                                    <span class="o-price">@((Model.TongTienDonHang + 8000).ToString("N0")) đ</span>
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                    @if (Model.TrangThaiDonHang == SD.StatusPending)
+                    {
+                        <button class="btn btn-danger" onclick="cancelOrder(@Model.Id)">Hủy đơn hàng</button>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function cancelOrder(orderId) {
+            Swal.fire({
+                title: 'Bạn có chắc chắn muốn hủy đơn hàng?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Đồng ý',
+                cancelButtonText: 'Hủy',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/Customer/Payment/CancelOrder',
+                        type: 'POST',
+                        data: { orderId: orderId },
+                        success: function (response) {
+                            if (response.success) {
+                                Swal.fire('Thành công!', response.message, 'success').then(() => {
+                                    location.reload();
+                                });
+                            } else {
+                                Swal.fire('Lỗi!', response.message, 'error');
+                            }
+                        },
+                        error: function () {
+                            Swal.fire('Lỗi!', 'Không thể kết nối đến máy chủ.', 'error');
+                        }
+                    });
+                }
+            });
+        }
+    </script>
+</section>
