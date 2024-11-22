@@ -32,7 +32,7 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
         }
 
         [HttpPost]
-        public IActionResult ProcessCashPayment(string receiverName, string receiverAddress, string city, string receiverPhone)
+        public async Task<IActionResult> ProcessCashPayment(string receiverName, string receiverAddress, string city, string receiverPhone)
         {
             string? maKhachHang = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var cartItems = HttpContext.Session.GetComplexData<List<GioHang>>(SD.SessionCart);
@@ -75,14 +75,28 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
 
             foreach (var item in cartItems)
             {
-                _unitOfWork.ChiTietDonHang.Add(new ChiTietDonHang
+                if (item.LoaiDoiTuong == SD.ObjectDetailOrder_Combo)
                 {
-                    DonHangId = donHang.Id,
-                    SanPhamId = item.MaSanPham,
-                    ComboId = item.MaCombo,
-                    SoLuong = item.SoLuong,
-                    Gia = (int)item.Gia
-                });
+                    _unitOfWork.ChiTietDonHang.Add(new ChiTietDonHang
+                    {
+                        DonHangId = donHang.Id,
+                        ComboId = item.MaCombo,
+                        Combo = await _unitOfWork.ComboSanPham.Get(filter: cbo => cbo.Id == item.Id),
+                        SoLuong = item.SoLuong,
+                        Gia = (int)item.Gia,
+                        LoaiDoiTuong = SD.ObjectDetailOrder_Combo
+                    });
+                } else { 
+                    _unitOfWork.ChiTietDonHang.Add(new ChiTietDonHang
+                    {
+                        DonHangId = donHang.Id,
+                        SanPhamId = item.MaSanPham,
+                        SanPham = await _unitOfWork.SanPham.Get(filter: cbo => cbo.Id == item.Id),
+                        SoLuong = item.SoLuong,
+                        Gia = (int)item.Gia,
+                        LoaiDoiTuong = SD.ObjectDetailOrder_SanPham
+                    });
+                }
             }
 
             _unitOfWork.Save();
