@@ -1,4 +1,5 @@
 ﻿using B3cBonsai.Models;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace B3cBonsai.DataAccess.Repository.IRepository
 {
     public interface INguoiDungUngDungRepository : IRepository<NguoiDungUngDung>
     {
-        public void Update(NguoiDungUngDung obj);
+        public Task UpdateUserInfoAndImage(NguoiDungUngDung obj, IFormFile? file);
     }
 }

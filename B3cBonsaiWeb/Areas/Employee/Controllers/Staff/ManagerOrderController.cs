@@ -2,6 +2,7 @@
 using B3cBonsai.DataAccess.Repository.IRepository;
 using B3cBonsai.Models;
 using B3cBonsai.Utility;
+using B3cBonsaiWeb.Services;
 using ClosedXML.Excel;
 using MailKit.Search;
 using Microsoft.AspNetCore.Authorization;
@@ -15,10 +16,14 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
     public class ManagerOrderController : Controller
     {
         private readonly ApplicationDbContext _context;
-        public ManagerOrderController(ApplicationDbContext unitOfWork)
+        private readonly TelegramService _telegramService;
+
+        public ManagerOrderController(ApplicationDbContext unitOfWork, TelegramService telegramService)
         {
-			_context = unitOfWork;
+            _context = unitOfWork;
+            _telegramService = telegramService;
         }
+
         [Authorize(Roles = $"{SD.Role_Admin},{SD.Role_Staff}")]
         public IActionResult Index()
         {
@@ -100,7 +105,6 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
                 return Json(new { success = false, title = "Lỗi", content = "Không tìm thấy đơn hàng!" });
             }
 
-            // Kiểm tra điều kiện ngược lại cho tình trạng thanh toán
             if ((donHang.TrangThaiThanhToan == SD.PaymentStatusApproved) ||
                 (donHang.TrangThaiThanhToan == SD.PaymentStatusRejected))
             {
@@ -110,8 +114,14 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
             donHang.TrangThaiThanhToan = statusPayment;
             _context.Update(donHang);
             await _context.SaveChangesAsync();
+
+            // Gửi thông báo đến Telegram
+            var message = $"Đơn hàng #{donHang.Id} của {donHang.TenNguoiNhan} đã thay đổi trạng thái thanh toán thành: {statusPayment}.";
+            await _telegramService.SendMessageAsync(838657228, message); // Thay `123456789` bằng Chat ID thực tế.
+
             return Json(new { success = true });
         }
+
 
         [HttpPost]
         public async Task<IActionResult> ChangeStatusOrder(int id, string statusOrder)
@@ -124,7 +134,6 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
                 return Json(new { success = false, title = "Lỗi", content = "Không tìm thấy đơn hàng!" });
             }
 
-            // Kiểm tra điều kiện ngược lại cho tình trạng đơn hàng
             if ((donHang.TrangThaiDonHang == SD.StatusShipped) ||
                 (donHang.TrangThaiDonHang == SD.StatusCancelled) ||
                 (donHang.TrangThaiDonHang == SD.StatusRefunded))
@@ -135,8 +144,14 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
             donHang.TrangThaiDonHang = statusOrder;
             _context.Update(donHang);
             await _context.SaveChangesAsync();
+
+            // Gửi thông báo đến Telegram
+            var message = $"Đơn hàng #{donHang.Id} của {donHang.TenNguoiNhan} đã thay đổi trạng thái đơn hàng thành: {statusOrder}.";
+            await _telegramService.SendMessageAsync(838657228, message); 
+
             return Json(new { success = true });
         }
+
 
         [HttpPost]
         public async Task<IActionResult> ExportOrders()

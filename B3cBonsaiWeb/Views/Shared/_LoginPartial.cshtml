@@ -63,7 +63,7 @@ else
     <!-- Hiển thị các tùy chọn Login và Register khi chưa đăng nhập -->
     <li class="side-wrap user-wrap">
         <div class="user-wrapper">
-            <a class="nav-link text-dark" id="login" asp-area="Identity" asp-page="/Account/Login" asp-route-typeUser="user">
+            <a class="nav-link text-dark" id="login" asp-area="Identity" asp-page="/Account/Login" asp-route-viewAccess="@SD.CustomerAccess">
                 <span class="user-icon"><i class="feather-user"></i></span>
             </a>
         </div>
@@ -74,7 +74,7 @@ else
     <!-- Wishlist và Cart vẫn hiển thị, nhưng có thể thêm logic ẩn/hiện nếu cần -->
     <li class="side-wrap wishlist-wrap">
         <div class="wishlist-wrapper">
-            <a asp-area="Identity" asp-page="/Account/Login" asp-route-typeUser="user">
+            <a asp-area="Identity" asp-page="/Account/Login" asp-route-viewAccess="@SD.CustomerAccess">
                 <span class="wishlist-icon-count">
                     <span class="wishlist-icon"><i class="feather-heart"></i></span>
                 </span>
@@ -83,7 +83,7 @@ else
     </li>
     <li class="side-wrap cart-wrap">
         <div class="cart-wrapper">
-            <a asp-area="Identity" asp-page="/Account/Login" asp-route-typeUser="user" class="js-cart-drawer">
+            <a asp-area="Identity" asp-page="/Account/Login" asp-route-viewAccess="@SD.CustomerAccess" class="js-cart-drawer">
                 <span class="cart-icon-count">
                     <span class="cart-icon"><i class="feather-shopping-bag"></i></span>
                 </span>

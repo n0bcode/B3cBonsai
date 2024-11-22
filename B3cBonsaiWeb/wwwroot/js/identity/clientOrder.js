@@ -18,7 +18,13 @@ $(document).ready(function () {
             { "data": "maDonHang", "className": "text-center" },
             { "data": "ngayDatHang", "className": "text-center" },
             { "data": "trangThai", "className": "text-center" },
-            { "data": "tongTien", "className": "text-right" }
+            { "data": "tongTien", "className": "text-right" },
+            {
+                "data": "maDonHang", "className": "text-right",
+                "render": function (data) {
+                    return `<a href="/Customer/Payment/OrderComplete?orderId=${data}">Chi tiết</a>`
+                }
+            }
         ],
         "language": {
             "sSearch": "Tìm kiếm:",

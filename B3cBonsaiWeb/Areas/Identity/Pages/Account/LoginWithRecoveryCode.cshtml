@@ -3,7 +3,8 @@
 @{
     ViewData["Title"] = "Xác thực mã phục hồi";
 }
-
+@if (HttpContext.Session.GetString(SD.ViewAccess) == SD.CustomerAccess)
+{
 <!-- breadcrumb start -->
 <section class="breadcrumb-area">
     <div class="container">
@@ -63,7 +64,69 @@
         </div>
     </div>
 </section>
-<!-- customer-page end -->
+    <!-- customer-page end -->
+}
+else
+{
+    Layout = null;
+    <partial name="_EmployeeHeaderCSS" />
+    <body class="vh-100">
+        <div class="authincation h-100">
+            <div class="container-fluid h-100">
+                <div class="row h-100">
+                    <!-- Nội dung xác thực mã phục hồi -->
+                    <div class="col-lg-6 col-md-12 col-sm-12 mx-auto align-self-center">
+                        <section class="customer-page section-ptb">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-12 row justify-content-center">
+                                        <h1>@ViewData["Title"]</h1>
+                                        <hr />
+                                        <p>
+                                            Bạn đã yêu cầu đăng nhập bằng mã phục hồi. Đăng nhập này sẽ không được ghi nhớ cho đến khi bạn cung cấp
+                                            mã từ ứng dụng xác thực tại lần đăng nhập sau hoặc tắt xác thực hai yếu tố và đăng nhập lại.
+                                        </p>
+
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <form method="post">
+                                                    <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                                                    <div class="form-floating mb-3">
+                                                        <input asp-for="Input.RecoveryCode" class="form-control" autocomplete="off" placeholder="Mã phục hồi" />
+                                                        <label asp-for="Input.RecoveryCode" class="form-label"></label>
+                                                        <span asp-validation-for="Input.RecoveryCode" class="text-danger"></span>
+                                                    </div>
+                                                    <button type="submit" class="w-100 btn btn-lg btn-primary">Đăng nhập</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+
+                    <!-- Phần giới thiệu hoặc hình ảnh -->
+                    <div class="col-xl-6 col-sm-6">
+                        <div class="pages-left h-100">
+                            <div class="login-content">
+                                <a href="/">
+                                    <img src="~/customer/img/logo/logo.png" alt="Logo Công Ty" class="logo" height="40">
+                                </a>
+                                <p>Mã phục hồi giúp bạn tiếp tục giữ an toàn cho tài khoản của mình khi không thể truy cập vào ứng dụng xác thực.</p>
+                            </div>
+                            <div class="login-media text-center">
+                                <img src="~/employee/images/recovery-code-authentication.png" alt="Xác thực mã phục hồi">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <partial name="_EmployeeFooterJs" />
+    </body>
+
+}
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
