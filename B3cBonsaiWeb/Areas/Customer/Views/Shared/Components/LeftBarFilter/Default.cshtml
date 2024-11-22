@@ -20,6 +20,7 @@
                                 <span class="check-name">@category.TenDanhMuc</span>
                                 <span class="count-check"> (@category.SanPhams.Count()) </span> <!-- Cập nhật số lượng theo nhu cầu -->
                                 <span class="cust-check"></span>
+
                             </label>
                         </li>
                     }
@@ -33,8 +34,8 @@
             <div class="filter-info">
                 <span class="shop-price">Giá cao nhất là @Model.MaximumPrice đ</span>
                 <facet-remove>
-                    <a asp-controller="Product" asp-action="Index" class="reset-text">Cài lại</a>
-                </facet-remove>
+                    <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Index" class="reset-text">Cài lại</a>
+                </facet-remove> 
             </div>
             <!-- Product-price start -->
             <div class="collapse price-wrap" id="collapse-3">
@@ -66,9 +67,9 @@
             <a href="#collapse-1" class="shop-title shop-title-lg" data-bs-toggle="collapse">Sẵn có</a>
             <div class="filter-info">
                 <span class="shop-price no-js-hidden">@Model.InStock đã chọn </span>
-                <facet-remove>
-                    <a asp-controller="Product" asp-action="Index" class="reset-text">Cài lại</a>
-                </facet-remove>
+                 <facet-remove>
+                    <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Index" class="reset-text">Cài lại</a>
+                </facet-remove> 
             </div>
             <div class="collapse filter-element" id="collapse-1">
                 <ul class="brand-ul scrollbar">
@@ -93,7 +94,7 @@
         </div>
         <div class="shop-sidebar sidebar-price">
             <label class="h6 text-bold pb-2" for="SortBy">Sắp xếp theo: </label>
-            <select class="nice-select form-select" name="SortBy" id="">
+            <select class="nice-select form-select" name="SortBy" id="SortBy">
                 <option value="manual">Nổi bật</option>
                 <option value="best-selling">Bán chạy nhất</option>
                 <option value="title-ascending">Theo bảng chữ cái, A-Z</option>
@@ -103,6 +104,7 @@
                 <option value="created-descending">Ngày, từ mới đến cũ</option>
                 <option value="created-ascending">Ngày, từ cũ đến mới</option>
             </select>
+
         </div>
         <div class="shop-sidebar sidebar-price">
             <button type="submit" class="form-control btn btn-success bg-gradient">Tìm kiếm</button>

@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿
+
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -36,6 +39,7 @@
     <!-- style css -->
     <link rel="stylesheet" type="text/css" href="~/customer/css/style.css" asp-append-version="true" />
 
+
     <!-- external link css -->
     <link ref="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
@@ -70,7 +74,7 @@
                                                     <span class="sp-link-title">Trang Chủ</span>
                                                     <span class="menu-arrow"><i class="fa fa-angle-down"></i></span>
                                                 </a>
-                                                <div class="menu-dropdown menu-single collapse" id="collapse-Home">
+                                                @* <div class="menu-dropdown menu-single collapse" id="collapse-Home">
                                                     <ul class="ul">
                                                         <li class="menusingle-li">
                                                             <a asp-area="Customer" asp-controller="Home" asp-action="Index" class="menusingle-title">
@@ -78,127 +82,46 @@
                                                             </a>
                                                         </li>
                                                     </ul>
-                                                </div>
+                                                </div> *@
                                             </li>
+
                                             <li class="menu-link">
                                                 <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Index" class="link-title">
                                                     <span class="sp-link-title">Cửa Hàng@* <span class="header-sale-lable">Sale</span> *@</span>
                                                     <span class="menu-arrow"><i class="fa fa-angle-down"></i></span>
                                                 </a>
-                                                <div class="menu-dropdown menu-mega collapse" id="colection">
-                                                    <ul class="ul container p-0">
-                                                        <li class="menumega-li">
-                                                            <a href="javascript:void(0)" class="menumega-title">
-                                                                <span class="sp-link-title">Trang sản phẩm</span>
-                                                                <span class="menu-arrow"><i class="fa-solid fa-angle-down"></i></span>
-                                                            </a>
-                                                            <div class="menumegasup-dropdown collapse">
-                                                                <ul class="menumegasup-ul">
-                                                                    <li class="menumegasup-li">
-                                                                        <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail" class="menumegasup-title">
-                                                                            <span class="sp-link-title">Bố cục sản phẩm</span>
-                                                                        </a>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                        </li>
-                                                        <li class="menumega-li">
-                                                            <div class="menu-product">
-                                                                <ul class="menumegasup-ul">
-                                                                    <li class="menumegasup-li">
-                                                                        <div class="product-menu-list">
-                                                                            <div class="single-product-wrap">
-                                                                                <div class="product-image">
-                                                                                    <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail" class="pro-img">
-                                                                                        <img class="img-fluid img1" src="~/customer/img/menu/home1-pro-banner1.jpg" alt="menupro-1">
-                                                                                        <img class="img-fluid img2" src="~/customer/img/menu/home1-pro-banner2.jpg" alt="menupro-2">
-                                                                                    </a>
-                                                                                </div>
-                                                                                <div class="product-content">
-                                                                                    <h6><a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail">Cây hồ cầm</a></h6>
-                                                                                    <div class="price-box">
-                                                                                        <span class="new-price">Rs. 25.00</span>
-                                                                                        <span class="old-price">Rs. 45.00</span>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </li>
-                                                                    <li class="menumegasup-li">
-                                                                        <div class="product-menu-list">
-                                                                            <div class="single-product-wrap">
-                                                                                <div class="product-image">
-                                                                                    <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail" class="pro-img">
-                                                                                        <img class="img-fluid img1" src="~/customer/img/menu/home1-pro-banner3.jpg" alt="menupro-1">
-                                                                                        <img class="img-fluid img2" src="~/customer/img/menu/home1-pro-banner4.jpg" alt="menupro-2">
-                                                                                    </a>
-                                                                                </div>
-                                                                                <div class="product-content">
-                                                                                    <h6><a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail">Majesty palm</a></h6>
-                                                                                    <div class="price-box">
-                                                                                        <span class="new-price">Rs. 11.00</span>
-                                                                                        <span class="old-price">Rs. 19.00</span>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </li>
-                                                                </ul>
-                                                                <div class="menu-product-btn">
-                                                                    <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Index" class="menu-pro-link">Xem Thêm<i class="bi bi-chevron-right"></i></a>
+
+
+                                              
+                                                    <div class="menu-dropdown menu-mega collapse" id="colection">
+                                                        <ul class="ul container p-0">
+                                                            <li class="menumega-li">
+                                                                <a href="javascript:void(0)" class="menumega-title">
+                                                                    <span class="sp-link-title">Trang sản phẩm</span>
+                                                                    <span class="menu-arrow"><i class="fa-solid fa-angle-down"></i></span>
+                                                                </a>
+                                                                <div class="menumegasup-dropdown collapse">
+                                                                    <ul class="menumegasup-ul">
+                                                                        <li class="menumegasup-li">
+                                                                            <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail" class="menumegasup-title">
+                                                                                <span class="sp-link-title">Bố cục sản phẩm</span>
+                                                                            </a>
+                                                                        </li>
+                                                                    </ul>
                                                                 </div>
-                                                            </div>
-                                                        </li>
-                                                        <li class="menumega-li">
-                                                            <div class="menu-product">
-                                                                <ul class="menumegasup-ul">
-                                                                    <li class="menumegasup-li">
-                                                                        <div class="product-menu-list">
-                                                                            <div class="single-product-wrap">
-                                                                                <div class="product-image">
-                                                                                    <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail" class="pro-img">
-                                                                                        <img class="img-fluid img1" src="~/customer/img/menu/home1-pro-banner5.jpg" alt="menupro-1">
-                                                                                        <img class="img-fluid img2" src="~/customer/img/menu/home1-pro-banner6.jpg" alt="menupro-2">
-                                                                                    </a>
-                                                                                </div>
-                                                                                <div class="product-content">
-                                                                                    <h6><a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail">Wheat grass</a></h6>
-                                                                                    <div class="price-box">
-                                                                                        <span class="new-price">Rs. 21.00</span>
-                                                                                        <span class="old-price">Rs. 25.00</span>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </li>
-                                                                    <li class="menumegasup-li">
-                                                                        <div class="product-menu-list">
-                                                                            <div class="single-product-wrap">
-                                                                                <div class="product-image">
-                                                                                    <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail" class="pro-img">
-                                                                                        <img class="img-fluid img1" src="~/customer/img/menu/home1-pro-banner7.jpg" alt="menupro-1">
-                                                                                        <img class="img-fluid img2" src="~/customer/img/menu/home1-pro-banner8.jpg" alt="menupro-2">
-                                                                                    </a>
-                                                                                </div>
-                                                                                <div class="product-content">
-                                                                                    <h6><a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail">Ears cactus</a></h6>
-                                                                                    <div class="price-box">
-                                                                                        <span class="new-price">Rs. 69.00</span>
-                                                                                        <span class="old-price">Rs. 89.00</span>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </li>
-                                                                </ul>
-                                                                <div class="menu-product-btn">
-                                                                    <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Index" class="menu-pro-link">Xem Thêm<i class="bi bi-chevron-right"></i></a>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </li>
+                                                            </li>
+
+                                                        <!-- home-info end -->
+                                                        
+                                                            @await Component.InvokeAsync("CommonLayout")
+                                                        
+
+
+                                                            
+                                                        </ul>
+                                                    </div>
+                                                
+                                            </li> 
                                             <li class="menu-link">
                                                 <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Index" class="link-title">
                                                     <span class="sp-link-title">Bộ sưu tập</span>
@@ -1428,6 +1351,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="~/js/customer/cart.js" asp-append-version="true"></script>
     <script src="~/js/customer/wishlist.js" asp-append-version="true"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

@@ -20,35 +20,9 @@ namespace B3cBonsaiWeb.Controllers
         // Hiển thị danh sách sản phẩm
         public async Task<IActionResult> Index()
         {
-            // Lấy danh sách sản phẩm theo trạng thái
-            var products = await _unitOfWork.SanPham.GetAll(
-                includeProperties: "DanhMuc,HinhAnhs",
-                filter: x => x.TrangThai
-            );
-
-            // Lấy 12 sản phẩm mới nhất dựa vào NgayTao
-            var latestProducts = products
-                .OrderByDescending(x => x.NgayTao) // Sắp xếp giảm dần theo ngày tạo
-                .Take(12) // Lấy 12 sản phẩm mới nhất
-                .ToList();
-
-            return View(latestProducts);
+            return View();
         }
 
-
-
-        // Hiển thị chi tiết sản phẩm
-        public async Task<IActionResult> Detail(int id)
-        {
-            var product = await _unitOfWork.SanPham.Get(includeProperties: "DanhMuc,HinhAnhs,BinhLuans,DanhSachYeuThichs", filter: x => x.TrangThai && x.Id == id);
-
-            if (product == null)
-            {
-                return NotFound();
-            }
-
-            return View(product);
-        }
 
 
         #region//Other View

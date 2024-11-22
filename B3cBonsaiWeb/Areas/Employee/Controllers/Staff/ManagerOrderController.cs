@@ -83,7 +83,11 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
                         {
                             TenSanPham = ctdh.SanPham.TenSanPham,
                             HinhAnhs = ctdh.SanPham.HinhAnhs.Select(ha => new HinhAnhSanPham { LinkAnh = ha.LinkAnh }).ToList()
-                        }
+                        },
+                        LoaiDoiTuong = ctdh.LoaiDoiTuong,
+                        Combo = ctdh.Combo,
+                        SanPhamId = ctdh.SanPhamId,
+                        ComboId = ctdh.ComboId
                     }).ToList()
                 })
                 .ToList();
