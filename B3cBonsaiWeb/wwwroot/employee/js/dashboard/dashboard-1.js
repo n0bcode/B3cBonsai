@@ -363,20 +363,51 @@
 		}
 
 		var overiewChart = function () {
+			var fetchDataByStatus = function (status) {
+				switch (status) {
+					case "SD.StatusInProcess":
+						return [15, 25, 35, 45, 20, 30, 25, 15, 20, 10, 5, 15];
+					case "SD.StatusPending":
+						return [10, 20, 30, 40, 10, 15, 10, 5, 15, 10, 10, 20];
+					case "SD.StatusCancelled":
+						return [5, 10, 15, 20, 5, 5, 10, 5, 10, 5, 5, 10];
+					case "SD.StatusShipped":
+						return [20, 30, 40, 50, 25, 35, 30, 20, 25, 15, 20, 25];
+					case "SD.StatusApproved":
+						return [25, 35, 45, 55, 30, 40, 35, 25, 30, 20, 25, 30];
+					default:
+						return [];
+				}
+			};
+
 			var options = {
-				series: [{
-					name: 'Number of Projects',
-					type: 'column',
-					data: [75, 85, 72, 100, 50, 100, 80, 75, 95, 35, 75, 100]
-				}, {
-					name: 'Revenue',
-					type: 'area',
-					data: [44, 65, 55, 75, 45, 55, 40, 60, 75, 45, 50, 42]
-				}, {
-					name: 'Active Projects',
-					type: 'line',
-					data: [30, 25, 45, 30, 25, 35, 20, 45, 35, 20, 35, 20]
-				}],
+				series: [
+					{
+						name: 'In Process',
+						type: 'column',
+						data: fetchDataByStatus("SD.StatusInProcess")
+					},
+					{
+						name: 'Pending',
+						type: 'area',
+						data: fetchDataByStatus("SD.StatusPending")
+					},
+					{
+						name: 'Cancelled',
+						type: 'line',
+						data: fetchDataByStatus("SD.StatusCancelled")
+					},
+					{
+						name: 'Shipped',
+						type: 'line',
+						data: fetchDataByStatus("SD.StatusShipped")
+					},
+					{
+						name: 'Approved',
+						type: 'line',
+						data: fetchDataByStatus("SD.StatusApproved")
+					}
+				],
 				chart: {
 					height: 300,
 					type: 'line',
@@ -386,9 +417,9 @@
 					},
 				},
 				stroke: {
-					width: [0, 1, 1],
+					width: [0, 1, 1, 1, 1],
 					curve: 'straight',
-					dashArray: [0, 0, 5]
+					dashArray: [0, 0, 0, 0, 0]
 				},
 				legend: {
 					fontSize: '13px',
@@ -403,66 +434,17 @@
 						borderRadius: 6,
 					}
 				},
-
 				fill: {
-					//opacity: [0.1, 0.1, 1],
 					type: 'gradient',
 					gradient: {
 						inverseColors: false,
 						shade: 'light',
 						type: "vertical",
-						/* opacityFrom: 0.85,
-						opacityTo: 0.55, */
-						colorStops: [
-							[
-								{
-									offset: 0,
-									color: 'var(--primary)',
-									opacity: 1
-								},
-								{
-									offset: 100,
-									color: 'var(--primary)',
-									opacity: 1
-								}
-							],
-							[
-								{
-									offset: 0,
-									color: '#3AC977',
-									opacity: 1
-								},
-								{
-									offset: 0.4,
-									color: '#3AC977',
-									opacity: .15
-								},
-								{
-									offset: 100,
-									color: '#3AC977',
-									opacity: 0
-								}
-							],
-							[
-								{
-									offset: 0,
-									color: '#FF5E5E',
-									opacity: 1
-								},
-								{
-									offset: 100,
-									color: '#FF5E5E',
-									opacity: 1
-								}
-							],
-						],
 						stops: [0, 100, 100, 100]
 					}
 				},
-				colors: ["var(--primary)", "#3AC977", "#FF5E5E"],
-				labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul',
-					'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-				],
+				colors: ["#007bff", "#3AC977", "#FF5E5E", "#00C7E6", "#FFC107"],
+				labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
 				markers: {
 					size: 0
 				},
@@ -491,10 +473,9 @@
 					y: {
 						formatter: function (y) {
 							if (typeof y !== "undefined") {
-								return y.toFixed(0) + " points";
+								return y.toFixed(0) + " items";
 							}
 							return y;
-
 						}
 					}
 				}
@@ -503,56 +484,39 @@
 			var chart = new ApexCharts(document.querySelector("#overiewChart"), options);
 			chart.render();
 
+			// Tương tự như cũ, cập nhật theo tab
 			$(".mix-chart-tab .nav-link").on('click', function () {
 				var seriesType = $(this).attr('data-series');
-				var columnData = [];
-				var areaData = [];
-				var lineData = [];
-				switch (seriesType) {
-					case "week":
-						columnData = [75, 85, 72, 100, 50, 100, 80, 75, 95, 35, 75, 100];
-						areaData = [44, 65, 55, 75, 45, 55, 40, 60, 75, 45, 50, 42];
-						lineData = [30, 25, 45, 30, 25, 35, 20, 45, 35, 20, 35, 20];
-						break;
-					case "month":
-						columnData = [20, 50, 80, 52, 10, 80, 50, 30, 95, 10, 60, 85];
-						areaData = [40, 25, 85, 45, 85, 25, 95, 65, 45, 45, 20, 12];
-						lineData = [65, 45, 25, 65, 45, 25, 75, 35, 65, 75, 15, 65];
-
-						break;
-					case "year":
-						columnData = [30, 20, 80, 52, 10, 90, 50, 30, 95, 20, 60, 85];
-						areaData = [40, 25, 40, 45, 85, 25, 50, 65, 45, 60, 20, 12];
-						lineData = [65, 45, 30, 65, 45, 25, 75, 40, 65, 50, 15, 65];
-						break;
-					case "all":
-						columnData = [20, 50, 80, 60, 10, 80, 50, 40, 95, 20, 60, 85];
-						areaData = [40, 25, 30, 45, 85, 25, 95, 65, 50, 45, 20, 12];
-						lineData = [65, 45, 25, 65, 45, 25, 30, 35, 65, 75, 15, 65];
-						break;
-					default:
-						columnData = [75, 80, 72, 100, 50, 100, 80, 30, 95, 35, 75, 100];
-						areaData = [44, 65, 55, 75, 45, 55, 40, 60, 75, 45, 50, 42];
-						lineData = [30, 25, 45, 30, 25, 35, 20, 45, 35, 30, 35, 20];
-				}
 				chart.updateSeries([
 					{
-						name: "Number of Projects",
+						name: "In Process",
 						type: 'column',
-						data: columnData
-					}, {
-						name: 'Revenue',
+						data: fetchDataByStatus("SD.StatusInProcess")
+					},
+					{
+						name: "Pending",
 						type: 'area',
-						data: areaData
-					}, {
-						name: 'Active Projects',
+						data: fetchDataByStatus("SD.StatusPending")
+					},
+					{
+						name: "Cancelled",
 						type: 'line',
-						data: lineData
+						data: fetchDataByStatus("SD.StatusCancelled")
+					},
+					{
+						name: "Shipped",
+						type: 'line',
+						data: fetchDataByStatus("SD.StatusShipped")
+					},
+					{
+						name: "Approved",
+						type: 'line',
+						data: fetchDataByStatus("SD.StatusApproved")
 					}
 				]);
-			})
-
+			});
 		}
+
 		var earningChart = function () {
 
 			var chartWidth = $("#earningChart").width();

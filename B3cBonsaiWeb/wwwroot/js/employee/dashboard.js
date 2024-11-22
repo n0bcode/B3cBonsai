@@ -54,6 +54,52 @@ function loadDataTable() {
             "infoFiltered": "(lọc từ _MAX_ mục)"
         }
     });
+    dataTableOrder = $('#orderDashboard').DataTable({
+        "ajax": {
+            url: '/Employee/Dashboard/DonHangList',
+            dataSrc: 'data'
+        },
+        "columns": [
+            {
+                data: 'ngayDatHang',
+                "width": "20%",
+                "render": function (data) {
+                    return new Date(data).toLocaleDateString();
+                }
+            },
+            {
+                data: null,
+                "render": function (data) {
+                    switch (data.trangThaiDonHang) {
+                        case 'SD.StatusInProcess':
+                            return 'Đang xử lý';
+                        case 'SD.StatusPending':
+                            return 'Đang chờ';
+                        case 'SD.StatusCancelled':
+                            return 'Đã hủy';
+                        case 'SD.StatusShipped':
+                            return 'Đã giao';
+                        case 'SD.StatusApproved':
+                            return 'Đã duyệt';
+                        default:
+                            return 'Không xác định';
+                    }
+                },
+                "width": "20%"
+            },
+            {
+                data: 'soLuong',
+                "width": "20%"
+            },
+            {
+                data: null,
+                "render": function (data) {
+                    return new Intl.NumberFormat().format(data.tongTien) + ' VND';
+                },
+                "width": "20%"
+            },
+        ],
+    });
 
     dataTableProduct = $('#productDashboard').DataTable({
         "ajax": {
