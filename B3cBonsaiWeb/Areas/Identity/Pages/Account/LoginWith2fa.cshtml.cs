@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using B3cBonsai.Models;
+using B3cBonsai.Utility;
 
 namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
 {
@@ -74,8 +75,10 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
             public bool RememberMachine { get; set; }
         }
 
-        public async Task<IActionResult> OnGetAsync(bool rememberMe, string returnUrl = null)
+        public async Task<IActionResult> OnGetAsync(bool rememberMe, string returnUrl = null, string? viewAccess = SD.CustomerAccess)
         {
+            HttpContext.Session.SetString(SD.ViewAccess, viewAccess);
+
             // Ensure the user has gone through the username & password screen first
             var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
 

@@ -6,6 +6,7 @@ using System;
 using System.Text;
 using System.Threading.Tasks;
 using B3cBonsai.Models;
+using B3cBonsai.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -32,8 +33,10 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
         [TempData]
         public string StatusMessage { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(string userId, string email, string code)
+        public async Task<IActionResult> OnGetAsync(string userId, string email, string code, string? viewAccess = SD.CustomerAccess)
         {
+            HttpContext.Session.SetString(SD.ViewAccess, viewAccess);
+
             if (userId == null || email == null || code == null)
             {
                 return RedirectToPage("/Index");

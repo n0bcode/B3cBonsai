@@ -6,6 +6,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using B3cBonsai.Models;
+using B3cBonsai.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -59,8 +60,10 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
             public string RecoveryCode { get; set; }
         }
 
-        public async Task<IActionResult> OnGetAsync(string returnUrl = null)
+        public async Task<IActionResult> OnGetAsync(string returnUrl = null, string? viewAccess = SD.CustomerAccess)
         {
+            HttpContext.Session.SetString(SD.ViewAccess, viewAccess);
+
             // Ensure the user has gone through the username & password screen first
             var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
             if (user == null)

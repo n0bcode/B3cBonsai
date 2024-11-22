@@ -2,6 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
+using B3cBonsai.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -18,8 +19,9 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
-        public void OnGet()
+        public void OnGet(string? viewAccess = SD.CustomerAccess)
         {
+            HttpContext.Session.SetString(SD.ViewAccess, viewAccess);
         }
     }
 }

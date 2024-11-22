@@ -3,7 +3,8 @@
 @{
     ViewData["Title"] = "Gửi lại xác nhận email";
 }
-
+@if (HttpContext.Session.GetString(SD.ViewAccess) == SD.CustomerAccess)
+{
 <!-- breadcrumb start -->
 <section class="breadcrumb-area">
     <div class="container">
@@ -60,6 +61,63 @@
     </div>
 </section>
 <!-- customer-page end -->
+} else {
+
+    Layout = null;
+    <partial name="_EmployeeHeaderCSS" />
+    <body class="vh-100">
+        <div class="authincation h-100">
+            <div class="container-fluid h-100">
+                <div class="row h-100">
+                    <!-- Nội dung gửi lại xác nhận email -->
+                    <div class="col-lg-6 col-md-12 col-sm-12 mx-auto align-self-center">
+                        <section class="customer-page section-ptb">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-12 row justify-content-center text-center">
+                                        <h1>@ViewData["Title"]</h1>
+                                        <h2>Vui lòng nhập email của bạn.</h2>
+                                        <hr />
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <form method="post">
+                                                    <div asp-validation-summary="All" class="text-danger" role="alert"></div>
+                                                    <div class="form-floating mb-3">
+                                                        <input asp-for="Input.Email" class="form-control" aria-required="true" placeholder="name@example.com" />
+                                                        <label asp-for="Input.Email" class="form-label"></label>
+                                                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                                                    </div>
+                                                    <button type="submit" class="w-100 btn btn-lg btn-primary">Gửi lại</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+
+                    <!-- Phần giới thiệu hoặc hình ảnh -->
+                    <div class="col-xl-6 col-sm-6">
+                        <div class="pages-left h-100">
+                            <div class="login-content">
+                                <a href="/">
+                                    <img src="~/customer/img/logo/logo.png" alt="Logo Công Ty" class="logo" height="40">
+                                </a>
+                                <p>Chúng tôi sẽ gửi lại một liên kết xác nhận đến email của bạn để bạn có thể kích hoạt tài khoản.</p>
+                            </div>
+                            <div class="login-media text-center">
+                                <img src="~/employee/images/resend-email.png" alt="Gửi lại xác nhận email">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <partial name="_EmployeeFooterJs" />
+    </body>
+
+}
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
