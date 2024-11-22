@@ -17,7 +17,7 @@
                         <div class="cart-item-info">
                             <div class="cart-item-image">
                                 <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail">
-                                    <img src="~/customer/img/menu/home1-pro-banner1.jpg" class="img-fluid" alt="cart-1">
+                                    <img src="@item.LinkAnh" onerror="this.src='/images/product/default.jpg'" class="img-fluid" alt="cart-1">
                                 </a>
                             </div>
                             <div class="cart-item-details">

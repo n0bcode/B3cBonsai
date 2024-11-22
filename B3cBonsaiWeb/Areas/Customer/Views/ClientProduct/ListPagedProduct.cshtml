@@ -19,80 +19,59 @@
             };
 }
 
+<style>
+    .alert.alert-info {
+        text-align: center; /* Center the text */
+        background-color: #557e30; /* Change the background color (this is the default info color, you can adjust it) */
+        color: white; /* Change text color to white for better visibility */
+        border-radius: 5px; /* Optional: round the corners of the alert box */
+        padding: 15px; /* Optional: adjust padding for better spacing */
+        font-weight: bold; /* Optional: make the text bold */
+        margin-left: 305px;
+        width: 350px;
+    }
+</style>
+
 <div class="collection-category">
     <div class="row">
         <div class="col">
             <div class="collection-wrap">
                 <ul class="product-view-ul">
-                    @foreach (var product in Model)
+                    @if (!Model.Any())
                     {
                         <li class="pro-item-li">
-                            <div class="single-product-wrap">
-                                <div class="product-image banner-hover">
-                                    <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail" asp-route-id="@product.Id" class="pro-img">
-                                        <img onerror="this.src='/images/product/default.jpg'" src="@(product.HinhAnhs.FirstOrDefault()?.LinkAnh ?? @Url.Content("~/images/product/default/jpg") )" class="img-fluid img1 mobile-img1" alt="p1" style="width: 300px; height: 300px; object-fit: contain;">
-                                        <img onerror="this.src='/images/product/default.jpg'" src="@(product.HinhAnhs.Skip(1).FirstOrDefault()?.LinkAnh ?? @Url.Content("~/images/product/default/jpg") )" class="img-fluid img2 mobile-img2" alt="p2" style="width: 300px; height: 300px; object-fit: contain;">
-
-                                    </a>
-                                    <div class="product-action product-cart-btn">
-                                        <a onclick="addToCart(@product.Id,null,1,'@SD.ObjectDetailOrder_SanPham')" href="#add-to-cart" class="add-to-cart">
-                                            <span class="cart-title">
-                                                <span class="add-c-title">
-                                                    <span class="tooltip-text">Thêm vào giỏ</span>
-                                                    <span class="cart-icon"><i class="feather-shopping-bag"></i></span>
-                                                    <span class="add-title">Thêm vào giỏ</span>
-                                                </span>
-                                            </span>
+                            <div class="alert alert-info">
+                                Không có sản phẩm nào phù hợp với tiêu chí tìm kiếm của bạn.
+                            </div>
+                        </li>
+                    }
+                    else
+                    {
+                        @foreach (var product in Model)
+                        {
+                            <li class="pro-item-li">
+                                <div class="single-product-wrap">
+                                    <div class="product-image banner-hover">
+                                        <a asp-area="Customer"
+                                           asp-controller="ClientProduct"
+                                           asp-action="Detail"
+                                           asp-route-id="@product.Id"
+                                           class="pro-img">
+                                            <!-- Hình ảnh đầu tiên -->
+                                            <img onerror="this.src='/images/product/default.jpg'"
+                                                 src="@(product.HinhAnhs.FirstOrDefault()?.LinkAnh ?? @Url.Content("~/images/product/default.jpg"))"
+                                                 class="img-fluid img1 mobile-img1"
+                                                 alt="p1"
+                                                 style="width: 320px; height: 250px; border-radius: 5px; object-fit: cover;">
+                                            <!-- Hình ảnh thứ hai -->
+                                            <img onerror="this.src='/images/product/default.jpg'"
+                                                 src="@(product.HinhAnhs.Skip(1).FirstOrDefault()?.LinkAnh ?? @Url.Content("~/images/product/default.jpg"))"
+                                                 class="img-fluid img2 mobile-img2"
+                                                 alt="p2"
+                                                 style="width: 320px; height: 250px; border-radius: 5px; object-fit: cover;">
                                         </a>
-                                    </div>
-                                    <div class="product-action" >
-                                        <a class="wishlist" data-id="@product.Id" data-type="@SD.ObjectLike_SanPham">
-                                             <span class="tooltip-text">Yêu thích</span>
-                                            <span class="pro-action-icon likeAction"><i class="feather-heart"></i></span>
-                                        </a>
-                                        <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview">
-                                            <span class="tooltip-text">
-                                                Xem nhanh
-                                            </span>
-                                            <span class="pro-action-icon"><i class="feather-eye"></i></span>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="product-caption">
-                                    <div class="product-content">
-                                        <div class="product-title">
-                                            <div class="pro-title-price">
-                                                <h6><a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail">@product.TenSanPham</a></h6>
-                                                <div class="product-price">
-                                                    <div class="price-box">
-                                                        <span class="new-price">@String.Format("{0:0,0} VND", product.Gia).Replace(",", ".")</span>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                            <div class="product-name">
-                                                <a class="product-type" asp-area="Customer" asp-controller="ClientProduct" asp-action="Index">Số lượng: @product.SoLuong</a>
-                                                <a class="product-vendor" asp-area="Customer" asp-controller="ClientProduct" asp-action="Index">B3cBonsai</a>
-                                            </div>
-                                        </div>
-                                        <div class="product-ratting">
-                                            <span class="pro-ratting">
-                                                <i class="fa-regular fa-star"></i>
-                                                <i class="fa-regular fa-star"></i>
-                                                <i class="fa-regular fa-star"></i>
-                                                <i class="fa-regular fa-star"></i>
-                                                <i class="fa-regular fa-star"></i>
-                                            </span>
-                                        </div>
-                                        <div class="product-description">
-                                            <p>Mô tả: @product.MoTa</p>
-                                        </div>
-                                        <div class="product-action">
-                                            <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview">
-                                                <span class="tooltip-text">Xem nhanh</span>
-                                                <span class="pro-action-icon"><i class="feather-eye"></i></span>
-                                            </a>
-                                            <a href="#add-to-cart" class="add-to-cart">
+                                        <div class="product-action product-cart-btn">
+                                            <a onclick="addToCart(@product.Id,null,1,'@SD.ObjectDetailOrder_SanPham')" href="#add-to-cart" class="add-to-cart">
                                                 <span class="cart-title">
                                                     <span class="add-c-title">
                                                         <span class="tooltip-text">Thêm vào giỏ</span>
@@ -101,18 +80,234 @@
                                                     </span>
                                                 </span>
                                             </a>
-                                            <a href="/Customer/Wishlist/Index" class="wishlist">
+                                        </div>
+                                        <div class="product-action">
+                                            <a class="wishlist" data-id="@product.Id" data-type="@SD.ObjectLike_SanPham">
                                                 <span class="tooltip-text">Yêu thích</span>
-                                                <span class="pro-action-icon"><i class="feather-heart"></i></span>
+                                                <span class="pro-action-icon likeAction"><i class="feather-heart"></i></span>
                                             </a>
+                                            <!-- Nút Xem nhanh -->
+                                            <a href="#quickview-@product.Id" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview-@product.Id">
+                                                <span class="tooltip-text">Xem nhanh</span>
+                                                <span class="pro-action-icon"><i class="feather-eye"></i></span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="product-caption">
+                                        <div class="product-content">
+                                            <div class="product-title">
+                                                <div class="pro-title-price">
+                                                    <h6>
+                                                        <a asp-area="Customer"
+                                                           asp-controller="ClientProduct"
+                                                           asp-action="Detail"
+                                                           asp-route-id="@product.Id">@product.TenSanPham</a>
+                                                    </h6>
+                                                    <div class="product-price">
+                                                        <div class="price-box">
+                                                            <span class="new-price">@String.Format("{0:0,0} VND", product.Gia).Replace(",", ".")</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="product-name">
+                                                    <a class="product-type" asp-area="Customer"
+                                                       asp-controller="ClientProduct"
+                                                       asp-action="Detail"
+                                                       asp-route-id="@product.Id">Kho: @product.SoLuong</a>
+                                                    <a class="product-vendor" asp-area="Customer"
+                                                       asp-controller="ClientProduct"
+                                                       asp-action="Detail"
+                                                       asp-route-id="@product.Id">B3cBonsai</a>
+                                                </div>
+                                            </div>
+                                            <div class="product-ratting">
+                                                <span class="pro-ratting">
+                                                    <i class="fa-regular fa-star"></i>
+                                                    <i class="fa-regular fa-star"></i>
+                                                    <i class="fa-regular fa-star"></i>
+                                                    <i class="fa-regular fa-star"></i>
+                                                    <i class="fa-regular fa-star"></i>
+                                                </span>
+                                            </div>
+                                            <div class="product-description">
+                                                <p>Mô tả: @product.MoTa</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <!-- Modal Xem nhanh cho mỗi sản phẩm -->
+                            <div class="modal fade" id="quickview-@product.Id" tabindex="-1" aria-labelledby="quickviewLabel-@product.Id" aria-hidden="true">
+                                <div style="width: 655px" class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="quickviewLabel-@product.Id">Chi tiết sản phẩm</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body custom-modal-body">
+                                            <div class="row">
+                                                <!-- Cột Hình ảnh -->
+                                                <div class="col-md-6">
+                                                    <a asp-area="Customer"
+                                                       asp-controller="ClientProduct"
+                                                       asp-action="Detail"
+                                                       asp-route-id="@product.Id"
+                                                       class="cat-img"
+                                                       style="position: relative; display: flex; justify-content: center; align-items: center;">
+                                                        <!-- Hình ảnh đầu tiên -->
+                                                        <img onerror="this.src='/images/product/default.jpg'"
+                                                             src="@(product.HinhAnhs.FirstOrDefault()?.LinkAnh ?? @Url.Content("~/images/product/default.jpg"))"
+                                                             class="img-fluid img1 mobile-img1"
+                                                             alt="p1"
+                                                             id="image1"
+                                                             style="width: 315px; height: 305px; border-radius: 5px; object-fit: cover; transition: opacity 0.5s ease-in-out; opacity: 1;"
+                                                             onmouseover="this.src='@(product.HinhAnhs.Skip(1).FirstOrDefault()?.LinkAnh ?? @Url.Content("~/images/product/default.jpg"))'"
+                                                             onmouseout="this.src='@(product.HinhAnhs.FirstOrDefault()?.LinkAnh ?? @Url.Content("~/images/product/default.jpg"))'">
+                                                    </a>
+
+                                                </div>
+                                                <!-- Cột Thông tin sản phẩm -->
+                                                <div class="col-md-6">
+                                                    <div class="product-detail">
+                                                        <h5 style="font-size: 1rem; font-weight: bold; margin-bottom: 10px;">
+                                                            <a asp-area="Customer"
+                                                               asp-controller="ClientProduct"
+                                                               asp-action="Detail"
+                                                               asp-route-id="@product.Id" style="font-size: 1.5rem; font-weight: bold; color: #333; text-decoration: none;">
+                                                                @product.TenSanPham
+                                                            </a>
+                                                        </h5>
+                                                        <div class="product-price" style="margin-bottom: 15px;">
+                                                            <div class="price-box">
+                                                                <span class="new-price" style="font-size: 1.5rem; font-weight: bold; color: #557e30;">
+                                                                    @String.Format("{0:0,0} VND", product.Gia).Replace(",", ".")
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                        <p style="font-size: 1rem; line-height: 1.6; margin-bottom: 8px;"><strong>Mô tả:</strong> @product.MoTa</p>
+                                                        <p style="font-size: 1rem; line-height: 1.6; margin-bottom: 8px;"><strong>Danh mục:</strong> @product.DanhMuc.TenDanhMuc</p>
+                                                        <p style="font-size: 1rem; line-height: 1.6; margin-bottom: 8px;"><strong>Kho:</strong> @product.SoLuong</p>
+                                                    </div>
+
+                                                    <div class="pro-aff-che" style="margin-top: 20px;">
+                                                        <a href="/Customer/Wishlist/Index" class="wishlist" style="font-size: 1.125rem; display: flex; align-items: center;">
+                                                            <span class="wishlist-icon action-wishlist tile-actions--btn wishlist-btn" style="margin-right: 8px;">
+                                                                <span class="add-wishlist"><i class="bi bi-heart" style="font-size: 1.25rem;"></i></span>
+                                                            </span>
+                                                            <span class="wishlist-text" style="font-size: 1rem; font-weight: 500;">Yêu thích</span>
+                                                        </a>
+                                                    </div>
+
+                                                    <br />
+                                                     <div class="product-info">
+                                                        <form method="post" class="cart">
+                                                            <div class="product-quantity-action">
+                                                                <h6>Số lượng:</h6>
+                                                                <div class="product-quantity">
+                                                                    <div class="cart-plus-minus">
+                                                                        <!-- Nút giảm số lượng -->
+                                                                        <button type="button" class="dec qtybutton minus" onclick="updateQuantity(-1)">
+                                                                            <i class="fa-solid fa-minus"></i>
+                                                                        </button>
+
+                                                                        <!-- Ô nhập số lượng -->
+                                                                        <input type="number" name="quantity" value="1" min="1" max="@product.SoLuong" style="width: 50px; text-align: center;">
+
+                                                                        <!-- Nút tăng số lượng -->
+                                                                        <button type="button" class="inc qtybutton plus" onclick="updateQuantity(1)">
+                                                                            <i class="fa-solid fa-plus"></i>
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+
+                                                    <style>
+                                                        .product-quantity-action {
+                                                            display: flex;
+                                                            align-items: center;
+                                                            margin-top: 10px;
+                                                        }
+
+                                                        .cart-plus-minus {
+                                                            display: flex;
+                                                            align-items: center;
+                                                            justify-content: space-between;
+                                                            width: 150px; /* Chiều rộng cố định cho ô nhập số lượng */
+                                                        }
+
+                                                        .qtybutton {
+                                                            background-color: #f5f5f5;
+                                                            border: 1px solid #ccc;
+                                                            padding: 10px;
+                                                            font-size: 18px;
+                                                            cursor: pointer;
+                                                            transition: background-color 0.3s ease;
+                                                            width: 40px; /* Chiều rộng cố định cho nút */
+                                                            text-align: center;
+                                                            display: flex;
+                                                            justify-content: center;
+                                                            align-items: center;
+                                                        }
+
+                                                            .qtybutton:hover {
+                                                                background-color: #ddd;
+                                                            }
+
+                                                        input[type="number"] {
+                                                            width: 50px; /* Chiều rộng cho ô nhập số lượng */
+                                                            text-align: center;
+                                                            border: 1px solid #ccc;
+                                                            padding: 8px;
+                                                            font-size: 18px;
+                                                            margin: 0 5px;
+                                                        }
+
+                                                    </style>
+
+                                                    <script>
+                                                        // JavaScript để tăng/giảm số lượng
+                                                        function updateQuantity(change) {
+                                                            var quantityInput = document.querySelector('input[name="quantity"]');
+                                                            var currentQuantity = parseInt(quantityInput.value);
+                                                            var newQuantity = currentQuantity + change;
+
+                                                            // Kiểm tra giới hạn số lượng
+                                                            var maxQuantity = parseInt(quantityInput.max);
+                                                            var minQuantity = parseInt(quantityInput.min);
+                                                            if (newQuantity >= minQuantity && newQuantity <= maxQuantity) {
+                                                                quantityInput.value = newQuantity;
+                                                            }
+                                                        }
+                                                    </script>
+
+                                                    <br />
+                                                    <div class="product-info">
+                                                        <div class="product-actions">
+                                                            <!-- pro-detail button start -->
+                                                            <div class="pro-detail-button">
+                                                                <button type="button" onclick="location.href='/Customer/Cart'" class="btn add-to-cart ajax-spin-cart">
+                                                                    <span class="cart-title">Thêm vào giỏ</span>
+                                                                </button>
+                                                            </div>
+                                                            <!-- pro-deatail button end -->
+                                                        </div>
+                                                    </div> 
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </li>
+
+                           
+
+
+
+                        }
                     }
-
-
                 </ul>
             </div>
             <div class="paginatoin-area">

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace B3cBonsai.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241120042213_addSExtradaryStructureDb")]
-    partial class addSExtradaryStructureDb
+    [Migration("20241120081452_addExtraStructureDb")]
+    partial class addExtraStructureDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -302,6 +302,9 @@ namespace B3cBonsai.DataAccess.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("LinkAnh")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LoaiDoiTuong")
                         .IsRequired()
