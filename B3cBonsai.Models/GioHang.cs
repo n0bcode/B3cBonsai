@@ -34,6 +34,7 @@ namespace B3cBonsai.Models
         public NguoiDungUngDung NguoiDungUngDung{ get; set; }
 
         public string LoaiDoiTuong { get; set; }
+        public string? LinkAnh { get; set; }
 
         [NotMapped]
         public double Gia { get; set; }

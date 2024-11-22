@@ -1,10 +1,79 @@
-﻿@model SanPham
+﻿@model B3cBonsai.Models.SanPham
 @using Azure.Core
 @using Microsoft.AspNetCore.Http
 @using Microsoft.AspNetCore.Routing
-@using System.Net 
-@using Microsoft.AspNetCore.Mvc 
+@using System.Net
+@using Microsoft.AspNetCore.Mvc
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@using B3cBonsai.Utility
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+
+
+
+<style>
+
+
+    #comments-list {
+        max-height: 300px;
+        overflow-y: auto;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+    }
+
+    .comment {
+        background-color: #fff;
+        padding: 15px;
+        margin-bottom: 10px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+        .comment p {
+            font-size: 14px;
+            color: #333;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+    #no-comments {
+        font-size: 16px;
+        color: #888;
+        text-align: center;
+    }
+
+    .comment-form {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    #comment-input {
+        flex: 1;
+        padding: 10px;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        outline: none;
+    }
+
+    #submit-comment {
+        padding: 10px 20px;
+        font-size: 14px;
+        background-color: #557e30;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+        #submit-comment:hover {
+            background-color: #0056b3;
+        }
+</style>
 
 
 <!-- breadcrumb start -->
@@ -16,7 +85,7 @@
                     <!-- breadcrumb-list start -->
                     <ul class="breadcrumb-ul">
                         <li class="breadcrumb-li">
-                            <a class="breadcrumb-link" asp-area="Customer" asp-controller="Home" asp-action="Index">Trang chủ</a>
+                            <a class="breadcrumb-link" asp-area="Customer" asp-controller="Home" asp-action="Index">Trang Chủ</a>
                         </li>
                         <li class="breadcrumb-li">
                             <span class="breadcrumb-text">@Model.TenSanPham</span>
@@ -38,7 +107,7 @@
                     <!-- Product slider start -->
                     <div class="product-detail-slider product-details-tb product-details">
                         <a href="product-template7.html" class="next-prev-product prev">
-                           @*  <span>Prev</span> *@
+                            @*  <span>Prev</span> *@
                         </a>
                         <a href="product-template2.html" class="next-prev-product next">
                             @* <span>Next</span> *@
@@ -49,7 +118,7 @@
                             <div class="product-img-top">
                                 <button class="full-view"><i class="bi bi-arrows-fullscreen"></i></button>
                                 <div class="slider-big slick-slider">
-                                    @foreach(var image in Model.HinhAnhs)
+                                    @foreach (var image in Model.HinhAnhs)
                                     {
                                         <div class="slick-slide ">
                                             <a onerror="this.src='/images/product/default.jpg'" href="@image.LinkAnh" class="product-single">
@@ -119,6 +188,15 @@
                                                 Kho: @Model.SoLuong
                                             </p>
                                         </div>
+                                        <br />
+                                        <div class="pro-aff-che">
+                                            <a href="/Customer/Wishlist/Index" class="wishlist">
+                                                <span class="wishlist-icon action-wishlist tile-actions--btn wishlist-btn">
+                                                    <span class="add-wishlist"><i class="bi bi-heart"></i></span>
+                                                </span>
+                                                <span class="wishlist-text">Yêu thích</span>
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -141,7 +219,7 @@
                                         <!-- pro-deatail button start -->
                                         <div class="pro-detail-button">
                                             <button type="button" onclick="location. href='/Customer/Cart'" class="btn add-to-cart ajax-spin-cart">
-                                            <span class="cart-title">Thêm vào giỏ</span>
+                                                <span class="cart-title">Thêm vào giỏ</span>
                                             </button>
                                             <a href="cart-empty.html" class="btn btn-cart btn-theme">
                                                 <span>Mua Ngay</span>
@@ -149,17 +227,126 @@
                                         </div>
                                         <!-- pro-deatail button start -->
                                         <!-- pro-deatail wishlist start -->
-                                        <div class="pro-aff-che">
-                                            <a href="/Customer/Wishlist/Index" class="wishlist">
-                                                <span class="wishlist-icon action-wishlist tile-actions--btn wishlist-btn">
-                                                    <span class="add-wishlist"><i class="bi bi-heart"></i></span>
-                                                </span>
-                                                <span class="wishlist-text">Yêu thích</span>
-                                            </a>
-                                        </div>
+                                        @*  <div class="pro-aff-che">
+                                        <a href="/Customer/Wishlist/Index" class="wishlist">
+                                        <span class="wishlist-icon action-wishlist tile-actions--btn wishlist-btn">
+                                        <span class="add-wishlist"><i class="bi bi-heart"></i></span>
+                                        </span>
+                                        <span class="wishlist-text">Yêu thích</span>
+                                        </a>
+                                        </div> *@
                                         <!-- pro-deatail wishlist end -->
                                     </div>
                                 </div>
+
+                                @using Microsoft.AspNetCore.Identity
+                                @inject UserManager<IdentityUser> UserManager
+
+                                <div class="product-info">
+                                    <h4>Bình luận</h4>
+                                    <div id="comments-list">
+                                        @if (ViewBag.Comments != null && ((List<B3cBonsai.Models.BinhLuan>)ViewBag.Comments).Any())
+                                        {
+                                            @foreach (var comment in ViewBag.Comments)
+                                            {
+                                                <div class="comment">
+                                                    @if (comment.NguoiDungUngDung.HoTen != null)
+                                                    {
+                                                        <p>
+                                                            <strong>
+                                                                <img src="@(Url.Content(string.IsNullOrEmpty(comment.NguoiDungUngDung.LinkAnh) ? "~/images/user/default.png" : comment.NguoiDungUngDung.LinkAnh))" alt="" style="width: 30px; height: 30px; border-radius: 50%;" />
+
+                                                                @comment.NguoiDungUngDung.HoTen
+                                                            </strong>
+
+                                                        </p>
+                                                    }
+                                                    else
+                                                    {
+                                                        <!-- Hiển thị email hoặc tên đăng nhập nếu HoTen là null -->
+                                                        <p>
+                                                            <strong>
+                                                                <img src="@(Url.Content(string.IsNullOrEmpty(comment.NguoiDungUngDung.LinkAnh) ? "~/images/user/default.png" : comment.NguoiDungUngDung.LinkAnh))" alt="" style="width: 30px; height: 30px; border-radius: 50%;" />
+
+                                                                @comment.NguoiDungUngDung.HoTen
+                                                            </strong>
+                                                        </p>
+                                                    }
+                                                    <p>@comment.NoiDungBinhLuan</p>
+                                                </div>
+                                            }
+
+                                        }
+                                        else
+                                        {
+                                            <p id="no-comments" style="display: block;">Chưa có ai bình luận</p>
+                                        }
+                                    </div>
+
+                                    @if (User.Identity.IsAuthenticated)
+                                    {
+                                        <div class="comment-form">
+                                            <input type="text" id="comment-input" placeholder="Nhập bình luận của bạn..." maxlength="500">
+                                            <button id="submit-comment">Gửi</button>
+
+                                        </div>
+                                        <span id="captcha-error" class="text-danger" style="display: none;">Bình luận không được chống.</span> <!-- Thông báo lỗi -->
+                                    }
+                                    else
+                                    {
+                                        <p class="login-required">Bạn cần <a asp-area="Identity" asp-page="/Account/Login" asp-route-typeUser="user">đăng nhập</a> để bình luận.</p>
+                                    }
+                                </div>
+
+                                <script>
+                                    document.getElementById("submit-comment")?.addEventListener("click", function () {
+                                        const commentInput = document.getElementById("comment-input");
+                                        const captchaError = document.getElementById("captcha-error");
+
+                                        if (!commentInput.value.trim()) {
+                                            captchaError.style.display = "block";
+                                            return;
+                                        }
+
+                                        captchaError.style.display = "none"; // Ẩn thông báo lỗi
+
+                                        // Lấy productId từ URL hoặc từ view model
+                                        const productId = @Model.Id;
+
+                                        // Gửi bình luận qua Ajax
+                                        $.ajax({
+                                            url: '@Url.Action("AddComment", "ClientProduct")',
+                                            type: 'POST',
+                                            data: {
+                                                productId: productId,
+                                                commentContent: commentInput.value.trim()
+                                            },
+                                            success: function (response) {
+                                                if (response.success) {
+                                                    // Cập nhật danh sách bình luận
+                                                    var commentsList = $('#comments-list');
+                                                    commentsList.empty(); // Xóa các bình luận cũ
+
+                                                    response.comments.forEach(function (comment) {
+                                                        commentsList.append('<div class="comment"><p><strong>' + comment.NguoiDungUngDung.HoTen + '</strong></p><p>' + comment.NoiDungBinhLuan + '</p></div>');
+                                                    });
+
+                                                    // Xóa nội dung bình luận đã nhập
+                                                    commentInput.value = '';
+                                                } else {
+                                                    alert(response.message); // Hiển thị thông báo lỗi
+                                                }
+                                            },
+                                            error: function () {
+                                                alert("Đã xảy ra lỗi. Vui lòng thử lại.");
+                                            }
+                                        });
+                                    });
+                                </script>
+
+
+
+
                                 <div class="product-info">
                                     <div class="form-group">
                                         <a href="#deliver-modal" data-bs-toggle="modal">Giao hàng &amp; trở lại</a>
@@ -167,12 +354,13 @@
                                     </div>
                                 </div>
                                 <div class="modal fade deliver-modal" id="deliver-modal" tabindex="-1" style="display: none;"
-                                    aria-hidden="true">
+                                     aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered">
                                         <div class="modal-content">
                                             <div class="modal-body">
-                                                <button type="button" class="pop-close" data-bs-dismiss="modal" aria-label="Close"><i
-                                                class="feather-x"></i></button>
+                                                <button type="button" class="pop-close" data-bs-dismiss="modal" aria-label="Close">
+                                                    <i class="feather-x"></i>
+                                                </button>
                                                 <div class="delivery-block">
                                                     <div class="space-block">
                                                         <h4>Delivery</h4>
@@ -182,11 +370,15 @@
                                                     </div>
                                                     <div class="space-block">
                                                         <h4>Returns</h4>
-                                                        <p>Items returned within 14 days of their original shipment date in same as new
-                                                        condition will be eligible for a full refund or store credit.</p>
+                                                        <p>
+                                                            Items returned within 14 days of their original shipment date in same as new
+                                                            condition will be eligible for a full refund or store credit.
+                                                        </p>
                                                         <p>Refunds will be charged back to the original form of payment used for purchase.</p>
-                                                        <p>Customer is responsible for shipping charges when making returns and
-                                                        shipping/handling fees of original purchase is non-refundable.</p>
+                                                        <p>
+                                                            Customer is responsible for shipping charges when making returns and
+                                                            shipping/handling fees of original purchase is non-refundable.
+                                                        </p>
                                                         <p>All sale items are final purchases.</p>
                                                     </div>
                                                     <div class="space-block">
@@ -205,16 +397,17 @@
                                     <div class="modal-dialog modal-dialog-centered">
                                         <div class="modal-content">
                                             <div class="modal-body">
-                                                <button type="button" class="pop-close" data-bs-dismiss="modal" aria-label="Close"><i
-                                                class="feather-x"></i></button>
+                                                <button type="button" class="pop-close" data-bs-dismiss="modal" aria-label="Close">
+                                                    <i class="feather-x"></i>
+                                                </button>
                                                 <div class="product-form-list">
                                                     <div class="single-product-wrap">
                                                         <div class="product-image">
                                                             <a class="pro-img" asp-area="Customer" asp-controller="ClientProduct" asp-action="Index">
                                                                 <img class="img-fluid img1 resp-img1" src="~/customer/img/product/home1-pro-12.jpg"
-                                                                alt="p-1">
+                                                                     alt="p-1">
                                                                 <img class="img-fluid img2 resp-img2" src="~/customer/img/product/home1-pro-13.jpg"
-                                                                alt="p-2">
+                                                                     alt="p-2">
                                                             </a>
                                                         </div>
                                                         <div class="product-content">
@@ -239,7 +432,7 @@
                                                             <input type="text" name="contact[phone]" placeholder="Your phone number">
                                                             <input type="email" name="contact[email]" required="" placeholder="Your email*">
                                                             <textarea name="contact[question]" rows="4" required=""
-                                                            placeholder="Your message*"></textarea>
+                                                                      placeholder="Your message*"></textarea>
                                                             <p>* Required fields</p>
                                                             <button type="submit" class="btn-style2">Submit Now</button>
                                                         </div>
@@ -255,8 +448,8 @@
                                 </div>
                                 <div class="product-info">
                                     @* <div class="product-sku">
-                                        <h6>SKU:</h6>
-                                        <span class="variant-sku">abccd-13</span>
+                                    <h6>SKU:</h6>
+                                    <span class="variant-sku">abccd-13</span>
                                     </div> *@
                                 </div>
                                 <div class="pro-social">

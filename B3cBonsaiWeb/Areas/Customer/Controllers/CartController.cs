@@ -168,7 +168,8 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
                     MaKhachHang = maKhachHang,
                     SanPham = sanPham,
                     Gia = sanPham.Gia,
-                    LoaiDoiTuong = loaiDoiTuong
+                    LoaiDoiTuong = loaiDoiTuong,
+                    LinkAnh = (await _unitOfWork.HinhAnhSanPham.Get(filter: ha => ha.SanPhamId == sanPhamId)).LinkAnh
                 });
             }
             // Xử lý combo sản phẩm
@@ -197,7 +198,8 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
                     MaKhachHang = maKhachHang,
                     ComboSanPham = comboSanPham,
                     Gia = comboSanPham.TongGia,
-                    LoaiDoiTuong = loaiDoiTuong
+                    LoaiDoiTuong = loaiDoiTuong,
+                    LinkAnh = comboSanPham.LinkAnh
                 });
             }
             else

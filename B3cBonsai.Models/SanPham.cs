@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using Newtonsoft.Json;
 
 namespace B3cBonsai.Models
 {
@@ -48,6 +49,7 @@ namespace B3cBonsai.Models
         public virtual DanhMucSanPham DanhMuc { get; set; } // Khai báo quan hệ với danh mục
 
         [ValidateNever]
+        [JsonIgnore]
         public virtual ICollection<HinhAnhSanPham> HinhAnhs { get; set; } // Khai báo quan hệ 1-n với hình ảnh
 
         [ValidateNever]
