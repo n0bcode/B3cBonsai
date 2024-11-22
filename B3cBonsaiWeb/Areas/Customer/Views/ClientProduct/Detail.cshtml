@@ -1,4 +1,5 @@
 ﻿@model B3cBonsai.Models.SanPham
+
 @using Azure.Core
 @using Microsoft.AspNetCore.Http
 @using Microsoft.AspNetCore.Routing
@@ -166,8 +167,6 @@
                                         <div class="price-box">
                                             <span style="font-size: 29px" class="new-price">@String.Format("{0:0,0} VNĐ", Model.Gia).Replace(",", ".")</span>
 
-                                            @* <span class="old-price">Rs. 25.00</span>
-                                            <span class="percent-count">16</span> *@
                                         </div>
                                     </div>
                                 </div>
@@ -190,7 +189,7 @@
                                         </div>
                                         <br />
                                         <div class="pro-aff-che">
-                                            <a href="/Customer/Wishlist/Index" class="wishlist">
+                                            <a class="wishlist" data-id="@Model.Id" data-type="@SD.ObjectLike_SanPham">
                                                 <span class="wishlist-icon action-wishlist tile-actions--btn wishlist-btn">
                                                     <span class="add-wishlist"><i class="bi bi-heart"></i></span>
                                                 </span>
@@ -218,24 +217,20 @@
                                     <div class="product-actions">
                                         <!-- pro-deatail button start -->
                                         <div class="pro-detail-button">
-                                            <button type="button" onclick="location. href='/Customer/Cart'" class="btn add-to-cart ajax-spin-cart">
+                                            <button type="button" onclick="addToCart(@Model.Id,null,1,'@SD.ObjectDetailOrder_SanPham')" href="#add-to-cart" class="btn add-to-cart ajax-spin-cart">
                                                 <span class="cart-title">Thêm vào giỏ</span>
                                             </button>
-                                            <a href="cart-empty.html" class="btn btn-cart btn-theme">
+                                            <a type="button";
+                                               onclick="navigateToPayment()"
+                                               id="checkoutButton"
+                                               class="btn btn-cart btn-theme"
+                                               role="button"
+                                               aria-label="Mua ngay">
                                                 <span>Mua Ngay</span>
                                             </a>
+
                                         </div>
-                                        <!-- pro-deatail button start -->
-                                        <!-- pro-deatail wishlist start -->
-                                        @*  <div class="pro-aff-che">
-                                        <a href="/Customer/Wishlist/Index" class="wishlist">
-                                        <span class="wishlist-icon action-wishlist tile-actions--btn wishlist-btn">
-                                        <span class="add-wishlist"><i class="bi bi-heart"></i></span>
-                                        </span>
-                                        <span class="wishlist-text">Yêu thích</span>
-                                        </a>
-                                        </div> *@
-                                        <!-- pro-deatail wishlist end -->
+                                      
                                     </div>
                                 </div>
 
