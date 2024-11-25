@@ -1,12 +1,7 @@
 ﻿@model B3cBonsai.Models.SanPham
 
-@using Azure.Core
-@using Microsoft.AspNetCore.Http
-@using Microsoft.AspNetCore.Routing
 @using System.Net
-@using Microsoft.AspNetCore.Mvc
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
-@using B3cBonsai.Utility
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 
@@ -232,111 +227,11 @@
                                     </div>
                                 </div>
 
-                                @using Microsoft.AspNetCore.Identity
-                                @inject UserManager<IdentityUser> UserManager
 
-                                <div class="product-info">
-                                    <h4>Bình luận</h4>
-                                    <div id="comments-list">
-                                        @if (ViewBag.Comments != null && ((List<B3cBonsai.Models.BinhLuan>)ViewBag.Comments).Any())
-                                        {
-                                            @foreach (var comment in ViewBag.Comments)
-                                            {
-                                                <div class="comment">
-                                                    @if (comment.NguoiDungUngDung.HoTen != null)
-                                                    {
-                                                        <p>
-                                                            <strong>
-                                                                <img src="@(Url.Content(string.IsNullOrEmpty(comment.NguoiDungUngDung.LinkAnh) ? "~/images/user/default.png" : comment.NguoiDungUngDung.LinkAnh))" alt="" style="width: 30px; height: 30px; border-radius: 50%;" />
+                                    <div id="container-comments">
 
-                                                                @comment.NguoiDungUngDung.HoTen
-                                                            </strong>
-
-                                                        </p>
-                                                    }
-                                                    else
-                                                    {
-                                                        <!-- Hiển thị email hoặc tên đăng nhập nếu HoTen là null -->
-                                                        <p>
-                                                            <strong>
-                                                                <img src="@(Url.Content(string.IsNullOrEmpty(comment.NguoiDungUngDung.LinkAnh) ? "~/images/user/default.png" : comment.NguoiDungUngDung.LinkAnh))" alt="" style="width: 30px; height: 30px; border-radius: 50%;" />
-
-                                                                @comment.NguoiDungUngDung.HoTen
-                                                            </strong>
-                                                        </p>
-                                                    }
-                                                    <p>@comment.NoiDungBinhLuan</p>
-                                                </div>
-                                            }
-
-                                        }
-                                        else
-                                        {
-                                            <p id="no-comments" style="display: block;">Chưa có ai bình luận</p>
-                                        }
                                     </div>
-
-                                    @if (User.Identity.IsAuthenticated)
-                                    {
-                                        <div class="comment-form">
-                                            <input type="text" id="comment-input" placeholder="Nhập bình luận của bạn..." maxlength="500">
-                                            <button id="submit-comment">Gửi</button>
-
-                                        </div>
-                                        <span id="captcha-error" class="text-danger" style="display: none;">Bình luận không được chống.</span> <!-- Thông báo lỗi -->
-                                    }
-                                    else
-                                    {
-                                        <p class="login-required">Bạn cần <a asp-area="Identity" asp-page="/Account/Login" asp-route-typeUser="user">đăng nhập</a> để bình luận.</p>
-                                    }
-                                </div>
-
-                                <script>
-                                    document.getElementById("submit-comment")?.addEventListener("click", function () {
-                                        const commentInput = document.getElementById("comment-input");
-                                        const captchaError = document.getElementById("captcha-error");
-
-                                        if (!commentInput.value.trim()) {
-                                            captchaError.style.display = "block";
-                                            return;
-                                        }
-
-                                        captchaError.style.display = "none"; // Ẩn thông báo lỗi
-
-                                        // Lấy productId từ URL hoặc từ view model
-                                        const productId = @Model.Id;
-
-                                        // Gửi bình luận qua Ajax
-                                        $.ajax({
-                                            url: '@Url.Action("AddComment", "ClientProduct")',
-                                            type: 'POST',
-                                            data: {
-                                                productId: productId,
-                                                commentContent: commentInput.value.trim()
-                                            },
-                                            success: function (response) {
-                                                if (response.success) {
-                                                    // Cập nhật danh sách bình luận
-                                                    var commentsList = $('#comments-list');
-                                                    commentsList.empty(); // Xóa các bình luận cũ
-
-                                                    response.comments.forEach(function (comment) {
-                                                        commentsList.append('<div class="comment"><p><strong>' + comment.NguoiDungUngDung.HoTen + '</strong></p><p>' + comment.NoiDungBinhLuan + '</p></div>');
-                                                    });
-
-                                                    // Xóa nội dung bình luận đã nhập
-                                                    commentInput.value = '';
-                                                } else {
-                                                    alert(response.message); // Hiển thị thông báo lỗi
-                                                }
-                                            },
-                                            error: function () {
-                                                alert("Đã xảy ra lỗi. Vui lòng thử lại.");
-                                            }
-                                        });
-                                    });
-                                </script>
-
+                                
 
 
 
@@ -520,3 +415,8 @@
 </section>
 <!-- pro-detail-page end -->
 @await Component.InvokeAsync("PopularProducts")
+
+@section Scripts {
+    <script src="~/js//customer/comment.js" asp-append-version="true" ></script>
+    <script>loadContainerComments('@Model.Id')</script>
+}

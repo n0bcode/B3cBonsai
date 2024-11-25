@@ -1,0 +1,56 @@
+﻿@model IEnumerable<BinhLuan>
+<div class="product-info">
+    <h4>Bình luận</h4>
+    <div id="comments-list">
+        @if (Model != null && (Model.Any()))
+        {
+            @foreach (var comment in Model)
+            {
+                <div class="comment">
+                    @if (comment.NguoiDungUngDung.HoTen != null)
+                    {
+                        <p>
+                            <strong>
+                                <img src="@(Url.Content(string.IsNullOrEmpty(comment.NguoiDungUngDung.LinkAnh) ? "~/images/user/default.png" : comment.NguoiDungUngDung.LinkAnh))" alt="" style="width: 30px; height: 30px; border-radius: 50%;" />
+
+                                @comment.NguoiDungUngDung.HoTen
+                            </strong>
+
+                        </p>
+                    }
+                    else
+                    {
+                        <!-- Hiển thị email hoặc tên đăng nhập nếu HoTen là null -->
+                        <p>
+                            <strong>
+                                <img src="@(Url.Content(string.IsNullOrEmpty(comment.NguoiDungUngDung.LinkAnh) ? "~/images/user/default.png" : comment.NguoiDungUngDung.LinkAnh))" alt="" style="width: 30px; height: 30px; border-radius: 50%;" />
+
+                                @comment.NguoiDungUngDung.HoTen
+                            </strong>
+                        </p>
+                    }
+                    <p>@comment.NoiDungBinhLuan</p>
+                </div>
+            }
+
+        }
+        else
+        {
+            <p id="no-comments" style="display: block;">Chưa có ai bình luận</p>
+        }
+    </div>
+
+    @if (User.Identity.IsAuthenticated)
+    {
+        <div class="comment-form">
+            <input type="text" id="comment-input" placeholder="Nhập bình luận của bạn..." maxlength="500">
+            <button id="submit-comment" onclick="addComment(@Model.FirstOrDefault().SanPhamId)">Gửi</button>
+
+        </div>
+        <span id="captcha-error" class="text-danger" style="display: none;">Bình luận không được chống.</span> <!-- Thông báo lỗi -->
+    }
+    else
+    {
+        <p class="login-required">Bạn cần <a asp-area="Identity" asp-page="/Account/Login" asp-route-typeUser="user">đăng nhập</a> để bình luận.</p>
+    }
+</div>
