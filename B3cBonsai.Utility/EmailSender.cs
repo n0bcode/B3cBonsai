@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Hosting;
 using SendGrid.Helpers.Mail;
 using SendGrid;
+using System.Drawing;
 
 namespace B3cBonsai.Utility
 {
@@ -52,7 +53,7 @@ namespace B3cBonsai.Utility
                 builder.Attachments.Add("attachment2.pdf", fileBytes, ContentType.Parse("application/octet-stream"));
             }
 
-            builder.HtmlBody = message;
+            builder.HtmlBody = @"<div style=""width: 100%; background-color: blue;"">" + message + @"</div>";
             email.Body = builder.ToMessageBody();
 
             using var smtp = new SmtpClient();
