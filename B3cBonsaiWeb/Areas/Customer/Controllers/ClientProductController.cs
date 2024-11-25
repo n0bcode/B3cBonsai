@@ -168,24 +168,6 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
                 return NotFound(); // Sản phẩm không tìm thấy
             }
 
-            // Lấy bình luận của sản phẩm
-            var comments = await _unitOfWork.BinhLuan.GetAll(
-                filter: x => x.SanPhamId == id,
-                includeProperties: "NguoiDungUngDung"
-            );
-
-            // Cập nhật mỗi bình luận với thông tin người dùng
-            foreach (var comment in comments)
-            {
-                if (comment.NguoiDungUngDung?.HoTen == null)
-                {
-                    var user = await _userManager.FindByIdAsync(comment.NguoiDungUngDung.Id);
-                    comment.NguoiDungUngDung.HoTen = user?.UserName ?? "Anonymous"; // Nếu không có tên thì mặc định là "Anonymous"
-                }
-            }
-
-            ViewBag.Comments = comments;
-
             return View(product);
         }
 

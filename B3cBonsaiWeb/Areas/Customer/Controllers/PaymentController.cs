@@ -6,6 +6,7 @@ using B3cBonsai.Utility;
 using B3cBonsai.Utility.Extentions;
 using B3cBonsaiWeb.Services;
 using B3cBonsai.Models.ViewModels;
+using System.Text.RegularExpressions;
 
 namespace B3cBonsaiWeb.Areas.Customer.Controllers
 {
@@ -187,7 +188,7 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
             if (response.Success)
             {
                 long orderId;
-                if (long.TryParse(response.OrderId, out orderId))
+                if (long.TryParse(Regex.Match(response.OrderId,@"\d+").Value, out orderId))
                 {
                     var order = await _unitOfWork.DonHang.Get(o => o.Id == orderId);
                     if (order != null)
