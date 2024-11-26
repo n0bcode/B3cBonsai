@@ -22,10 +22,10 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
         }
         public async Task<IActionResult> Index(int productId)
         {
-            var comments = await _unitOfWork.BinhLuan.GetAll(
+            var comments = (await _unitOfWork.BinhLuan.GetAll(
                 filter: x => x.SanPhamId == productId,
                 includeProperties: "NguoiDungUngDung"
-            );
+            )).OrderBy(x => x.NgayBinhLuan);
 
             // Cập nhật mỗi bình luận với thông tin người dùng
             foreach (var comment in comments)

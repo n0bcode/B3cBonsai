@@ -49,8 +49,10 @@
                                     <div class="wishlist-all-pro">
                                         <div class="wishlist-pro">
                                             <div class="wishlist-pro-image">
-                                                <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail" asp-route-id="@(item.SanPhamId)">
-                                                    <img src="@item.SanPham.HinhAnhs.FirstOrDefault().LinkAnh" class="img-fluid" alt="p-2">
+                                                <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail" asp-route-id="@(item.SanPhamId)" class="product-link">
+                                                    <img style="width: 120px; height: 110px; border-radius: 5px; object-fit: cover; transition: opacity 0.5s ease-in-out; opacity: 1;"
+                                                         src="@item.SanPham.HinhAnhs.FirstOrDefault().LinkAnh" class="img-fluid img-primary" alt="p-2">
+
                                                 </a>
                                             </div>
                                             <div class="pro-details">
