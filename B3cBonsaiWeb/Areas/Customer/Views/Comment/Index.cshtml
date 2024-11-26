@@ -1,10 +1,83 @@
 ﻿@model IEnumerable<BinhLuan>
+@using System.Security.Claims;
+
+
+<style>
+
+    #comments-list {
+        max-height: 300px;
+        overflow-y: auto;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+    }
+
+    .comment {
+        background-color: #fff;
+        padding: 15px;
+        margin-bottom: 10px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+        .comment p {
+            font-size: 14px;
+            color: #333;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+    #no-comments {
+        font-size: 16px;
+        color: #888;
+        text-align: center;
+    }
+
+    .comment-form {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    #comment-input {
+        flex: 1;
+        padding: 10px;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        outline: none;
+    }
+
+    #submit-comment {
+        padding: 10px 20px;
+        font-size: 14px;
+        background-color: #557e30;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+        #submit-comment:hover {
+            background-color: #0056b3;
+        }
+
+    .pro-action-icon {
+        margin-left: 7px;
+    }
+    .product-info{
+        margin-bottom: 10px;
+    }
+</style>
+
 <div class="product-info">
     <h4>Bình luận</h4>
     <div id="comments-list">
-        @if (Model != null && (Model.Any()))
+        @if (Model != null && Model.Any())
         {
-            @foreach (var comment in Model)
+            @foreach (var comment in Model.OrderByDescending(c => c.Id)) 
             {
                 <div class="comment">
                     @if (comment.NguoiDungUngDung.HoTen != null)
@@ -12,10 +85,15 @@
                         <p>
                             <strong>
                                 <img src="@(Url.Content(string.IsNullOrEmpty(comment.NguoiDungUngDung.LinkAnh) ? "~/images/user/default.png" : comment.NguoiDungUngDung.LinkAnh))" alt="" style="width: 30px; height: 30px; border-radius: 50%;" />
-
                                 @comment.NguoiDungUngDung.HoTen
+                                @if (User.Identity.IsAuthenticated && User.FindFirstValue(ClaimTypes.NameIdentifier) == comment.NguoiDungId)
+                                {
+                                    <button class="delete-comment-btn"
+                                            onclick="deleteComment(@comment.Id)">
+                                        <i style="color: red" class="fas fa-trash-alt"></i> <!-- Biểu tượng xóa -->
+                                    </button>
+                                }
                             </strong>
-
                         </p>
                     }
                     else
@@ -24,15 +102,22 @@
                         <p>
                             <strong>
                                 <img src="@(Url.Content(string.IsNullOrEmpty(comment.NguoiDungUngDung.LinkAnh) ? "~/images/user/default.png" : comment.NguoiDungUngDung.LinkAnh))" alt="" style="width: 30px; height: 30px; border-radius: 50%;" />
-
                                 @comment.NguoiDungUngDung.HoTen
+                                @if (User.Identity.IsAuthenticated && User.FindFirstValue(ClaimTypes.NameIdentifier) == comment.NguoiDungId)
+                                {
+                                    <button class="delete-comment-btn"
+                                            onclick="deleteComment(@comment.Id)">
+                                        <i style="color: red" class="fas fa-trash-alt"></i> <!-- Biểu tượng xóa -->
+                                    </button>
+                                }
                             </strong>
                         </p>
                     }
+                    <small style="font-size:10px;" class="text-muted">Ngày bình luận: @comment.NgayBinhLuan.ToString("dd/MM/yyyy")</small>
                     <p>@comment.NoiDungBinhLuan</p>
+              
                 </div>
             }
-
         }
         else
         {
@@ -45,7 +130,6 @@
         <div class="comment-form">
             <input type="text" id="comment-input" placeholder="Nhập bình luận của bạn..." maxlength="500">
             <button id="submit-comment" onclick="addComment(@Model.FirstOrDefault().SanPhamId)">Gửi</button>
-
         </div>
         <span id="captcha-error" class="text-danger" style="display: none;">Bình luận không được chống.</span> <!-- Thông báo lỗi -->
     }
@@ -53,4 +137,25 @@
     {
         <p class="login-required">Bạn cần <a asp-area="Identity" asp-page="/Account/Login" asp-route-typeUser="user">đăng nhập</a> để bình luận.</p>
     }
+</div>
+
+
+
+<!-- Modal xác nhận xóa bình luận -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Xác nhận</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Bạn có chắc chắn muốn xóa bình luận này không?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Xóa</button>
+            </div>
+        </div>
+    </div>
 </div>

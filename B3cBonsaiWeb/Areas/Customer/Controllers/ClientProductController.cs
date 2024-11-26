@@ -117,13 +117,15 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
                     break;
             }
 
-            var queryCombo = (await _unitOfWork.ComboSanPham.GetAll()).ToList();
+            var queryCombo = (await _unitOfWork.ComboSanPham.GetAll(
+    includeProperties: "ChiTietCombos"
+)).ToList();
 
             List<SanPhamOrComboVM> sanPhamOrComboVMs = new List<SanPhamOrComboVM>();
             // Gán dữ liệu hiển thị
             foreach (SanPham sanPham in query)
             {
-                sanPhamOrComboVMs.Add(new SanPhamOrComboVM() { SanPham = sanPham, LoaiDoiTuong =SD.ObjectDetailOrder_SanPham });
+                sanPhamOrComboVMs.Add(new SanPhamOrComboVM() { SanPham = sanPham, LoaiDoiTuong = SD.ObjectDetailOrder_SanPham });
             }
             foreach (ComboSanPham comboSanPham in queryCombo)
             {
@@ -182,6 +184,33 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
                     return Json(new { success = false, message = "Bình luận không được để trống." });
                 }
 
+    
+                // Kiểm tra từ ngữ thô tục
+                var badWords = new List<string> { "lồn", "cặc", "địt", "chịch", "buồi", "đụ", "đéo", "điếm", "bitch", "fuck", "dick",
+    "pussy", "asshole", "motherfucker", "cu", "chó chết", "dâm", "ngu", "vl", "dm",
+    "clgt", "vcl", "phò", "đĩ", "khốn nạn", "con mẹ mày", "đéo mẹ", "nứng", "tổ sư",
+    "mẹ kiếp", "bố mày", "liếm lồn", "liếm cặc", "óc chó", "cave", "đm", "wtf", "fucking",
+    "shit", "cum", "slut", "whore", "tits", "boobs", "rape", "jerk", "suck", "balls",
+    "blowjob", "handjob", "faggot", "gay", "lesbian", "dildo", "vagina", "penis", "anus",
+    "scum", "bastard", "đĩ mẹ", "đụ mẹ", "đụ cha", "đụ bà", "mẹ cha", "đù", "fuck you",
+    "đéo hiểu", "mẹ nó", "fuck off", "cút", "get lost", "piss off", "liếm buồi", "bú cặc",
+    "bú lồn", "bố láo", "chó má", "súc vật", "mất dạy", "khốn", "khốn kiếp", "mẹ kiếp",
+    "thằng khốn", "con khốn", "dickhead", "cunt", "shithead", "piss", "pissing", "screw you",
+    "goddamn", "son of a bitch", "sonofabitch", "dirty", "mothafucka", "jackass", "douchebag",
+    "retard", "fuckface", "cock", "shitbag", "fuckwit", "fuckstick", "arsehole", "tosser",
+    "bloody hell", "cuntface", "ballsack", "fucker", "dickhead", "bitchface", "ho",
+    "cumdumpster", "dickwad", "twat", "shitfaced", "cockface", "gobshite", "bollocks",
+    "minger", "arse", "knobhead", "twatwaffle", "dumbfuck", "shitcunt", "cumslut", "wanker",
+    "prick", "fucknugget", "fuckhead", "dickweasel", "cockmongler", "dickfucker",
+    "shitweasel", "fucksocks", "fucksponge", "fuckbiscuit", "fuckbucket", "cumguzzler",
+    "cockjockey", "shitbrick", "cumbucket", "fucktard", "dicknose", "shitstain",
+    "craphole", "fuckpile", "shitstick", "fuckbunny", "fuckrag", "fuckknuckle",
+    "shitsmear", "cocksucker", "cocksplat" }; // Danh sách từ ngữ thô tục
+                if (badWords.Any(badWord => commentContent.ToLower().Contains(badWord.ToLower())))
+                {
+                    return Json(new { success = false, message = "Bình luận chứa từ ngữ không phù hợp." });
+                }
+
                 var product = await _unitOfWork.SanPham.Get(filter: x => x.Id == productId);
 
                 if (product == null)
@@ -216,6 +245,45 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
                 return Json(new { success = false, message = "Đã xảy ra lỗi. Vui lòng thử lại." });
             }
         }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteComment(int commentId)
+        {
+            try
+            {
+                var userId = User?.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                var comment = await _unitOfWork.BinhLuan.Get(filter: x => x.Id == commentId);
+
+                if (comment == null)
+                {
+                    return Json(new { success = false, message = "Bình luận không tồn tại." });
+                }
+
+                if (comment.NguoiDungId != userId)
+                {
+                    return Json(new { success = false, message = "Bạn không có quyền xóa bình luận này." });
+                }
+
+                _unitOfWork.BinhLuan.Remove(comment);
+                _unitOfWork.Save();
+
+                var comments = await _unitOfWork.BinhLuan.GetAll(
+                    filter: x => x.SanPhamId == comment.SanPhamId,
+                    includeProperties: "NguoiDungUngDung"
+                );
+
+                return Json(new { success = true, message = "Bình luận đã được xóa thành công!", comments = comments });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Đã xảy ra lỗi khi xóa bình luận.");
+
+                return Json(new { success = false, message = "Đã xảy ra lỗi. Vui lòng thử lại." });
+            }
+        }
+
+
 
         // Xem nhanh thông tin sản phẩm
         public async Task<IActionResult> QuickView(int? id)

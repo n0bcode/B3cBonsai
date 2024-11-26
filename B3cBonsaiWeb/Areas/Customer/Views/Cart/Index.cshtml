@@ -52,9 +52,10 @@
                                                 <li class="item-info">
                                                     <!-- cart-img start -->
                                                     <div class="item-img">
-                                                        <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail" asp-route-id="@(item.MaCombo ?? item.MaSanPham)">
-                                                            <img src="@item.LinkAnh" onerror="this.src='/images/product/default.jpg'" class="img-fluid" alt="@(item.SanPham?.TenSanPham ?? item.ComboSanPham?.TenCombo)">
+                                                        <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail" asp-route-id="@(item.MaCombo ?? item.MaSanPham)" aria-label="Xem chi tiết @(item.SanPham?.TenSanPham ?? item.ComboSanPham?.TenCombo)">
+                                                            <img style="width: 130px; height: 110px; border-radius: 5px; object-fit: cover; transition: opacity 0.5s ease-in-out; opacity: 1;" src="@item.LinkAnh" onerror="this.src='/images/product/default.jpg'" class="img-fluid" alt="@(item.SanPham?.TenSanPham ?? item.ComboSanPham?.TenCombo)">
                                                         </a>
+
                                                     </div>
                                                     <!-- cart-img end -->
                                                     <!-- cart-title start -->
