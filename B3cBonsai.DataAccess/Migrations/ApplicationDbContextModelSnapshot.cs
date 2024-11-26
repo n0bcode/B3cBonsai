@@ -30,6 +30,9 @@ namespace B3cBonsai.DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("NgayBinhLuan")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("NguoiDungId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
