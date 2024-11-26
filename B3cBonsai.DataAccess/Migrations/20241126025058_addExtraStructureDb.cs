@@ -274,6 +274,7 @@ namespace B3cBonsai.DataAccess.Migrations
                     NoiDungBinhLuan = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
                     NguoiDungId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     SanPhamId = table.Column<int>(type: "int", nullable: false),
+                    NgayBinhLuan = table.Column<DateTime>(type: "datetime2", nullable: false),
                     TinhTrang = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
