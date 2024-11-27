@@ -33,3 +33,18 @@ function loadQuickView(id) {
 }
 
 
+
+function QuickViewComBo(id) {
+    $.ajax({
+        url: '/Customer/ClientProduct/QuickViewComBo',
+        type: 'GET',
+        data: { id: id },
+        success: function (response) {
+            $('#quickview .modal-content').html(response); // Chèn nội dung vào modal
+            $('#quickview').modal('show'); // Hiển thị modal
+        },
+        error: function () {
+            alert("Không thể tải thông tin sản phẩm.");
+        }
+    });
+}   
