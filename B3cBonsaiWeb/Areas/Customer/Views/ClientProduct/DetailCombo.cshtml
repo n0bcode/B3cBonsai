@@ -1,0 +1,390 @@
+﻿@model B3cBonsai.Models.ComboSanPham
+
+@using System.Net
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+
+<!-- breadcrumb start -->
+<section class="breadcrumb-area">
+    <div class="container">
+        <div class="col">
+            <div class="row">
+                <div class="breadcrumb-index">
+                    <!-- breadcrumb-list start -->
+                    <ul class="breadcrumb-ul">
+                        <li class="breadcrumb-li">
+                            <a class="breadcrumb-link" asp-area="Customer" asp-controller="Home" asp-action="Index">Trang Chủ</a>
+                        </li>
+                        <li class="breadcrumb-li">
+                            <span class="breadcrumb-text">@Model.TenCombo</span>
+                        </li>
+                    </ul>
+                    <!-- breadcrumb-list end -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- breadcrumb end -->
+<!-- pro-detail-page start -->
+<section class="product-details-page pro-style1 bg-color section-ptb">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="pro-details-pos pro-details-left-pos">
+                    <!-- Product slider start -->
+                    <div class="product-detail-slider product-details-tb product-details">
+                        <a href="product-template7.html" class="next-prev-product prev">
+                            @*  <span>Prev</span> *@
+                        </a>
+                        <a href="product-template2.html" class="next-prev-product next">
+                            @* <span>Next</span> *@
+                        </a>
+                        <!-- Product slider start -->
+                        <div class="product-detail-img product-detail-img-bottom">
+                            <!-- top slick-slider start -->
+                            <div class="product-img-top">
+                                <button class="full-view"><i class="bi bi-arrows-fullscreen"></i></button>
+                                <div class="slider-big slick-slider">
+                                    @if (!string.IsNullOrEmpty(Model.LinkAnh))
+                                    {
+                                        var images = Model.LinkAnh.Split(";");
+                                        foreach (var image in images)
+                                        {
+                                            <div class="slick-slide">
+                                                <figure class="zoom" onmousemove="zoom(event)"
+                                                        style="background-image: url('@Url.Content(image)');">
+                                                    <img src="@Url.Content(image)" class="img-fluid" alt="Combo Image">
+                                                </figure>
+                                            </div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <div class="slick-slide">
+                                            <img src="/images/product/default.jpg" class="img-fluid" alt="Default Image">
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                            <!-- top slick-slider end -->
+                            <!-- small slick-slider start -->
+                            <div class="pro-slider">
+                                <div class="slider-small pro-detail-slider small-slider">
+                                    @if (!string.IsNullOrEmpty(Model.LinkAnh))
+                                    {
+                                        var images = Model.LinkAnh.Split(";");
+                                        foreach (var image in images)
+                                        {
+                                            <div class="slick-slide">
+                                                <figure class="zoom" onmousemove="zoom(event)"
+                                                        style="background-image: url('@Url.Content(image)');">
+                                                    <img src="@Url.Content(image)" class="img-fluid" alt="Combo Image">
+                                                </figure>
+                                            </div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <div class="slick-slide">
+                                            <img src="/images/product/default.jpg" class="img-fluid" alt="Default Image">
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                            <!-- small slick-slider end -->
+                        </div>
+                        <!-- Product slider end -->
+                    </div>
+                    <!-- peoduct detail start -->
+                    <div class="product-details-wrap product-details-tb product-details">
+                        <div class="product-details-info">
+                            <div class="pro-nprist">
+                                <div class="product-info">
+                                    <!-- product-title start -->
+                                    <div class="product-title">
+                                        <h2>@Model.TenCombo</h2>
+                                    </div>
+                                    <!-- product-title end -->
+                                </div>
+                                <div class="product-info">
+                                    <div class="pro-prlb pro-sale">
+                                        <div class="price-box">
+                                            <span style="font-size: 29px" class="new-price">@String.Format("{0:0,0} VNĐ", Model.TongGia).Replace(",", ".")</span>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="product-info">
+                                    <div class="product-inventory">
+                                        <div class="stock-inventory stock-more">
+                                            <p class="text-success">
+                                                Mô tả: @Model.MoTa
+                                            </p>
+                                        </div>
+                                        <div class="stock-inventory stock-more">
+                                            <p class="text-success">
+                                                Giảm giá: @Model.GiamGia%
+                                            </p>
+                                        </div>
+                                        <div class="stock-inventory stock-more">
+                                            <p class="text-success">
+                                                Trạng thái: @(Model.TrangThai ? "Còn hàng" : "Hết hàng")
+                                            </p>
+                                        </div>
+                                        <br />
+                                        <div class="pro-aff-che">
+                                            <a class="wishlist" data-id="@Model.Id" data-type="@SD.ObjectLike_SanPham">
+                                                <span class="tooltip-text">Yêu thích</span>
+                                                <span class="pro-action-icon likeAction"><i class="feather-heart"></i></span>
+                                            </a>
+                                        </div>
+
+
+                                        <br />
+
+                                        <!-- Danh sách sản phẩm trong combo -->
+                                        <div class="combo-details">
+                                            <h4>Sản phẩm trong combo</h4>
+                                            <br />
+                                            <ul>
+                                                @if (Model.ChiTietCombos?.Count > 0)
+                                                {
+                                                    foreach (var chiTiet in Model.ChiTietCombos)
+                                                    {
+                                                        <li>
+                                                            <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview" onclick="loadQuickView(@chiTiet.SanPham.Id)">
+                                                                @chiTiet.SanPham.TenSanPham - Số lượng: @chiTiet.SoLuong
+                                                            </a>
+
+                                                        </li>
+
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <li>Không có sản phẩm nào trong combo này.</li>
+                                                }
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                               
+                                <div class="product-info">
+                                    <div class="product-actions">
+                                        <!-- pro-deatail button start -->
+                                        <div class="pro-detail-button">
+                                            <button type="button" onclick="addToCart(null,@Model.Id,1,'@SD.ObjectDetailOrder_Combo')"
+                                                    class="btn add-to-cart ajax-spin-cart">
+                                                <span class="cart-title">Thêm vào giỏ</span>
+                                            </button>
+                                            <a type="button" ;
+                                               onclick="navigateToPayment()"
+                                               id="checkoutButton"
+                                               class="btn btn-cart btn-theme"
+                                               role="button"
+                                               aria-label="Mua ngay">
+                                                <span>Mua Ngay</span>
+                                            </a>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+                                <div id="container-comments">
+                                </div>
+
+
+
+
+                                <div class="product-info">
+                                    <div class="form-group">
+                                        <a href="#deliver-modal" data-bs-toggle="modal">Giao hàng &amp; trở lại</a>
+                                        <a href="#que-modal" data-bs-toggle="modal">Đặt một câu hỏi</a>
+                                    </div>
+                                </div>
+                                <div class="modal fade deliver-modal" id="deliver-modal" tabindex="-1" style="display: none;"
+                                     aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-body">
+                                                <button type="button" class="pop-close" data-bs-dismiss="modal" aria-label="Close">
+                                                    <i class="feather-x"></i>
+                                                </button>
+                                                <div class="delivery-block">
+                                                    <div class="space-block">
+                                                        <h4>Delivery</h4>
+                                                        <p>All orders shipped with UPS Express.</p>
+                                                        <p>Always free shipping for orders over US $250.</p>
+                                                        <p>All orders are shipped with a UPS tracking number.</p>
+                                                    </div>
+                                                    <div class="space-block">
+                                                        <h4>Returns</h4>
+                                                        <p>
+                                                            Items returned within 14 days of their original shipment date in same as new
+                                                            condition will be eligible for a full refund or store credit.
+                                                        </p>
+                                                        <p>Refunds will be charged back to the original form of payment used for purchase.</p>
+                                                        <p>
+                                                            Customer is responsible for shipping charges when making returns and
+                                                            shipping/handling fees of original purchase is non-refundable.
+                                                        </p>
+                                                        <p>All sale items are final purchases.</p>
+                                                    </div>
+                                                    <div class="space-block">
+                                                        <h4>Help</h4>
+                                                        <p>Give us a shout if you have any other questions and/or concerns.</p>
+                                                        <p>Email:<a href="mailto:contact@domain.com">demo@gmail.com</a></p>
+                                                        <p>Phone:<a href="tel:+1(23)456789">+1 (23) 456 789</a></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- que-modal stat -->
+                                <div class="modal fade que-modal" id="que-modal" aria-modal="true" tabindex="-1" role="dialog">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-body">
+                                                <button type="button" class="pop-close" data-bs-dismiss="modal" aria-label="Close">
+                                                    <i class="feather-x"></i>
+                                                </button>
+                                                <div class="product-form-list">
+                                                    <div class="single-product-wrap">
+                                                        <div class="product-image">
+                                                            <a class="pro-img" asp-area="Customer" asp-controller="ClientProduct" asp-action="Index">
+                                                                <img class="img-fluid img1 resp-img1" src="~/customer/img/product/home1-pro-12.jpg"
+                                                                     alt="p-1">
+                                                                <img class="img-fluid img2 resp-img2" src="~/customer/img/product/home1-pro-13.jpg"
+                                                                     alt="p-2">
+                                                            </a>
+                                                        </div>
+                                                        <div class="product-content">
+                                                            <div class="pro-title-price">
+                                                                <h6><a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail">Strelitzia nicolai</a></h6>
+                                                                <div class="product-price">
+                                                                    <div class="price-box">
+                                                                        <span class="new-price">Rs. 44.00</span>
+                                                                        <span class="old-price">Rs. 49.00</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="ask-form">
+                                                    <h6>Ask a question</h6>
+                                                    <form method="post" class="contact-form">
+                                                        <input type="hidden" name="contact[product url]" value="">
+                                                        <div class="form-grp">
+                                                            <input type="text" name="contact[name]" required="" placeholder="Your name*">
+                                                            <input type="text" name="contact[phone]" placeholder="Your phone number">
+                                                            <input type="email" name="contact[email]" required="" placeholder="Your email*">
+                                                            <textarea name="contact[question]" rows="4" required=""
+                                                                      placeholder="Your message*"></textarea>
+                                                            <p>* Required fields</p>
+                                                            <button type="submit" class="btn-style2">Submit Now</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- que-modal end -->
+                                <div class="product-info">
+                                    <p><span>🚚</span> Hàng sẽ được giao vào hoặc trước <span id="ten-days-ahead">Ngày 3 tháng 3 năm 2024</span></p>
+                                </div>
+                                <div class="product-info">
+                                    @* <div class="product-sku">
+                                    <h6>SKU:</h6>
+                                    <span class="variant-sku">abccd-13</span>
+                                    </div> *@
+                                </div>
+                                <div class="pro-social">
+                                    <ul class="social-icon">
+                                        @* <li>
+                                            @{
+                                                var currentUrl = $"{HttpContextAccessor?.HttpContext?.Request.Scheme}://{HttpContextAccessor?.HttpContext?.Request.Host}{HttpContextAccessor?.HttpContext?.Request.Path}{HttpContextAccessor?.HttpContext?.Request.QueryString}";
+
+                                                // Đảm bảo currentUrl không bị null
+                                                if (string.IsNullOrEmpty(currentUrl))
+                                                {
+                                                    currentUrl = "https://default-url.com";  // Thay thế URL mặc định nếu currentUrl không hợp lệ
+                                                }
+
+                                                var encodedUrl = WebUtility.UrlEncode(currentUrl);
+
+                                                // Kiểm tra các giá trị model có hợp lệ
+                                                var productTitle = Model?.TenSanPham ?? "Tên sản phẩm mặc định";  // Nếu không có tên, sử dụng tên mặc định
+                                                var productDescription = Model?.MoTa ?? "Mô tả sản phẩm mặc định";  // Nếu không có mô tả, sử dụng mô tả mặc định
+                                                var productImage = Model?.HinhAnhs?.FirstOrDefault()?.LinkAnh ?? "https://default-image-url.com/image.jpg";  // Hình ảnh mặc định nếu không có
+                                            }
+
+                                            <!-- Open Graph Meta Tags -->
+                                            <meta property="og:url" content="@currentUrl" />
+                                            <meta property="og:title" content="@productTitle" />
+                                            <meta property="og:description" content="@productDescription" />
+                                            <meta property="og:image" content="@productImage" />
+                                            <meta property="og:site_name" content="Tên website của bạn" />
+                                            <meta property="og:type" content="product" /> <!-- Thêm og:type cho sản phẩm -->
+
+                                            <a href="https://www.facebook.com/sharer/sharer.php?u=@encodedUrl" class="facebook" target="_blank">
+                                                <i class="fab fa-facebook-f"></i>
+                                            </a>
+                                        </li> *@
+
+
+
+                                        <li>
+                                            <a href="https://twitter.com/" class="twitter" target="_blank"><i class="fab fa-twitter"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="https://web.telegram.org/" class="telegram" target="_blank"><i class="fab fa-telegram"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="https://in.pinterest.com/" class="pinterest" target="_blank"><i class="fab fa-pinterest-p"></i></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="product-info">
+                                    <div class="product-payment-image">
+                                        <ul class="payment-icon">
+                                            <li>
+                                                <a asp-area="Customer" asp-controller="Home" asp-action="Index"><svg viewBox="0 0 38 24" xmlns="http://www.w3.org/2000/svg" role="img" width="38" height="24" aria-labelledby="pi-visa"><title id="visa">Visa</title><path opacity=".07" d="M35 0H3C1.3 0 0 1.3 0 3v18c0 1.7 1.4 3 3 3h32c1.7 0 3-1.3 3-3V3c0-1.7-1.4-3-3-3z"></path><path fill="#fff" d="M35 1c1.1 0 2 .9 2 2v18c0 1.1-.9 2-2 2H3c-1.1 0-2-.9-2-2V3c0-1.1.9-2 2-2h32"></path><path d="M28.3 10.1H28c-.4 1-.7 1.5-1 3h1.9c-.3-1.5-.3-2.2-.6-3zm2.9 5.9h-1.7c-.1 0-.1 0-.2-.1l-.2-.9-.1-.2h-2.4c-.1 0-.2 0-.2.2l-.3.9c0 .1-.1.1-.1.1h-2.1l.2-.5L27 8.7c0-.5.3-.7.8-.7h1.5c.1 0 .2 0 .2.2l1.4 6.5c.1.4.2.7.2 1.1.1.1.1.1.1.2zm-13.4-.3l.4-1.8c.1 0 .2.1.2.1.7.3 1.4.5 2.1.4.2 0 .5-.1.7-.2.5-.2.5-.7.1-1.1-.2-.2-.5-.3-.8-.5-.4-.2-.8-.4-1.1-.7-1.2-1-.8-2.4-.1-3.1.6-.4.9-.8 1.7-.8 1.2 0 2.5 0 3.1.2h.1c-.1.6-.2 1.1-.4 1.7-.5-.2-1-.4-1.5-.4-.3 0-.6 0-.9.1-.2 0-.3.1-.4.2-.2.2-.2.5 0 .7l.5.4c.4.2.8.4 1.1.6.5.3 1 .8 1.1 1.4.2.9-.1 1.7-.9 2.3-.5.4-.7.6-1.4.6-1.4 0-2.5.1-3.4-.2-.1.2-.1.2-.2.1zm-3.5.3c.1-.7.1-.7.2-1 .5-2.2 1-4.5 1.4-6.7.1-.2.1-.3.3-.3H18c-.2 1.2-.4 2.1-.7 3.2-.3 1.5-.6 3-1 4.5 0 .2-.1.2-.3.2M5 8.2c0-.1.2-.2.3-.2h3.4c.5 0 .9.3 1 .8l.9 4.4c0 .1 0 .1.1.2 0-.1.1-.1.1-.1l2.1-5.1c-.1-.1 0-.2.1-.2h2.1c0 .1 0 .1-.1.2l-3.1 7.3c-.1.2-.1.3-.2.4-.1.1-.3 0-.5 0H9.7c-.1 0-.2 0-.2-.2L7.9 9.5c-.2-.2-.5-.5-.9-.6-.6-.3-1.7-.5-1.9-.5L5 8.2z" fill="#142688"></path></svg></a>
+                                            </li>
+                                            <li>
+                                                <a asp-area="Customer" asp-controller="Home" asp-action="Index"><svg viewBox="0 0 38 24" xmlns="http://www.w3.org/2000/svg" role="img" width="38" height="24" aria-labelledby="pi-master"><title id="master">Mastercard</title><path opacity=".07" d="M35 0H3C1.3 0 0 1.3 0 3v18c0 1.7 1.4 3 3 3h32c1.7 0 3-1.3 3-3V3c0-1.7-1.4-3-3-3z"></path><path fill="#fff" d="M35 1c1.1 0 2 .9 2 2v18c0 1.1-.9 2-2 2H3c-1.1 0-2-.9-2-2V3c0-1.1.9-2 2-2h32"></path><circle fill="#EB001B" cx="15" cy="12" r="7"></circle><circle fill="#F79E1B" cx="23" cy="12" r="7"></circle><path fill="#FF5F00" d="M22 12c0-2.4-1.2-4.5-3-5.7-1.8 1.3-3 3.4-3 5.7s1.2 4.5 3 5.7c1.8-1.2 3-3.3 3-5.7z"></path></svg></a>
+                                            </li>
+                                            <li>
+                                                <a asp-area="Customer" asp-controller="Home" asp-action="Index"><svg xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="pi-american-express" viewBox="0 0 38 24" width="38" height="24"><title id="american-express">American Express</title><path fill="#000" d="M35 0H3C1.3 0 0 1.3 0 3v18c0 1.7 1.4 3 3 3h32c1.7 0 3-1.3 3-3V3c0-1.7-1.4-3-3-3Z" opacity=".07"></path><path fill="#006FCF" d="M35 1c1.1 0 2 .9 2 2v18c0 1.1-.9 2-2 2H3c-1.1 0-2-.9-2-2V3c0-1.1.9-2 2-2h32Z"></path><path fill="#FFF" d="M22.012 19.936v-8.421L37 11.528v2.326l-1.732 1.852L37 17.573v2.375h-2.766l-1.47-1.622-1.46 1.628-9.292-.02Z"></path><path fill="#006FCF" d="M23.013 19.012v-6.57h5.572v1.513h-3.768v1.028h3.678v1.488h-3.678v1.01h3.768v1.531h-5.572Z"></path><path fill="#006FCF" d="m28.557 19.012 3.083-3.289-3.083-3.282h2.386l1.884 2.083 1.89-2.082H37v.051l-3.017 3.23L37 18.92v.093h-2.307l-1.917-2.103-1.898 2.104h-2.321Z"></path><path fill="#FFF" d="M22.71 4.04h3.614l1.269 2.881V4.04h4.46l.77 2.159.771-2.159H37v8.421H19l3.71-8.421Z"></path><path fill="#006FCF" d="m23.395 4.955-2.916 6.566h2l.55-1.315h2.98l.55 1.315h2.05l-2.904-6.566h-2.31Zm.25 3.777.875-2.09.873 2.09h-1.748Z"></path><path fill="#006FCF" d="M28.581 11.52V4.953l2.811.01L32.84 9l1.456-4.046H37v6.565l-1.74.016v-4.51l-1.644 4.494h-1.59L30.35 7.01v4.51h-1.768Z"></path></svg></a>
+                                            </li>
+                                            <li>
+                                                <svg viewBox="0 0 38 24" xmlns="http://www.w3.org/2000/svg" width="38" height="24" role="img" aria-labelledby="pi-paypal"><title id="paypal">PayPal</title><path opacity=".07" d="M35 0H3C1.3 0 0 1.3 0 3v18c0 1.7 1.4 3 3 3h32c1.7 0 3-1.3 3-3V3c0-1.7-1.4-3-3-3z"></path><path fill="#fff" d="M35 1c1.1 0 2 .9 2 2v18c0 1.1-.9 2-2 2H3c-1.1 0-2-.9-2-2V3c0-1.1.9-2 2-2h32"></path><path fill="#003087" d="M23.9 8.3c.2-1 0-1.7-.6-2.3-.6-.7-1.7-1-3.1-1h-4.1c-.3 0-.5.2-.6.5L14 15.6c0 .2.1.4.3.4H17l.4-3.4 1.8-2.2 4.7-2.1z"></path><path fill="#3086C8" d="M23.9 8.3l-.2.2c-.5 2.8-2.2 3.8-4.6 3.8H18c-.3 0-.5.2-.6.5l-.6 3.9-.2 1c0 .2.1.4.3.4H19c.3 0 .5-.2.5-.4v-.1l.4-2.4v-.1c0-.2.3-.4.5-.4h.3c2.1 0 3.7-.8 4.1-3.2.2-1 .1-1.8-.4-2.4-.1-.5-.3-.7-.5-.8z"></path><path fill="#012169" d="M23.3 8.1c-.1-.1-.2-.1-.3-.1-.1 0-.2 0-.3-.1-.3-.1-.7-.1-1.1-.1h-3c-.1 0-.2 0-.2.1-.2.1-.3.2-.3.4l-.7 4.4v.1c0-.3.3-.5.6-.5h1.3c2.5 0 4.1-1 4.6-3.8v-.2c-.1-.1-.3-.2-.5-.2h-.1z"></path></svg>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- peoduct detail end -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+@await Component.InvokeAsync("PopularProducts")
+
+@section Scripts {
+    <script src="~/js/customer/comment.js" asp-append-version="true"></script>
+    <script>loadContainerComments('@Model.Id')</script>
+}
