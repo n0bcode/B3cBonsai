@@ -154,7 +154,25 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Admin
 				categories = categories
 			});
 		}
-		public async Task<IActionResult> GetOrderStatusData(string timeRange)
+        public async Task<JsonResult> GetAllOrderData(string timeRange)
+        {
+            var listOrders = (await _unitOfWork.DonHang.GetAll());
+
+            int statusApproved = listOrders.Count(lo => lo.TrangThaiDonHang == SD.StatusApproved);
+            int statusPending = listOrders.Count(lo => lo.TrangThaiDonHang == SD.StatusPending);
+            int statusInAllProgress = listOrders.Count() - statusApproved - statusPending;
+
+            return Json(new
+            {
+                approved = statusApproved,
+                pending = statusPending,
+                inAllProgress = statusInAllProgress
+            });
+        }
+
+
+
+        public async Task<IActionResult> GetOrderStatusData(string timeRange)
 		{
 			var listOrders = (await _unitOfWork.DonHang.GetAll())
 		.Where(x => x.NgayNhanHang != null);
@@ -202,7 +220,135 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Admin
 				data = orderStatuses.Values.ToList()
 			});
 		}
-		public async Task<IActionResult> SanPhamList()
+        public async Task<JsonResult> GetOrderOverViewData(string timeRange)
+        {
+            var listOrders = (await _unitOfWork.DonHang.GetAll())
+                .Where(x => x.TrangThaiDonHang != null);
+
+            // Khởi tạo dữ liệu cho các trạng thái đơn hàng
+            var orderStatuses = new string[] { SD.StatusInProcess, SD.StatusPending, SD.StatusCancelled, SD.StatusShipped, SD.StatusApproved };
+
+            var orderStatusesVietnamese = new string[] { "Đang xử lý", "Chờ xử lý", "Đã hủy", "Đã giao", "Đã duyệt" };
+
+            var statusData = new Dictionary<string, List<int>>();
+
+            // Khởi tạo các danh mục thời gian cho biểu đồ
+            var categories = new List<string>();
+			int amountOrders = 0;
+			int amountSuccessOrders = 0;
+
+            switch (timeRange)
+            {
+                case "day":
+                    var daysOfWeek = new[] { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" };
+                    foreach (var status in orderStatuses)
+                    {
+                        statusData[status] = daysOfWeek.Select(day =>
+						{
+							amountOrders++;
+							return listOrders
+									.Where(x => x.TrangThaiDonHang == status)
+									.Where(x => x.NgayNhanHang.GetValueOrDefault().DayOfWeek.ToString().StartsWith(day.Substring(0, 3)))
+									.Count();
+						}
+                        ).ToList();
+						if (status == SD.StatusApproved)
+						{
+							amountSuccessOrders = statusData[status].Count;
+						}
+                    }
+                    categories = daysOfWeek.ToList();
+                    break;
+
+                case "week":
+                    var weeksInMonth = Enumerable.Range(1, 4);
+                    foreach (var status in orderStatuses)
+                    {
+                        statusData[status] = weeksInMonth.Select(week =>
+						{
+							amountOrders++;
+							return listOrders
+									.Where(x => x.TrangThaiDonHang == status)
+									.Where(x => x.NgayNhanHang.GetValueOrDefault().Month == DateTime.Today.Month)
+									.Where(x => (x.NgayNhanHang.GetValueOrDefault().Day - 1) / 7 + 1 == week)
+									.Count();
+						}
+                        ).ToList();
+						if (status == SD.StatusApproved)
+						{
+							amountSuccessOrders = statusData[status].Count;
+						}
+                    }
+                    categories = weeksInMonth.Select(week => "Week " + week).ToList();
+                    break;
+
+                case "month":
+                    var currentYear = DateTime.Today.Year;
+                    foreach (var status in orderStatuses)
+                    {
+                        statusData[status] = Enumerable.Range(1, 12).Select(month =>
+						{
+							amountOrders++;
+							return listOrders
+									.Where(x => x.TrangThaiDonHang == status)
+									.Where(x => x.NgayNhanHang.GetValueOrDefault().Month == month && x.NgayNhanHang.GetValueOrDefault().Year == currentYear)
+									.Count();
+						}
+                        ).ToList();
+                        if (status == SD.StatusApproved)
+                        {
+                            amountSuccessOrders = statusData[status].Count;
+                        }
+                    }
+                    categories = Enumerable.Range(1, 12).Select(month => "Month " + month).ToList();
+                    break;
+
+                case "year":
+                    var recentYears = Enumerable.Range(DateTime.Today.Year - 5, 5);
+                    foreach (var status in orderStatuses)
+                    {
+                        statusData[status] = recentYears.Select(year =>
+						{
+							amountOrders++;
+							return listOrders
+									.Where(x => x.TrangThaiDonHang == status)
+									.Where(x => x.NgayNhanHang.GetValueOrDefault().Year == year)
+									.Count();
+						}
+                        ).ToList();
+                        if (status == SD.StatusApproved)
+                        {
+                            amountSuccessOrders = statusData[status].Count;
+                        }
+                    }
+                    categories = recentYears.Select(year => year.ToString()).ToList();
+                    break;
+                default:
+                    foreach (var status in orderStatuses)
+                    {
+                        statusData[status] = new List<int> { 0 };
+                    }
+                    categories = new List<string> { "Unknown" };
+                    break;
+            }
+
+            var result = orderStatuses.Select((status,i) => new
+            {
+				name = status,
+                nameVietNamese = orderStatusesVietnamese[i],
+                data = statusData[status]
+            }).ToList();
+
+            return Json(new
+            {
+                data = result,
+                categories = categories,
+				amountOrders = amountOrders,
+				amountSuccessOrders = amountSuccessOrders,
+            });
+        }
+
+        public async Task<IActionResult> SanPhamList()
 		{
 			var sanPhams = await _unitOfWork.SanPham.GetAll() ?? new List<SanPham>();
 			return Json(new { data = sanPhams });

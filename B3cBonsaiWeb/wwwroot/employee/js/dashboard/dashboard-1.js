@@ -306,115 +306,121 @@
 			var chartBar1 = new ApexCharts(document.querySelector("#NewExperience"), options);
 			chartBar1.render();
 
-		}
+		};
 		var AllProject = function () {
-			var options = {
-				series: [12, 30, 20],
-				chart: {
-					type: 'donut',
-					width: 150,
-				},
-				plotOptions: {
-					pie: {
-						donut: {
-							size: '80%',
-							labels: {
-								show: true,
-								name: {
-									show: true,
-									offsetY: 12,
-								},
-								value: {
-									show: true,
-									fontSize: '22px',
-									fontFamily: 'Arial',
-									fontWeight: '500',
-									offsetY: -17,
-								},
-								total: {
-									show: true,
-									fontSize: '11px',
-									fontWeight: '500',
-									fontFamily: 'Arial',
-									label: 'Compete',
-
-									formatter: function (w) {
-										return w.globals.seriesTotals.reduce((a, b) => {
-											return a + b
-										}, 0)
+			$.ajax({
+				url: '/employee/dashboard/GetAllOrderData', // Đảm bảo URL chính xác
+				method: 'GET',
+				success: function (response) {
+					var options = {
+						series: [response.approved, response.pending, response.inAllProgress],
+						chart: {
+							type: 'donut',
+							width: 150,
+						},
+						plotOptions: {
+							pie: {
+								donut: {
+									size: '80%',
+									labels: {
+										show: true,
+										name: {
+											show: true,
+											offsetY: 12,
+										},
+										value: {
+											show: true,
+											fontSize: '22px',
+											fontFamily: 'Arial',
+											fontWeight: '500',
+											offsetY: -17,
+										},
+										total: {
+											show: true,
+											fontSize: '11px',
+											fontWeight: '500',
+											fontFamily: 'Arial',
+											label: 'Tổng số đơn',
+											formatter: function (w) {
+												return w.globals.seriesTotals.reduce((a, b) => {
+													return a + b
+												}, 0);
+											}
+										}
 									}
 								}
 							}
-						}
-					}
-				},
-				legend: {
-					show: false,
-				},
-				colors: ['#3AC977', 'var(--primary)', 'var(--secondary)'],
-				labels: ["Compete", "Pending", "Not Start"],
-				dataLabels: {
-					enabled: false,
-				},
-			};
-			var chartBar1 = new ApexCharts(document.querySelector("#AllProject"), options);
-			chartBar1.render();
+						},
+						legend: {
+							show: false,
+						},
+						colors: ['#3AC977', 'var(--primary)', 'var(--secondary)'],
+						labels: ["Đã nhận", "Đang xử lí", "Trạng thái khác"],
+						dataLabels: {
+							enabled: false,
+						},
+					};
 
-		}
+					var chartBar1 = new ApexCharts(document.querySelector("#AllProject"), options);
+					chartBar1.render();
+				},
+				error: function (xhr, status, error) {
+					console.error("Error fetching data: ", error);
+				}
+			});
+		};
 
 		var overiewChart = function () {
-			var fetchDataByStatus = function (status) {
-				switch (status) {
-					case "SD.StatusInProcess":
-						return [15, 25, 35, 45, 20, 30, 25, 15, 20, 10, 5, 15];
-					case "SD.StatusPending":
-						return [10, 20, 30, 40, 10, 15, 10, 5, 15, 10, 10, 20];
-					case "SD.StatusCancelled":
-						return [5, 10, 15, 20, 5, 5, 10, 5, 10, 5, 5, 10];
-					case "SD.StatusShipped":
-						return [20, 30, 40, 50, 25, 35, 30, 20, 25, 15, 20, 25];
-					case "SD.StatusApproved":
-						return [25, 35, 45, 55, 30, 40, 35, 25, 30, 20, 25, 30];
-					default:
-						return [];
-				}
+			var fetchDataByStatus = function (status, timeRange) {
+				return $.ajax({
+					url: '/Employee/Dashboard/GetOrderOverViewData',
+					method: 'GET',
+					data: { timeRange: timeRange },
+					success: function (response) {
+						var data = response.data.find(item => item.name === status);
+						if (data && Array.isArray(data.data)) {
+							return data.data;  // Trả về mảng dữ liệu nếu hợp lệ
+						} else {
+							return []; // Trả về mảng rỗng nếu không có dữ liệu hợp lệ
+						}
+					}
+				});
 			};
 
+			// Đảm bảo rằng dữ liệu trả về là mảng và hợp lệ
 			var options = {
 				series: [
 					{
-						name: 'In Process',
+						name: 'Đang giao',
 						type: 'column',
-						data: fetchDataByStatus("SD.StatusInProcess")
+						data: [] // Mảng trống ban đầu, sẽ cập nhật sau khi có dữ liệu
 					},
 					{
-						name: 'Pending',
+						name: 'Đang xử lí',
 						type: 'area',
-						data: fetchDataByStatus("SD.StatusPending")
+						data: []
 					},
 					{
-						name: 'Cancelled',
+						name: 'Đã hủy',
 						type: 'line',
-						data: fetchDataByStatus("SD.StatusCancelled")
+						data: []
 					},
 					{
-						name: 'Shipped',
+						name: 'Đã giao',
 						type: 'line',
-						data: fetchDataByStatus("SD.StatusShipped")
+						data: []
 					},
 					{
-						name: 'Approved',
+						name: 'Đã nhận',
 						type: 'line',
-						data: fetchDataByStatus("SD.StatusApproved")
+						data: []
 					}
 				],
 				chart: {
 					height: 300,
 					type: 'line',
 					stacked: false,
-					toolbar: {
-						show: false,
-					},
+					toolbar: { show: false },
 				},
 				stroke: {
 					width: [0, 1, 1, 1, 1],
@@ -444,36 +450,24 @@
 					}
 				},
 				colors: ["#007bff", "#3AC977", "#FF5E5E", "#00C7E6", "#FFC107"],
-				labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+				labels: [], // Sẽ được cập nhật từ API
 				markers: {
 					size: 0
 				},
 				xaxis: {
-					type: 'month',
-					labels: {
-						style: {
-							fontSize: '13px',
-							colors: '#888888',
-						},
-					},
+					type: 'category',
+					categories: [], // Sẽ được cập nhật từ API
 				},
 				yaxis: {
 					min: 0,
 					tickAmount: 4,
-					labels: {
-						style: {
-							fontSize: '13px',
-							colors: '#888888',
-						},
-					},
 				},
 				tooltip: {
 					shared: true,
-					intersect: false,
 					y: {
 						formatter: function (y) {
 							if (typeof y !== "undefined") {
-								return y.toFixed(0) + " items";
+								return y.toFixed(0) + " đơn hàng";
 							}
 							return y;
 						}
@@ -484,38 +478,49 @@
 			var chart = new ApexCharts(document.querySelector("#overiewChart"), options);
 			chart.render();
 
-			// Tương tự như cũ, cập nhật theo tab
-			$(".mix-chart-tab .nav-link").on('click', function () {
-				var seriesType = $(this).attr('data-series');
-				chart.updateSeries([
-					{
-						name: "In Process",
-						type: 'column',
-						data: fetchDataByStatus("SD.StatusInProcess")
-					},
-					{
-						name: "Pending",
-						type: 'area',
-						data: fetchDataByStatus("SD.StatusPending")
-					},
-					{
-						name: "Cancelled",
-						type: 'line',
-						data: fetchDataByStatus("SD.StatusCancelled")
-					},
-					{
-						name: "Shipped",
-						type: 'line',
-						data: fetchDataByStatus("SD.StatusShipped")
-					},
-					{
-						name: "Approved",
-						type: 'line',
-						data: fetchDataByStatus("SD.StatusApproved")
+			// Lấy và cập nhật dữ liệu từ API khi tải trang hoặc thay đổi thời gian
+			function updateChartData(timeRange) {
+				$.ajax({
+					url: '/Employee/Dashboard/GetOrderOverViewData',
+					method: 'GET',
+					data: { timeRange: timeRange },
+					success: function (response) {
+						var seriesData = response.data;
+						var categories = response.categories; // Nhận categories từ API
+
+						$('#amountOrders').text(response.amountOrders);
+						$('#amountSuccessOrders').text(response.amountSuccessOrders);
+
+						if (Array.isArray(seriesData) && seriesData.length > 0) {
+							chart.updateOptions({
+								xaxis: {
+									categories: categories // Cập nhật categories cho trục x
+								},
+								labels: categories // Cập nhật labels cho trục x
+							});
+
+							chart.updateSeries(seriesData.map(function (item) {
+								return {
+									name: item.nameVietNamese,
+									type: item.name === 'Processing' ? 'column' : 'line', // Sử dụng column cho Processing, line cho các trạng thái còn lại
+									data: item.data
+								};
+							}));
+						}
 					}
-				]);
+				});
+			}
+
+			// Lắng nghe sự kiện thay đổi tab hoặc thời gian
+			$(".mix-chart-tab .nav-link").on('click', function () {
+				var timeRange = $(this).attr('data-time-range'); // Lấy khoảng thời gian từ tab
+				updateChartData(timeRange); // Cập nhật dữ liệu theo thời gian đã chọn
 			});
-		}
+
+			// Cập nhật dữ liệu cho biểu đồ lần đầu tiên khi trang được tải
+			updateChartData("day"); // Mặc định là "day"
+		};
+
 
 		var earningChart = function () {
 
@@ -748,7 +753,7 @@
 		// Tạo biểu đồ ban đầu với giá trị "today"
 		projectChart("today");
 
-	var handleWorldMap = function(trigger = 'load'){
+	/*var handleWorldMap = function(trigger = 'load'){
 		var vmapSelector = $('#world-map');
 		if(trigger == 'resize')
 		{
@@ -781,7 +786,7 @@
 				alert(message);
 			}
 		});
-	}
+	}*/
 	/* Function ============ */
 		return {
 			init:function(){
@@ -795,7 +800,7 @@
 				overiewChart();
 				earningChart();
 				projectChart();
-				handleWorldMap();
+				/*handleWorldMap();*/
 				
 			},
 			

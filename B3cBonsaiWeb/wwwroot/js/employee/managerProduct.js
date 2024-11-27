@@ -52,7 +52,7 @@ function loadDataTable() {
                 "next": ">",
                 "previous": "<"
             },
-            "zeroRecords": " <div style='text-align: center;'>Không tìm thấy kết quả nào.</div> ",
+            "zeroRecords": ` <div style="text-align: center;">Không tìm thấy kết quả nào.</div> `,
             "infoEmpty": "Không có mục nào để hiển thị.",
             "infoFiltered": "(lọc từ _MAX_ mục)"
         }

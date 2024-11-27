@@ -30,12 +30,12 @@
 							<div class="tbl-caption">
 								<h4 class="heading mb-0">Danh sách @(User.IsInRole(SD.Role_Admin) ? "người dùng" : "khách hàng")</h4>
 								<div>
-									<button class="dt-button buttons-excel buttons-html5 btn btn-sm border-0"
-											tabindex="0"
-											aria-controls="reports-tbl"
-											type="button">
+									<a class="dt-button buttons-excel buttons-html5 btn btn-sm border-0"
+										tabindex="0"
+										aria-controls="reports-tbl"
+										asp-area="Employee" asp-controller="ManagerUser" asp-action="ExportUsersToExcel">
 										<span><i class="fa-solid fa-file-excel"></i> Xuất danh sách</span>
-									</button>
+									</a>
 									<a onclick="loadViewUpsert('')" class="btn btn-primary btn-sm" data-bs-toggle="offcanvas" href="#upsertObject" role="button" aria-controls="upsertObject">+ Thêm người dùng</a>
 								</div>	
 							</div>
