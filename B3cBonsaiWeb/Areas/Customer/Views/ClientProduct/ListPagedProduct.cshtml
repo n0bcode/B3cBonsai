@@ -27,97 +27,31 @@
                 <ul class="product-view-ul">
                     @foreach (var product in Model)
                     {
-                        if (product.LoaiDoiTuong == SD.ObjectDetailOrder_SanPham) {
-                        <li class="pro-item-li">
-                            <div class="single-product-wrap">
-                                <div class="product-image banner-hover">
-                                    <a asp-area="Customer"
-                                       asp-controller="ClientProduct"
-                                       asp-action="Detail"
-                                       asp-route-id="@product.SanPham.Id"
-                                       class="pro-img">
-                                        <!-- Hình ảnh đầu tiên -->
-                                        <img onerror="this.src='/images/product/default.jpg'"
-                                             src="@(product.SanPham.HinhAnhs.FirstOrDefault()?.LinkAnh ?? @Url.Content("~/images/product/default.jpg"))"
-                                             class="img-fluid img1 mobile-img1"
-                                             alt="p1"
-                                             style="width: 315px; height: 330px; border-radius: 5px; object-fit: cover;">
-                                        <!-- Hình ảnh thứ hai -->
-                                        <img onerror="this.src='/images/product/default.jpg'"
+                        if (product.LoaiDoiTuong == SD.ObjectDetailOrder_SanPham)
+                        {
+                            <li class="pro-item-li">
+                                <div class="single-product-wrap">
+                                    <div class="product-image banner-hover">
+                                        <a asp-area="Customer"
+                                           asp-controller="ClientProduct"
+                                           asp-action="Detail"
+                                           asp-route-id="@product.SanPham.Id"
+                                           class="pro-img">
+                                            <!-- Hình ảnh đầu tiên -->
+                                            <img onerror="this.src='/images/product/default.jpg'"
+                                                 src="@(product.SanPham.HinhAnhs.FirstOrDefault()?.LinkAnh ?? @Url.Content("~/images/product/default.jpg"))"
+                                                 class="img-fluid img1 mobile-img1"
+                                                 alt="p1"
+                                                 style="width: 315px; height: 330px; border-radius: 5px; object-fit: cover;">
+                                            <!-- Hình ảnh thứ hai -->
+                                            <img onerror="this.src='/images/product/default.jpg'"
                                                  src="@(product.SanPham.HinhAnhs.Skip(1).FirstOrDefault()?.LinkAnh ?? @Url.Content("~/images/product/default.jpg"))"
-                                             class="img-fluid img2 mobile-img2"
-                                             alt="p2"
-                                             style="width: 315px; height: 340px; border-radius: 5px; object-fit: cover;">
-                                    </a>
-                                    <div class="product-action product-cart-btn">
-                                        <a onclick="addToCart(@product.SanPham.Id,null,1,'@SD.ObjectDetailOrder_SanPham')" href="#add-to-cart" class="add-to-cart">
-                                            <span class="cart-title">
-                                                <span class="add-c-title">
-                                                    <span class="tooltip-text">Thêm vào giỏ</span>
-                                                    <span class="cart-icon"><i class="feather-shopping-bag"></i></span>
-                                                    <span class="add-title">Thêm vào giỏ</span>
-                                                </span>
-                                            </span>
+                                                 class="img-fluid img2 mobile-img2"
+                                                 alt="p2"
+                                                 style="width: 315px; height: 340px; border-radius: 5px; object-fit: cover;">
                                         </a>
-                                    </div>
-                                    <div class="product-action">
-                                            <a class="wishlist" data-id="@product.SanPham.Id" data-type="@SD.ObjectLike_SanPham">
-                                                <span class="tooltip-text">Yêu thích</span>
-                                                <span class="pro-action-icon likeAction"><i class="feather-heart"></i></span>
-                                            </a>
-                                        <!-- Nút Xem nhanh -->
-                                        <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview" onclick="loadQuickView(@product.SanPham.Id)">
-                                            <span class="tooltip-text">Xem nhanh</span>
-                                            <span class="pro-action-icon"><i class="feather-eye"></i></span>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="product-caption">
-                                    <div class="product-content">
-                                        <div class="product-title">
-                                            <div class="pro-title-price">
-                                                <h6>
-                                                    <a asp-area="Customer"
-                                                       asp-controller="ClientProduct"
-                                                       asp-action="Detail"
-                                                       asp-route-id="@product.SanPham.Id">@product.SanPham.TenSanPham</a>
-                                                </h6>
-                                                <div class="product-price">
-                                                    <div class="price-box">
-                                                            <span class="new-price">@String.Format("{0:0,0} VND", product.SanPham.Gia).Replace(",", ".")</span>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                            <div class="product-name">
-                                                <a class="product-type" asp-area="Customer"
-                                                   asp-controller="ClientProduct"
-                                                   asp-action="Detail"
-                                                   asp-route-id="@product.SanPham.Id">Số lượng: @product.SanPham.SoLuong</a>
-                                                <a class="product-vendor" asp-area="Customer"
-                                                   asp-controller="ClientProduct"
-                                                   asp-action="Detail"
-                                                   asp-route-id="@product.SanPham.Id">B3cBonsai</a>
-                                            </div>
-                                        </div>
-                                        <div class="product-ratting">
-                                            <span class="pro-ratting">
-                                                <i class="fa-regular fa-star"></i>
-                                                <i class="fa-regular fa-star"></i>
-                                                <i class="fa-regular fa-star"></i>
-                                                <i class="fa-regular fa-star"></i>
-                                                <i class="fa-regular fa-star"></i>
-                                            </span>
-                                        </div>
-                                        <div class="product-description">
-                                            <p>Mô tả: @product.SanPham.MoTa</p>
-                                        </div>
-                                        <div class="product-action">
-                                            <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview">
-                                                <span class="tooltip-text">Xem nhanh</span>
-                                                <span class="pro-action-icon"><i class="feather-eye"></i></span>
-                                            </a>
-                                                <a onclick="addToCart(@product.SanPham.Id,null,1,'@SD.ObjectDetailOrder_SanPham')" href="#add-to-cart" class="add-to-cart">
+                                        <div class="product-action product-cart-btn">
+                                            <a onclick="addToCart(@product.SanPham.Id,null,1,'@SD.ObjectDetailOrder_SanPham')" href="#add-to-cart" class="add-to-cart">
                                                 <span class="cart-title">
                                                     <span class="add-c-title">
                                                         <span class="tooltip-text">Thêm vào giỏ</span>
@@ -126,16 +60,85 @@
                                                     </span>
                                                 </span>
                                             </a>
+                                        </div>
+                                        <div class="product-action">
+                                            <a class="wishlist" data-id="@product.SanPham.Id" data-type="@SD.ObjectLike_SanPham">
+                                                <span class="tooltip-text">Yêu thích</span>
+                                                <span class="pro-action-icon likeAction"><i class="feather-heart"></i></span>
+                                            </a>
+                                            <!-- Nút Xem nhanh -->
+                                            <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview" onclick="loadQuickView(@product.SanPham.Id)">
+                                                <span class="tooltip-text">Xem nhanh</span>
+                                                <span class="pro-action-icon"><i class="feather-eye"></i></span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="product-caption">
+                                        <div class="product-content">
+                                            <div class="product-title">
+                                                <div class="pro-title-price">
+                                                    <h6>
+                                                        <a asp-area="Customer"
+                                                           asp-controller="ClientProduct"
+                                                           asp-action="Detail"
+                                                           asp-route-id="@product.SanPham.Id">@product.SanPham.TenSanPham</a>
+                                                    </h6>
+                                                    <div class="product-price">
+                                                        <div class="price-box">
+                                                            <span class="new-price">@String.Format("{0:0,0} VND", product.SanPham.Gia).Replace(",", ".")</span>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                                <div class="product-name">
+                                                    <a class="product-type" asp-area="Customer"
+                                                       asp-controller="ClientProduct"
+                                                       asp-action="Detail"
+                                                       asp-route-id="@product.SanPham.Id">Số lượng: @product.SanPham.SoLuong</a>
+                                                    <a class="product-vendor" asp-area="Customer"
+                                                       asp-controller="ClientProduct"
+                                                       asp-action="Detail"
+                                                       asp-route-id="@product.SanPham.Id">B3cBonsai</a>
+                                                </div>
+                                            </div>
+                                            <div class="product-ratting">
+                                                <span class="pro-ratting">
+                                                    <i class="fa-regular fa-star"></i>
+                                                    <i class="fa-regular fa-star"></i>
+                                                    <i class="fa-regular fa-star"></i>
+                                                    <i class="fa-regular fa-star"></i>
+                                                    <i class="fa-regular fa-star"></i>
+                                                </span>
+                                            </div>
+                                            <div class="product-description">
+                                                <p>Mô tả: @product.SanPham.MoTa</p>
+                                            </div>
+                                            <div class="product-action">
+                                                <!-- Nút Xem nhanh -->
+                                                <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview" onclick="loadQuickView(@product.SanPham.Id)">
+                                                    <span class="tooltip-text">Xem nhanh</span>
+                                                    <span class="pro-action-icon"><i class="feather-eye"></i></span>
+                                                </a>
+                                                <a onclick="addToCart(@product.SanPham.Id,null,1,'@SD.ObjectDetailOrder_SanPham')" href="#add-to-cart" class="add-to-cart">
+                                                    <span class="cart-title">
+                                                        <span class="add-c-title">
+                                                            <span class="tooltip-text">Thêm vào giỏ</span>
+                                                            <span class="cart-icon"><i class="feather-shopping-bag"></i></span>
+                                                            <span class="add-title">Thêm vào giỏ</span>
+                                                        </span>
+                                                    </span>
+                                                </a>
                                                 <a class="wishlist" data-id="@product.SanPham.Id" data-type="@SD.ObjectLike_SanPham">
                                                     <span class="tooltip-text">Yêu thích</span>
                                                     <span class="pro-action-icon likeAction"><i class="feather-heart"></i></span>
                                                 </a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
                             </li>
-                        } else
+                        }
+                        else
                         {
                             <li class="pro-item-li">
                                 <div class="single-product-wrap">
@@ -176,9 +179,9 @@
                                             </a>
                                             <!-- Nút Xem nhanh -->
                                             @* <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview" onclick="loadQuickView(@product.ComboSanPham.ComboSanPham.Id)">
-                                                <span class="tooltip-text">Xem nhanh</span>
-                                                <span class="pro-action-icon"><i class="feather-eye"></i></span>
-                                            </a> *@
+                                    <span class="tooltip-text">Xem nhanh</span>
+                                    <span class="pro-action-icon"><i class="feather-eye"></i></span>
+                                    </a> *@
                                         </div>
                                     </div>
                                     <div class="product-caption">
@@ -202,7 +205,9 @@
                                                     <a class="product-type" asp-area="Customer"
                                                        asp-controller="ClientProduct"
                                                        asp-action="Detail"
-                                                       asp-route-id="@product.ComboSanPham.Id">Số lượng: XX</a>
+                                                       asp-route-id="@product.ComboSanPham.Id">
+                                                        Số lượng: @(product.ComboSanPham.ChiTietCombos.Sum(x => x.SoLuong))
+                                                    </a>
                                                     <a class="product-vendor" asp-area="Customer"
                                                        asp-controller="ClientProduct"
                                                        asp-action="Detail"
@@ -222,11 +227,11 @@
                                                 <p>Mô tả: @product.ComboSanPham.MoTa</p>
                                             </div>
                                             <div class="product-action">
-                                                <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview">
-                                                    <span class="tooltip-text">Xem nhanh</span>
-                                                    <span class="pro-action-icon"><i class="feather-eye"></i></span>
-                                                </a>
-                                                <a onclick="addToCart(@product.SanPham.Id,null,1,'@SD.ObjectDetailOrder_SanPham')" href="#add-to-cart" class="add-to-cart">
+                                                @*  <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview">
+                                        <span class="tooltip-text">Xem nhanh</span>
+                                        <span class="pro-action-icon"><i class="feather-eye"></i></span>
+                                        </a> *@
+                                                <a onclick="addToCart(null,@product.ComboSanPham.Id,1,'@SD.ObjectDetailOrder_Combo')" href="#add-to-cart" class="add-to-cart">
                                                     <span class="cart-title">
                                                         <span class="add-c-title">
                                                             <span class="tooltip-text">Thêm vào giỏ</span>
@@ -235,7 +240,7 @@
                                                         </span>
                                                     </span>
                                                 </a>
-                                                <a href="/Customer/Wishlist/Index" class="wishlist">
+                                                <a class="wishlist" data-id="@product.ComboSanPham.Id" data-type="@SD.ObjectLike_SanPham">
                                                     <span class="tooltip-text">Yêu thích</span>
                                                     <span class="pro-action-icon likeAction"><i class="feather-heart"></i></span>
                                                 </a>
