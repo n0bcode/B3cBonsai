@@ -1,11 +1,16 @@
 ﻿var dataTable;
+var currentFilterStatus = ''; // Biến lưu trạng thái lọc hiện tại
 
-// Load DataTable for all orders (getall)
+// Hàm load bảng dữ liệu
 function loadOrderDataTable() {
+    console.log(currentFilterStatus);
     dataTable = $('#tableOrder').DataTable({
         "ajax": {
             url: '/Employee/ManagerOrder/getall',
-            dataSrc: 'data' // Ensure data is loaded directly if it's an array
+            data: function (d) {
+                d.orderStatus = currentFilterStatus; // Gửi trạng thái lọc đến server
+            },
+            dataSrc: 'data' // Đảm bảo dữ liệu được trả về chính xác
         },
         "columns": [
             {
@@ -64,7 +69,6 @@ function loadOrderDataTable() {
                         return `<div class="avatar-list avatar-list-stacked">` +
                             data.map(sanPham => {
                                 if (sanPham.loaiDoiTuong == 'SanPham') {
-                                    // Check if hinhAnhs is defined and is an array, then access the first image
                                     const firstImage = Array.isArray(sanPham.sanPham.hinhAnhs) && sanPham.sanPham.hinhAnhs.length > 0 ? sanPham.sanPham.hinhAnhs[0]?.linkAnh : null;
                                     return firstImage ?
                                         `<img src="${firstImage}" class="avatar rounded-circle" style="width: 40px; height: 40px;" alt="Product Image">` :
@@ -111,11 +115,30 @@ function loadOrderDataTable() {
                 "next": ">",
                 "previous": "<"
             },
-            "zeroRecords": "Không tìm thấy kết quả nào",
+            "zeroRecords": ` <div style="text-align: center;">Không tìm thấy kết quả nào.</div> `,
             "infoEmpty": "Không có mục nào để hiển thị",
             "infoFiltered": "(lọc từ _MAX_ mục)"
         }
     });
+}
+
+// Hàm để lọc đơn hàng theo trạng thái
+function filterByStatus(status) {
+    if (currentFilterStatus == status) { //Nếu bấm lại nút
+        currentFilterStatus = "";
+
+        $('.task-summary').removeClass('active');
+    } else //Cập nhập khi bấm lần đầu
+    {
+        currentFilterStatus = status;
+
+        // Xóa lớp active khỏi tất cả các nút
+        $('.task-summary').removeClass('active');
+
+        // Thêm lớp active vào nút đã chọn
+        $('#' + status).addClass('active');
+    }
+    dataTable.ajax.reload(); // Reload lại bảng với bộ lọc mới
 }
 
 
@@ -125,7 +148,6 @@ function loadOrderDataTable() {
 
 $(document).ready(function () {
     loadOrderDataTable();
-
 });
 let oldValue = $('select').val(); // Initialize the old value for the select box
 
@@ -155,23 +177,7 @@ const changeStatusOrder = (id, statusOrder) => {
                 dataTable.ajax.reload();
             }
         }
-    });/*
-    Swal.fire({
-        title: "Chỉnh sửa",
-        text: "Bạn có muốn thay đổi tình trạng?",
-        type: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Chỉnh sửa!",
-        cancelButtonText: "Hủy"
-    }).then((result) => {
-        if (result.value) {
-        } else {
-            toastr.info("Bạn hủy hàng động thay đổi tình trạng.");
-            dataTable.ajax.reload();
-        }
-    });*/
+    });
 };
 
 const changeStatusPayment = (id, statusPayment) => {
@@ -196,21 +202,5 @@ const changeStatusPayment = (id, statusPayment) => {
                 dataTable.ajax.reload();
             }
         }
-    });/*
-    Swal.fire({
-        title: "Chỉnh sửa",
-        text: "Bạn có muốn thay đổi tình trạng?",
-        type: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Chỉnh sửa!",
-        cancelButtonText: "Hủy"
-    }).then((result) => {
-        if (result.value) {
-        } else {
-            toastr.info("Bạn hủy hàng động thay đổi tình trạng.");
-            dataTable.ajax.reload();
-        }
-    });*/
+    });
 };

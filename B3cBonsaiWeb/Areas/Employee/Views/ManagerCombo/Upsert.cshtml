@@ -1,121 +1,6 @@
 ﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @model ComboSanPham
 
-<div class="card h-auto">
-    <div class="card-header">
-        <h4 class="heading mb-0">@(Model == null || Model.Id == 0 ? "Thêm" : "Sửa") Combo sản phẩm</h4>
-    </div>
-    <div class="card-body">
-        <form class="form-combo" id="formUpsertCombo" onsubmit="return actionUpsertCombo(event)">
-            <input type="hidden" asp-for="Id" value="@(Model?.Id ?? 0)" />
-
-            <div class="form-group mb-3">
-                <label asp-for="TenCombo" class="font-w500">Tên Combo<span class="text-danger">*</span></label>
-                <input asp-for="TenCombo" type="text" class="form-control" placeholder="Tên Combo" required>
-            </div>
-
-
-
-            <div class="form-group mb-3">
-                <label asp-for="GiamGia">Giảm Giá (%)<span class="text-danger">*</span></label>
-                <input asp-for="GiamGia" type="number" class="form-control" min="1" max="99" placeholder="Nhập giảm giá" required>
-            </div>
-
-            <div class="form-group mb-3">
-                <label>Chọn sản phẩm và số lượng:</label>
-                @if (ViewBag.SanPhamList != null && ViewBag.SanPhamList.Count > 0)
-                {
-                    <select id="sanPhamSelect" class="select2 form-control" name="sanPham[]" multiple="multiple" data-placeholder="Chọn sản phẩm" style="width:100%; height: auto; min-height: 70px;">
-                        @foreach (var sanPham in ViewBag.SanPhamList)
-                        {
-                            <option value="@sanPham.Id">@sanPham.TenSanPham</option>
-                        }
-                    </select>
-                }
-                else
-                {
-                    <p>Không có sản phẩm nào để chọn.</p>
-                }
-            </div>
-
-            <div id="chiTietComboContainer">
-            </div>
-
-            <div class="form-group mb-3">
-                <label asp-for="TongGia">Tổng giá Combo</label>
-                <input asp-for="TongGia" class="form-control" type="number" value="10000" readonly />
-            </div>
-
-            <div class="form-group mb-3">
-                <label asp-for="MoTa">Mô Tả<span class="text-danger">*</span></label>
-                <textarea asp-for="MoTa" class="form-control" placeholder="Nhập mô tả cho Combo"></textarea>
-            </div>
-
-            <!-- Nút xác nhận -->
-            <button type="submit" class="btn btn-primary mb-3">Xác Nhận</button>
-        </form>
-    </div>
-</div>
-
-<script>
-    $(document).ready(function () {
-        $('#sanPhamSelect').select2({ maximumSelectionLength: 5 });
-
-        $('#sanPhamSelect').on('change', function () {
-            var selectedProducts = $(this).val();
-            $('#chiTietComboContainer').empty();
-
-            selectedProducts.forEach(function (productId) {
-                var productName = $('#sanPhamSelect option[value="' + productId + '"]').text();
-                $('#chiTietComboContainer').append(`
-                        <div class="form-group mb-3">
-                            <label>${productName} - Số lượng:</label>
-                            <input type="number" name="soLuong[${productId}]" min="1" class="form-control" placeholder="Nhập số lượng">
-                        </div>
-                    `);
-            });
-        });
-    });
-
-    function actionUpsertCombo(event) {
-        event.preventDefault();
-        var formData = new FormData(document.getElementById('formUpsertCombo'));
-
-        $('#chiTietComboContainer input[type="number"]').each(function () {
-            var productId = $(this).attr("name").match(/\d+/)[0];
-            var quantity = $(this).val();
-            formData.append(`soLuong[${productId}]`, quantity);
-        });
-
-        // Log dữ liệu formData để kiểm tra
-        for (var pair of formData.entries()) {
-            console.log(pair[0] + ', ' + pair[1]);
-        }
-
-        $.ajax({
-            url: `/Employee/ManagerCombo/Upsert`,
-            data: formData,
-            method: 'POST',
-            processData: false,
-            contentType: false,
-            success: (data) => {
-                if (data.success) {
-                    toastr.success(data.message);
-                    dataTable.ajax.reload(); // Tải lại bảng dữ liệu sau khi sửa thành công
-                } else {
-                    $('#viewFormUpsert').html(data.data);
-                    toastr.error(data.message);
-                }
-            },
-            error: (xhr) => {
-                toastr.error("Có lỗi xảy ra: " + xhr.responseText);
-                console.error("Error:", xhr.responseText); // Xuất lỗi chi tiết lên Console
-            }
-        });
-    }
-
-</script>
-
 <style>
     .select2-container--default .select2-selection--multiple .select2-selection__rendered {
         min-height: 70px;
@@ -130,4 +15,186 @@
     .select2-container {
         width: 100% !important;
     }
+
+    .select2-selection .select2-selection--multiple {
+        overflow: auto;
+    }
 </style>
+
+<div class="card h-auto">
+    <div class="card-header">
+        <h4 class="heading mb-0">@(Model == null || Model.Id == 0 ? "Thêm" : "Sửa") Combo sản phẩm</h4>
+    </div>
+    <div class="card-body">
+        <form class="form-combo" id="formUpsertCombo" onsubmit="return actionUpsertCombo(event)">
+            <input type="hidden" asp-for="LinkAnh" />
+
+            <div class="form-group mb-3">
+                <label asp-for="Id" class="font-w500">Mã Combo</label>
+                <input asp-for="Id" value="@(Model?.Id ?? 0)" class="form-control" placeholder="File hình ảnh combo" readonly>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="LinkAnh" class="font-w500">Hình ảnh Combo</label>
+                <input name="file" type="file" accept="image/*" class="form-control" placeholder="File hình ảnh combo">
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="TenCombo" class="font-w500">Tên Combo<span class="text-danger">*</span></label>
+                <input asp-for="TenCombo" type="text" class="form-control" placeholder="Nhập tên Combo" required>
+            </div>
+
+
+
+            <div class="form-group mb-3">
+                <label asp-for="GiamGia">Giảm Giá (%)<span class="text-danger">*</span></label>
+                <input asp-for="GiamGia" type="number" class="form-control" min="1" max="99" placeholder="Nhập giảm giá" required>
+            </div>
+
+            <div class="form-group mb-3">
+                <label>Chọn sản phẩm và số lượng:</label>
+                @if (ViewBag.SanPhamList != null && ViewBag.SanPhamList.Count > 0)
+                {
+                    <select id="sanPhamSelect" class="select2 form-control" name="sanPham[]" multiple="multiple" data-placeholder="Chọn sản phẩm" style="width:100%; height: auto; min-height: 70px;" onchange="updateChiTietContainer()">
+                        @foreach (var sanPham in ViewBag.SanPhamList)
+                        {
+                            var isSelected = Model.ChiTietCombos?.Any(ct => ct.SanPhamId == sanPham.Id) ?? false;
+                            if (isSelected)
+                            {
+                                <option value="@sanPham.Id" data-price="@sanPham.Gia" selected>
+                                    @sanPham.TenSanPham (Giá: @string.Format("{0:n0}", sanPham.Gia) VNĐ)
+                                </option>
+                            }
+                            else
+                            {
+                                <option value="@sanPham.Id" data-price="@sanPham.Gia">
+                                    @sanPham.TenSanPham (Giá: @string.Format("{0:n0}", sanPham.Gia) VNĐ)
+                                </option>
+                            }
+                        }
+                    </select>
+                }
+                else
+                {
+                    <p>Không có sản phẩm nào để chọn.</p>
+                }
+            </div>
+
+            <div id="chiTietComboContainer" class="overflow-auto border rounded p-1 border-primary" style="height:120px">
+                @if (Model.ChiTietCombos != null && Model.ChiTietCombos.Count > 0)
+                {
+                    @foreach (var chiTiet in Model.ChiTietCombos)
+                    {
+                        var sanPham = ((IEnumerable<SanPham>)ViewBag.SanPhamList).FirstOrDefault(s => s.Id == chiTiet.SanPhamId);
+                        if (sanPham != null)
+                        {
+                            <div class="form-group mb-3 p-3 border rounded border-secondary">
+                                <label class="form-label fw-bold">@sanPham.TenSanPham:</label>
+                                <input type="number"
+                                       name="soLuong[@chiTiet.SanPhamId]"
+                                       data-price="@sanPham.Gia"
+                                       min="1"
+                                       value="@chiTiet.SoLuong"
+                                       class="form-control product-quantity"
+                                       placeholder="Nhập số lượng">
+                            </div>
+                        }
+                    }
+                }
+            </div>
+
+
+            <div class="form-group mb-3">
+                <label asp-for="TongGia">Tổng giá Combo</label>
+                <input asp-for="TongGia" class="form-control" type="number" value="10000" id="totalPrice" readonly />
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="MoTa">Mô Tả<span class="text-danger">*</span></label>
+                <textarea asp-for="MoTa" class="form-control" placeholder="Nhập mô tả cho Combo"></textarea>
+            </div>
+
+            <!-- Nút xác nhận -->
+            <button type="submit" class="btn btn-primary mb-3">Xác Nhận</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    function updateChiTietContainer() {
+        const selectedOptions = document.querySelectorAll('#sanPhamSelect option:checked');
+        const container = document.getElementById('chiTietComboContainer');
+        container.innerHTML = ''; // Xóa nội dung cũ
+
+        selectedOptions.forEach(option => {
+            const productId = option.value;
+            const productName = option.textContent;
+            const productPrice = option.getAttribute('data-price');
+
+            const inputGroup = document.createElement('div');
+            inputGroup.className = 'form-group mb-3 p-3 border rounded border-secondary';
+
+            inputGroup.innerHTML = `
+                <label class="form-label fw-bold">${productName}:</label>
+                <input type="number" name="soLuong[${productId}]"
+                       data-price="${productPrice}"
+                       min="1"
+                       value="1"
+                       class="form-control product-quantity"
+                       placeholder="Nhập số lượng">
+            `;
+
+            container.appendChild(inputGroup);
+        });
+    }
+
+    $(document).ready(function () {
+        // Tự động điền dữ liệu khi trang được tải
+        updateChiTietContainer();
+        $('#sanPhamSelect').select2({ maximumSelectionLength: 5 });
+
+        $('#sanPhamSelect').on('change', function() {
+            var selectedProducts = $(this).val();
+            $('#chiTietComboContainer').empty(); // Xóa nội dung cũ
+
+            selectedProducts.forEach(function(productId) {
+                var productName = $('#sanPhamSelect option[value="' + productId + '"]').text();
+                var productPrice = parseInt($('#sanPhamSelect option[value="' + productId + '"]').data('price')) || 0; // Lấy giá sản phẩm từ `data-price`
+                $('#chiTietComboContainer').append(`
+                    <div class="form-group mb-3 p-3 border rounded border-secondary">
+                        <label class="form-label fw-bold">${productName}:</label>
+                        <input type="number" name="soLuong[${productId}]" data-price="${productPrice}" min="1" value="1" class="form-control product-quantity" placeholder="Nhập số lượng">
+                    </div>
+                `);
+            });
+
+            updateTotalPrice(); // Tính tổng giá ngay sau khi thay đổi sản phẩm
+        });
+
+        // Hàm tính tổng giá
+        function updateTotalPrice() {
+            var totalPrice = 0;
+
+            // Duyệt qua tất cả các ô nhập số lượng và tính tổng giá
+            $('#chiTietComboContainer input[type="number"]').each(function() {
+                var quantity = parseInt($(this).val()) || 0;
+                var price = parseInt($(this).data('price')) || 0;
+                totalPrice += quantity * price;
+            });
+
+            // Cập nhật tổng giá vào ô input `#totalPrice`
+            $('#totalPrice').val(totalPrice);
+        }
+
+        // Lắng nghe sự kiện thay đổi số lượng để cập nhật giá
+        $(document).on('input', '#chiTietComboContainer input[type="number"]', function() {
+            updateTotalPrice();
+        });
+
+        // Khi Select2 được khởi tạo, thêm class overflow-auto
+        $('#sanPhamSelect').on('select2:open', function() {
+            $('.select2-selection--multiple').addClass('overflow-auto');
+        });
+    });
+
+</script>

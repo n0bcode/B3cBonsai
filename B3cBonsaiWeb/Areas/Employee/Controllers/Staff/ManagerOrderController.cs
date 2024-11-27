@@ -28,20 +28,20 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
         public IActionResult Index()
         {
             // Đếm số lượng đơn hàng theo từng tình trạng
-            var notStartedCount = _context.DonHangs.Count(d => d.TrangThaiDonHang == SD.StatusPending );
-            var inProgressCount = _context.DonHangs.Count(d => d.TrangThaiDonHang == SD.StatusApproved );
-            var testingCount = _context.DonHangs.Count(d => d.TrangThaiDonHang == SD.StatusInProcess );
-            var awaitingCount = _context.DonHangs.Count(d => d.TrangThaiDonHang == SD.StatusShipped );
-            var completeCount = _context.DonHangs.Count(d => d.TrangThaiDonHang == SD.StatusCancelled );
-            var pendingCount = _context.DonHangs.Count(d => d.TrangThaiThanhToan == SD.StatusRefunded);
+            var statusPending = _context.DonHangs.Count(d => d.TrangThaiDonHang == SD.StatusPending );
+            var statusInProcess= _context.DonHangs.Count(d => d.TrangThaiDonHang == SD.StatusInProcess);
+            var statusApproved= _context.DonHangs.Count(d => d.TrangThaiDonHang == SD.StatusApproved);
+            var statusShipped = _context.DonHangs.Count(d => d.TrangThaiDonHang == SD.StatusShipped );
+            var statusCancelled = _context.DonHangs.Count(d => d.TrangThaiDonHang == SD.StatusCancelled );
+            var statusRefunded = _context.DonHangs.Count(d => d.TrangThaiThanhToan == SD.StatusRefunded);
 
             // Lưu kết quả vào TempData để truyền tới view
-            TempData["NotStartedCount"] = notStartedCount;
-            TempData["InProgressCount"] = inProgressCount;
-            TempData["TestingCount"] = testingCount;
-            TempData["AwaitingCount"] = awaitingCount;
-            TempData["CompleteCount"] = completeCount;
-            TempData["PendingCount"] = pendingCount;
+            TempData["StatusPending"] = statusPending ;
+            TempData["StatusInProcess"] = statusInProcess;
+            TempData["StatusApproved"] = statusApproved;
+            TempData["StatusShipped"] = statusShipped ;
+            TempData["StatusCancelled"] = statusCancelled ;
+            TempData["StatusRefunded"] = statusRefunded;
 
             return View();
         }
@@ -94,9 +94,12 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
             return orders;
         }
         #region//GET API
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll(string? orderStatus)
         {
-            return Json(new { data = TakeAllOrders() });
+            var orders = TakeAllOrders();
+            if (!string.IsNullOrEmpty(orderStatus))
+                orders = orders.Where(or => or.TrangThaiDonHang == orderStatus).ToList();
+            return Json(new { data = orders });
         }
         [HttpPost]
         public async Task<IActionResult> ChangeStatusPayment(int id, string statusPayment)

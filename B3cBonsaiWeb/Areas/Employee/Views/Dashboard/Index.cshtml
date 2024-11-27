@@ -45,24 +45,24 @@
 							<div class="card-body d-flex align-items-center  py-2">
 								<div id="AllProject"></div>
 								<ul class="project-list">
-									<li><h6>All Projects</h6></li>
+									<li><h6>Tất cả đơn hàng</h6></li>
 									<li>
 										<svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
 											<rect width="10" height="10" rx="3" fill="#3AC977" />
 										</svg>
-										Compete
+										Đã giao
 									</li>
 									<li>
 										<svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
 											<rect width="10" height="10" rx="3" fill="var(--primary)" />
 										</svg>
-										Pending
+										Đang xử lí
 									</li>
 									<li>
 										<svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
 											<rect width="10" height="10" rx="3" fill="var(--secondary)" />
 										</svg>
-										Not Start
+										Trạng thái khác
 									</li>
 								</ul>
 							</div>
@@ -89,19 +89,19 @@
 					<div class="col-xl-9">
 						<div class="card overflow-hidden">
 							<div class="card-header border-0 pb-0 flex-wrap">
-								<h4 class="heading mb-0">Projects Overview</h4>
+								<h4 class="heading mb-0">Tổng quan tình trạng đơn hàng</h4>
 								<ul class="nav nav-pills mix-chart-tab" id="pills-tab" role="tablist">
 									<li class="nav-item" role="presentation">
-										<button class="nav-link active" data-series="week" id="pills-week-tab" data-bs-toggle="pill" data-bs-target="#pills-week" type="button" role="tab" aria-selected="true">Tuần </button>
+										<button class="nav-link active" data-time-range="day" id="pills-week-tab" data-bs-toggle="pill" data-bs-target="#pills-week" type="button" role="tab" aria-selected="true">Ngày </button>
 									</li>
 									<li class="nav-item" role="presentation">
-										<button class="nav-link" data-series="month" id="pills-month-tab" data-bs-toggle="pill" data-bs-target="#pills-month" type="button" role="tab" aria-selected="false">Tháng</button>
+										<button class="nav-link" data-time-range="week" id="pills-week-tab" data-bs-toggle="pill" data-bs-target="#pills-week" type="button" role="tab" aria-selected="true">Tuần </button>
 									</li>
 									<li class="nav-item" role="presentation">
-										<button class="nav-link" data-series="year" id="pills-year-tab" data-bs-toggle="pill" data-bs-target="#pills-year" type="button" role="tab" aria-selected="false">Năm</button>
+										<button class="nav-link" data-time-range="month" id="pills-month-tab" data-bs-toggle="pill" data-bs-target="#pills-month" type="button" role="tab" aria-selected="false">Tháng</button>
 									</li>
 									<li class="nav-item" role="presentation">
-										<button class="nav-link" data-series="all" id="pills-all-tab" data-bs-toggle="pill" data-bs-target="#pills-all" type="button" role="tab" aria-selected="false">Tất Cả</button>
+										<button class="nav-link" data-time-range="year" id="pills-year-tab" data-bs-toggle="pill" data-bs-target="#pills-year" type="button" role="tab" aria-selected="false">Năm</button>
 									</li>
 								</ul>
 							</div>
@@ -109,20 +109,12 @@
 								<div id="overiewChart"></div>
 								<div class="ttl-project">
 									<div class="pr-data">
-										<h5>12,721</h5>
-										<span>Number of Projects</span>
+										<h5 id="amountOrders">###</h5>
+										<span>Số lượng đơn hàng</span>
 									</div>
 									<div class="pr-data">
-										<h5 class="text-primary">721</h5>
-										<span>Active Projects</span>
-									</div>
-									<div class="pr-data">
-										<h5>$2,50,523</h5>
-										<span>Revenue</span>
-									</div>
-									<div class="pr-data">
-										<h5 class="text-success">12,275h</h5>
-										<span>Working Hours</span>
+										<h5 class="text-primary" id="amountSuccessOrders">###</h5>
+										<span>Số lượng đơn hàng đã giao</span>
 									</div>
 								</div>
 							</div>
