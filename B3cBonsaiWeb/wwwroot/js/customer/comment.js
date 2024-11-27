@@ -85,18 +85,13 @@ function addComment(productId) {
 
 
 function deleteComment(commentId) {
-    // Lưu commentId vào một biến toàn cục hoặc đặt vào modal
     $('#confirmDeleteBtn').data('commentId', commentId);
-
-    // Hiển thị modal xác nhận
     $('#deleteModal').modal('show');
 }
 
-// Xử lý sự kiện khi người dùng nhấn "Xóa" trên modal
 $('#confirmDeleteBtn').click(function () {
-    var commentId = $(this).data('commentId');  // Lấy commentId từ data attribute
+    var commentId = $(this).data('commentId');
 
-    // Gửi yêu cầu xóa bình luận qua Ajax
     $.ajax({
         url: '/Customer/Comment/DeleteComment',
         type: 'POST',
@@ -104,17 +99,18 @@ $('#confirmDeleteBtn').click(function () {
         success: function (response) {
             if (response.success) {
                 toastr.success(response.message);
-                loadContainerComments(response.comments[0]?.sanPhamId || null);
+                $(`#comment-${commentId}`).remove();
+                if ($('#comments-list .comment').length === 0) {
+                    $('#no-comments').show();
+                }
             } else {
                 toastr.info(response.message);
             }
-
-            // Đóng modal
             $('#deleteModal').modal('hide');
         },
         error: function () {
-            toastr.info("Đã xảy ra lỗi. Vui lòng thử lại.");
-            $('#deleteModal').modal('hide'); // Đóng modal nếu có lỗi
+            toastr.error("Đã xảy ra lỗi. Vui lòng thử lại.");
+            $('#deleteModal').modal('hide');
         }
     });
 });
