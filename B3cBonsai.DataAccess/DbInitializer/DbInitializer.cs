@@ -280,6 +280,7 @@ namespace B3cBonsai.DataAccess.DbInitializer
         {
             var sanPhams = _db.SanPhams.ToList();
             var binhLuans = new List<BinhLuan>();
+            Random rd = new Random();
             foreach (var userRD in _db.NguoiDungUngDungs.ToList())
             {
                 for (int i = 1; i <= 10; i++)
@@ -288,7 +289,8 @@ namespace B3cBonsai.DataAccess.DbInitializer
                     {
                         NoiDungBinhLuan = "Bình luận " + i + " của " + userRD.HoTen,
                         NguoiDungId = userRD.Id,
-                        SanPhamId = sanPhams[new Random().Next(sanPhams.Count)].Id
+                        SanPhamId = sanPhams[new Random().Next(sanPhams.Count)].Id,
+                        NgayBinhLuan = (DateTime.Now.AddDays(- rd.Next(3,10)))
                     });
                 }
             }

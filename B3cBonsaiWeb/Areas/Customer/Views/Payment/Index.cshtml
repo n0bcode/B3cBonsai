@@ -63,8 +63,11 @@
                                     {
                                         <li>
                                             <div class="check-pro-img">
-                                                <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail" asp-route-id="@item.SanPham?.Id">
-                                                    <img src="@item.LinkAnh" onerror="this.src='/images/product/default.jpg'" class="img-fluid" alt="@item.SanPham?.TenSanPham">
+                                                <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail" asp-route-id="@(item?.MaSanPham ?? item?.MaCombo)">
+                                                    <img src="@(string.IsNullOrEmpty(item.LinkAnh) ? Url.Content("~/images/product/default.jpg") : item.LinkAnh)"
+                                                         onerror="this.src='/images/product/default.jpg'"
+                                                         class="img-fluid"
+                                                         style="width: 120px; height: 120px; border-radius: 5px; object-fit: cover;" />
                                                 </a>
                                             </div>
                                             <div class="check-content">
@@ -105,7 +108,7 @@
                                 <ul class="order-form pro-submit">
                                     <li class="label-info">
                                         <label class="box-area">
-                                            <span class="text">Thanh toán bằng thẻ</span>
+                                            <span class="text">Thanh toán bằng Ví VNPAY</span>
                                             <input type="radio" name="paymentMethod" value="Card" id="paymentCard" class="cust-checkbox">
                                             <span class="cust-check"></span>
                                         </label>

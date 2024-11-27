@@ -188,7 +188,7 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
             if (response.Success)
             {
                 long orderId;
-                if (long.TryParse(Regex.Match(response.OrderId,@"\d+").Value, out orderId))
+                if (long.TryParse(Regex.Match(response.OrderDescription,@"\d+").Value, out orderId))
                 {
                     var order = await _unitOfWork.DonHang.Get(o => o.Id == orderId);
                     if (order != null)
@@ -218,7 +218,7 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
                         }
                     }
 
-                    return View("PaymentSuccess", response);
+                    return View("OrderComplete", order);
                 }
                 else
                 {

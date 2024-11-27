@@ -18,8 +18,4 @@
     <ProjectReference Include="..\B3cBonsai.Models\B3cBonsai.Models.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Migrations\" />
-  </ItemGroup>
-
 </Project>
