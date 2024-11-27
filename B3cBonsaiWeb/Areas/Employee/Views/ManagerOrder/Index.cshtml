@@ -43,19 +43,29 @@
 					<div class="card-body">
 						<div class="row task">
 							<div class="col-xl-2 col-sm-4 col-6">
-								<div class="task-summary">
+								<div class="btn task-summary" id="Pending" onclick="filterByStatus('@SD.StatusPending')">
 									<div class="d-flex align-items-center">
-										<h2 class="text-primary count">@TempData["NotStartedCount"]</h2>
-										<span>Chưa bắt đầu</span>
+										<h2 class="text-primary count">@TempData["StatusPending"]</h2>
+										<span>Chờ xử lý</span>
 									</div>
-									<p>Chưa bắt đầu</p>
+									<p>Chờ xử lý</p>
 								</div>
 							</div>
 
 							<div class="col-xl-2 col-sm-4 col-6">
-								<div class="task-summary">
+								<div class="btn task-summary" id="Approved" onclick="filterByStatus('@SD.StatusApproved')">
 									<div class="d-flex align-items-center">
-										<h2 class="text-purple count">@TempData["InProgressCount"]</h2>
+										<h2 class="text-purple count">@TempData["StatusApproved"]</h2>
+										<span>Đã duyệt</span>
+									</div>
+									<p>Đã duyệt</p>
+								</div>
+							</div>
+
+							<div class="col-xl-2 col-sm-4 col-6">
+								<div class="btn task-summary" id="Processing" onclick="filterByStatus('@SD.StatusInProcess')">
+									<div class="d-flex align-items-center">
+										<h2 class="text-warning count">@TempData["StatusInProcess"]</h2>
 										<span>Đang xử lý</span>
 									</div>
 									<p>Đang xử lý</p>
@@ -63,42 +73,32 @@
 							</div>
 
 							<div class="col-xl-2 col-sm-4 col-6">
-								<div class="task-summary">
+								<div class="btn task-summary" id="Shipped" onclick="filterByStatus('@SD.StatusShipped')">
 									<div class="d-flex align-items-center">
-										<h2 class="text-warning count">@TempData["TestingCount"]</h2>
-										<span>Đang kiểm tra</span>
+										<h2 class="text-danger count">@TempData["StatusShipped"]</h2>
+										<span>Đã giao hàng</span>
 									</div>
-									<p>Đang kiểm tra</p>
+									<p>Đã giao hàng</p>
 								</div>
 							</div>
 
 							<div class="col-xl-2 col-sm-4 col-6">
-								<div class="task-summary">
+								<div class="btn task-summary" id="Cancelled" onclick="filterByStatus('@SD.StatusCancelled')">
 									<div class="d-flex align-items-center">
-										<h2 class="text-danger count">@TempData["AwaitingCount"]</h2>
-										<span>Đang chờ</span>
+										<h2 class="text-success count">@TempData["StatusCancelled"]</h2>
+										<span>Đã hủy</span>
 									</div>
-									<p>Đang chờ</p>
+									<p>Đã hủy</p>
 								</div>
 							</div>
 
 							<div class="col-xl-2 col-sm-4 col-6">
-								<div class="task-summary">
+								<div class="btn task-summary" id="Refunded" onclick="filterByStatus('@SD.StatusRefunded')">
 									<div class="d-flex align-items-center">
-										<h2 class="text-success count">@TempData["CompleteCount"]</h2>
-										<span>Hoàn thành</span>
+										<h2 class="text-danger count">@TempData["StatusRefunded"]</h2>
+										<span>Hoàn tiền</span>
 									</div>
-									<p>Hoàn thành</p>
-								</div>
-							</div>
-
-							<div class="col-xl-2 col-sm-4 col-6">
-								<div class="task-summary">
-									<div class="d-flex align-items-center">
-										<h2 class="text-danger count">@TempData["PendingCount"]</h2>
-										<span>Chờ thanh toán</span>
-									</div>
-									<p>Chờ thanh toán</p>
+									<p>Hoàn tiền</p>
 								</div>
 							</div>
 
@@ -122,10 +122,8 @@
 							</div>
 							<div class="table-responsive p-3 datatables">
 								<table id="tableOrder" class="table display">
-								<thead>
-								</thead>
-								<tbody></tbody>
-							</table>
+								
+								</table>
 							</div>
 						</div>
 					</div>

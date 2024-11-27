@@ -12,8 +12,10 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
     public class ManagerComboController : Controller
     {
         private readonly ApplicationDbContext _db;
-        public ManagerComboController(ApplicationDbContext db) { 
+        private readonly IWebHostEnvironment _webEnvironment;
+        public ManagerComboController(ApplicationDbContext db, IWebHostEnvironment webHostEnvironment) { 
             _db = db;
+            _webEnvironment = webHostEnvironment;
         }
         [Authorize(Roles = $"{SD.Role_Admin},{SD.Role_Staff}")]
         public IActionResult Index()
@@ -47,12 +49,67 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
 
 
         [HttpPost]
-        public async Task<IActionResult> Upsert(ComboSanPham obj, Dictionary<int, int> soLuong)
+        public async Task<IActionResult> Upsert(ComboSanPham obj, Dictionary<int, int> soLuong, IFormFile? file)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
+                    if (file != null) // Cập nhật hình ảnh
+                    {
+                        string wwwRootPath = _webEnvironment.WebRootPath;
+
+                        // Tạo tên tệp mới với GUID
+                        string fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
+
+                        // Tạo thư mục lưu trữ
+                        string comboFolder = Path.Combine("images", "combo");
+                        string finalFolder = Path.Combine(wwwRootPath, comboFolder);
+
+                        // Tạo thư mục nếu chưa tồn tại
+                        if (!Directory.Exists(finalFolder))
+                        {
+                            Directory.CreateDirectory(finalFolder);
+                        }
+
+                        // Xóa hình ảnh cũ nếu có
+                        if (!string.IsNullOrEmpty(obj.LinkAnh))
+                        {
+                            string oldImagePath = Path.Combine(wwwRootPath, obj.LinkAnh.TrimStart('/', '\\'));
+                            if (System.IO.File.Exists(oldImagePath))
+                            {
+                                try
+                                {
+                                    System.IO.File.Delete(oldImagePath);
+                                }
+                                catch (Exception ex)
+                                {
+                                    // Ghi log hoặc xử lý lỗi nếu cần
+                                    Console.WriteLine($"Không thể xóa tệp: {oldImagePath}. Lỗi: {ex.Message}");
+                                }
+                            }
+                        }
+
+                        // Lưu hình ảnh mới
+                        string finalFilePath = Path.Combine(finalFolder, fileName);
+                        try
+                        {
+                            using (var fileStream = new FileStream(finalFilePath, FileMode.Create))
+                            {
+                                await file.CopyToAsync(fileStream);
+                            }
+
+                            // Cập nhật đường dẫn mới cho LinkAnh
+                            obj.LinkAnh = $"\\{Path.Combine(comboFolder, fileName).Replace("\\", "/")}";
+                        }
+                        catch (Exception ex)
+                        {
+                            // Ghi log hoặc xử lý lỗi lưu tệp nếu cần
+                            Console.WriteLine($"Không thể lưu tệp: {finalFilePath}. Lỗi: {ex.Message}");
+                            throw;
+                        }
+                    }
+
                     if (obj.Id == 0) // Thêm mới nếu Id là 0
                     {
                         _db.ComboSanPhams.Add(obj);
@@ -72,7 +129,7 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
 
                         return Json(new { success = true, message = "Thêm Combo thành công" });
                     }
-                    else
+                    else //Cập nhập
                     {
                         _db.ComboSanPhams.Update(obj);
 
@@ -153,6 +210,9 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
 				{
 					cbo.Id,
 					cbo.TenCombo,
+                    cbo.MoTa,
+                    cbo.LinkAnh,
+                    cbo.TongGia,
 					ChiTietCombos = cbo.ChiTietCombos.Select(ct => new
 					{
 						ct.Id,
@@ -162,8 +222,7 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
 				})
 				.ToListAsync();
 
-			return Json(new { data = combos
-			});
+			return Json(new { data = combos});
 		}
 
 		#endregion

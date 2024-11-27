@@ -11,6 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using B3cBonsai.Models.ViewModels;
 using B3cBonsai.Utility;
+using ClosedXML.Excel;
 
 namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
 {
@@ -273,5 +274,51 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
                 .ToListAsync();
         }
         #endregion
+        public IActionResult ExportProductsToExcel()
+        {
+            var products = _context.SanPhams.Include(p => p.DanhMuc).ToList(); // Lấy danh sách sản phẩm từ cơ sở dữ liệu
+
+            using (var workbook = new XLWorkbook())
+            {
+                var worksheet = workbook.Worksheets.Add("DanhSachSanPham"); // Tạo worksheet mới
+                var currentRow = 1;
+
+                // Tiêu đề cho các cột
+                worksheet.Cell(currentRow, 1).Value = "Mã sản phẩm";          // Id
+                worksheet.Cell(currentRow, 2).Value = "Tên sản phẩm";        // TenSanPham
+                worksheet.Cell(currentRow, 3).Value = "Danh mục";           // DanhMucId
+                worksheet.Cell(currentRow, 4).Value = "Mô tả";               // MoTa
+                worksheet.Cell(currentRow, 5).Value = "Số lượng";            // SoLuong
+                worksheet.Cell(currentRow, 6).Value = "Giá";                 // Gia
+                worksheet.Cell(currentRow, 7).Value = "Ngày tạo";            // NgayTao
+                worksheet.Cell(currentRow, 8).Value = "Ngày sửa đổi";        // NgaySuaDoi
+                worksheet.Cell(currentRow, 9).Value = "Trạng thái";          // TrangThai
+
+                // Nội dung
+                foreach (var product in products)
+                {
+                    currentRow++;
+                    worksheet.Cell(currentRow, 1).Value = product.Id;
+                    worksheet.Cell(currentRow, 2).Value = product.TenSanPham;
+                    worksheet.Cell(currentRow, 3).Value = product.DanhMucId; // Hoặc product.DanhMuc.TenDanhMuc nếu bạn muốn tên danh mục
+                    worksheet.Cell(currentRow, 4).Value = product.MoTa;
+                    worksheet.Cell(currentRow, 5).Value = product.SoLuong;
+                    worksheet.Cell(currentRow, 6).Value = product.Gia;
+                    worksheet.Cell(currentRow, 7).Value = product.NgayTao.ToString("dd/MM/yyyy"); // Định dạng ngày
+                    worksheet.Cell(currentRow, 8).Value = product.NgaySuaDoi.ToString("dd/MM/yyyy"); // Định dạng ngày
+                    worksheet.Cell(currentRow, 9).Value = product.TrangThai ? "Còn hàng" : "Hết hàng"; // Hiển thị trạng thái
+                }
+
+                worksheet.Columns().AdjustToContents(); // Điều chỉnh độ rộng cột tự động
+
+                using (var stream = new MemoryStream())
+                {
+                    workbook.SaveAs(stream);
+                    var content = stream.ToArray();
+                    return File(content, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "DanhSachSanPham.xlsx");
+                }
+            }
+        }
+
     }
 }

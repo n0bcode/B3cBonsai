@@ -22,7 +22,7 @@
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-xxl-3 col-xl-4" id="viewFormUpsert" >
-				@await Html.PartialAsync("Upsert")
+
 			</div>
 			<div class="col-xxl-9 col-xl-8">
 				<div class="card">
@@ -51,70 +51,9 @@
 	<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
 	<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 
-	<script>
-
-		$(document).ready(function () {
-			// Khởi tạo Select2 với giới hạn lựa chọn
-			$('#sanPhamSelect').select2({
-				maximumSelectionLength: 5
-			});
-
-			// Xử lý khi chọn sản phẩm
-			$('#sanPhamSelect').on('change', function () {
-				var selectedProducts = $(this).val();
-				$('#chiTietComboContainer').empty(); // Xóa các trường nhập cũ
-
-				// Tạo trường nhập số lượng cho từng sản phẩm
-				selectedProducts.forEach(function (productId) {
-					var productName = $('#sanPhamSelect option[value="' + productId + '"]').text();
-					$('#chiTietComboContainer').append(`
-							<div class="form-group mb-3">
-								<label>${productName} - Số lượng:</label>
-								<input type="number" name="soLuong[${productId}]" min="1" class="form-control" placeholder="Nhập số lượng">
-							</div>
-						`);
-				});
-			});
-		});
-
-		function actionUpsertCombo(event) {
-    event.preventDefault();
-
-    var formData = new FormData(document.getElementById('formUpsertCombo'));
-
-    // Kiểm tra và log dữ liệu FormData
-    $('#chiTietComboContainer input[type="number"]').each(function () {
-        var productId = $(this).attr("name").match(/\d+/)[0];
-        var quantity = $(this).val();
-        formData.append(`soLuong[${productId}]`, quantity);
-    });
-
-    // Kiểm tra dữ liệu đã được thêm vào formData đúng chưa
-    for (var pair of formData.entries()) {
-        console.log(pair[0]+ ', ' + pair[1]); 
-    }
-
-    $.ajax({
-        url: `/Employee/ManagerCombo/Upsert`,
-        data: formData,
-        method: 'POST',
-        processData: false, // Không xử lý dữ liệu
-        contentType: false, // Không cần thiết lập contentType
-        success: (data) => {
-            if (data.success) {
-                toastr.success(data.message);
-            } else {
-                $('#viewFormUpsert').html(data.data);
-                toastr.error(data.message);
-            }
-        },
-        error: (xhr) => {
-            toastr.error("Có lỗi xảy ra: " + xhr.responseText);
-        }
-    });
-}
-
-	</script>
-
 	<script src="~/js/employee/managerCombo.js" asp-append-version="true"></script>
+
+	<script>
+		loadViewUpsert();
+	</script>
 }

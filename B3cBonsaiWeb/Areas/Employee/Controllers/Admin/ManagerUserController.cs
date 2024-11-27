@@ -1,25 +1,16 @@
 ﻿using B3cBonsai.DataAccess.Repository.IRepository;
 using B3cBonsai.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System.IO;
-using System.Threading.Tasks;
-using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using B3cBonsai.DataAccess.Repository;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 using B3cBonsai.Utility.Extentions;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using B3cBonsai.Utility;
 using B3cBonsai.Models.ViewModels;
 using Microsoft.AspNetCore.Identity.UI.Services;
-using System.Text.Encodings.Web;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Immutable;
-using static Org.BouncyCastle.Crypto.Engines.SM2Engine;
+using System.Security.Claims;
+using ClosedXML.Excel;
+using ClosedXML;
 
 namespace B3cBonsaiWeb.Areas.Employee.Controllers.Admin
 {
@@ -135,7 +126,7 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Admin
             }
             else
             {
-                _unitOfWork.NguoiDungUngDung.UpdateUserInfoAndImage(nguoi.NguoiDungUngDung, file);
+                await _unitOfWork.NguoiDungUngDung.UpdateUserInfoAndImage(nguoi.NguoiDungUngDung, file);
             }
 
             _unitOfWork.Save();
@@ -255,6 +246,10 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Admin
             {
                 return Json(new { success = false, message = "Bạn không có quyền này." });
             }
+            if (User.FindFirstValue(ClaimTypes.NameIdentifier) == userId)
+            {
+                return Json(new { success = false, message = "Bạn không thể tự thay đổi vai trò của bạn." });
+            }
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
             {
@@ -287,16 +282,26 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Admin
             {
                 return Json(new { success = false, message = "Không tìm thấy người dùng." });
             }
+            if (!User.IsInRole(SD.Role_Admin))
+            {
+                return Json(new { success = false, message = "Bạn không có quyền này." });
+            }
+            if (User.FindFirstValue(ClaimTypes.NameIdentifier) == userId)
+            {
+                return Json(new { success = false, message = "Bạn không thể tự thay đổi vai trò của bạn." });
+            }
 
             if (isLock)
             {
                 // Khóa tài khoản trong 1 năm
                 user.LockoutEnd = DateTimeOffset.UtcNow.AddYears(1);
+                await _emailSender.SendEmailAsync(user.Email, "Đổi quyền truy cập", "<p>Tài khoản của bạn đã bị khóa.</p>");
             }
             else
             {
                 // Mở khóa tài khoản
                 user.LockoutEnd = null;
+                await _emailSender.SendEmailAsync(user.Email, "Đổi quyền truy cập", "<p>Tài khoản của bạn đã được mở.</p>");
             }
 
             var updateResult = await _userManager.UpdateAsync(user);
@@ -308,6 +313,74 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Admin
             return Json(new { success = true, message = isLock ? "Khóa tài khoản thành công." : "Mở khóa tài khoản thành công." });
         }
         #endregion
+        public async Task<IActionResult> ExportUsersToExcel()
+        {
+            IEnumerable<NguoiDungUngDung> nguoiDungUngDungs = await _unitOfWork.NguoiDungUngDung.GetAll();
+
+            // Assign roles to users
+            var tasks = nguoiDungUngDungs.Select(async user =>
+            {
+                user.VaiTro = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
+                return user;
+            });
+
+            nguoiDungUngDungs = await Task.WhenAll(tasks);
+
+            // Filter users based on role
+            if (!User.IsInRole(SD.Role_Admin))
+            {
+                nguoiDungUngDungs = nguoiDungUngDungs.Where(nd => nd.VaiTro == SD.Role_Customer).ToList();
+            }
+
+            using (var workbook = new XLWorkbook())
+            {
+                var worksheet = workbook.Worksheets.Add("DanhSachNguoiDung");
+                var currentRow = 1;
+
+                // Set column headers
+                worksheet.Cell(currentRow, 1).Value = "Mã người dùng";     // Id
+                worksheet.Cell(currentRow, 2).Value = "Tên đăng nhập";     // UserName
+                worksheet.Cell(currentRow, 3).Value = "Họ tên";           // HoTen
+                worksheet.Cell(currentRow, 4).Value = "Giới tính";        // GioiTinh
+                worksheet.Cell(currentRow, 5).Value = "Email";            // Email
+                worksheet.Cell(currentRow, 6).Value = "Số điện thoại";    // SoDienThoai
+                worksheet.Cell(currentRow, 7).Value = "Địa chỉ";          // DiaChi
+                worksheet.Cell(currentRow, 8).Value = "Ngày sinh";        // NgaySinh
+                worksheet.Cell(currentRow, 9).Value = "CCCD";             // CCCD
+                worksheet.Cell(currentRow, 10).Value = "Ngày tạo";        // NgayTao
+                worksheet.Cell(currentRow, 11).Value = "Mô tả";           // MoTa
+                worksheet.Cell(currentRow, 12).Value = "Vai trò";         // VaiTro
+                worksheet.Cell(currentRow, 13).Value = "Kích hoạt";       // ThaoTac
+
+                // Populate the data
+                foreach (var user in nguoiDungUngDungs)
+                {
+                    currentRow++;
+                    worksheet.Cell(currentRow, 1).Value = user.Id;
+                    worksheet.Cell(currentRow, 2).Value = user.UserName;
+                    worksheet.Cell(currentRow, 3).Value = user.HoTen ?? "N/A";
+                    worksheet.Cell(currentRow, 4).Value = user.GioiTinh == true ? "Nam" : "Nữ";
+                    worksheet.Cell(currentRow, 5).Value = user.Email ?? "N/A";
+                    worksheet.Cell(currentRow, 6).Value = user.SoDienThoai ?? "N/A";
+                    worksheet.Cell(currentRow, 7).Value = user.DiaChi ?? "N/A";
+                    worksheet.Cell(currentRow, 8).Value = user.NgaySinh?.ToString("dd/MM/yyyy") ?? "N/A";
+                    worksheet.Cell(currentRow, 9).Value = user.CCCD ?? "N/A";
+                    worksheet.Cell(currentRow, 10).Value = user.NgayTao.ToString("dd/MM/yyyy");
+                    worksheet.Cell(currentRow, 11).Value = user.MoTa ?? "N/A";
+                    worksheet.Cell(currentRow, 12).Value = user.VaiTro ?? "N/A";
+                    worksheet.Cell(currentRow, 13).Value = user.ThaoTac ? "Có" : "Không";
+                }
+
+                worksheet.Columns().AdjustToContents();
+
+                using (var stream = new MemoryStream())
+                {
+                    workbook.SaveAs(stream);
+                    var content = stream.ToArray();
+                    return File(content, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "DanhSachNguoiDung.xlsx");
+                }
+            }
+        }
 
         private NguoiDungUngDung CreateUser()
         {
