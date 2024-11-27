@@ -80,5 +80,39 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
             }
         }
 
+        // Xóa bình luận
+        [HttpPost]
+        public async Task<IActionResult> DeleteComment(int commentId)
+        {
+            try
+            {
+                var userId = User?.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                var comment = await _unitOfWork.BinhLuan.Get(filter: x => x.Id == commentId);
+                if (comment == null)
+                {
+                    return Json(new { success = false, message = "Bình luận không tồn tại." });
+                }
+
+                // Kiểm tra quyền xóa
+                if (comment.NguoiDungId != userId && !User.IsInRole("Admin"))
+                {
+                    return Json(new { success = false, message = "Bạn không có quyền xóa bình luận này." });
+                }
+
+                // Thực hiện xóa
+                _unitOfWork.BinhLuan.Remove(comment);
+                _unitOfWork.Save();
+
+                return Json(new { success = true, message = "Bình luận đã được xóa thành công!" });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Lỗi khi xóa bình luận ID: {commentId}");
+                return Json(new { success = false, message = "Đã xảy ra lỗi. Vui lòng thử lại." });
+            }
+        }
+
+
     }
 }
