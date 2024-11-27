@@ -1,0 +1,147 @@
+﻿@model IEnumerable<ComboSanPham>
+@if (Model != null)
+{
+    <!-- trending-product start -->
+    <section class="product-tab section-ptb">
+        <div class="collection-category">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col">
+                        <div class="section-capture tab">
+                            <div class="section-title">
+                                <h2><span>ComBo Sản Phẩm</span></h2>
+                            </div>
+                        </div>
+                        <div class="collection-wrap">
+                            <div class="collection-slider swiper" id="trending-product">
+                                <div class="swiper-wrapper">
+
+                                    @foreach (var product in Model)
+                                    {
+                                        <div class="swiper-slide">
+                                            <div class="single-product-wrap">
+                                                <div class="product-image banner-hover">
+                                                    <a asp-area="Customer"
+                                                       asp-controller="ClientProduct"
+                                                       asp-action="Detail"
+                                                       asp-all-route-data="@(new Dictionary<string, string> {
+                                                            { "id", @product.Id.ToString() },
+                                                            { "typeObject", @SD.ObjectDetailOrder_Combo }
+                                                        })"
+                                                       class="pro-img">
+                                                        <!-- Hình ảnh đầu tiên -->
+                                                        <img onerror="this.src='/images/product/default.jpg'"
+                                                             src="@(product.LinkAnh ?? @Url.Content("~/images/product/default.jpg"))"
+                                                             class="img-fluid img1 mobile-img1"
+                                                             alt="p1"
+                                                             style="width: 315px; height: 350px; border-radius: 5px; object-fit: cover;">
+                                                        <!-- Hình ảnh thứ hai -->
+                                                        <img onerror="this.src='/images/product/default.jpg'"
+                                                             src="@(product.LinkAnh ?? @Url.Content("~/images/product/default.jpg"))"
+                                                             class="img-fluid img2 mobile-img2"
+                                                             alt="p2"
+                                                             style="width: 315px; height: 350px; border-radius: 5px; object-fit: cover;">
+                                                    </a>
+                                                    <div class="product-action">
+                                                        <a class="wishlist" data-id="@product.Id" data-type="@SD.ObjectLike_SanPham">
+                                                            <span class="tooltip-text">Yêu thích</span>
+                                                            <span class="pro-action-icon likeAction"><i class="feather-heart"></i></span>
+                                                        </a>
+
+                                                        <a href="javascript:void(0);" class="quickview" onclick="QuickViewComBo(@product.Id)">
+                                                            <span class="tooltip-text">Xem nhanh</span>
+                                                            <span class="pro-action-icon"><i class="feather-eye"></i></span>
+                                                        </a>
+
+                                                    </div>
+                                                    <div class="product-action-wrapper">
+                                                        <div class="product-action product-cart-btn">
+                                                            <a onclick="addToCart(null,@product.Id,1,'@SD.ObjectDetailOrder_Combo')" href="#add-to-cart" class="add-to-cart">
+                                                                <span class="cart-title">
+                                                                    <span class="add-c-title">
+                                                                        <span class="tooltip-text">Thêm vào giỏ</span>
+                                                                        <span class="cart-icon"><i class="feather-shopping-bag"></i></span>
+                                                                        <span class="add-title">Thêm vào giỏ</span>
+                                                                    </span>
+                                                                </span>
+                                                            </a>
+                                                        </div>
+
+
+                                                    </div>
+
+
+
+                                                </div>
+
+                                                <div class="product-caption">
+                                                    <div class="product-content">
+                                                        <div class="product-title">
+                                                            <div class="pro-title-price">
+                                                                <h6 class="cat-title">
+                                                                    <h6>
+                                                                        <a asp-area="Customer"
+                                                                           asp-controller="ClientProduct"
+                                                                           asp-action="Detail"
+                                                                           asp-route-id="@product.Id">@product.TenCombo</a>
+                                                                    </h6>
+                                                                </h6>
+                                                                <div class="product-price">
+                                                                    <div class="price-box">
+                                                                        <span class="new-price">@String.Format("{0:0,0} VND", product.TongGia).Replace(",", ".")</span>
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                            <div class="product-name">
+                                                                <a class="product-type" asp-area="Customer"
+                                                                   asp-controller="ClientProduct"
+                                                                   asp-action="Detail"
+                                                                   asp-route-id="@product.Id">
+                                                                    Số lượng: @(product.ChiTietCombos.Sum(x => x.SoLuong))
+                                                                </a>
+                                                                <a class="product-vendor" asp-area="Customer"
+                                                                   asp-controller="ClientProduct"
+                                                                   asp-action="Detail"
+                                                                   asp-route-id="@product.Id">B3cBonsai</a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="product-ratting">
+                                                            <span class="pro-ratting">
+                                                                @for (int i = 0; i < 5; i++)
+                                                                {
+                                                                    <i class="fa-regular fa-star"></i>
+                                                                }
+                                                            </span>
+                                                        </div>
+                                                        <div class="product-description">
+                                                            <p>Mô tả: @product.MoTa</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                                <div class="collection-button">
+                                    <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Index" class="btn btn-style">Xem sản phẩm</a>
+                                </div>
+                            </div>
+                            <div class="swiper-buttons">
+                                <div class="swiper-buttons-wrap">
+                                    <button class="swiper-prev swiper-prev-new"><span><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><polyline points="15 18 9 12 15 6"></polyline></svg></span></button>
+                                    <button class="swiper-next swiper-next-new"><span><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><polyline points="9 18 15 12 9 6"></polyline></svg></span></button>
+                                </div>
+                            </div>
+                            <div class="swiper-dots">
+                                <div class="swiper-pagination swiper-pagination-new"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- trending-product end -->
+}
+
