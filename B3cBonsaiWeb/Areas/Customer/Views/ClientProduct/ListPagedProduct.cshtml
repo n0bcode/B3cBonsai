@@ -146,7 +146,10 @@
                                         <a asp-area="Customer"
                                            asp-controller="ClientProduct"
                                            asp-action="Detail"
-                                           asp-route-id="@product.ComboSanPham.Id"
+                                           asp-all-route-data="@(new Dictionary<string, string> {
+                                                { "id", @product.ComboSanPham.Id.ToString() },
+                                                { "typeObject", @SD.ObjectDetailOrder_Combo }
+                                            })"
                                            class="pro-img">
                                             <!-- Hình ảnh đầu tiên -->
                                             <img onerror="this.src='/images/product/default.jpg'"
@@ -177,11 +180,12 @@
                                                 <span class="tooltip-text">Yêu thích</span>
                                                 <span class="pro-action-icon likeAction"><i class="feather-heart"></i></span>
                                             </a>
-                                            <!-- Nút Xem nhanh -->
-                                            @* <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview" onclick="loadQuickView(@product.ComboSanPham.ComboSanPham.Id)">
-                                    <span class="tooltip-text">Xem nhanh</span>
-                                    <span class="pro-action-icon"><i class="feather-eye"></i></span>
-                                    </a> *@
+
+                                            <a href="javascript:void(0);" class="quickview" onclick="QuickViewComBo(@product.ComboSanPham.Id)">
+                                                <span class="tooltip-text">Xem nhanh</span>
+                                                <span class="pro-action-icon"><i class="feather-eye"></i></span>
+                                            </a>
+
                                         </div>
                                     </div>
                                     <div class="product-caption">
@@ -227,10 +231,10 @@
                                                 <p>Mô tả: @product.ComboSanPham.MoTa</p>
                                             </div>
                                             <div class="product-action">
-                                                @*  <a href="#quickview" class="quickview" data-bs-toggle="modal" data-bs-target="#quickview">
-                                        <span class="tooltip-text">Xem nhanh</span>
-                                        <span class="pro-action-icon"><i class="feather-eye"></i></span>
-                                        </a> *@
+                                                <a href="javascript:void(0);" class="quickview" onclick="QuickViewComBo(@product.ComboSanPham.Id)">
+                                                    <span class="tooltip-text">Xem nhanh</span>
+                                                    <span class="pro-action-icon"><i class="feather-eye"></i></span>
+                                                </a>
                                                 <a onclick="addToCart(null,@product.ComboSanPham.Id,1,'@SD.ObjectDetailOrder_Combo')" href="#add-to-cart" class="add-to-cart">
                                                     <span class="cart-title">
                                                         <span class="add-c-title">
@@ -273,3 +277,22 @@
         </div>
     </div>
 </div>
+
+
+<script>
+    function QuickViewComBo(id) {
+        $.ajax({
+            url: '/Customer/ClientProduct/QuickViewComBo',
+            type: 'GET',
+            data: { id: id },
+            success: function (response) {
+                $('#quickview .modal-content').html(response); // Chèn nội dung vào modal
+                $('#quickview').modal('show'); // Hiển thị modal
+            },
+            error: function () {
+                alert("Không thể tải thông tin sản phẩm.");
+            }
+        });
+    }
+
+</script>

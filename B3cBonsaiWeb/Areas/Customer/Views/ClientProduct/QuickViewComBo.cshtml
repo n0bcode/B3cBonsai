@@ -1,0 +1,107 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model B3cBonsai.Models.ComboSanPham
+
+
+<div class="modal-header">
+    <h5 class="modal-title text-uppercase fw-bold">Xem nhanh</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+
+<!-- Body -->
+<div class="modal-body">
+    <div class="row">
+        <!-- Hình ảnh -->
+        <div class="col-md-6">
+            <div class="quickview-slider">
+                @if (!string.IsNullOrEmpty(Model.LinkAnh))
+                {
+                    var images = Model.LinkAnh.Split(";");
+                    foreach (var image in images)
+                    {
+                        <div class="image-container mb-3" style="width: 100%; height: 370px; overflow: hidden;">
+                            <img src="@Url.Content(image)"
+                                 alt="Combo Image"
+                                 class="img-fluid w-100 h-100 rounded"
+                                 style="object-fit: cover;">
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="image-container mb-3" style="width: 100%; height: 350px; overflow: hidden;">
+                        <img src="/images/product/default.jpg"
+                             alt="Default Image"
+                             class="img-fluid w-100 h-100 rounded"
+                             style="object-fit: cover;">
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Thông tin -->
+        <div class="col-md-6">
+            <!-- Tên combo -->
+            <div class="product-title">
+                <h6 style="font-size: 20px; font-weight: bold;">@Model.TenCombo</h6>
+
+            </div>
+
+            <!-- Giá combo -->
+            <div class="product-price">
+                <span style="font-size: 25px; color: #557e30; font-weight: bold  ">
+                    @String.Format("{0:0,0} VNĐ", Model.TongGia).Replace(",", ".")
+                </span>
+                @if (Model.GiamGia > 0)
+                {
+                    <span class="d-block text-danger mt-1">Giảm giá: @Model.GiamGia%</span>
+                }
+            </div>
+
+            <!-- Mô tả -->
+            <p class="mt-3 text-muted">
+                <strong>Mô tả:</strong> @Model.MoTa
+            </p>
+
+            <!-- Trạng thái -->
+            <p>
+                <strong>Trạng thái:</strong>
+                <span class="badge bg-@(Model.TrangThai ? "success" : "danger")">
+                    @(Model.TrangThai ? "Còn hàng" : "Hết hàng")
+                </span>
+            </p>
+
+            <!-- Sản phẩm trong combo -->
+            <h6 class="mt-4 fw-bold">Sản phẩm trong combo:</h6>
+            <ul class="list-unstyled">
+                @if (Model.ChiTietCombos?.Count > 0)
+                {
+                    foreach (var chiTiet in Model.ChiTietCombos)
+                    {
+                        <a asp-area="Customer"
+                           asp-controller="ClientProduct"
+                           asp-action="Detail"
+                           asp-route-id="@chiTiet.SanPham.Id">
+                        <li class="mb-2">
+                               
+                            <strong>@chiTiet.SanPham.TenSanPham</strong> -
+                            Số lượng: <span>@chiTiet.SoLuong</span>
+                        </li>
+                        </a>
+                    }
+                }
+                else
+                {
+                    <li>Không có sản phẩm nào trong combo này.</li>
+                }
+            </ul>
+
+            <!-- Nút mua ngay -->
+            <div class="mt-4">
+                <div class="quickview-buttons">
+                    <button style="width: 300px;" type="button" onclick="location.href='/Customer/Cart'" class="btn btn-style2">Mua Ngay</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
