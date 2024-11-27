@@ -178,13 +178,14 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
 
                     if (viewAccess == SD.CustomerAccess)
                     {
+                        TempData["successToastr"] = "Đăng ký thành công thành khách hàng.";
                         await _userManager.AddToRoleAsync(user, SD.Role_Customer);
                     }
                     else
                     {
+                        TempData["successToastr"] = "Đăng ký thành công thành nhân viên.";
                         await _userManager.AddToRoleAsync(user, SD.Role_Staff);
-                        user.LockoutEnabled = true;
-                        user.LockoutEnd = DateTime.UtcNow.AddYears(100);
+                        user.LockoutEnd = DateTimeOffset.UtcNow.AddYears(1);
                     }
 
                     var userId = await _userManager.GetUserIdAsync(user);
@@ -196,41 +197,9 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    #region//Tính năng chưa phát triển
-                    /*var PathToFile = _webHostEnvironment.WebRootPath + Path.DirectorySeparatorChar.ToString()
-                            + "Templates" + Path.DirectorySeparatorChar.ToString() + "EmailTemplates"
-                            + Path.DirectorySeparatorChar.ToString() + "Confirm_Account_Registration.html";
-
-                    var subject = "Confirm account registration";
-                    string HtmlBody = "";
-                    using (StreamReader streamReader = System.IO.File.OpenText(PathToFile))
-                    {
-                        HtmlBody = streamReader.ReadToEnd();
-                    }
-
-                    //{0} : Subject
-                    //{1} : DateTime
-                    //{2} : Name
-                    //{3} : Email
-                    //{4} : Message
-                    //{5} : CallBackURL
-
-
-                    string Message = $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.";
-
-                    string messageBody = string.Format(HtmlBody,
-                        subject,
-                        String.Format("{0:ddd, d MMMM yyyy}", DateTime.UtcNow),
-                        user.UserName,
-                        user.Email,
-                        Message,
-                        callbackUrl
-                        );*/
-                    #endregion
 
                     await _emailSender.SendEmailAsync(Input.Email, "Xác nhận email", $"Vui lòng xác nhận tài khoản của bạn <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>nhấn vào đây</a>.");
 
-                    TempData["successToastr"] = "Đăng ký thành công";
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
                         return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });

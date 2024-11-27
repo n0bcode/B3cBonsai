@@ -1,27 +1,33 @@
-﻿var dataTable;
-function loadDataTable() {
+﻿function loadDataTable() {
     dataTable = $('#empoloyees-tbl1').DataTable({
         "ajax": { url: '/employee/ManagerCombo/getall' },
         "columns": [
             {
-                data: 'tenCombo',
+                data: null,
                 "render": function (data) {
-                    return `<strong>${data || 'N/A'}</strong>`;
+                    return `
+                        <div class="d-flex align-items-center gap-3">
+                            <img src="${data.linkAnh}" class="rounded" alt="Hình ảnh" style="width: 50px; height: 50px; object-fit: cover;" onerror="this.src='/images/product/default.jpg'">
+                            <div>
+                                <p class="mb-1"><strong>${data.tenCombo || 'N/A'}</strong></p>
+                                <p class="mb-0 text-muted">Tổng giá: ${data.tongGia ? data.tongGia.toLocaleString() : 'N/A'} VNĐ</p>
+                            </div>
+                        </div>`;
                 },
-                "title": "Tên Combo",
-                "width": "20%"
+                "title": "Combo",
+                "width": "30%"
             },
             {
                 data: 'chiTietCombos',
                 "render": function (data) {
                     if (!data || data.length === 0) return '<span>Không có sản phẩm</span>';
                     return `
-                        <div style="max-height: 200px; overflow-y: auto;">
+                        <div style="max-height: 150px; overflow-y: auto;">
                             ${data.map(item => `
                                 <div>
                                     <p><strong>Sản phẩm:</strong> ${item.sanPham.tenSanPham || 'N/A'}</p>
                                     <p><strong>Mô tả:</strong> ${item.sanPham.moTa || 'N/A'}</p>
-                                    <p><strong>Giá:</strong> ${item.sanPham.gia || 'N/A'} VNĐ</p>
+                                    <p><strong>Giá:</strong> ${item.sanPham.gia.toLocaleString() || 'N/A'} VNĐ</p>
                                     <p><strong>Số lượng:</strong> ${item.sanPham.soLuong || 'N/A'}</p>
                                 </div>
                             `).join('<hr>')}
@@ -33,10 +39,11 @@ function loadDataTable() {
             {
                 data: 'id',
                 "render": function (data) {
-                    return `<div class="d-flex justify-content-center gap-2">
-                    <a onclick="loadViewUpsert('${data}')" class="btn btn-primary shadow btn-xs sharp me-1" data-bs-toggle="offcanvas" href="#upsertObject"><i class="fas fa-pencil-alt"></i></a>
-                    <a onclick="deleteCombo('${data}')" class="btn btn-danger shadow btn-xs sharp"><i class="fas fa-trash-alt"></i></a>
-                </div>`;
+                    return `
+                        <div class="d-flex justify-content-center gap-2">
+                            <a onclick="loadViewUpsert('${data}')" class="btn btn-primary shadow btn-xs sharp me-1" data-bs-toggle="offcanvas" href="#upsertObject"><i class="fas fa-pencil-alt"></i></a>
+                            <a onclick="deleteCombo('${data}')" class="btn btn-danger shadow btn-xs sharp"><i class="fas fa-trash-alt"></i></a>
+                        </div>`;
                 },
                 "title": "Actions",
                 "width": "20%"
@@ -52,12 +59,13 @@ function loadDataTable() {
                 "next": ">",
                 "previous": "<"
             },
-            "zeroRecords": "Không tìm thấy kết quả nào",
+            "zeroRecords": `<div style="text-align: center;">Không tìm thấy kết quả nào.</div>`,
             "infoEmpty": "Không có mục nào để hiển thị",
             "infoFiltered": "(lọc từ _MAX_ mục)"
         }
     });
 }
+
 
 
 
@@ -96,7 +104,7 @@ function deleteCombo(id) {
     Swal.fire({
         title: "Bạn có chắc?",
         text: "Bạn sẽ không thể khôi phục lại dữ liệu đã xóa!",
-        icon: "warning",
+        type: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
@@ -136,52 +144,54 @@ function deleteCombo(id) {
 
 function actionUpsertCombo(event) {
     event.preventDefault();
+
+    // Thu thập dữ liệu từ form
     var formData = new FormData(document.getElementById('formUpsertCombo'));
 
-    // Thêm số lượng cho từng sản phẩm được chọn
+    // Thêm số lượng sản phẩm vào formData
     $('#chiTietComboContainer input[type="number"]').each(function () {
-        var productId = $(this).attr("name").match(/\d+/)[0];
-        var quantity = $(this).val();
-        formData.append(`soLuong[${productId}]`, quantity);
+        var productId = $(this).attr("name").match(/\d+/)[0]; // Lấy ID sản phẩm từ thuộc tính name
+        var quantity = $(this).val(); // Lấy số lượng từ input
+        formData.append(`soLuong[${productId}]`, quantity); // Thêm vào formData
     });
 
-    // Kiểm tra giá trị Id và gán mặc định nếu trống
+    // Kiểm tra và gán giá trị mặc định cho trường Id nếu trống
     if (!formData.get("Id")) {
-        formData.set("Id", "0");
+        formData.set("Id", "0"); // Gán giá trị mặc định là "0"
     }
 
-    // Loại bỏ các trường không hợp lệ hoặc rỗng, bao gồm cả các trường __Invariant
+    // Loại bỏ các trường không hợp lệ hoặc rỗng
     for (var pair of formData.entries()) {
         if (!pair[1] || pair[0].includes('__Invariant')) {
-            formData.delete(pair[0]);
+            formData.delete(pair[0]); // Xóa trường không hợp lệ
         } else {
-            console.log(pair[0] + ', ' + pair[1]);
+            console.log(pair[0] + ', ' + pair[1]); // Ghi log giá trị hợp lệ
         }
     }
 
+    // Gửi yêu cầu AJAX
     $.ajax({
-        url: `/Employee/ManagerCombo/Upsert`,
-        data: formData,
-        method: 'POST',
-        processData: false,
-        contentType: false,
+        url: `/Employee/ManagerCombo/Upsert`, // URL API
+        data: formData, // Dữ liệu form
+        method: 'POST', // Phương thức HTTP
+        processData: false, // Không xử lý dữ liệu form
+        contentType: false, // Để content-type mặc định của FormData
         success: (data) => {
             if (data.success) {
-                toastr.success(data.message);
+                toastr.success(data.message); // Hiển thị thông báo thành công
                 if (dataTable) {
-                    dataTable.ajax.reload();
+                    dataTable.ajax.reload(); // Reload bảng dữ liệu nếu tồn tại
                 }
+                loadViewUpsert();
             } else {
-                $('#viewFormUpsert').html(data.data);
-                toastr.error(data.message);
+                $('#viewFormUpsert').html(data.data); // Cập nhật lại form nếu có lỗi
+                toastr.error(data.message); // Hiển thị thông báo lỗi
             }
         },
         error: (xhr) => {
-            toastr.error("Có lỗi xảy ra: " + xhr.responseText);
-            console.error("Error:", xhr.responseText);
+            toastr.error("Có lỗi xảy ra: " + xhr.responseText); // Hiển thị lỗi từ server
+            console.error("Error:", xhr.responseText); // Log lỗi
         }
     });
 }
-
-
 

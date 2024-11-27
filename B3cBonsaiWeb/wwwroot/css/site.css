@@ -6,3 +6,25 @@
     backdrop-filter: blur(5px); /* Mức độ làm mờ; bạn có thể điều chỉnh nó */
     opacity: 0.5;
 }
+.task-summary {
+    position: relative;
+    transition: all 0.3s ease-in-out;
+}
+
+.task-summary.active {
+    border: 3px solid rgba(0, 123, 255, 0.5); /* Màu viền mờ */
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.5); /* Hiệu ứng đổ bóng */
+}
+
+/* Nếu cần, bạn có thể thay đổi màu viền hoặc bóng khi trạng thái khác nhau */
+.task-summary.active.text-primary {
+    border-color: rgba(0, 123, 255, 0.7);
+}
+
+.task-summary.active.text-purple {
+    border-color: rgba(128, 0, 128, 0.7);
+}
+
+.task-summary.active.text-warning {
+    border-color: rgba(255, 193, 7, 0.7);
+}
