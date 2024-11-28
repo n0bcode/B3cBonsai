@@ -82,7 +82,7 @@
                                                         <div class="product-quantity">
                                                             <div class="cart-plus-minus">
                                                                 <button onclick="decreaseQuantity(@(item.Id))" class="dec qtybutton minus" data-cart-id="@item.Id"><i class="fa-solid fa-minus"></i></button>
-                                                                <input type="text" name="quantity" value="@item.SoLuong" readonly />
+                                                                <input type="text" name="quantity" value="@item.SoLuong" readonly min="1" max="@item.SanPham.SoLuong" />
                                                                 <button onclick="increaseQuantity(@(item.Id))" class="inc qtybutton plus" data-cart-id="@item.Id"><i class="fa-solid fa-plus"></i></button>
                                                             </div>
                                                         </div>

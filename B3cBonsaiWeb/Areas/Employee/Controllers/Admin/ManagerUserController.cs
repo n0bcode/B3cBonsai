@@ -295,7 +295,7 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Admin
             {
                 // Khóa tài khoản trong 1 năm
                 user.LockoutEnd = DateTimeOffset.UtcNow.AddYears(1);
-                await _emailSender.SendEmailAsync(user.Email, "Đổi quyền truy cập", "<p>Tài khoản của bạn đã bị khóa.</p>");
+                await _emailSender.SendEmailAsync(user.Email, "Đổi quyền truy cập", "<p>Tài khoản của bạn đã bị khóa 1 năm.</p>");
             }
             else
             {
