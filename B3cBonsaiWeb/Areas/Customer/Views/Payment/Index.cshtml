@@ -46,7 +46,7 @@
                                     </li>
                                     <li class="billing-li">
                                         <label>Số điện thoại</label>
-                                        <input type="number" name="receiverPhone" placeholder="Số điện thoại" required>
+                                        <input type="text" name="receiverPhone" placeholder="Số điện thoại" required pattern="[0-9]+" title="Vui lòng chỉ nhập số.">
                                     </li>
                                 </ul>
                             </div>
@@ -109,6 +109,7 @@
                                     <li class="label-info">
                                         <label class="box-area">
                                             <span class="text">Thanh toán bằng Ví VNPAY</span>
+                                            <span class="text-muted small">(Chức năng hủy không tồn tại trong quá trình thanh toán này)</span>
                                             <input type="radio" name="paymentMethod" value="Card" id="paymentCard" class="cust-checkbox">
                                             <span class="cust-check"></span>
                                         </label>
