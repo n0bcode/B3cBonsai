@@ -36,7 +36,6 @@ namespace B3cBonsaiWeb
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectString"));
-                options.UseQueryTrackingBehavior((QueryTrackingBehavior)QuerySplittingBehavior.SplitQuery);
             });
 
             builder.Services.AddIdentity<IdentityUser, IdentityRole>()
