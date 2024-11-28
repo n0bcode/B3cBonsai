@@ -148,90 +148,120 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
                 return Json(new { success = false, message = "Giỏ hàng của bạn đang trống." });
             }
 
-            var order = new DonHang
-            {
-                NguoiDungId = User.FindFirstValue(ClaimTypes.NameIdentifier),
-                NgayDatHang = DateTime.Now,
-                TongTienDonHang = cartItems.Sum(c => c.SoLuong * c.Gia),
-                TrangThaiDonHang = SD.StatusPending,
-                TrangThaiThanhToan = SD.PaymentStatusPending,
-                TenNguoiNhan = receiverName,
-                Duong = receiverAddress,
-                ThanhPho = city,
-                Tinh = "Không xác định",
-                MaBuuDien = "00000",
-                SoDienThoai = receiverPhone
-            };
-
-            _unitOfWork.DonHang.Add(order);
-            _unitOfWork.Save();
+            // Tính tổng tiền
+            var totalAmount = cartItems.Sum(c => c.SoLuong * c.Gia);
 
             // Tạo URL thanh toán qua VNPay
             var paymentUrl = _vnPayService.CreatePaymentUrl(HttpContext, new VnPaymentRequestModel
             {
-                Amount = Convert.ToInt32(order.TongTienDonHang),
-                OrderId = order.Id.ToString(),
+                Amount = Convert.ToInt32(totalAmount),
+                OrderId = Guid.NewGuid().ToString(), // Tạo mã tạm thời để theo dõi thanh toán
                 CreatedDate = DateTime.Now
+            });
+
+            // Lưu thông tin cần thiết để xử lý callback
+            HttpContext.Session.SetComplexData("VNPayPendingPayment", new
+            {
+                ReceiverName = receiverName,
+                ReceiverAddress = receiverAddress,
+                City = city,
+                ReceiverPhone = receiverPhone,
+                CartItems = cartItems,
+                TotalAmount = totalAmount
             });
 
             return Json(new { success = true, redirectUrl = paymentUrl });
         }
 
 
+
         [HttpGet]
         public async Task<IActionResult> PaymentCallBack()
         {
             var vnpayData = HttpContext.Request.Query;
-
             var response = _vnPayService.PaymentExecute(vnpayData);
 
-            if (response.Success)
+            if (response.Success && response.TransactionId != "0")
             {
-                long orderId;
-                if (long.TryParse(Regex.Match(response.OrderDescription,@"\d+").Value, out orderId))
-                {
-                    var order = await _unitOfWork.DonHang.Get(o => o.Id == orderId);
-                    if (order != null)
-                    {
-                        order.TrangThaiThanhToan = SD.PaymentStatusApproved;
-                        order.NgayThanhToan = DateTime.Now;
-                        _unitOfWork.DonHang.Update(order);
-                        _unitOfWork.Save();
+                var cartItems = HttpContext.Session.GetComplexData<List<GioHang>>(SD.SessionCart);
 
-                        // Log trước khi gửi Telegram
-                        Console.WriteLine($"Chuẩn bị gửi tin nhắn Telegram cho đơn hàng #{order.Id}");
-
-                        try
-                        {
-                            var message = $"Đơn hàng #{order.Id} đã được thanh toán thành công.\n" +
-                                          $"Phương thức thanh toán: Thanh toán bằng thẻ VNPay.\n" +
-                                          $"Tổng tiền: {order.TongTienDonHang:N0} đ.\n" +
-                                          $"Mã giao dịch: {response.TransactionId}.";
-
-                            await _telegramService.SendMessageAsync(838657228, message);
-                            Console.WriteLine("Tin nhắn Telegram đã được gửi thành công.");
-                        }
-                        catch (Exception ex)
-                        {
-                            // Log lỗi Telegram
-                            Console.WriteLine($"Lỗi gửi tin nhắn Telegram: {ex.Message}");
-                        }
-                    }
-
-                    return View("OrderComplete", order);
-                }
-                else
+                var pendingPayment = HttpContext.Session.GetComplexData<dynamic>("VNPayPendingPayment");
+                if (pendingPayment == null)
                 {
                     return View("PaymentFailed", response);
                 }
+
+                // Tạo đơn hàng sau khi thanh toán thành công
+                var order = new DonHang
+                {
+                    NguoiDungId = User.FindFirstValue(ClaimTypes.NameIdentifier),
+                    NgayDatHang = DateTime.Now,
+                    TongTienDonHang = (double)pendingPayment.TotalAmount,
+                    TrangThaiDonHang = SD.StatusPending,
+                    TrangThaiThanhToan = SD.PaymentStatusApproved,
+                    TenNguoiNhan = pendingPayment.ReceiverName,
+                    Duong = pendingPayment.ReceiverAddress,
+                    ThanhPho = pendingPayment.City,
+                    Tinh = "Không xác định",
+                    MaBuuDien = "00000",
+                    SoDienThoai = pendingPayment.ReceiverPhone,
+                    NgayThanhToan = DateTime.Now,
+                    MaPhienThanhToan = response.TransactionId
+                };
+
+                _unitOfWork.DonHang.Add(order);
+                _unitOfWork.Save();
+
+                foreach (var item in cartItems)
+                {
+                    if (item.LoaiDoiTuong == SD.ObjectDetailOrder_Combo)
+                    {
+                        _unitOfWork.ChiTietDonHang.Add(new ChiTietDonHang
+                        {
+                            DonHangId = order.Id,
+                            ComboId = item.MaCombo,
+                            Combo = await _unitOfWork.ComboSanPham.Get(filter: cbo => cbo.Id == item.Id),
+                            SoLuong = item.SoLuong,
+                            Gia = (int)item.Gia,
+                            LoaiDoiTuong = SD.ObjectDetailOrder_Combo
+                        });
+                    }
+                    else
+                    {
+                        _unitOfWork.ChiTietDonHang.Add(new ChiTietDonHang
+                        {
+                            DonHangId = order.Id,
+                            SanPhamId = item.MaSanPham,
+                            SanPham = await _unitOfWork.SanPham.Get(filter: sp => sp.Id == item.Id),
+                            SoLuong = item.SoLuong,
+                            Gia = (int)item.Gia,
+                            LoaiDoiTuong = SD.ObjectDetailOrder_SanPham
+                        });
+                    }
+                }
+
+                _unitOfWork.Save();
+                HttpContext.Session.Remove("VNPayPendingPayment");
+                HttpContext.Session.SetComplexData(SD.SessionCart, new List<GioHang>());
+
+                try
+                {
+                    var message = $"Đơn hàng #{order.Id} đã được thanh toán thành công.\n" +
+                                  $"Phương thức thanh toán: Thanh toán bằng VNPay.\n" +
+                                  $"Tổng tiền: {order.TongTienDonHang:N0} đ.\n" +
+                                  $"Mã giao dịch: {response.TransactionId}.";
+                    await _telegramService.SendMessageAsync(838657228, message);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Lỗi gửi tin nhắn Telegram: {ex.Message}");
+                }
+
+                return View("OrderComplete", order);
             }
 
             return View("PaymentFailed", response);
         }
-
-
-
-
 
 
         [HttpPost]

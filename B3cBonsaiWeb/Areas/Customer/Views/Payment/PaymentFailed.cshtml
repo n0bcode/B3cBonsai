@@ -1,0 +1,76 @@
+﻿@using B3cBonsai.Models.ViewModels
+@model VnPaymentResponseModel
+
+@{
+    ViewData["Title"] = "Thanh toán thất bại";
+}
+<!-- breadcrumb start -->
+<section class="breadcrumb-area">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="breadcrumb-index">
+                    <!-- breadcrumb-list start -->
+                    <ul class="breadcrumb-ul">
+                        <li class="breadcrumb-li">
+                            <a class="breadcrumb-link" asp-area="Customer" asp-controller="Home" asp-action="Index">Trang chủ</a>
+                        </li>
+                        <li class="breadcrumb-li">
+                            <span class="breadcrumb-text">Thanh toán thất bại</span>
+                        </li>
+                    </ul>
+                    <!-- breadcrumb-list end -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- breadcrumb end -->
+<!-- payment-failed start -->
+<section class="payment-failed section-ptb">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="order-area">
+                    <div class="order-details text-center py-5">
+                        <div class="alert alert-danger" role="alert">
+                            <i class="fa fa-times-circle fa-3x mb-3"></i>
+                            <h4 class="alert-heading">Thanh toán không thành công</h4>
+                            <p class="mb-0">Rất tiếc, giao dịch của bạn không thể hoàn tất.</p>
+                        </div>
+
+                        <ul class="list-group list-group-flush my-4">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span class="fw-bold">Mã đơn hàng:</span>
+                                <span>@Model.OrderId</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span class="fw-bold">Mã giao dịch:</span>
+                                <span>@Model.TransactionId</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span class="fw-bold">Mã phản hồi:</span>
+                                <span class="text-danger">@Model.VnPayResponseCode</span>
+                            </li>
+                        </ul>
+
+                        <p class="text-muted">
+                            Vui lòng kiểm tra lại thông tin thanh toán hoặc liên hệ hỗ trợ để được giải quyết.
+                        </p>
+
+                        <div class="d-flex justify-content-center gap-3 mt-4">
+                            <a href="/Customer/Payment/Index" class="btn btn-outline-danger">
+                                <i class="fa fa-redo"></i> Thử lại thanh toán
+                            </a>
+                            <a href="/Customer/Home/Index" class="btn btn-primary">
+                                <i class="fa fa-home"></i> Quay về trang chủ
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- payment-failed end -->
