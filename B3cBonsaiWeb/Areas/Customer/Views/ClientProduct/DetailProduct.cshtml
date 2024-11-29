@@ -122,8 +122,8 @@
                                         <br />
                                         <div class="pro-aff-che">
                                             <a class="wishlist" data-id="@Model.Id" data-type="@SD.ObjectLike_SanPham">
-                                                <span class="tooltip-text">Yêu thích</span>
                                                 <span class="pro-action-icon likeAction"><i class="feather-heart"></i></span>
+                                                <span class="ml-2 tooltip-text">Yêu thích</span>
                                             </a>
                                         </div>
                                     </div>
@@ -151,7 +151,7 @@
                                                 <span class="cart-title">Thêm vào giỏ</span>
                                             </button>
                                             <a type="button";
-                                               onclick="navigateToPayment()"
+                                               onclick="addToCart(@Model.Id,null,1,'@SD.ObjectDetailOrder_SanPham');navigateToPayment();"
                                                id="checkoutButton"
                                                class="btn btn-cart btn-theme"
                                                role="button"

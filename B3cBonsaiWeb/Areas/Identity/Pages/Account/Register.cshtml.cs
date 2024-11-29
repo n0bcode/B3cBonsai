@@ -113,7 +113,7 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
             [Required(ErrorMessage = "Họ tên không được để trống.")]
             [StringLength(54, ErrorMessage = "Họ tên không được vượt quá 54 ký tự.")]
             [Display(Name = "Họ Tên")]
-            [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Họ tên chỉ được chứa chữ cái và khoảng trắng.")]
+            [RegularExpression(SD.ValidateStringName, ErrorMessage = "Họ tên chỉ được chứa chữ cái và khoảng trắng.")]
             public string HoTen {  get; set; }
 
 
