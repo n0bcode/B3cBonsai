@@ -59,8 +59,13 @@
                                         <span asp-validation-for="Input.Email" class="text-danger"></span>
                                     </li>
                                     <li class="form-fill-li Password">
-                                        <label>Mật khẩu</label>
-                                        <input asp-for="Input.Password" class="form-control" autocomplete="current-password" placeholder="Mật khẩu">
+                                        <label>Mật khẩu</label>                                        
+                                        <div class="password-wrapper position-relative">
+                                            <input asp-for="Input.Password" id="password-field" class="form-control" autocomplete="current-password" placeholder="Mật khẩu">                                            <span class="toggle-password position-absolute" id="toggle-password" style="cursor: pointer; right: 10px; top: 50%; transform: translateY(-50%);">
+                                                <span class="toggle-password position-absolute" id="toggle-password" style="cursor: pointer; right: 10px; top: 50%; transform: translateY(-50%);">
+                                                    <i class="fa fa-eye-slash" id="icon-eye"></i>
+                                                </span>
+                                        </div>
                                         <span asp-validation-for="Input.Password" class="text-danger"></span>
                                     </li>
                                     <li class="mx-5">

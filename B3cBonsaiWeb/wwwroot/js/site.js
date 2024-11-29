@@ -109,3 +109,22 @@ $('input[type="text"][name="quantity"]').on("change", function () {
         return;
     }
 });
+
+
+
+//Show/hide password
+document.addEventListener("DOMContentLoaded", function () {
+    const togglePassword = document.getElementById("toggle-password");
+    const passwordField = document.getElementById("password-field");
+    const iconEye = document.getElementById("icon-eye");
+
+    togglePassword.addEventListener("click", function () {
+        // Kiểm tra loại input hiện tại
+        const isPassword = passwordField.type === "password";
+        // Thay đổi loại input
+        passwordField.type = isPassword ? "text" : "password";
+        // Thay đổi biểu tượng mắt
+        iconEye.classList.toggle("fa-eye", isPassword);
+        iconEye.classList.toggle("fa-eye-slash", !isPassword);
+    });
+});
