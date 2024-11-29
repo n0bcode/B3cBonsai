@@ -189,7 +189,7 @@ function DeleteDWD(id) {
                         Swal.fire("Đã xóa!", "Sản phẩm đã xóa.", "success");
                         dataTable.ajax.reload();
                     } else {
-                        Swal.fire("Xóa!", response.message, "info");
+                        Swal.fire("Xóa!", response.message + " Vì sản phẩm đã liên quan tới đơn hàng.", "info");
                     }
                 },
                 error: function (xhr, status, error) {
