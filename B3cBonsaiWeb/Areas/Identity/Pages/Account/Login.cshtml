@@ -63,6 +63,13 @@
                                         <input asp-for="Input.Password" class="form-control" autocomplete="current-password" placeholder="Mật khẩu">
                                         <span asp-validation-for="Input.Password" class="text-danger"></span>
                                     </li>
+                                    <li class="mx-5">
+                                        <label asp-for="Input.RememberMe" class="box-area">
+                                            <input asp-for="Input.RememberMe" class="cust-checkbox">
+                                            <span class="text">Ghi nhớ mật khẩu?</span>
+                                            <span class="cust-check"></span>
+                                        </label>
+                                    </li>
                                 </ul>
                                 <br />
                                 <!-- Thêm ô reCAPTCHA -->
@@ -178,8 +185,8 @@ else
                                 <div class="form-row d-flex justify-content-between mt-4 mb-2">
                                     <div class="mb-4">
                                         <div class="form-check custom-checkbox mb-3">
-                                            <input type="checkbox" class="form-check-input" id="customCheckBox1">
-                                            <label class="form-check-label" for="customCheckBox1">Ghi nhớ tùy chọn của tôi</label>
+                                            <input type="checkbox" class="form-check-input" id="customCheckBox1" asp-for="Input.RememberMe">
+                                            <label class="form-check-label" for="customCheckBox1">@Html.DisplayNameFor(m => m.Input.RememberMe)</label>
                                         </div>
                                     </div>
                                     <div class="mb-4">
