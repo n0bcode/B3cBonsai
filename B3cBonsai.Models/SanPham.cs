@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using B3cBonsai.Utility;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Newtonsoft.Json;
 
@@ -16,14 +17,14 @@ namespace B3cBonsai.Models
         [Required(ErrorMessage = "Tên sản phẩm không được để trống.")]
         [StringLength(54, ErrorMessage = "Tên sản phẩm không được vượt quá 54 ký tự.")]
         [Display(Name = "Tên Sản Phẩm")]
-        [RegularExpression(@"^[a-zA-Z0-9\s]+$", ErrorMessage = "Tên sản phẩm chỉ được chứa chữ cái, số và khoảng trắng.")]
+        [RegularExpression(SD.ValidateStringName, ErrorMessage = "Tên sản phẩm chỉ được chứa chữ cái, số và khoảng trắng.")]
         public string TenSanPham { get; set; }
 
         [Display(Name = "Danh Mục")]
         public int DanhMucId { get; set; }
 
         [Display(Name = "Mô Tả")]
-        [RegularExpression(@"^[a-zA-Z0-9\s]+$", ErrorMessage = "Mô tả chỉ được chứa chữ cái, số và khoảng trắng.")]
+        [RegularExpression(SD.ValidateString, ErrorMessage = "Mô tả chỉ được chứa chữ cái, số và khoảng trắng.")]
         public string MoTa { get; set; }
 
         [Range(0, int.MaxValue, ErrorMessage = "Số lượng phải là số nguyên không âm.")]
