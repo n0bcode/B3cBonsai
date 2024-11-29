@@ -69,7 +69,7 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account.Manage
             [Required(ErrorMessage = "Họ tên không được để trống.")]
             [StringLength(54, ErrorMessage = "Họ tên không được vượt quá 54 ký tự.")]
             [Display(Name = "Họ Tên")]
-            [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Họ tên chỉ được chứa chữ cái và khoảng trắng.")]
+            [RegularExpression(SD.ValidateStringName, ErrorMessage = "Họ tên chỉ được chứa chữ cái và khoảng trắng.")]
             public string HoTen { get; set; }
 
             [Display(Name = "Ngày Sinh")]
@@ -85,7 +85,7 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account.Manage
 
             [StringLength(1024, ErrorMessage = "Địa chỉ không được vượt quá 1024 ký tự.")]
             [Display(Name = "Địa Chỉ")]
-            [RegularExpression(@"^[a-zA-Z0-9\s]+$", ErrorMessage = "Địa chỉ chỉ được chứa chữ cái, số và khoảng trắng.")]
+            [RegularExpression(SD.ValidateString, ErrorMessage = "Địa chỉ chỉ được chứa chữ cái, số và khoảng trắng.")]
             [Required(ErrorMessage = "Vui lòng nhập thông tin địa chỉ người dùng.")]
             public string DiaChi { get; set; }
         }

@@ -79,9 +79,9 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account.Manage
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [Required]
-            [StringLength(7, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [StringLength(7, ErrorMessage = "Mục {0} phải có độ dài ít nhất {2} và nhiều nhất {1} độ dài kí tự.", MinimumLength = 6)]
             [DataType(DataType.Text)]
-            [Display(Name = "Verification Code")]
+            [Display(Name = "Mã xác thừ")]
             public string Code { get; set; }
         }
 
@@ -120,7 +120,7 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account.Manage
 
             if (!is2faTokenValid)
             {
-                ModelState.AddModelError("Input.Code", "Verification code is invalid.");
+                ModelState.AddModelError("Input.Code", "Mã xác thực không hợp lệ.");
                 await LoadSharedKeyAndQrCodeUriAsync(user);
                 return Page();
             }
