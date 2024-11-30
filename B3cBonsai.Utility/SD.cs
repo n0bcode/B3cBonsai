@@ -30,6 +30,7 @@ namespace B3cBonsai.Utility
         //Loại đối tượng yêu thích cho "DanhSachYeuThich"
         public const string ObjectLike_SanPham = "SanPham";
         public const string ObjectLike_Comment = "Comment";
+        public const string ObjectLike_Combo = "Combo";
 
         //Loại đối tượng thanh toán cho "ChiTietDonHang" 
         public const string ObjectDetailOrder_SanPham = "SanPham";

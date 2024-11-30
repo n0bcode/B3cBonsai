@@ -42,39 +42,109 @@
                                     <span class="sp-link-title">@Model.Count() Sản phẩm</span>
                                 </div>
                             </div>
-                        </div>
-                        @foreach (var item in Model) {
-                            <div class="wishlist-area">
-                                <div class="wishlist-details">
-                                    <div class="wishlist-all-pro">
-                                        <div class="wishlist-pro">
-                                            <div class="wishlist-pro-image">
-                                                <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail" asp-route-id="@(item.SanPhamId)" class="product-link">
-                                                    <img style="width: 120px; height: 110px; border-radius: 5px; object-fit: cover; transition: opacity 0.5s ease-in-out; opacity: 1;"
-                                                         src="@item.SanPham.HinhAnhs.FirstOrDefault().LinkAnh" class="img-fluid img-primary" alt="p-2">
-
-                                                </a>
+                        </div>@foreach (var item in Model)
+                        {
+                            if (item.LoaiDoiTuong == SD.ObjectLike_SanPham)
+                            {
+                                <div class="wishlist-area">
+                                    <div class="wishlist-details">
+                                        <div class="wishlist-all-pro">
+                                            <div class="wishlist-pro">
+                                                <div class="wishlist-pro-image">
+                                                    <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail" asp-route-id="@(item.SanPhamId)" class="product-link">
+                                                        <img style="width: 120px; height: 110px; border-radius: 5px; object-fit: cover; transition: opacity 0.5s ease-in-out; opacity: 1;"
+                                                             src="@item.SanPham.HinhAnhs.FirstOrDefault().LinkAnh" class="img-fluid img-primary" alt="p-2">
+                                                    </a>
+                                                </div>
+                                                <div class="pro-details">
+                                                    <h6>
+                                                        <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail" asp-route-id="@(item.SanPhamId)">@(item.SanPham.TenSanPham)</a>
+                                                    </h6>
+                                                    <p>Ngày yêu thích: @item.NgayYeuThich.ToString("dd/MM/yyyy")</p>
+                                                </div>
                                             </div>
-                                            <div class="pro-details">
-                                                <h6>
-                                                    <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail" asp-route-id="@(item.SanPhamId)">@(item.SanPham.TenSanPham)</a>
-                                                </h6>
+                                            <div onclick="addToCart(@item.SanPhamId,null,1,'@SD.ObjectDetailOrder_SanPham')" class="qty-item">
+                                                <a href="javascript:void(0)" class="add-wishlist">Thêm vào giỏ hàng</a>
+                                                <a href="/Customer/Payment/Index" class="add-wishlist">Mua ngay</a>
                                             </div>
-                                        </div>
-                                        <div onclick="addToCart(@item.SanPhamId,null,1,'@SD.ObjectDetailOrder_SanPham')" class="qty-item">
-                                            <a href="javascript:void(0)"  class="add-wishlist">Thêm vào giỏ hàng</a>
-                                            <a href="/Customer/Payment/Index" class="add-wishlist">Mua ngay</a>
-                                        </div>
-                                        <div class="all-pro-price">
-                                            <div class="price-box">
-                                                <span class="new-price">@(String.Format("{0:n0}",item.SanPham.Gia)) VNĐ</span>
+                                            <div class="all-pro-price">
+                                                <div class="price-box">
+                                                    <span class="new-price">@(String.Format("{0:n0}", item.SanPham.Gia)) VNĐ</span>
+                                                </div>
+                                                <span class="wishalist-icon"><i class="fa fa-heart text-danger"></i></span>
                                             </div>
-                                            <span class="wishalist-icon"><i class="fa fa-heart text-danger"></i></span>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            }
+                            else if (item.LoaiDoiTuong == SD.ObjectLike_Combo)
+                            {
+                                <div class="wishlist-area">
+                                    <div class="wishlist-details">
+                                        <div class="wishlist-all-pro">
+                                            <div class="wishlist-pro">
+                                                <div class="wishlist-pro-image">
+                                                    <a asp-area="Customer" asp-controller="ClientCombo" asp-action="Detail" asp-route-id="@(item.ComboId)" class="product-link">
+                                                        <img style="width: 120px; height: 110px; border-radius: 5px; object-fit: cover; transition: opacity 0.5s ease-in-out; opacity: 1;"
+                                                             src="@item.ComboSanPham.LinkAnh" class="img-fluid img-primary" alt="p-2">
+                                                    </a>
+                                                </div>
+                                                <div class="pro-details">
+                                                    <h6>
+                                                        <a asp-area="Customer" asp-controller="ClientCombo" asp-action="Detail" asp-route-id="@(item.ComboId)">@(item.ComboSanPham.TenCombo)</a>
+                                                    </h6>
+                                                    <p>Ngày yêu thích: @item.NgayYeuThich.ToString("dd/MM/yyyy")</p>
+                                                </div>
+                                            </div>
+                                            <div onclick="addToCart(null,@item.ComboId,1,'@SD.ObjectDetailOrder_Combo')" class="qty-item">
+                                                <a href="javascript:void(0)" class="add-wishlist">Thêm vào giỏ hàng</a>
+                                                <a href="/Customer/Payment/Index" class="add-wishlist">Mua ngay</a>
+                                            </div>
+                                            <div class="all-pro-price">
+                                                <div class="price-box">
+                                                    <span class="new-price">@(String.Format("{0:n0}", item.ComboSanPham.TongGia)) VNĐ</span>
+                                                </div>
+                                                <span class="wishalist-icon"><i class="fa fa-heart text-danger"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            else if (item.LoaiDoiTuong == SD.ObjectLike_Comment)
+                            {
+                                <div class="wishlist-area">
+                                    <div class="wishlist-details">
+                                        <div class="wishlist-all-pro">
+                                            <div class="wishlist-pro">
+                                                <div class="wishlist-pro-image">
+                                                    @if (item.BinhLuan?.SanPham?.HinhAnhs?.FirstOrDefault()?.LinkAnh != null)
+                                                    {
+                                                        <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail" asp-route-id="@(item.BinhLuan.SanPhamId)" class="product-link">
+                                                            <img style="width: 120px; height: 110px; border-radius: 5px; object-fit: cover; transition: opacity 0.5s ease-in-out; opacity: 1;"
+                                                                 src="@item.BinhLuan.SanPham.HinhAnhs.FirstOrDefault().LinkAnh" class="img-fluid img-primary" alt="p-2">
+                                                        </a>
+                                                    }
+                                                </div>
+                                                <div class="pro-details">
+                                                    <h6>
+                                                        <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail" asp-route-id="@(item.BinhLuan.SanPhamId)">@(item.BinhLuan?.SanPham?.TenSanPham)</a>
+                                                    </h6>
+                                                    <p>Ngày yêu thích: @item.NgayYeuThich.ToString("dd/MM/yyyy")</p>
+                                                    <p>Nội dung: <br /> @(item.BinhLuan?.NoiDungBinhLuan)</p>
+                                                </div>
+                                            </div>
+                                            <div class="all-pro-price">
+                                                <div class="price-box">
+                                                    <span class="new-price">@(String.Format("{0:n0}", item.BinhLuan?.SanPham?.Gia)) VNĐ</span>
+                                                </div>
+                                                <span class="wishalist-icon"><i class="fa fa-heart text-danger"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
                         }
+
                     </div>
                     <!-- wishlist-page end -->
                 </div>

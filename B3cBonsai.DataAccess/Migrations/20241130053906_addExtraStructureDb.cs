@@ -439,9 +439,11 @@ namespace B3cBonsai.DataAccess.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     SanPhamId = table.Column<int>(type: "int", nullable: true),
+                    ComboId = table.Column<int>(type: "int", nullable: true),
                     BinhLuanId = table.Column<int>(type: "int", nullable: true),
                     NguoiDungId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    LoaiDoiTuong = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false)
+                    LoaiDoiTuong = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    NgayYeuThich = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -456,6 +458,11 @@ namespace B3cBonsai.DataAccess.Migrations
                         name: "FK_DanhSachYeuThichs_BinhLuans_BinhLuanId",
                         column: x => x.BinhLuanId,
                         principalTable: "BinhLuans",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_DanhSachYeuThichs_ComboSanPhams_ComboId",
+                        column: x => x.ComboId,
+                        principalTable: "ComboSanPhams",
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_DanhSachYeuThichs_SanPhams_SanPhamId",
@@ -543,6 +550,11 @@ namespace B3cBonsai.DataAccess.Migrations
                 name: "IX_DanhSachYeuThichs_BinhLuanId",
                 table: "DanhSachYeuThichs",
                 column: "BinhLuanId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DanhSachYeuThichs_ComboId",
+                table: "DanhSachYeuThichs",
+                column: "ComboId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_DanhSachYeuThichs_NguoiDungId",

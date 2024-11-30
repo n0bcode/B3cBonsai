@@ -16,6 +16,9 @@ namespace B3cBonsai.Models
         [Display(Name = "ID Sản Phẩm")]
         public int? SanPhamId { get; set; }
 
+        [Display(Name = "ID Combo")]
+        public int? ComboId { get; set; }
+
         [Display(Name = "ID Bình Luận")]
         public int? BinhLuanId { get; set; }
 
@@ -31,16 +34,22 @@ namespace B3cBonsai.Models
         [ValidateNever]
         [ForeignKey("SanPhamId")]
         [Display(Name = "Sản Phẩm")]
-        public virtual SanPham SanPham { get; set; } // Khai báo quan hệ với sản phẩm
+        public virtual SanPham? SanPham { get; set; } // Khai báo quan hệ với sản phẩm
 
+        [ValidateNever]
+        [ForeignKey("ComboId")]
+        [Display(Name = "Combo sản Phẩm")]
+        public virtual ComboSanPham? ComboSanPham { get; set; } // Khai báo quan hệ với sản phẩm
         [ValidateNever]
         [ForeignKey("BinhLuanId")]
         [Display(Name = "Bình Luận")]
-        public virtual BinhLuan BinhLuan { get; set; } // Khai báo quan hệ với bình luận
+        public virtual BinhLuan? BinhLuan { get; set; } // Khai báo quan hệ với bình luận
 
         [ValidateNever]
         [ForeignKey("NguoiDungId")]
         [Display(Name = "Người Dùng")]
-        public virtual NguoiDungUngDung NguoiDungUngDung { get; set; } // Khai báo quan hệ với người dùng
+        public virtual NguoiDungUngDung? NguoiDungUngDung { get; set; } // Khai báo quan hệ với người dùng
+
+        public DateTime NgayYeuThich { get; set; } = DateTime.UtcNow;
     }
 }
