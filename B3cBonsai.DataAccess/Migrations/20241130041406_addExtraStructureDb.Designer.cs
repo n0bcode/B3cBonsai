@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace B3cBonsai.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241126025058_addExtraStructureDb")]
+    [Migration("20241130041406_addExtraStructureDb")]
     partial class addExtraStructureDb
     {
         /// <inheritdoc />
@@ -142,6 +142,9 @@ namespace B3cBonsai.DataAccess.Migrations
                     b.Property<string>("MoTa")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SoLuong")
+                        .HasColumnType("int");
 
                     b.Property<string>("TenCombo")
                         .IsRequired()

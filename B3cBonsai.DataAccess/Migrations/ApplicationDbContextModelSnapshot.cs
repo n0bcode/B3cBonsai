@@ -140,6 +140,9 @@ namespace B3cBonsai.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("SoLuong")
+                        .HasColumnType("int");
+
                     b.Property<string>("TenCombo")
                         .IsRequired()
                         .HasMaxLength(54)

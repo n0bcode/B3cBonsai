@@ -44,7 +44,10 @@
                 <input asp-for="TenCombo" type="text" class="form-control" placeholder="Nhập tên Combo" required>
             </div>
 
-
+            <div class="form-group mb-3">
+                <label asp-for="SoLuong" class="font-w500">Số lượng combo khuyến mãi<span class="text-danger">*</span></label>
+                <input asp-for="SoLuong" type="input" class="form-control" min="1" max="9" placeholder="Nhập số lượng Combo khuyến mãi" required>
+            </div>
 
             <div class="form-group mb-3">
                 <label asp-for="GiamGia">Giảm Giá (%)<span class="text-danger">*</span></label>
