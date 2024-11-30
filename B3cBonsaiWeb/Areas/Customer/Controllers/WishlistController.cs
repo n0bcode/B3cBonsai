@@ -1,6 +1,7 @@
 ﻿using B3cBonsai.DataAccess.Repository.IRepository;
 using B3cBonsai.Models;
 using B3cBonsai.Utility;
+using DocumentFormat.OpenXml.VariantTypes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -26,12 +27,23 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
-            var wishlistItems = (await _unitOfWork.DanhSachYeuThich.GetAll(
+            var wishlistSanPhams = (await _unitOfWork.DanhSachYeuThich.GetAll(
                 filter: yt => yt.NguoiDungId == userId && yt.LoaiDoiTuong == SD.ObjectLike_SanPham,
                 includeProperties: "SanPham.HinhAnhs"
             )).ToList();
 
-            return View(wishlistItems);
+            var wishlistComments = (await _unitOfWork.DanhSachYeuThich.GetAll(
+                filter: yt => yt.NguoiDungId == userId && yt.LoaiDoiTuong == SD.ObjectLike_Comment,
+                includeProperties: "BinhLuan,BinhLuan.SanPham,BinhLuan.SanPham.HinhAnhs"
+            )).ToList();
+
+            var wishlistCombos = (await _unitOfWork.DanhSachYeuThich.GetAll(
+                filter: yt => yt.NguoiDungId == userId && yt.LoaiDoiTuong == SD.ObjectLike_Combo,
+                includeProperties: "ComboSanPham"
+            )).ToList();
+
+            IEnumerable<DanhSachYeuThich> danhSachYeuThiches = wishlistCombos.Concat(wishlistComments).Concat(wishlistSanPhams).OrderBy(yt => yt.NgayYeuThich).AsEnumerable();
+            return View(danhSachYeuThiches);
         }
 
         [HttpPost]
@@ -84,6 +96,15 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
                     return Json(new { success = false, message = "Không tìm thấy bình luận." });
                 }
                 yeuThich.BinhLuanId = objectId;
+            }
+            else if (loaiDoiTuong == SD.ObjectLike_Combo)
+            {
+                var comboSanPham = await _unitOfWork.ComboSanPham.Get(filter: bl => bl.Id == objectId);
+                if (comboSanPham == null)
+                {
+                    return Json(new { success = false, message = "Không tìm thấy bình luận." });
+                }
+                yeuThich.ComboId = objectId;
             }
             else
             {

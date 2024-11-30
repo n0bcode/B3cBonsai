@@ -25,16 +25,6 @@
                 </a>
             </div>
         </li>
-        <li class="side-wrap wishlist-wrap">
-            <div class="wishlist-wrapper">
-                <a asp-area="Customer" asp-controller="Wishlist" asp-action="Index">
-                    <span class="wishlist-icon-count">
-                        <span class="wishlist-icon"><i class="feather-heart"></i></span>
-                         @* <span class="wishlist-count">5</span> *@
-                    </span>
-                </a>
-            </div>
-        </li>
         <li class="side-wrap cart-wrap">
             <div class="cart-wrapper">
                 <a href="javascript:void(0)" class="js-cart-drawer">
@@ -46,6 +36,16 @@
             </div>
         </li>
     }
+    <li class="side-wrap wishlist-wrap">
+        <div class="wishlist-wrapper">
+            <a asp-area="Customer" asp-controller="Wishlist" asp-action="Index">
+                <span class="wishlist-icon-count">
+                    <span class="wishlist-icon"><i class="feather-heart"></i></span>
+                    @* <span class="wishlist-count">5</span> *@
+                </span>
+            </a>
+        </div>
+    </li>
     <li class="ml-4 nav-item">
         <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
             <button id="logout" type="submit" class="nav-link btn btn-link">

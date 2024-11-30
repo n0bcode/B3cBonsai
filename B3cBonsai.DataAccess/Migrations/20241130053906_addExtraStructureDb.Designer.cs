@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace B3cBonsai.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241130041406_addExtraStructureDb")]
+    [Migration("20241130053906_addExtraStructureDb")]
     partial class addExtraStructureDb
     {
         /// <inheritdoc />
@@ -191,10 +191,16 @@ namespace B3cBonsai.DataAccess.Migrations
                     b.Property<int?>("BinhLuanId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("ComboId")
+                        .HasColumnType("int");
+
                     b.Property<string>("LoaiDoiTuong")
                         .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
+
+                    b.Property<DateTime>("NgayYeuThich")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("NguoiDungId")
                         .IsRequired()
@@ -206,6 +212,8 @@ namespace B3cBonsai.DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("BinhLuanId");
+
+                    b.HasIndex("ComboId");
 
                     b.HasIndex("NguoiDungId");
 
@@ -747,6 +755,10 @@ namespace B3cBonsai.DataAccess.Migrations
                         .WithMany()
                         .HasForeignKey("BinhLuanId");
 
+                    b.HasOne("B3cBonsai.Models.ComboSanPham", "ComboSanPham")
+                        .WithMany()
+                        .HasForeignKey("ComboId");
+
                     b.HasOne("B3cBonsai.Models.NguoiDungUngDung", "NguoiDungUngDung")
                         .WithMany("DanhSachYeuThichs")
                         .HasForeignKey("NguoiDungId")
@@ -759,6 +771,8 @@ namespace B3cBonsai.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("BinhLuan");
+
+                    b.Navigation("ComboSanPham");
 
                     b.Navigation("NguoiDungUngDung");
 
