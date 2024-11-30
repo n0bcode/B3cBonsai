@@ -29,6 +29,11 @@ namespace B3cBonsai.Models
         [Display(Name = "Giảm Giá (%)")]
         public int GiamGia { get; set; } = 5;
 
+
+        [Range(1, 99, ErrorMessage = "Số lượng phải chọn từ 2-9.")]
+        [Display(Name = "Số lượng combo")]
+        public int SoLuong { get; set; } = 2;
+
         [Range(0, int.MaxValue, ErrorMessage = "Tổng giá không được âm.")]
         [Display(Name = "Tổng Giá")]
         public int TongGia { get; set; }

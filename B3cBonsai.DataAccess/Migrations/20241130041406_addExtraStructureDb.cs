@@ -70,6 +70,7 @@ namespace B3cBonsai.DataAccess.Migrations
                     MoTa = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LinkAnh = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     GiamGia = table.Column<int>(type: "int", nullable: false),
+                    SoLuong = table.Column<int>(type: "int", nullable: false),
                     TongGia = table.Column<int>(type: "int", nullable: false),
                     TrangThai = table.Column<bool>(type: "bit", nullable: false)
                 },
