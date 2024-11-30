@@ -69,7 +69,7 @@
                                 </div>
                                 <div class="col-sm-12 m-b30">
                                     <label asp-for="MoTa" class="form-label"></label>
-                                    <textarea asp-for="MoTa" class="form-control" rows="3" readonly></textarea>
+                                    <div class="form-control" readonly>@Html.Raw(Model.MoTa)</div>
                                 </div>
                             </div>
                         </div>

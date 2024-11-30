@@ -80,9 +80,9 @@
                     <input asp-for="SanPham.NgaySuaDoi" type="date" class="form-control" readonly />
                 </div>
 
-                <div class="col-xl-12 mb-3">
+                <div class="col-xl-12 mb-3 custom-ekeditor">
                     <label asp-for="SanPham.MoTa" class="form-label">Mô tả</label>
-                    <textarea asp-for="SanPham.MoTa" rows="4" class="form-control" required></textarea>
+                    <textarea asp-for="SanPham.MoTa" rows="4" class="form-control tinymce" required id="ckeditor"></textarea>
                     <span asp-validation-for="SanPham.MoTa" class="text-danger"></span>
                 </div>
             </div>
