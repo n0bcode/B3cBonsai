@@ -41,7 +41,7 @@
                                                 <span>×</span>
                                                 <div class="js-qty-wrap">
                                                     <button onclick="decreaseQuantityQuick(@item.Id)" type="button" class="js-qty-adjust ju-qty-adjust-minus" data-cart-id="@item.MaSanPham ?? item.MaCombo"><span><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><line x1="5" y1="12" x2="19" y2="12"></line></svg></span></button>
-                                                    <input type="text" class="js-qty-num" name="quantity" data-cart-idQuick="@item.Id" value="@item.SoLuong" pattern="[0-9]*" readonly />
+                                                    <input type="text" class="js-qty-num" name="quantity" data-cart-idQuick="@item.Id" value="@item.SoLuong" pattern="[0-9]*" min="1" max="@(item.SanPham?.SoLuong ?? (item.ComboSanPham?.SoLuong ?? 1))" readonly />
                                                     <button onclick="increaseQuantityQuick(@item.Id)" type="button" class="js-qty-adjust ju-qty-adjust-plus" data-cart-id="@item.MaSanPham ?? item.MaCombo"><span><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></span></button>
                                                 </div>
                                             </div>
