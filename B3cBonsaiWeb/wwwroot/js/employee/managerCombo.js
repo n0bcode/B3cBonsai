@@ -45,7 +45,7 @@
                             <a onclick="deleteCombo('${data}')" class="btn btn-danger shadow btn-xs sharp"><i class="fas fa-trash-alt"></i></a>
                         </div>`;
                 },
-                "title": "Actions",
+                "title": "Thao tác",
                 "width": "20%"
             }
         ],

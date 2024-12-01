@@ -11,6 +11,7 @@ $(document).ready(function () {
             { "data": "tenDanhMuc" },
             {
                 "data": "id",
+                "title": "Thao tác",
                 "render": function (data) {
                     return `<div class="d-flex justify-content-center gap-2">
                                         <a onclick="loadViewUpsert(${data})" class="btn btn-primary shadow btn-xs sharp me-1" data-bs-toggle="offcanvas" href="#upsertObject"><i class="fas fa-pencil-alt"></i></a>
