@@ -134,33 +134,6 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Admin
             return Json(new { success = true, title = "Thông báo", content = "Cập nhật thông tin thành công." });
         }
 
-        private async Task<string> SaveUserImage(IFormFile file, string userId)
-        {
-            string wwwRootPath = _webHostEnvironment.WebRootPath;
-            string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-            string nguoiDungUngDungPath = Path.Combine("images", "user", "user-" + userId);
-            string finalPath = Path.Combine(wwwRootPath, nguoiDungUngDungPath);
-
-            if (!Directory.Exists(finalPath))
-                Directory.CreateDirectory(finalPath);
-
-            string newImagePath = Path.Combine(finalPath, fileName);
-
-            if (!string.IsNullOrEmpty(finalPath))
-            {
-                string oldImagePath = Path.Combine(wwwRootPath, finalPath);
-                if (System.IO.File.Exists(oldImagePath))
-                    System.IO.File.Delete(oldImagePath);
-            }
-
-            using (var fileStream = new FileStream(newImagePath, FileMode.Create))
-            {
-                await file.CopyToAsync(fileStream);
-            }
-
-            return "/" + Path.Combine(nguoiDungUngDungPath, fileName).Replace("\\", "/");
-        }
-
         public async Task<IActionResult> DetailWithDelete(string? id)
         {
             NguoiDungUngDung nguoiDungUngDung = await _unitOfWork.NguoiDungUngDung.Get(x => x.Id == id);
@@ -257,6 +230,11 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Admin
             }
 
             var userRoles = await _userManager.GetRolesAsync(user);
+
+            if (userRoles.FirstOrDefault() == SD.Role_Admin)
+            {
+                return Json(new { success = false, message = "Bạn không thể thay đổi vai trò của nhân viên quản lý." });
+            }
             var removeRolesResult = await _userManager.RemoveFromRolesAsync(user, userRoles);
 
             if (!removeRolesResult.Succeeded)

@@ -72,7 +72,7 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Admin
         [HttpGet]
         public async Task<IActionResult> GetAllCategories()
         {
-            var categories = await _unitOfWork.DanhMucSanPham.GetAll();
+            var categories = (await _unitOfWork.DanhMucSanPham.GetAll());
             return Json(new { data = categories.ToList() });
         }
 

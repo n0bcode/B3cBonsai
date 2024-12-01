@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Có Người Liên Hệ Mới</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+
+        .email-container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .email-header {
+            background-color: #007bff;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .email-body {
+            padding: 20px;
+        }
+
+        .email-footer {
+            padding: 10px;
+            text-align: center;
+            background-color: #f1f1f1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="email-container">
+            <div class="email-header">
+                <h1>Có Người Liên Hệ Mới</h1>
+            </div>
+            <div class="email-body">
+                <h2>Thông Tin Liên Hệ Mới</h2>
+                <p>Bạn vừa nhận được một liên hệ mới từ khách hàng. Dưới đây là thông tin chi tiết:</p>
+                <ul class="list-unstyled">
+                    <li>Tên: {{name}}</li>
+                    <li>Email: {{email}}</li>
+                    <li>Số Điện Thoại: {{phone}}</li>
+                    <li>Tin Nhắn: {{message}}</li>
+                </ul>
+                <p>Thời Gian Liên Hệ: {{time}}</p>
+                <p>Vui lòng kiểm tra và phản hồi sớm nhất có thể.</p>
+            </div>
+            <div class="email-footer">
+                <p>© 2024 Công Ty Của Chúng Tôi | <a href="#">Chính Sách Bảo Mật</a></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

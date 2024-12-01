@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gửi Tin Nhắn Góp Ý</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+
+        .email-container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .email-header {
+            background-color: #007bff;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .email-body {
+            padding: 20px;
+        }
+
+        .email-footer {
+            padding: 10px;
+            text-align: center;
+            background-color: #f1f1f1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="email-container">
+            <div class="email-header">
+                <h1>Gửi Tin Nhắn Góp Ý</h1>
+            </div>
+            <div class="email-body">
+                <h2>Xin chào {{name}},</h2>
+                <p>Cảm ơn bạn đã gửi tin nhắn góp ý cho chúng tôi. Chúng tôi sẽ xem xét và phản hồi sớm nhất có thể.</p>
+                <p>Thông tin về tin nhắn góp ý của bạn:</p>
+                <ul class="list-unstyled">
+                    <li>Tên: {{name}}</li>
+                    <li>Email: {{email}}</li>
+                    <li>Số điện thoại: {{phone}}</li>
+                    <li>Tin nhắn góp ý: {{message}}</li>
+                </ul>
+                <p>Thời gian gửi: {{time}}</p>
+            </div>
+            <div class="email-footer">
+                <p>© 2024 Công ty Của Chúng Tôi | <a href="#">Chính sách Bảo mật</a> | <a href="#">Hủy đăng ký</a></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
