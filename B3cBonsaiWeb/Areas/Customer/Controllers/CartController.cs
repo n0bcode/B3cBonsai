@@ -79,6 +79,13 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
             var item = cartItems.FirstOrDefault(x => x.Id == cartId);
             if (item != null)
             {
+                if (item.LoaiDoiTuong == SD.ObjectDetailOrder_SanPham && item.SoLuong == item.SanPham.SoLuong)
+                {
+                    return Json(new { success = false, message = "Bạn không thể tăng thêm số lượng cho sản phẩm này." });
+                } else if (item.LoaiDoiTuong == SD.ObjectDetailOrder_Combo && item.SoLuong == item.ComboSanPham.SoLuong)
+                {
+                    return Json(new { success = false, message = "Bạn không thể tăng thêm số lượng cho combo sản phẩm này." });
+                }
                 item.SoLuong++;
                 HttpContext.Session.SetComplexData(SD.SessionCart, cartItems);
                 return Json(new { success = true, total = item.SoLuong * item.Gia, totalAll = cartItems.Sum(ci => ci.SoLuong * ci.Gia) });
