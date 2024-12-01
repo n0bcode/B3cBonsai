@@ -40,82 +40,82 @@
                                 <div class="cart-title">
                                     <h6>Giỏ hàng của tôi:</h6>
                                     <span class="cart-count">
-                                        <span class="cart-counter">#</span>
-                                        <span class="cart-item-title">Sản phẩm</span>
+                                        <span class="cart-counter">@Model.Count() </span>
+                                        <span class="cart-item-title"> Sản phẩm</span>
                                     </span>
                                 </div>
-                                    <div class="item-wrap">
-                                        @foreach (var item in Model)
-                                        {
-                                            <ul class="cart-wrap">
-                                                <!-- cart-info start -->
-                                                <li class="item-info">
-                                                    <!-- cart-img start -->
-                                                    <div class="item-img">
-                                                        <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail" asp-route-id="@(item.MaCombo ?? item.MaSanPham)" aria-label="Xem chi tiết @(item.SanPham?.TenSanPham ?? item.ComboSanPham?.TenCombo)">
-                                                            <img style="width: 130px; height: 110px; border-radius: 5px; object-fit: cover; transition: opacity 0.5s ease-in-out; opacity: 1;" src="@item.LinkAnh" onerror="this.src='/images/product/default.jpg'" class="img-fluid" alt="@(item.SanPham?.TenSanPham ?? item.ComboSanPham?.TenCombo)">
-                                                        </a>
+                                <div class="item-wrap overflow-auto" style="height:100vh" >
+                                    @foreach (var item in Model)
+                                    {
+                                        <ul class="cart-wrap">
+                                            <!-- cart-info start -->
+                                            <li class="item-info">
+                                                <!-- cart-img start -->
+                                                <div class="item-img">
+                                                    <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail" asp-route-id="@(item.MaCombo ?? item.MaSanPham)" aria-label="Xem chi tiết @(item.SanPham?.TenSanPham ?? item.ComboSanPham?.TenCombo)">
+                                                        <img style="width: 130px; height: 110px; border-radius: 5px; object-fit: cover; transition: opacity 0.5s ease-in-out; opacity: 1;" src="@item.LinkAnh" onerror="this.src='/images/product/default.jpg'" class="img-fluid" alt="@(item.SanPham?.TenSanPham ?? item.ComboSanPham?.TenCombo)">
+                                                    </a>
 
-                                                    </div>
-                                                    <!-- cart-img end -->
-                                                    <!-- cart-title start -->
-                                                    <div class="item-text">
-                                                        <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail" asp-route-id="@(item.MaCombo ?? item.MaSanPham)">
-                                                            @(item.SanPham?.TenSanPham ?? item.ComboSanPham?.TenCombo)
-                                                        </a>
-                                                        <span class="item-option">
-                                                            <span class="item-title">Loại:</span>
-                                                            <span class="item-type">@item.LoaiDoiTuong</span>
+                                                </div>
+                                                <!-- cart-img end -->
+                                                <!-- cart-title start -->
+                                                <div class="item-text">
+                                                    <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail" asp-route-id="@(item.MaCombo ?? item.MaSanPham)">
+                                                        @(item.SanPham?.TenSanPham ?? item.ComboSanPham?.TenCombo)
+                                                    </a>
+                                                    <span class="item-option">
+                                                        <span class="item-title">Loại:</span>
+                                                        <span class="item-type">@item.LoaiDoiTuong</span>
+                                                    </span>
+                                                    <span class="item-option">
+                                                        <span class="item-price">
+                                                            @String.Format("{0:n0}", item.Gia) VNĐ
                                                         </span>
-                                                        <span class="item-option">
-                                                            <span class="item-price">
-                                                                @String.Format("{0:n0}", item.Gia) VNĐ
-                                                            </span>
-                                                        </span>
-                                                    </div>
-                                                    <!-- cart-title end -->
-                                                </li>
-                                                <!-- cart-info end -->
-                                                <!-- cart-qty start -->
-                                                <li class="item-qty">
-                                                    <div class="product-quantity-action">
-                                                        <div class="product-quantity">
-                                                            <div class="cart-plus-minus">
-                                                                <button onclick="decreaseQuantity(@(item.Id))" class="dec qtybutton minus" data-cart-id="@item.Id"><i class="fa-solid fa-minus"></i></button>
-                                                                <input type="text" name="quantity" value="@item.SoLuong" readonly min="1" max="@(item.SanPham?.SoLuong ?? (item.ComboSanPham?.SoLuong ?? 1))" />
-                                                                <button onclick="increaseQuantity(@(item.Id))" class="inc qtybutton plus" data-cart-id="@item.Id"><i class="fa-solid fa-plus"></i></button>
-                                                            </div>
+                                                    </span>
+                                                </div>
+                                                <!-- cart-title end -->
+                                            </li>
+                                            <!-- cart-info end -->
+                                            <!-- cart-qty start -->
+                                            <li class="item-qty">
+                                                <div class="product-quantity-action">
+                                                    <div class="product-quantity">
+                                                        <div class="cart-plus-minus">
+                                                            <button onclick="decreaseQuantity(@(item.Id))" class="dec qtybutton minus" data-cart-id="@item.Id"><i class="fa-solid fa-minus"></i></button>
+                                                            <input type="text" name="quantity" value="@item.SoLuong" readonly min="1" max="@(item.SanPham?.SoLuong ?? (item.ComboSanPham?.SoLuong ?? 1))" />
+                                                            <button onclick="increaseQuantity(@(item.Id))" class="inc qtybutton plus" data-cart-id="@item.Id"><i class="fa-solid fa-plus"></i></button>
                                                         </div>
                                                     </div>
-                                                    <div class="item-remove">
-                                                        <span class="remove-wrap">
-                                                            <a onclick="removeFromCart(@item.Id)" href="javascript:void(0)" class="text-danger remove-item" data-cart-id="@item.Id">Xóa</a>
-                                                        </span>
-                                                    </div>
-                                                </li>
-                                                <!-- cart-qty end -->
-                                                <!-- cart-price start -->
-                                                <li class="item-price">
-                                                    <span class="amount full-price">
-                                                        @String.Format("{0:n0}", item.Gia) VNĐ
+                                                </div>
+                                                <div class="item-remove">
+                                                    <span class="remove-wrap">
+                                                        <a onclick="removeFromCart(@item.Id)" href="javascript:void(0)" class="text-danger remove-item" data-cart-id="@item.Id">Xóa</a>
                                                     </span>
-                                                </li>
-                                                <!-- cart-price end -->
-                                            </ul>
-                                        }
+                                                </div>
+                                            </li>
+                                            <!-- cart-qty end -->
+                                            <!-- cart-price start -->
+                                            <li class="item-price">
+                                                <span class="amount full-price">
+                                                    @String.Format("{0:n0}", item.Gia) VNĐ
+                                                </span>
+                                            </li>
+                                            <!-- cart-price end -->
+                                        </ul>
+                                    }
                                 </div>
                                 <div class="cart-buttons">
                                     <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Index" class="btn-style2">Tiếp tục mua sắm</a>
                                         <a asp-area="Customer" asp-controller="Cart" asp-action="ClearCart" class="btn-style2">Dọn giỏ hàng</a>
                                 </div>
                             </div>
-                            <div class="special-notes">
+                            @* <div class="special-notes">
                                 <label>Special instructions for seller</label>
                                 <textarea rows="10" name="note"></textarea>
-                            </div>
+                            </div> *@
                         </div>
                         <div class="cart-info-wrap">
-                            <div class="cart-calculator cart-info">
+                            @* <div class="cart-calculator cart-info">
                                     <h6>
                                         Giỏ hàng của bạn
                                     </h6>
@@ -160,7 +160,7 @@
                                             <a href="javascript:void(0)" class="btn btn-style2">Tính toán</a>
                                     </div>
                                 </div>
-                            </div>
+                            </div> *@
                             <div class="cart-total-wrap cart-info">
                                 <div class="cart-total">
                                     <div class="total-amount">
