@@ -68,6 +68,7 @@
                                         </div>
                                         <span asp-validation-for="Input.Password" class="text-danger"></span>
                                     </li>
+
                                     <li class="mx-5">
                                         <label asp-for="Input.RememberMe" class="box-area">
                                             <input asp-for="Input.RememberMe" class="cust-checkbox">
@@ -75,28 +76,31 @@
                                             <span class="cust-check"></span>
                                         </label>
                                     </li>
+                                    <li class="form-fill-li">
+
+                                        <!-- Thêm ô reCAPTCHA -->
+                                        <div class="g-recaptcha" data-sitekey="6LdnYnMqAAAAAIqMXz4csz5Zw_kR3ARtWht9wjY2"></div>
+                                        <span id="captcha-error" class="text-danger" style="display: none;">Vui lòng xác nhận reCAPTCHA.</span>
+
+                                        <script src="https://www.google.com/recaptcha/api.js?hl=vi" async defer></script>
+
+                                        <script>
+                                            document.querySelector("form").addEventListener("submit", function (e) {
+                                                // Lấy giá trị của reCAPTCHA
+                                                var captchaResponse = grecaptcha.getResponse();
+
+                                                // Nếu chưa xác nhận reCAPTCHA
+                                                if (!captchaResponse) {
+                                                    e.preventDefault(); // Ngăn không cho gửi biểu mẫu
+                                                    document.getElementById("captcha-error").style.display = "block"; // Hiển thị thông báo lỗi
+                                                } else {
+                                                    document.getElementById("captcha-error").style.display = "none"; // Ẩn thông báo lỗi nếu đã xác nhận
+                                                }
+                                            });
+                                        </script>
+                                    </li>
                                 </ul>
                                 <br />
-                                <!-- Thêm ô reCAPTCHA -->
-                                @* <div class="g-recaptcha" data-sitekey="6LdnYnMqAAAAAIqMXz4csz5Zw_kR3ARtWht9wjY2"></div>
-                            <span id="captcha-error" class="text-danger" style="display: none;">Vui lòng xác nhận reCAPTCHA.</span>
-
-                            <script src="https://www.google.com/recaptcha/api.js?hl=vi" async defer></script>
-
-                            <script>
-                            document.querySelector("form").addEventListener("submit", function (e) {
-                            // Lấy giá trị của reCAPTCHA
-                            var captchaResponse = grecaptcha.getResponse();
-
-                            // Nếu chưa xác nhận reCAPTCHA
-                            if (!captchaResponse) {
-                            e.preventDefault(); // Ngăn không cho gửi biểu mẫu
-                            document.getElementById("captcha-error").style.display = "block"; // Hiển thị thông báo lỗi
-                            } else {
-                            document.getElementById("captcha-error").style.display = "none"; // Ẩn thông báo lỗi nếu đã xác nhận
-                            }
-                            });
-                            </script> *@
                                 <div class="form-action-button">
                                     <div class="button-forget">
                                         <button type="submit" class="btn btn-style2">Đăng nhập</button>
@@ -172,6 +176,13 @@ else
                                 <p>Vui lòng đăng nhập vào tài khoản nhân viên của bạn.</p>
                             </div>
                             <form method="post">
+                                @{
+                                    var hasErrors = ViewData.ModelState.Any(x => x.Value.Errors.Any());
+                                }
+                                @if (hasErrors)
+                                {
+                                    <div asp-validation-summary="All" class="alert alert-danger" role="alert"></div>
+                                }
                                 <div class="mb-4">
                                     <label asp-for="Input.Email" class="mb-1 text-dark">Email</label>
                                     <input asp-for="Input.Email" class="form-control" placeholder="Nhập email của bạn" required autocomplete="email">
@@ -198,6 +209,27 @@ else
                                         <a asp-page="/Account/ForgotPassword" asp-route-viewAccess="@SD.CustomerAccess" class="btn-link text-primary">Quên mật khẩu?</a>
                                     </div>
                                 </div>
+                                <!-- Thêm ô reCAPTCHA -->
+                                <div class="g-recaptcha my-2 w-100 d-flex justify-content-center" data-sitekey="6LdnYnMqAAAAAIqMXz4csz5Zw_kR3ARtWht9wjY2"></div>
+                                <p class="text-center">
+                                    <span id="captcha-error" class="text-danger" style="display: none;">Vui lòng xác nhận reCAPTCHA.</span>
+                                </p>
+                                <script src="https://www.google.com/recaptcha/api.js?hl=vi" async defer></script>
+
+                                <script>
+                                    document.querySelector("form").addEventListener("submit", function (e) {
+                                        // Lấy giá trị của reCAPTCHA
+                                        var captchaResponse = grecaptcha.getResponse();
+
+                                        // Nếu chưa xác nhận reCAPTCHA
+                                        if (!captchaResponse) {
+                                            e.preventDefault(); // Ngăn không cho gửi biểu mẫu
+                                            document.getElementById("captcha-error").style.display = "block"; // Hiển thị thông báo lỗi
+                                        } else {
+                                            document.getElementById("captcha-error").style.display = "none"; // Ẩn thông báo lỗi nếu đã xác nhận
+                                        }
+                                    });
+                                </script>
                                 <!-- Nút đăng nhập -->
                                 <div class="text-center mb-4">
                                     <button type="submit" class="btn btn-primary btn-block">Đăng Nhập</button>
