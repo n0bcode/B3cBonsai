@@ -50,110 +50,118 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
 
         // Danh sách sản phẩm có phân trang và bộ lọc
         [HttpGet]
-        public async Task<IActionResult> ListPagedProduct(int? page, string? findText, int[]? selectedCategories, int? minPrice, int? maxPrice, bool? inStock, string? SortBy)
+        public async Task<IActionResult> ListPagedProduct(
+            int? page,
+            string? findText,
+            int[]? selectedCategories,
+            int? minPrice,
+            int? maxPrice,
+            bool? inStock,
+            string? sortBy)
         {
+            // Lưu trữ tạm thời các tham số bộ lọc
             TempData["findText"] = findText ?? "";
             TempData["selectedCategories"] = selectedCategories;
             TempData["minPrice"] = minPrice ?? 0;
-            TempData["maxPrice"] = maxPrice ?? 0;
-            TempData["inStock"] = inStock ?? null;
-            TempData["SortBy"] = SortBy;
+            TempData["maxPrice"] = maxPrice ?? int.MaxValue;
+            TempData["inStock"] = inStock;
+            TempData["SortBy"] = sortBy;
 
             int pageNumber = page ?? 1;
             int pageSize = 12;
 
-            var query = await _unitOfWork.SanPham.GetAll(
+            // Truy vấn sản phẩm
+            var productQuery = await _unitOfWork.SanPham.GetAll(
                 includeProperties: "DanhMuc,HinhAnhs",
                 filter: x => x.TrangThai
             );
 
+            // Truy vấn sản phẩm combo
+            var comboQuery = await _unitOfWork.ComboSanPham.GetAll(
+                includeProperties: "ChiTietCombos",
+                filter: x => x.TrangThai
+            );
+
+            // Áp dụng bộ lọc
             if (!string.IsNullOrEmpty(findText))
             {
                 var normalizedFindText = RemoveDiacritics(findText.ToLower());
-                query = query.Where(x => RemoveDiacritics(x.TenSanPham.ToLower()).Contains(normalizedFindText));
+                productQuery = productQuery.Where(x => RemoveDiacritics(x.TenSanPham.ToLower()).Contains(normalizedFindText));
+                comboQuery = comboQuery.Where(x => RemoveDiacritics(x.TenCombo.ToLower()).Contains(normalizedFindText));
             }
 
             if (selectedCategories != null && selectedCategories.Any())
             {
-                query = query.Where(x => selectedCategories.Any(select => select == x.DanhMucId));
+                productQuery = productQuery.Where(x => selectedCategories.Contains(x.DanhMucId));
+                comboQuery = comboQuery.Where(x => x.ChiTietCombos.Any(detail =>
+                    selectedCategories.Contains(detail.SanPham.DanhMucId)));
             }
 
-            if (minPrice.HasValue && maxPrice.HasValue && (minPrice.Value != 0 || maxPrice.Value != 0))
+            if (minPrice.HasValue || maxPrice.HasValue)
             {
-                query = query.Where(x => x.Gia >= (minPrice ?? 0) && x.Gia <= (maxPrice ?? decimal.MaxValue));
+                int minimumPrice = minPrice ?? 0;
+                int maximumPrice = maxPrice ?? int.MaxValue;
+                productQuery = productQuery.Where(x => x.Gia >= minimumPrice && x.Gia <= maximumPrice);
+                comboQuery = comboQuery.Where(x => x.TongGia >= minimumPrice && x.TongGia <= maximumPrice);
             }
 
             if (inStock.HasValue)
             {
-                query = inStock.Value ? query.Where(x => x.SoLuong > 0) : query.Where(x => x.SoLuong <= 0);
+                productQuery = inStock.Value
+                    ? productQuery.Where(x => x.SoLuong > 0)
+                    : productQuery.Where(x => x.SoLuong <= 0);
+
+                comboQuery = inStock.Value
+                    ? comboQuery.Where(x => x.SoLuong > 0)
+                    : comboQuery.Where(x => x.SoLuong <= 0);
             }
 
-            // Sắp xếp theo yêu cầu
-            switch (SortBy)
-            {
-                case "best-selling":
-                    query = query.OrderByDescending(x => x.SoLuong); // Giả sử có trường SoLuong bán
-                    break;
-                case "title-ascending":
-                    query = query.OrderBy(x => x.TenSanPham);
-                    break;
-                case "title-descending":
-                    query = query.OrderByDescending(x => x.TenSanPham);
-                    break;
-                case "price-ascending":
-                    query = query.OrderBy(x => x.Gia);
-                    break;
-                case "price-descending":
-                    query = query.OrderByDescending(x => x.Gia);
-                    break;
-                case "created-descending":
-                    query = query.OrderByDescending(x => x.NgayTao);
-                    break;
-                case "created-ascending":
-                    query = query.OrderBy(x => x.NgayTao);
-                    break;
-                default: // Sắp xếp theo ID (mặc định)
-                    query = query.OrderBy(x => x.Id);
-                    break;
-            }
 
-            var queryCombo = (await _unitOfWork.ComboSanPham.GetAll(
-                includeProperties: "ChiTietCombos"
-                )).ToList();
 
-            List<SanPhamOrComboVM> sanPhamOrComboVMs = new List<SanPhamOrComboVM>();
-            // Gán dữ liệu hiển thị
-            foreach (SanPham sanPham in query)
-            {
-                sanPhamOrComboVMs.Add(new SanPhamOrComboVM() { SanPham = sanPham, LoaiDoiTuong = SD.ObjectDetailOrder_SanPham });
-            }
-            foreach (ComboSanPham comboSanPham in queryCombo)
-            {
-                sanPhamOrComboVMs.Add(new SanPhamOrComboVM() { ComboSanPham = comboSanPham, LoaiDoiTuong = SD.ObjectDetailOrder_Combo });
-            }
-            // Phân trang kết quả
-            /*var listProduct = query;*/
-            var pagedListProduct = sanPhamOrComboVMs.ToPagedList(pageNumber, pageSize);
-            return PartialView(pagedListProduct);
+
+            // Kết hợp và phân trang kết quả
+            var sanPhamOrComboVMs = productQuery.Select(p => new SanPhamOrComboVM
+            { SanPham = p, LoaiDoiTuong = SD.ObjectDetailOrder_SanPham }).ToList();
+
+            sanPhamOrComboVMs.AddRange(comboQuery.Select(c => new SanPhamOrComboVM
+            { ComboSanPham = c, LoaiDoiTuong = SD.ObjectDetailOrder_Combo }));
+
+            var pagedList = sanPhamOrComboVMs.ToPagedList(pageNumber, pageSize);
+            return PartialView(pagedList);
         }
 
-        // Hàm loại bỏ dấu tiếng Việt trong chuỗi
+        // Áp dụng logic sắp xếp
+        private IQueryable<T> ApplySorting<T>(IQueryable<T> query, string? sortBy) where T : class
+        {
+            return sortBy switch
+            {
+                "best-selling" => query.OrderByDescending(x => EF.Property<int>(x, "SoLuong")),
+                "title-ascending" => query.OrderBy(x => EF.Property<string>(x, "TenCombo")),
+                "title-descending" => query.OrderByDescending(x => EF.Property<string>(x, "TenCombo")),
+                "price-ascending" => query.OrderBy(x => EF.Property<int>(x, "Gia")),
+                "price-descending" => query.OrderByDescending(x => EF.Property<int>(x, "Gia")),
+                "created-ascending" => query.OrderBy(x => EF.Property<DateTime>(x, "NgayTao")),
+                "created-descending" => query.OrderByDescending(x => EF.Property<DateTime>(x, "NgayTao")),
+                _ => query.OrderBy(x => EF.Property<int>(x, "Id"))
+            };
+        }
+
+        // Bỏ dấu cho văn bản tiếng Việt
         public static string RemoveDiacritics(string text)
         {
             var normalizedString = text.Normalize(NormalizationForm.FormD);
             var stringBuilder = new StringBuilder();
 
-            foreach (var character in normalizedString)
+            foreach (var c in normalizedString)
             {
-                var unicodeCategory = CharUnicodeInfo.GetUnicodeCategory(character);
-                if (unicodeCategory != UnicodeCategory.NonSpacingMark)
+                if (CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark)
                 {
-                    stringBuilder.Append(character);
+                    stringBuilder.Append(c);
                 }
             }
-
             return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
         }
+
 
         // Chi tiết sản phẩm
         [HttpGet]
@@ -172,8 +180,9 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
                     return NotFound(); // Sản phẩm không tìm thấy
                 }
 
-                return View("DetailProduct",product);
-            } else
+                return View("DetailProduct", product);
+            }
+            else
             {
                 // Lấy sản phẩm và các thông tin liên quan như danh mục, hình ảnh, bình luận, yêu thích
                 var combo = await _unitOfWork.ComboSanPham.Get(
