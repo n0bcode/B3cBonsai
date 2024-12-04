@@ -232,6 +232,9 @@ namespace B3cBonsai.DataAccess.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
+                    b.Property<string>("LyDoHuyDonHang")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("MaBuuDien")
                         .IsRequired()
                         .HasMaxLength(20)

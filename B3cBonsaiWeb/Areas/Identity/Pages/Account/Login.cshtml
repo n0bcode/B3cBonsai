@@ -69,13 +69,19 @@
                                         <span asp-validation-for="Input.Password" class="text-danger"></span>
                                     </li>
 
-                                    <li class="mx-5">
+                                    <li class="mx-4 px-2">
                                         <label asp-for="Input.RememberMe" class="box-area">
                                             <input asp-for="Input.RememberMe" class="cust-checkbox">
                                             <span class="text">Ghi nhớ mật khẩu?</span>
                                             <span class="cust-check"></span>
                                         </label>
                                     </li>
+
+                                    @* <p>
+                                        <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Resend email confirmation</a>
+                                    </p> *@
+
+
                                     <li class="form-fill-li">
 
                                         <!-- Thêm ô reCAPTCHA -->
@@ -236,14 +242,28 @@ else
                                 </div>
                                 <!-- Đăng nhập bằng mạng xã hội -->
                                 <h6 class="login-title"><span>Hoặc tiếp tục với</span></h6>
-                                <div class="mb-3">
+
+                                <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizonta mb-3 d-flex align-self-center justify-content-center">
+                                    <div>
+                                        <p class="text-center" >
+                                            @foreach (var provider in Model.ExternalLogins!)
+                                            {
+                                                <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Đăng nhập bằng tài khoản @provider.DisplayName">
+                                                    @provider.DisplayName
+                                                </button>
+                                            }
+                                        </p>
+                                    </div>
+                                </form>
+
+                                @* <div class="mb-3">
                                     <ul class="d-flex align-self-center justify-content-center">
                                         <li><a target="_blank" href="https://www.facebook.com/" class="fab fa-facebook-f btn-facebook"></a></li>
                                         <li><a target="_blank" href="https://www.google.com/" class="fab fa-google-plus-g btn-google-plus mx-2"></a></li>
                                         <li><a target="_blank" href="https://www.linkedin.com/" class="fab fa-linkedin-in btn-linkedin me-2"></a></li>
                                         <li><a target="_blank" href="https://twitter.com/" class="fab fa-twitter btn-twitter"></a></li>
                                     </ul>
-                                </div>
+                                </div> *@
                                 <!-- Tùy chọn đăng ký -->
                                 <p class="text-center">
                                     Chưa có tài khoản?
@@ -254,37 +274,6 @@ else
                                     <a asp-area="Identity" asp-page="/Account/Login" asp-route-viewAccess="@SD.CustomerAccess" class="btn-link text-primary">Đăng nhập</a>
                                 </p>
                             </form>
-                            <div class="col-md-12 text-center pt-4">
-                                <section>
-                                    <h3>Sử dụng dịch vụ khác để đăng nhập.</h3>
-                                    <hr />
-                                    @if ((Model.ExternalLogins?.Count ?? 0) == 0)
-                                    {
-                                        <div>
-                                            <p>
-                                                Không có dịch vụ xác thực bên ngoài nào được cấu hình. Xem bài viết này <a href="https://go.microsoft.com/fwlink/?LinkID=532715">
-                                                    hướng dẫn về cách thiết lập ứng dụng ASP.NET này
-                                                </a> để hỗ trợ đăng nhập qua các dịch vụ bên ngoài.
-                                            </p>
-                                        </div>
-                                    }
-                                    else
-                                    {
-                                        <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-                                            <div>
-                                                <p>
-                                                    @foreach (var provider in Model.ExternalLogins!)
-                                                    {
-                                                        <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Đăng nhập bằng tài khoản @provider.DisplayName">
-                                                            @provider.DisplayName
-                                                        </button>
-                                                    }
-                                                </p>
-                                            </div>
-                                        </form>
-                                    }
-                                </section>
-                            </div>
                         </div>
                     </div>
                     <!-- Phần giới thiệu hoặc hình ảnh -->

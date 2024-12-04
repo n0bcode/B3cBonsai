@@ -93,6 +93,7 @@ function addProduct() {
 $('form').on('submit', function (e) {
     e.preventDefault();
     addProduct();
+    loadViewUpsert();
 });
 
 $(document).ready(function () {

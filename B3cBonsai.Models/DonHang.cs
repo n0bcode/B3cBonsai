@@ -94,6 +94,9 @@ namespace B3cBonsai.Models
         [Display(Name = "Tên Người Nhận")]
         public string TenNguoiNhan { get; set; } // Name từ `OrderHeader`
 
+        [Display(Name = "Lý do hủy đơn hàng")]
+        public string? LyDoHuyDonHang { get; set; }
+
         [ValidateNever]
         public virtual ICollection<ChiTietDonHang> ChiTietDonHangs { get; set; } // Khai báo quan hệ 1-n với chi tiết đơn hàng
     }

@@ -64,9 +64,9 @@ function loadOrderDataTable() {
             {
                 data: 'chiTietDonHangs',
                 "title": "Sản phẩm của đơn",
-                "render": function (data) {
+                "render": function (data, type, row) {
                     if (Array.isArray(data) && data.length > 0) {
-                        return `<div class="avatar-list avatar-list-stacked">` +
+                        return `<div onclick="loadDetailWithDelete(${row.id})" class="avatar-list avatar-list-stacked" data-bs-toggle="modal" data-bs-target="#exampleModal1">` +
                             data.map(sanPham => {
                                 if (sanPham.loaiDoiTuong == 'SanPham') {
                                     const firstImage = Array.isArray(sanPham.sanPham.hinhAnhs) && sanPham.sanPham.hinhAnhs.length > 0 ? sanPham.sanPham.hinhAnhs[0]?.linkAnh : null;
@@ -101,7 +101,7 @@ function loadOrderDataTable() {
                 data: 'tongTienDonHang',
                 "title": "Thanh toán",
                 "render": function (data) {
-                    return `<span>${data.toLocaleString('vi-VN')} VNĐ</span>`;
+                    return `<span>${data.toLocaleString('vi-VN')} đ</span>`;
                 }
             }
         ],
@@ -204,3 +204,16 @@ const changeStatusPayment = (id, statusPayment) => {
         }
     });
 };
+
+const loadDetailWithDelete = (id) => {
+    $.ajax({
+        url: `/Employee/ManagerOrder/Detail/${id}`,
+        method: 'GET',
+        success: (data) => {
+            $('#contentDWD').html(data)
+        },
+        error: (xhr) => {
+            toastr.error("Lỗi tải thông tin đối tượng")
+        }
+    })
+}

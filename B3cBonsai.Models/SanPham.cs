@@ -24,7 +24,7 @@ namespace B3cBonsai.Models
         public int DanhMucId { get; set; }
 
         [Display(Name = "Mô Tả")]
-        [RegularExpression(SD.ValidateString, ErrorMessage = "Mô tả chỉ được chứa chữ cái, số và khoảng trắng.")]
+        //[RegularExpression(SD.ValidateString, ErrorMessage = "Mô tả chỉ được chứa chữ cái, số và khoảng trắng.")]
         public string MoTa { get; set; }
 
         [Range(0, int.MaxValue, ErrorMessage = "Số lượng phải là số nguyên không âm.")]

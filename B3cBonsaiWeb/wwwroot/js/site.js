@@ -25,6 +25,7 @@ function loadQuickView(id) {
         method: 'GET',
         success: (data) => {
             $('#quickview').html(data);
+            initQuantityButtons();
         },
         error: (xhr) => {
             toastr.info("Lỗi load dữ liệu xem nhanh.");
@@ -117,14 +118,80 @@ document.addEventListener("DOMContentLoaded", function () {
     const togglePassword = document.getElementById("toggle-password");
     const passwordField = document.getElementById("password-field");
     const iconEye = document.getElementById("icon-eye");
+    if (togglePassword != null) {
+        togglePassword.addEventListener("click", function () {
+            // Kiểm tra loại input hiện tại
+            const isPassword = passwordField.type === "password";
+            // Thay đổi loại input
+            passwordField.type = isPassword ? "text" : "password";
+            // Thay đổi biểu tượng mắt
+            iconEye.classList.toggle("fa-eye", isPassword);
+            iconEye.classList.toggle("fa-eye-slash", !isPassword);
+        });
+    }
+});
 
-    togglePassword.addEventListener("click", function () {
-        // Kiểm tra loại input hiện tại
-        const isPassword = passwordField.type === "password";
-        // Thay đổi loại input
-        passwordField.type = isPassword ? "text" : "password";
-        // Thay đổi biểu tượng mắt
-        iconEye.classList.toggle("fa-eye", isPassword);
-        iconEye.classList.toggle("fa-eye-slash", !isPassword);
+
+$(document).ready(function () {
+    // Lấy ngày hiện tại
+    const today = new Date();
+    const todayString = today.toISOString().split('T')[0]; // Định dạng yyyy-mm-dd
+
+    // Ngày min là năm 1950
+    const minDate = new Date(1950, 0, 1).toISOString().split('T')[0]; // Định dạng yyyy-mm-dd
+
+    // Thiết lập cho tất cả các input type="date" và type="datetime-local"
+    $('input[type="date"], input[type="datetime-local"]').each(function () {
+        // Kiểm tra và thiết lập min nếu chưa có
+        if (!$(this).attr('min')) {
+            $(this).attr('min', minDate); // Thiết lập giá trị min nếu chưa có
+        }
+
+        // Kiểm tra và thiết lập max nếu chưa có
+        if (!$(this).attr('max')) {
+            $(this).attr('max', todayString); // Thiết lập giá trị max nếu chưa có
+        }
     });
 });
+
+
+//region
+function initQuantityButtons() {
+    const $quantityInput = $('#quantityValue');
+    const $minusBtn = $('#minusBtn');
+    const $plusBtn = $('#plusBtn');
+    const maxQuantity = parseInt($quantityInput.attr('max'), 10);
+
+    // Khởi động trạng thái ban đầu cho các nút
+    updateButtonStates($quantityInput, $minusBtn, $plusBtn, maxQuantity);
+
+    // Thêm sự kiện click cho nút giảm
+    $minusBtn.on('click', function () {
+        changeQuantity('decrease', $quantityInput, $minusBtn, $plusBtn, maxQuantity);
+    });
+
+    // Thêm sự kiện click cho nút tăng
+    $plusBtn.on('click', function () {
+        changeQuantity('increase', $quantityInput, $minusBtn, $plusBtn, maxQuantity);
+    });
+}
+
+function updateButtonStates($quantityInput, $minusBtn, $plusBtn, maxQuantity) {
+    const currentQuantity = parseInt($quantityInput.val(), 10);
+    $minusBtn.prop('disabled', currentQuantity <= 1);
+    $plusBtn.prop('disabled', currentQuantity >= maxQuantity);
+}
+
+function changeQuantity(action, $quantityInput, $minusBtn, $plusBtn, maxQuantity) {
+    let currentQuantity = parseInt($quantityInput.val(), 10);
+
+    if (action === 'decrease' && currentQuantity > 1) {
+        currentQuantity--;
+    } else if (action === 'increase' && currentQuantity < maxQuantity) {
+        currentQuantity++;
+    }
+
+    $quantityInput.val(currentQuantity);
+    updateButtonStates($quantityInput, $minusBtn, $plusBtn, maxQuantity);
+}
+//endregion

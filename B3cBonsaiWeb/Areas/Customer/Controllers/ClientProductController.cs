@@ -126,6 +126,43 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
             sanPhamOrComboVMs.AddRange(comboQuery.Select(c => new SanPhamOrComboVM
             { ComboSanPham = c, LoaiDoiTuong = SD.ObjectDetailOrder_Combo }));
 
+
+            switch (sortBy)
+            {
+                case "best-selling":
+                    // Assuming "best-selling" is determined by some sales metric
+                    sanPhamOrComboVMs = sanPhamOrComboVMs.OrderByDescending(item => item.SanPham?.SoLuong ?? 0).ToList();
+                    break;
+
+                case "title-ascending":
+                    sanPhamOrComboVMs = sanPhamOrComboVMs.OrderBy(item => item.SanPham?.TenSanPham ?? item.ComboSanPham?.TenCombo).ToList();
+                    break;
+
+                case "title-descending":
+                    sanPhamOrComboVMs = sanPhamOrComboVMs.OrderByDescending(item => item.SanPham?.TenSanPham ?? item.ComboSanPham?.TenCombo).ToList();
+                    break;
+
+                case "price-ascending":
+                    sanPhamOrComboVMs = sanPhamOrComboVMs.OrderBy(item => item.SanPham?.Gia ?? item.ComboSanPham?.TongGia).ToList();
+                    break;
+
+                case "price-descending":
+                    sanPhamOrComboVMs = sanPhamOrComboVMs.OrderByDescending(item => item.SanPham?.Gia ?? item.ComboSanPham?.TongGia).ToList();
+                    break;
+
+                case "created-ascending":
+                    sanPhamOrComboVMs = sanPhamOrComboVMs.OrderBy(item => item.SanPham?.NgayTao ?? DateTime.MinValue).ToList();
+                    break;
+
+                case "created-descending":
+                    sanPhamOrComboVMs = sanPhamOrComboVMs.OrderByDescending(item => item.SanPham?.NgayTao ?? DateTime.MinValue).ToList();
+                    break;
+
+                default:
+                    sanPhamOrComboVMs = sanPhamOrComboVMs.ToList();
+                    break;
+            }
+
             var pagedList = sanPhamOrComboVMs.ToPagedList(pageNumber, pageSize);
             return PartialView(pagedList);
         }

@@ -34,13 +34,24 @@
             text-align: center; /* Canh giữa */
             background-color: #f1f1f1; /* Màu nền footer */
         }
+
+        .message-highlight {
+            background-color: #e7f1ff; /* Nền nổi bật cho thông điệp */
+            border-left: 4px solid #007bff; /* Đường viền bên trái */
+            padding: 10px; /* Padding cho thông điệp */
+            margin-top: 20px; /* Khoảng cách trên */
+        }
+
+        .sender-info {
+            font-weight: bold; /* Đậm chữ cho thông tin người gửi */
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="email-container">
             <div class="email-header">
-                <h1>Chào mừng đến với Dịch vụ của Chúng tôi!</h1>
+                <h1>Chào mừng đến với B3cBonsai!</h1>
             </div>
             <div class="email-body">
                 <h2>Xin chào {{name}},</h2>
@@ -52,7 +63,10 @@
                 </ul>
                 <p>Liên hệ với chúng tôi qua: <a href="mailto:{{email}}">{{email}}</a>.</p>
                 <p>Thời gian hiện tại: {{time}}</p>
-                <div>{{message}}</div>
+
+                <div class="sender-info">Thông tin người gửi: {{sender_name}} ({{sender_email}})</div>
+
+                <div class="message-highlight">{{message}}</div>
             </div>
             <div class="email-footer">
                 <p>© 2024 Công ty Của Chúng Tôi | <a href="#">Chính sách Bảo mật</a> | <a href="#">Hủy đăng ký</a></p>

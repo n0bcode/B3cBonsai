@@ -222,7 +222,8 @@ namespace B3cBonsai.DataAccess.Migrations
                     ThanhPho = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Tinh = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     MaBuuDien = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    TenNguoiNhan = table.Column<string>(type: "nvarchar(54)", maxLength: 54, nullable: false)
+                    TenNguoiNhan = table.Column<string>(type: "nvarchar(54)", maxLength: 54, nullable: false),
+                    LyDoHuyDonHang = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {

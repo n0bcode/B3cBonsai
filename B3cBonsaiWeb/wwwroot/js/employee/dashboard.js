@@ -275,7 +275,7 @@ function loadDataTable() {
                 data: 'tongTienDonHang',
                 "title": "Thanh toán",
                 "render": function (data) {
-                    return `<span>${data.toLocaleString('vi-VN')} VNĐ</span>`;
+                    return `<span>${data.toLocaleString('vi-VN')} đ</span>`;
                 }
             }
         ],

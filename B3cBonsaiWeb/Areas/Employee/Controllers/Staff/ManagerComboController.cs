@@ -213,6 +213,7 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
                     cbo.MoTa,
                     cbo.LinkAnh,
                     cbo.TongGia,
+                    cbo.TrangThai,
 					ChiTietCombos = cbo.ChiTietCombos.Select(ct => new
 					{
 						ct.Id,

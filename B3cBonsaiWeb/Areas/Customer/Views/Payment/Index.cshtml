@@ -80,7 +80,7 @@
                                                 </span>
                                                 <div class="check-qty-pric">
                                                     <span class="check-qty">@item.SoLuong X</span>
-                                                    <span class="check-price">@String.Format("{0:n0}", item.Gia * item.SoLuong) VNĐ</span>
+                                                    <span class="check-price">@String.Format("{0:n0}", item.Gia * item.SoLuong) đ</span>
                                                 </div>
                                             </div>
                                         </li>
@@ -97,7 +97,7 @@
                         <ul class="order-history">
                             <li class="order-details">
                                 <span>Tổng cộng:</span>
-                                <span>@String.Format("{0:n0}", Model?.Sum(item => item.SoLuong * item.Gia) ?? 0) VNĐ</span>
+                                <span>@String.Format("{0:n0}", Model?.Sum(item => item.SoLuong * item.Gia) ?? 0) đ</span>
                             </li>
                         </ul>
 
@@ -109,7 +109,6 @@
                                     <li class="label-info">
                                         <label class="box-area">
                                             <span class="text">Thanh toán bằng Ví VNPAY</span>
-                                            <span class="text-muted small">(Chức năng hủy không tồn tại trong quá trình thanh toán này)</span>
                                             <input type="radio" name="paymentMethod" value="Card" id="paymentCard" class="cust-checkbox">
                                             <span class="cust-check"></span>
                                         </label>

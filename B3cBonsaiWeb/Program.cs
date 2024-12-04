@@ -15,6 +15,7 @@ using B3cBonsai.Utility;
 using B3cBonsai.Utility.Helper;
 using Microsoft.AspNetCore.Authentication.MicrosoftAccount;
 using B3cBonsaiWeb.Services;
+using B3cBonsaiWeb.Attributes;
 
 namespace B3cBonsaiWeb
 {
@@ -27,7 +28,10 @@ namespace B3cBonsaiWeb
             // Add services to the container.
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();
-
+            /*options =>
+            {
+                options.Filters.Add<CheckUserStatusAttribute>();
+            }*/
             builder.Services.AddSession(options => {
                 options.IdleTimeout = TimeSpan.FromMinutes(30);
             });
@@ -55,12 +59,12 @@ namespace B3cBonsaiWeb
 
             builder.Services.AddAuthentication()
                 .AddCookie()
-                .AddFacebook(FacebookDefaults.AuthenticationScheme, options =>
+                /*.AddFacebook(FacebookDefaults.AuthenticationScheme, options =>
                 {
                     options.ClientId = authenticationSecrets["FacebookId"];
                     options.ClientSecret = authenticationSecrets["FacebookSecret"];
                     options.AccessDeniedPath = "/Identity/Account/Login";
-                })
+                })*/
                 .AddGoogle(GoogleDefaults.AuthenticationScheme, options =>
                 {
                     options.ClientId = authenticationSecrets["GoogleId"];
@@ -81,7 +85,7 @@ namespace B3cBonsaiWeb
 
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddScoped<IVnPayService, VnPayService>();
-            builder.Services.AddSingleton<IVnPayService, VnPayService>();
+
             builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 
             builder.Services.AddSingleton<TelegramService>(sp =>

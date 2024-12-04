@@ -167,6 +167,12 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
                 {
                     return Json(new { success = false, message = "Sản phẩm không còn khả dụng." });
                 }
+
+                if (sanPham.SoLuong < 1)
+                {
+                    return Json(new { success = false, message = "Sản phẩm đã hết hàng." });
+                }
+
                 cartItems.Add(new GioHang()
                 {
                     Id = new Random().Next(0, int.MaxValue),
@@ -196,6 +202,11 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
                 if (!comboSanPham.TrangThai)
                 {
                     return Json(new { success = false, message = "Combo sản phẩm không còn khả dụng." });
+                }
+
+                if (comboSanPham.SoLuong < 1)
+                {
+                    return Json(new { success = false, message = "Combo sản phẩm đã hết hàng." });
                 }
                 cartItems.Add(new GioHang()
                 {
@@ -238,10 +249,10 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
             return Json(new { success = false, message = "Không tìm thấy sản phẩm để xóa." });
         }
         [HttpPost]
-        public async Task<IActionResult> ClearCart()
+        public IActionResult ClearCart()
         {
             HttpContext.Session.SetComplexData(SD.SessionCart, new List<GioHang>());
-            return View(nameof(Index));
+            return RedirectToAction("Index", "Cart");
         }
         #endregion
     }
