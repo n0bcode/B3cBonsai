@@ -127,7 +127,11 @@
                         </strong>
                     </p>
                     <small style="font-size:10px;" class="text-muted">Ngày bình luận: @comment.NgayBinhLuan.ToString("dd/MM/yyyy")</small>
-                    <p>@comment.NoiDungBinhLuan</p>
+                    <p class="p-1">@comment.NoiDungBinhLuan</p>
+
+                    <a class="wishlist" data-id="@comment.Id" data-type="@SD.ObjectLike_Comment">
+                        <span class="pro-action-icon likeAction"><i class="feather-heart"></i></span>
+                    </a>
                 </div>
             }
         }
