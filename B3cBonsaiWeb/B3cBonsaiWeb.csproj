@@ -45,6 +45,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\js\customer\searchHeader.js" />
     <None Include="wwwroot\js\customer\comment.js" />
     <None Include="wwwroot\js\customer\cart.js" />
     <None Include="wwwroot\js\customer\clientProduct.js" />
