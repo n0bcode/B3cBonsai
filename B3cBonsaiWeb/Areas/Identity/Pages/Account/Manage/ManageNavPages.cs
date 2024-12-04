@@ -62,6 +62,7 @@ namespace  B3cBonsaiWeb.Areas.Identity.Pages.Account.Manage
         public static string TwoFactorAuthentication => "TwoFactorAuthentication";
 
         public static string ClientOrder => "ClientOrder";
+        public static string ClientComment => "ClientComment";
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -111,6 +112,7 @@ namespace  B3cBonsaiWeb.Areas.Identity.Pages.Account.Manage
         /// </summary>
         public static string TwoFactorAuthenticationNavClass(ViewContext viewContext) => PageNavClass(viewContext, TwoFactorAuthentication);
         public static string ClientOrderNavClass(ViewContext viewContext) => PageNavClass(viewContext, ClientOrder);
+        public static string ClientCommentNavClass(ViewContext viewContext) => PageNavClass(viewContext, ClientComment);
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used

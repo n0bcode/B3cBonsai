@@ -69,7 +69,7 @@
                                                     </span>
                                                     <span class="item-option">
                                                         <span class="item-price">
-                                                            @String.Format("{0:n0}", item.Gia) VNĐ
+                                                            @String.Format("{0:n0}", item.Gia) đ
                                                         </span>
                                                     </span>
                                                 </div>
@@ -97,7 +97,7 @@
                                             <!-- cart-price start -->
                                             <li class="item-price">
                                                 <span class="amount full-price">
-                                                    @String.Format("{0:n0}", item.Gia) VNĐ
+                                                    @String.Format("{0:n0}", item.Gia) đ
                                                 </span>
                                             </li>
                                             <!-- cart-price end -->
@@ -106,7 +106,7 @@
                                 </div>
                                 <div class="cart-buttons">
                                     <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Index" class="btn-style2">Tiếp tục mua sắm</a>
-                                        <a asp-area="Customer" asp-controller="Cart" asp-action="ClearCart" class="btn-style2">Dọn giỏ hàng</a>
+                                    <button onclick="clearCart()" class="btn-style2">Dọn giỏ hàng</button>
                                 </div>
                             </div>
                             @* <div class="special-notes">
@@ -166,12 +166,12 @@
                                     <div class="total-amount">
                                         <h6 class="total-title">Tổng giá</h6>
                                         <span class="amount total-price">
-                                            @String.Format("{0:n0}", Model.Sum(ci => ci.SoLuong * ci.Gia)) VNĐ
+                                            @String.Format("{0:n0}", Model.Sum(ci => ci.SoLuong * ci.Gia)) đ
                                         </span>
                                     </div>
-                                    <div class="proceed-to-discount">
+                                    @* <div class="proceed-to-discount">
                                         <input type="text" name="discount" placeholder="Discount code">
-                                    </div>
+                                    </div> *@
                                     <div class="proceed-to-checkout">
                                         <a href="/Customer/Payment/Index" class="btn btn-style2">Thanh toán</a>
                                     </div>

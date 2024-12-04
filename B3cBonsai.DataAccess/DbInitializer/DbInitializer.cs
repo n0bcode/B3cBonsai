@@ -147,7 +147,7 @@ namespace B3cBonsai.DataAccess.DbInitializer
                     TenSanPham = RandomData_DB.Instance.RandomProductName(),
                     DanhMucId = random.Next(1, 3), // Assuming 2 categories
                     MoTa = RandomData_DB.Instance.RandomProductDescription(),
-                    SoLuong = random.Next(1, 100),
+                    SoLuong = random.Next(1, 10),
                     Gia = random.Next(10000, 1000000),
                     NgayTao = DateTime.UtcNow,
                     TrangThai = true
@@ -231,7 +231,7 @@ namespace B3cBonsai.DataAccess.DbInitializer
             Random rd = new Random();
             var donHangs = new List<DonHang>();
 
-            for (int i = 1; i <= 2000; i++)
+            for (int i = 1; i <= 200; i++)
             {
                 // Lấy danh sách người dùng
                 var nguoiDungIds = _db.NguoiDungUngDungs.Select(u => u.Id).ToList();

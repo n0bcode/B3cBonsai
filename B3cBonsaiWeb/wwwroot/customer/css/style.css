@@ -2019,7 +2019,7 @@ ul.payment-icon li a svg {
     drawer-inner css
 =====================================*/
 .cart-drawer form.drawer-contents .drawer-inner {
-    height: 100vh;
+    height: 90vh;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -4544,6 +4544,40 @@ ul.service-ul li.service-li .ser-box .ser-block p {
     align-items: center;
 }
 .productmodal .quick-view-content form .quick-view-select .selector-wrapper .pro-qty-wrap .product-quantity {
+    margin: 0px 0px 0px 15px;
+}
+
+
+.productmodal .quick-view-content aside {
+    margin: 22px 0px 0px;
+}
+.productmodal .quick-view-content aside .quick-view-select .selector-wrapper {
+    display: flex;
+    align-items: center;
+    margin: 15px 0px 0px;
+}
+.productmodal .quick-view-content aside .quick-view-select .selector-wrapper:first-child {
+    margin: 0px;
+}
+.productmodal .quick-view-content aside .quick-view-select .selector-wrapper label,
+.productmodal .quick-view-content aside .quick-view-select .selector-wrapper .pro-qty-wrap h6 {
+    display: block;
+    color: var(--body-font-color);
+    font-size: 18px;
+    width: 90px;
+    margin: 0;
+    font-weight: 700;
+    line-height: 1;
+}
+.productmodal .quick-view-content aside .quick-view-select .selector-wrapper select {
+    width: calc(100% - 105px);
+    margin: 0px 0px 0px 15px;
+}
+.productmodal .quick-view-content aside .quick-view-select .selector-wrapper .pro-qty-wrap {
+    display: flex;
+    align-items: center;
+}
+.productmodal .quick-view-content aside .quick-view-select .selector-wrapper .pro-qty-wrap .product-quantity {
     margin: 0px 0px 0px 15px;
 }
 .productmodal .quick-view-content .quickview-buttons button.btn-style2,

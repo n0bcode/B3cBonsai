@@ -52,7 +52,8 @@ function checkIfLiked(idObject, loaiDoiTuong, callback) {
             if (response.success) {
                 callback(response.isLiked); // Sử dụng isLiked từ phản hồi API
             } else {
-                toastr.info(response.message || "Đã xảy ra lỗi khi kiểm tra trạng thái thích.");
+                return;
+                //toastr.info(response.message || "Đã xảy ra lỗi khi kiểm tra trạng thái thích.");
             }
         },
         error: function () {

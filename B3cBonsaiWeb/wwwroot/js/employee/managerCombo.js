@@ -10,7 +10,8 @@
                             <img src="${data.linkAnh}" class="rounded" alt="Hình ảnh" style="width: 50px; height: 50px; object-fit: cover;" onerror="this.src='/images/product/default.jpg'">
                             <div>
                                 <p class="mb-1"><strong>${data.tenCombo || 'N/A'}</strong></p>
-                                <p class="mb-0 text-muted">Tổng giá: ${data.tongGia ? data.tongGia.toLocaleString() : 'N/A'} VNĐ</p>
+                                <p class="mb-0 text-muted">Tổng giá: ${data.tongGia ? data.tongGia.toLocaleString() : 'N/A'} đ</p>
+                                <p> <span class="text-info">${data.trangThai ? "Cho phép hiển thị" : "Không cho phép hiển thị"}</span> </p>
                             </div>
                         </div>`;
                 },
@@ -27,7 +28,7 @@
                                 <div>
                                     <p><strong>Sản phẩm:</strong> ${item.sanPham.tenSanPham || 'N/A'}</p>
                                     <p><strong>Mô tả:</strong> ${item.sanPham.moTa || 'N/A'}</p>
-                                    <p><strong>Giá:</strong> ${item.sanPham.gia.toLocaleString() || 'N/A'} VNĐ</p>
+                                    <p><strong>Giá:</strong> ${item.sanPham.gia.toLocaleString() || 'N/A'} đ</p>
                                     <p><strong>Số lượng:</strong> ${item.sanPham.soLuong || 'N/A'}</p>
                                 </div>
                             `).join('<hr>')}
@@ -181,6 +182,7 @@ function actionUpsertCombo(event) {
                 toastr.success(data.message); // Hiển thị thông báo thành công
                 if (dataTable) {
                     dataTable.ajax.reload(); // Reload bảng dữ liệu nếu tồn tại
+                    loadViewUpsert();
                 }
                 loadViewUpsert();
             } else {

@@ -21,11 +21,29 @@ namespace B3cBonsai.Utility
         public const string StatusCancelled = "Cancelled";
         public const string StatusRefunded = "Refunded";
 
+        public static readonly Dictionary<string, string> OrderStatusDictionary = new Dictionary<string, string>
+        {
+            { "Pending", "Đang chờ xử lý" },
+            { "Approved", "Đã duyệt" },
+            { "Processing", "Đang xử lý" },
+            { "Shipped", "Đã giao hàng" },
+            { "Cancelled", "Đã hủy" },
+            { "Refunded", "Đã hoàn tiền" }
+        };
+
         //Tình trạng thanh toán
         public const string PaymentStatusPending = "Pending";
         public const string PaymentStatusApproved = "Approved";
         public const string PaymentStatusDelayedPayment = "ApprovedForDelayedPayment";
         public const string PaymentStatusRejected = "Rejected";
+
+        public static readonly Dictionary<string, string> PaymentStatusDictionary = new Dictionary<string, string>
+        {
+            { "Pending", "Đang chờ thanh toán" },
+            { "Approved", "Đã thanh toán" },
+            { "ApprovedForDelayedPayment", "Đã duyệt thanh toán chậm" },
+            { "Rejected", "Từ chối thanh toán" }
+        };
 
         //Loại đối tượng yêu thích cho "DanhSachYeuThich"
         public const string ObjectLike_SanPham = "SanPham";

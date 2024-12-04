@@ -134,6 +134,28 @@
 	</div>
 </div>
 
+
+@section detailWithDelete {
+	<div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="detailWithDelete" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-center" style="width: 75%;">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" id="detailWithDelete">Thông tin đơn hàng</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div id="contentDWD">
+					<div id="preloader">
+						<div class="lds-ripple">
+							<div></div>
+							<div></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+}
+
 @section Scripts {
 	<script src="~/js/employee/managerOrder.js" asp-append-version="true" ></script>
 }

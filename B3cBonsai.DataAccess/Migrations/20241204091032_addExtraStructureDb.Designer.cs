@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace B3cBonsai.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241130053906_addExtraStructureDb")]
+    [Migration("20241204091032_addExtraStructureDb")]
     partial class addExtraStructureDb
     {
         /// <inheritdoc />
@@ -234,6 +234,9 @@ namespace B3cBonsai.DataAccess.Migrations
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("LyDoHuyDonHang")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MaBuuDien")
                         .IsRequired()

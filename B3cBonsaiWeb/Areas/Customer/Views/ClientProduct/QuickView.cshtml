@@ -58,7 +58,7 @@
                     </div>
                     <br />
 
-                    <form method="post" class="cart">
+                    <aside class="cart">
                         <div class="quick-view-select">
                             <div class="quick-view-text">
                                 <div class="selector-wrapper">
@@ -68,9 +68,9 @@
                                         <h6>Số lượng:</h6>
                                         <div class="product-quantity">
                                             <div class="cart-plus-minus">
-                                                <button class="dec qtybutton minus"><i class="fa-solid fa-minus"></i></button>
-                                                <input type="text" name="quantity" value="1" min="1" max="@Model.SoLuong">
-                                                <button class="inc qtybutton plus"><i class="fa-solid fa-plus"></i></button>
+                                                <button class="dec qtybutton minus" id="minusBtn" disabled><i class="fa-solid fa-minus"></i></button>
+                                                <input type="text" name="quantity" value="1" min="1" max="@Model.SoLuong" id="quantityValue" readonly>
+                                                <button class="inc qtybutton plus" id="plusBtn"><i class="fa-solid fa-plus"></i></button>
                                             </div>
                                         </div>
                                     </div>
@@ -78,10 +78,10 @@
                             </div>
                         </div>
                         <div class="quickview-buttons">
-                            <button type="button" onclick="addToCart(@Model.Id,null,1,'@SD.ObjectDetailOrder_SanPham');location.href='/Customer/Cart';" class="btn btn-style2">Mua Ngay</button>
+                            <button type="button" onclick="addToCart(@Model.Id,null,this.closest('#quickview').querySelector('#quantityValue').value,'@SD.ObjectDetailOrder_SanPham');location.href='/Customer/Cart';" class="btn btn-style2">Mua Ngay</button>
                            
                         </div>
-                    </form>
+                    </aside>
                     <!-- product-title end -->
                 </div>
             </div>

@@ -53,10 +53,10 @@ function increaseQuantity(cartId) {
                 // Cập nhật giá total của sản phẩm
                 const itemRow = $(`[data-cart-id="${cartId}"]`).closest('ul.cart-wrap');
                 const newTotal = response.total;
-                itemRow.find('.full-price').text(`${newTotal.toLocaleString()} VNĐ`);
+                itemRow.find('.full-price').text(`${newTotal.toLocaleString()} đ`);
 
                 const formCart = $(`#shipping-calculator`).closest('.cart-page.section-pt');
-                formCart.find('.amount.total-price').text(`${response.totalAll.toLocaleString()} VNĐ`);
+                formCart.find('.amount.total-price').text(`${response.totalAll.toLocaleString()} đ`);
 
                 // Tăng số lượng trên giao diện
                 /*const quantityInput = itemRow.find('input[name="quantity"]');
@@ -84,10 +84,10 @@ function decreaseQuantity(cartId) {
                 // Cập nhật giá total của sản phẩm
                 const itemRow = $(`[data-cart-id="${cartId}"]`).closest('ul.cart-wrap');
                 const newTotal = response.total;
-                itemRow.find('.full-price').text(`${newTotal.toLocaleString()} VNĐ`);
+                itemRow.find('.full-price').text(`${newTotal.toLocaleString()} đ`);
 
                 const formCart = $(`#shipping-calculator`).closest('.cart-page.section-pt');
-                formCart.find('.amount.total-price').text(`${response.totalAll.toLocaleString()} VNĐ`);
+                formCart.find('.amount.total-price').text(`${response.totalAll.toLocaleString()} đ`);
                 // Giảm số lượng trên giao diện
                 /*const quantityInput = itemRow.find('input[name="quantity"]');
                 const currentQuantity = parseInt(quantityInput.val());
@@ -119,7 +119,7 @@ function removeFromCart(cartId) {
                 if (response.totalAll == 0) {
                     location.reload();
                 } else {
-                    formCart.find('.amount.total-price').text(`${response.totalAll.toLocaleString()} VNĐ`);
+                    formCart.find('.amount.total-price').text(`${response.totalAll.toLocaleString()} đ`);
                     itemRow.remove();
                     toastr.success('Đã xóa sản phẩm khỏi giỏ hàng!');
                 }
@@ -131,6 +131,15 @@ function removeFromCart(cartId) {
             toastr.error('Không thể kết nối đến máy chủ. Vui lòng thử lại.');
         }
     });
+}
+
+function clearCart() {
+    $.ajax({
+        url: '/Customer/Cart/ClearCart',
+        method: 'POST',
+        success: (response) => { window.location.reload(); },
+        error: (xhr) => { toastr.info("Lỗi xóa dữ liệu toàn bộ giỏ hàng!"); }
+    })
 }
 
 // Load thanh giỏ hàng xem nhanh --------------------
@@ -181,10 +190,10 @@ function increaseQuantityQuick(cartId) {
                 // Cập nhật giá total của sản phẩm
                 const itemRow = $(`[data-cart-idQuick="${cartId}"]`).closest('li.cart-item');
                 const newTotal = response.total;
-                itemRow.find('.cart-item-price').text(`${newTotal.toLocaleString()} VNĐ`);
+                itemRow.find('.cart-item-price').text(`${newTotal.toLocaleString()} đ`);
 
                 const formCart = itemRow.closest('.drawer-inner');
-                formCart.find('.drawer-totalprice').text(`${response.totalAll.toLocaleString()} VNĐ`);
+                formCart.find('.drawer-totalprice').text(`${response.totalAll.toLocaleString()} đ`);
 
                 // Tăng số lượng trên giao diện
                 const quantityInput = itemRow.find('input[name="quantity"]');
@@ -212,10 +221,10 @@ function decreaseQuantityQuick(cartId) {
                 // Cập nhật giá total của sản phẩm
                 const itemRow = $(`[data-cart-idQuick="${cartId}"]`).closest('li.cart-item');
                 const newTotal = response.total;
-                itemRow.find('.cart-item-price').text(`${newTotal.toLocaleString()} VNĐ`);
+                itemRow.find('.cart-item-price').text(`${newTotal.toLocaleString()} đ`);
 
                 const formCart = itemRow.closest('.drawer-inner');
-                formCart.find('.drawer-totalprice').text(`${response.totalAll.toLocaleString()} VNĐ`);
+                formCart.find('.drawer-totalprice').text(`${response.totalAll.toLocaleString()} đ`);
 
                 // Tăng số lượng trên giao diện
                 const quantityInput = itemRow.find('input[name="quantity"]');
@@ -245,7 +254,7 @@ function removeFromCartQuick(cartId) {
                 if (response.totalAll == 0) {
                     loadRightBarCart();
                 } else {
-                    var formCart = itemRow.closest('.drawer-inner').find('.drawer-totalprice').text(`${response.totalAll.toLocaleString()} VNĐ`);
+                    var formCart = itemRow.closest('.drawer-inner').find('.drawer-totalprice').text(`${response.totalAll.toLocaleString()} đ`);
                     itemRow.remove();
                     toastr.success('Đã xóa sản phẩm khỏi giỏ hàng!');
                 }

@@ -3,6 +3,7 @@ using B3cBonsai.Models;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace B3cBonsaiWeb.Areas.Customer.Controllers
@@ -22,22 +23,49 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
         }
         public async Task<IActionResult> Index(int productId)
         {
+            // Fetch comments for the specified product, including user properties in a single query
             var comments = (await _unitOfWork.BinhLuan.GetAll(
                 filter: x => x.SanPhamId == productId,
                 includeProperties: "NguoiDungUngDung"
-            )).OrderBy(x => x.NgayBinhLuan);
+            )).OrderBy(x => x.NgayBinhLuan).ToList();
 
-            // Cập nhật mỗi bình luận với thông tin người dùng
+            // Get all user IDs from the comments
+            var userIds = comments
+                .Select(comment => comment.NguoiDungUngDung.Id)
+                .Distinct() // Ensure unique user IDs to minimize calls
+                .ToList();
+
+            // Load users in a single call
+            var users = await _userManager.Users
+                .Where(user => userIds.Contains(user.Id))
+                .ToListAsync();
+
+            // Create a dictionary for quick lookup of users by their ID
+            var userDictionary = users.ToDictionary(user => user.Id, user => user);
+
+            // Update comments with user information
             foreach (var comment in comments)
             {
-                if (comment.NguoiDungUngDung?.HoTen == null)
+                if (comment.NguoiDungUngDung != null) // Ensure that the associated user is not null
                 {
-                    var user = await _userManager.FindByIdAsync(comment.NguoiDungUngDung.Id);
-                    comment.NguoiDungUngDung.HoTen = user?.UserName ?? "Anonymous"; // Nếu không có tên thì mặc định là "Anonymous"
+                    var userId = comment.NguoiDungUngDung.Id;
+                    if (userDictionary.ContainsKey(userId))
+                    {
+                        var user = userDictionary[userId];
+                        comment.NguoiDungUngDung.HoTen = user?.UserName ?? "Anonymous";
+                        comment.NguoiDungUngDung.VaiTro = (await _userManager.GetRolesAsync(user)).FirstOrDefault() ?? "No Role"; // If not available, set to a default value
+                    }
+                    else
+                    {
+                        comment.NguoiDungUngDung.HoTen = "Anonymous"; // Fallback if user not found
+                        comment.NguoiDungUngDung.VaiTro = "No Role";
+                    }
                 }
             }
+
             return PartialView(comments);
         }
+
 
         // Thêm bình luận cho sản phẩm
         [HttpPost]

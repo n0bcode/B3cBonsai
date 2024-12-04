@@ -1,0 +1,176 @@
+﻿@model B3cBonsai.Models.DonHang
+
+<div class="modal-body">
+    <div class="container-fluid">
+        <!-- Row -->
+        <div class="row">
+            <div class="col-xl-3 col-lg-4">
+                <div class="clearfix">
+                    <div class="card card-bx profile-card author-profile m-b30">
+                        <div class="card-body">
+                            <div class="p-5">
+                                <div class="author-profile">
+                                    <div class="author-media">
+                                         @* <img src="@Model.HinhAnh" alt="Hình ảnh đơn hàng" onerror="this.src='/images/order/default.png';"> *@
+                                    </div>
+                                    <div class="author-info">
+                                        <h6 class="title">Đơn hàng: @Model.Id</h6>
+                                        <span>@Model.NgayDatHang.ToString("dd/MM/yyyy")</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-9 col-lg-8">
+                <div class="card profile-card card-bx m-b30">
+                    <div class="card-header">
+                        <h6 class="title">Thông Tin Chi Tiết</h6>
+                    </div>
+                    <div class="profile-form">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-6 m-b30">
+                                    <label class="form-label">Mã Đơn Hàng</label>
+                                    <input readonly type="text" class="form-control" value="@Model.Id">
+                                </div>
+                                <div class="col-sm-6 m-b30">
+                                    <label class="form-label">Ngày Đặt Hàng</label>
+                                    <input readonly type="date" class="form-control" value="@Model.NgayDatHang.ToString("yyyy-MM-dd")">
+                                </div>
+                                <div class="col-sm-6 m-b30">
+                                    <label class="form-label">Trạng Thái Đơn hàng</label>
+                                    <input readonly type="text" class="form-control" value="@(SD.OrderStatusDictionary[Model.TrangThaiThanhToan])">
+                                </div>
+                                <div class="col-sm-6 m-b30">
+                                    <label class="form-label">Trạng Thái Thanh Toán</label>
+                                    <input readonly type="text" class="form-control" value="@(SD.PaymentStatusDictionary[Model.TrangThaiThanhToan])">
+                                </div>
+                                <div class="col-sm-6 m-b30">
+                                    <label class="form-label">Số Điện Thoại</label>
+                                    <input readonly type="text" class="form-control" value="@Model.SoDienThoai">
+                                </div>
+                                <div class="col-sm-6 m-b30">
+                                    <label class="form-label">Tổng Tiền</label>
+                                    <input readonly type="text" class="form-control" value="@Model.TongTienDonHang.ToString("n0") đ">
+                                </div>
+                                <div class="col-sm-12 m-b30">
+                                    <label class="form-label">Địa Chỉ</label>
+                                    <textarea class="form-control" rows="3" readonly>
+                                        @{
+                                            var diaChiParts = new List<string>();
+
+                                            if (!string.IsNullOrEmpty(Model.Duong))
+                                            {
+                                                diaChiParts.Add(Model.Duong);
+                                            }
+                                            if (!string.IsNullOrEmpty(Model.ThanhPho))
+                                            {
+                                                diaChiParts.Add(Model.ThanhPho);
+                                            }
+                                            if (!string.IsNullOrEmpty(Model.Tinh))
+                                            {
+                                                diaChiParts.Add(Model.Tinh);
+                                            }
+                                            if (!string.IsNullOrEmpty(Model.MaBuuDien))
+                                            {
+                                                diaChiParts.Add(Model.MaBuuDien);
+                                            }
+
+                                            var diaChi = string.Join(", ", diaChiParts);
+                                        }
+                                        @diaChi
+                                    </textarea>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 m-b30">
+                                    <label class="form-label">Danh Sách Sản Phẩm / Combo (@Model.ChiTietDonHangs.Count())</label>
+                                    <table class="table table-bordered">
+                                        <thead class="bg-light">
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Tên</th>
+                                                <th>Loại</th>
+                                                <th>Số Lượng</th>
+                                                <th>Đơn Giá</th>
+                                                <th>Thành Tiền</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if (Model.ChiTietDonHangs.Any())
+                                            {
+                                                foreach (var item in Model.ChiTietDonHangs)
+                                                {
+                                                    <tr>
+                                                        <td>@(item.Id)</td>
+                                                        <td>
+                                                            @if (item.LoaiDoiTuong == SD.ObjectDetailOrder_SanPham)
+                                                            {
+                                                                <div class="d-flex align-items-center">
+                                                                    <img src="@item.SanPham?.HinhAnhs.FirstOrDefault().LinkAnh" alt="Hình ảnh sản phẩm" class="img-thumbnail" style="width: 50px; height: 50px; margin-right: 10px;" onerror="this.src='/images/default.jpg';">
+                                                                    @item.SanPham?.TenSanPham
+                                                                </div>
+                                                            }
+                                                            else
+                                                            {
+                                                                <div class="d-flex align-items-center">
+                                                                    <img src="@item.Combo?.LinkAnh" alt="Hình ảnh combo" class="img-thumbnail" style="width: 50px; height: 50px; margin-right: 10px;" onerror="this.src='/images/default.jpg';">
+                                                                    @item.Combo?.TenCombo
+                                                                </div>
+                                                            }
+                                                        </td>
+
+                                                        <td>@item.LoaiDoiTuong</td>
+                                                        <td>@item.SoLuong</td>
+                                                        <td>
+                                                            @if (item.LoaiDoiTuong == SD.ObjectDetailOrder_SanPham)
+                                                            {
+                                                                @(item.SanPham?.Gia.ToString("n0") ?? "0" )
+
+                                                            }
+                                                            else
+                                                            {
+                                                                @(item.Combo?.TongGia.ToString("n0") ?? "0")
+
+                                                            }
+                                                                                            đ
+                                                        </td>
+                                                        <td>
+                                                            @if (item.LoaiDoiTuong == SD.ObjectDetailOrder_SanPham)
+                                                            {
+                                                                @((item.SoLuong * (item.SanPham?.Gia ?? 0)).ToString("n0") )
+
+                                                            }
+                                                            else
+                                                            {
+                                                                @((item.SoLuong * (item.Combo?.TongGia ?? 0)).ToString("n0"))
+
+                                                            }
+                                                    đ
+                                                        </td>
+
+                                                    </tr>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <tr>
+                                                    <td colspan="6" class="text-center">Không có sản phẩm nào trong đơn hàng.</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-danger light" data-bs-dismiss="modal">Đóng</button>
+</div>

@@ -67,6 +67,30 @@
         border: none;
         cursor: pointer;
     }
+
+    .role-Staff {
+        display: inline-block; /* Để có thể điều chỉnh kích thước */
+        padding: 5px 10px; /* Khoảng cách bên trong */
+        font-weight: bold;
+        color: white; /* Màu chữ trắng */
+        background-color: #28a745; /* Màu nền xanh lá */
+        border-radius: 20px; /* Bo tròn các góc */
+        font-size: 12px; /* Kích thước chữ */
+        margin-left: 5px; /* Khoảng cách giữa tên và vai trò */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Bóng nhẹ để nổi bật hơn */
+    }
+
+    .role-Admin {
+        display: inline-block; /* Để có thể điều chỉnh kích thước */
+        padding: 5px 10px; /* Khoảng cách bên trong */
+        font-weight: bold;
+        color: white; /* Màu chữ trắng */
+        background-color: #dc3545; /* Màu nền đỏ */
+        border-radius: 20px; /* Bo tròn các góc */
+        font-size: 12px; /* Kích thước chữ */
+        margin-left: 5px; /* Khoảng cách giữa tên và vai trò */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Bóng nhẹ để nổi bật hơn */
+    }
 </style>
 
 <div class="product-info">
@@ -81,6 +105,19 @@
                         <strong>
                             <img src="@(Url.Content(string.IsNullOrEmpty(comment.NguoiDungUngDung.LinkAnh) ? "~/images/user/default.png" : comment.NguoiDungUngDung.LinkAnh))" alt="" style="width: 30px; height: 30px; border-radius: 50%;" />
                             @comment.NguoiDungUngDung.HoTen
+
+                            @if (comment.NguoiDungUngDung.VaiTro != SD.Role_Customer)
+                            {
+
+                                @if (comment.NguoiDungUngDung.VaiTro == SD.Role_Staff)
+                                {
+                                    <span class="role-Staff">@comment.NguoiDungUngDung.VaiTro</span>
+                                }
+                                else if (comment.NguoiDungUngDung.VaiTro == SD.Role_Admin)
+                                {
+                                    <span class="role-Admin">@comment.NguoiDungUngDung.VaiTro</span>
+                                }
+                            }
                             @if (User.Identity.IsAuthenticated && User.FindFirstValue(ClaimTypes.NameIdentifier) == comment.NguoiDungId)
                             {
                                 <button class="delete-comment-btn" onclick="deleteComment(@comment.Id)">

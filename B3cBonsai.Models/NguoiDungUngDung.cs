@@ -27,7 +27,7 @@ namespace B3cBonsai.Models
         [Display(Name = "Giới Tính")]
         public bool? GioiTinh { get; set; }
 
-        [StringLength(18, ErrorMessage = "CCCD không được vượt quá 18 ký tự.")]
+        [StringLength(18, ErrorMessage = "CCCD không được vượt quá 18 ký tự.", MinimumLength = 12)]
         [Display(Name = "Số CCCD")]
         [RegularExpression(@"^\d+$", ErrorMessage = "Số CCCD chỉ được chứa số.")]
         public string? CCCD { get; set; } // Số CCCD cần unique

@@ -67,7 +67,8 @@ function submitUpsertForm(event) {
         success: (data) => {
             if (data.success) {
                 toastr.success(data.message || "Cập nhật thông tin thành công"); // Hiển thị thông điệp thành công
-                dataTable.ajax.reload()
+                dataTable.ajax.reload();
+                loadViewUpsert();
 
             } else {
                 toastr.error(data.message || "Cập nhật thông tin thất bại"); // Hiển thị thông điệp lỗi
