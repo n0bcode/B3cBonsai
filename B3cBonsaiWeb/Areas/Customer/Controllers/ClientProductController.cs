@@ -29,6 +29,38 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
             _userManager = userManager;
         }
 
+
+        [HttpGet]
+        [Route("api/products")]
+        public async Task<IActionResult> SearchProducts(string q)
+        {
+            if (string.IsNullOrEmpty(q))
+            {
+                return BadRequest("Từ khóa tìm kiếm không hợp lệ.");
+            }
+
+            // Lấy danh sách sản phẩm khớp với từ khóa
+            var products = await _unitOfWork.SanPham.GetAll(
+                filter: x => x.TrangThai == true && x.TenSanPham.Contains(q),
+                includeProperties: "DanhMuc,HinhAnhs"
+            );
+
+            // Trả về danh sách sản phẩm (có thể chỉ lấy một số thông tin cần thiết)
+            var result = products.Select(p => new
+            {
+                p.Id,
+                p.TenSanPham,
+                p.SoLuong,
+                p.MoTa,
+                Gia = p.Gia.ToString("N0") + " VND", // Hiển thị giá dạng đẹp
+                DanhMuc = p.DanhMuc.TenDanhMuc,     // Lấy tên danh mục
+                HinhAnhs = p.HinhAnhs.Select(h => h.LinkAnh).ToList()  // Lấy các hình ảnh của sản phẩm
+            });
+
+            return Ok(result);
+        }
+
+
         // Trang chủ: Hiển thị các sản phẩm mới nhất
         [HttpGet]
         public async Task<IActionResult> Index()
