@@ -226,7 +226,11 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
                 return Json(new { success = false, title = "Lỗi", content = "Không thể thay đổi tình trạng đơn hàng theo hướng ngược lại!" });
             }
 
-            donHang.TrangThaiThanhToan = SD.StatusCancelled;
+            donHang.TrangThaiThanhToan = SD.PaymentStatusRejected;
+            donHang.TrangThaiDonHang = SD.StatusCancelled;
+
+            donHang.LyDoHuyDonHang = reason;
+
             _context.Update(donHang);
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Đã hủy đơn hàng thành công!" });

@@ -132,11 +132,11 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
                         TempData["successToastr"] = "Đăng nhập thành công";
 
                         // Điều hướng theo Role
-                        if (roles.Contains("Admin"))
+                        if (roles.Contains(SD.Role_Admin))
                         {
                             return LocalRedirect("/Employee/Dashboard");
                         }
-                        else if (roles.Contains("Employee"))
+                        else if (roles.Contains(SD.Role_Staff))
                         {
                             return LocalRedirect("/Employee/EmployeeProfile");
                         }

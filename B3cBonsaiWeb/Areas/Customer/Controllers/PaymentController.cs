@@ -352,7 +352,7 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> CancelOrder(int orderId)
+        public async Task<IActionResult> CancelOrder(int orderId, string reason)
         {
             string? maKhachHang = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var order = await _unitOfWork.DonHang.Get(o => o.Id == orderId && o.NguoiDungId == maKhachHang);
@@ -367,7 +367,10 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
                 return Json(new { success = false, message = "Đơn hàng đã được xử lý và không thể hủy." });
             }
 
+            order.TrangThaiThanhToan = SD.PaymentStatusRejected; //fail
             order.TrangThaiDonHang = SD.StatusCancelled;
+            order.LyDoHuyDonHang = reason;
+
             _unitOfWork.DonHang.Update(order);
             await Task.Run(() => _unitOfWork.Save());
 

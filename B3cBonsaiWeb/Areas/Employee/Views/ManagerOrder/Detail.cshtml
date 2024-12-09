@@ -41,7 +41,7 @@
                                 </div>
                                 <div class="col-sm-6 m-b30">
                                     <label class="form-label">Trạng Thái Đơn hàng</label>
-                                    <input readonly type="text" class="form-control" value="@(SD.OrderStatusDictionary[Model.TrangThaiThanhToan])">
+                                    <input readonly type="text" class="form-control" value="@(SD.OrderStatusDictionary[Model.TrangThaiDonHang])">
                                 </div>
                                 <div class="col-sm-6 m-b30">
                                     <label class="form-label">Trạng Thái Thanh Toán</label>
@@ -83,6 +83,12 @@
                                         @diaChi
                                     </textarea>
                                 </div>
+                                @if (Model.LyDoHuyDonHang != null) {
+                                    <div class="col-sm-6 m-b30">
+                                        <label class="form-label">Lý do hủy đơn hàng</label>
+                                        <textarea readonly rows="4" class="form-control" asp-for="LyDoHuyDonHang"></textarea>
+                                    </div>
+                                }
                             </div>
                             <div class="row">
                                 <div class="col-sm-12 m-b30">
