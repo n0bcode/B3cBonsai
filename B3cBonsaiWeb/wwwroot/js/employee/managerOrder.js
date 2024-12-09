@@ -181,6 +181,10 @@ const changeStatusOrder = (id, statusOrder) => {
 };
 
 const changeStatusPayment = (id, statusPayment) => {
+    if (statusPayment == "Rejected") {
+        takeReasonAndCancelOrder(id);
+        return;
+    }
     $.ajax({
         url: `/Employee/ManagerOrder/ChangeStatusPayment?id=${id}&statusPayment=${statusPayment}`,
         method: 'POST',
@@ -216,4 +220,45 @@ const loadDetailWithDelete = (id) => {
             toastr.error("Lỗi tải thông tin đối tượng")
         }
     })
+}
+
+
+const takeReasonAndCancelOrder = (id) => {
+    Swal.fire({
+        title: "Bạn có muốn hủy đơn hàng này?",
+        type: "warning",
+        html: '<textarea id="contentReason" class="form-control" row="3" placeholder="Vui lòng nhập lý do hủy đơn"> </textarea>',
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Hủy đơn",
+        cancelButtonText: "Bỏ"
+    }).then((result) => {
+        if (result.value) {
+            const reason = $('#contentReason').val();
+            if (reason == null || reason.trim().length == 10) {
+                Swal.fire({
+                    title: "Bạn cần nhập thông tin lý do dài hơn 10 chữ.",
+                    type: "info",
+                    confirmButtonText: "Xác nhận"
+                });
+                return;
+            }
+            $.ajax({
+                url: `/Employee/ManagerOrder/CancelOrder`,
+                data: { id: id, reason: reason },
+                method: 'POST',
+                success: (response) => {
+                    if (response.success) {
+                        toastr.success(response.message);
+                    } else {
+                        toastr.info(response.message ?? "Lỗi hủy đơn");
+                    }
+                },
+                error: (xhr) => {
+                    toastr.error("Mất kết nối với hệ thống!");
+                }
+            })
+        }
+    }) 
 }

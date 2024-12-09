@@ -90,7 +90,7 @@ function handleCategoryDeletion(categoryId) {
         success: function (response) {
             console.log(response);
             if (response.success) {
-                if (response.amount.length === 0) {
+                if (response.amount.length == 0) {
                     // Không có sản phẩm trong danh mục, chỉ hỏi xác nhận
                     Swal.fire({
                         title: "Bạn có chắc chắn?",

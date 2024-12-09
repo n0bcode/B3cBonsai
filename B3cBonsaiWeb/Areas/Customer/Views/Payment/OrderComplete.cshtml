@@ -61,11 +61,26 @@
                     <!-- order-price end -->
                     <!-- order-details start -->
                     <div class="order-details">
-                        <span class="text-success order-i"><i class="fa fa-check-circle"></i></span>
-                        <h4>Cảm ơn bạn đã đặt hàng</h4>
-                        <span class="order-s">Đơn hàng của bạn sẽ được xử lý và giao trong thời gian sớm nhất.</span>
-                        <a href="/Customer/Payment/TrackOrder?orderId=@Model.Id" class="tracking-link btn btn-style2">Chi tiết theo dõi</a>
-                        <br/>
+                        @if (Model.LyDoHuyDonHang == null)
+                        {
+                            <div>
+                                <span class="text-success order-i"><i class="fa fa-check-circle"></i></span>
+                                <h4>Cảm ơn bạn đã đặt hàng</h4>
+                                <span class="order-s">Đơn hàng của bạn sẽ được xử lý và giao trong thời gian sớm nhất.</span>
+                                <a href="/Customer/Payment/TrackOrder?orderId=@Model.Id" class="tracking-link btn btn-style2">Chi tiết theo dõi</a>
+                                <br />
+                            </div>
+                        }
+                        else
+                        {
+                            <div>
+                                <span class="text-danger order-i"><i class="fa fa-times-circle"></i></span>
+                                <h4>Đơn hàng đã bị hủy</h4>
+                                <span class="order-s">Lý do hủy đơn: @Model.LyDoHuyDonHang</span>
+                                <br />
+                            </div>
+                        }
+
                         <a href="/Customer/Payment/ExportBill?orderId=@Model.Id" class="tracking-link btn btn-info">Xuất hóa đơn đơn hàng</a>
                     </div>
                     <!-- order-details end -->
@@ -126,6 +141,7 @@
                                 </span>
                             </li>
                         </ul>
+                        
                     </div>
                     @if (Model.TrangThaiDonHang == SD.StatusPending)
                     {
@@ -142,15 +158,24 @@
             Swal.fire({
                 title: 'Bạn có chắc chắn muốn hủy đơn hàng?',
                 icon: 'warning',
+                html: '<textarea id="contentReason" class="form-control" row="3" placeholder="Vui lòng nhập lý do hủy đơn" > </textarea>',
                 showCancelButton: true,
                 confirmButtonText: 'Đồng ý',
                 cancelButtonText: 'Hủy',
             }).then((result) => {
                 if (result.isConfirmed) {
+                    const reason = $('#contentReason').val();
+                    if (reason == null || reason.trim().length == 10) {
+                        Swal.fire({
+                            title: "Bạn cần nhập thông tin lý do dài hơn 10 chữ.",
+                            type: "info",
+                            confirmButtonText: "Xác nhận"
+                        });
+                    }
                     $.ajax({
                         url: '/Customer/Payment/CancelOrder',
                         type: 'POST',
-                        data: { orderId: orderId },
+                        data: { orderId: orderId, reason: reason },
                         success: function (response) {
                             if (response.success) {
                                 Swal.fire('Thành công!', response.message, 'success').then(() => {
