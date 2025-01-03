@@ -1,4 +1,4 @@
-# Closed
+# Không còn cập nhập
 
 # Cấu hình cấu trúc Project của Solution
 
