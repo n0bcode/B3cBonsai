@@ -172,7 +172,7 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
             await _context.SaveChangesAsync();
 
             // Gửi thông báo đến Telegram
-            var message = $"Đơn hàng #{donHang.Id} của {donHang.TenNguoiNhan} đã thay đổi trạng thái thanh toán thành: {statusPayment}.";
+            var message = $"Đơn hàng #{donHang.Id} của {donHang.TenNguoiNhan} đã thay đổi trạng thái thanh toán thành: {SD.OrderStatusDictionary[statusPayment]}.";
             await _telegramService.SendMessageAsync(838657228, message); // Thay `123456789` bằng Chat ID thực tế.
 
             return Json(new { success = true });
