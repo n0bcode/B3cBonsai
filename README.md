@@ -1,74 +1,73 @@
-# Không còn cập nhập
+# B3cBonsai - Website Thương mại điện tử
 
-# Cấu hình cấu trúc Project của Solution
+Đây là một dự án website thương mại điện tử chuyên về bán cây cảnh bonsai, được xây dựng trên nền tảng ASP.NET Core.
 
-![diagram](https://github.com/user-attachments/assets/4b34e8c2-eb03-4ace-8108-cf756062255c)
+## 🚀 Công nghệ sử dụng
 
-## Cấu trúc dự án B3cBonsai
+Dự án được xây dựng với các công nghệ hiện đại và phổ biến:
 
-### 1. B3cBonsai.DataAccess (Class Library)
-- **Data**: Thư mục chứa cấu hình CSDL DbContext/IdentityDbContext<>
-  - `ApplicationDbContext.cs`: Class đại diện cho DbContext.
-- **Migrations**: Thư mục chứa các phương thức đối chiếu các thay đổi đối với CSDL.
-- **Repository**: Thư mục chứa các class triển khai phương thức từ interface trong thư mục IRepository.
-  - **IRepository**: Thư mục chứa các class interface cấu trúc phương thức với CSDL.
+- **Backend:**
+  - **Ngôn ngữ:** C#
+  - **Framework:** ASP.NET Core 8 (MVC)
+  - **ORM:** Entity Framework Core 8
+- **Frontend:**
+  - Razor Pages, HTML, CSS, JavaScript
+  - **Thư viện:** Bootstrap, jQuery
+- **Cơ sở dữ liệu:**
+  - Microsoft SQL Server
+- **Xác thực:**
+  - ASP.NET Core Identity
+  - Đăng nhập qua Google, Facebook
+- **Tích hợp bên thứ ba:**
+  - **Thanh toán:** VnPay
+  - **Thông báo:** Telegram Bot
+  - **Email:** SMTP (Gmail)
 
-### 2. B3cBonsai.Models (Class Library)
-- **ViewModels**: Thư mục chứa các class tạo lại để hiển thị.
-- ...: Các class đối chiếu với bảng trong CSDL.
+## ⚙️ Hướng dẫn Cài đặt và Cấu hình
 
-### 3. B3cBonsai.Utility (Class Library)
-- `SD.cs`: Class chứa các tên cố định cho vai trò, tình trạng thanh toán, tình trạng đơn hàng, tên session sử dụng cho Cart.
-- ...: Các class mang tính năng thực tế như EmailSender, v.v.
+Để chạy dự án này trên máy cục bộ của bạn, hãy làm theo các bước sau.
 
-### 4. B3cBonsaiWeb (ASP.NET Core Web App MVC)
-- **wwwroot**: Thư mục chứa mã nguồn giao diện.
-  - **employee**: Thư mục mã giao diện nhân viên.
-  - **customer**: Thư mục mã giao diện người dùng.
-- **Areas**: 
-  - **Customer**: Các Controller-Views về phương thức truy cập và chức năng của người dùng.
-  - **Employee**: Các Controller-Views về chức năng quản lý của nhân viên.
-- **Identity**:
-  - **Account**: Chứa các phương thức quản lý chức năng truy cập, chủ yếu là RazorPage.
-    - **Manager**: Chứa các phương thức cho người dùng đã đăng nhập.
-    - ...: Các trang RazorPage chủ yếu cung cấp phương thức cho người dùng chưa truy cập.
+### 1. Yêu cầu tiên quyết
 
-### 5. Cấu hình dự án
-- `appsettings.json`: Cấu hình dự án (hiện chưa có nội dung).
-- `Program.cs`: Class điều hướng đến trang Error404 và sửa Route mở đầu là giao diện trang chủ người dùng.
+- [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
+- [SQL Server](https://www.microsoft.com/en-us/sql-server/sql-server-downloads) (phiên bản Express hoặc Developer)
 
-## Cụ thể cấu trúc các Areas của dự án
+### 2. Tải mã nguồn
 
-![Snapshot](https://github.com/user-attachments/assets/e47f019b-686b-40bc-bd9e-dd4089d44b0c)
+```bash
+git clone https://github.com/n0bcode/B3cBonsai.git
+cd B3cBonsai
+```
 
-### 1. Areas
+### 3. Cấu hình Secrets
 
-#### Employee
-- **Controller**: Tách làm hai thư mục dựa vào Role nhân viên.
-  - **Admin**: 
-    - `DashboardController.cs`: Class hiển thị chart thống kê và bảng dữ liệu (có thể bỏ).
-    - `ManagerCategoryController.cs`: Class CRUD với dữ liệu loại sản phẩm.
-    - `ManagerCustomerController.cs`: Class CRUD với dữ liệu người dùng.
-    - `ManagerEmployeeController.cs`: Class CRUD với dữ liệu nhân viên.
-  - **Staff**: 
-    - `ManagerOrderController.cs`: Class CRUD với dữ liệu đơn hàng.
-      - `Index.cshtml`: View hiển thị bảng dữ liệu đơn hàng.
-      - `OrderSummary.cshtml`: View hiển thị các thẻ dữ liệu đơn giản.
-    - `ManagerProductController.cs`: Class CRUD với dữ liệu sản phẩm.
-    - `EmployeeProfileController.cs`: Class thay đổi thông tin cá nhân nhân viên.
+Dự án yêu cầu một số khóa API và chuỗi kết nối để hoạt động. Các tệp cấu hình `B3cBonsaiWeb/appsettings.json` và `B3cBonsaiWeb/appsettings.Development.json` đã được chuẩn bị sẵn các vị trí giữ chỗ (placeholders).
 
-- **Views**: Thư mục chứa view tương ứng với các phương thức bên Controller.
+👉 **Xem hướng dẫn chi tiết để lấy và điền các khóa API tại đây: [docs/api_keys_guide.md](./docs/api_keys_guide.md)**
 
-#### Customer
-- **Controller**:
-  - `CartController.cs`: Class quản lý giỏ hàng.
-    - `Index.cshtml`: View hiển thị danh sách sản phẩm trong giỏ hàng.
-  - `ClientProductController.cs`: Class hiển thị sản phẩm cho người dùng.
-    - `Index.cshtml`: View hiển thị tìm kiếm sản phẩm.
-    - `Detail.cshtml`: View hiển thị chi tiết sản phẩm.
-  - `ClientProfileController.cs`: Class xử lý thông tin cá nhân người dùng.
-    - `Index.cshtml`: View danh sách đơn hàng cá nhân khách hàng.
-    - `Profile.cshtml`: View hiển thị thông tin cá nhân người dùng.
-    - `ChangePassword.cshtml`: View form thay đổi mật khẩu.
-    - `ProAddress.cshtml`: View hiển thị địa chỉ khách hàng khi đặt đơn hàng.
-    - `ProTickets.cshtml`: View hiển thị ticket của người dùng (tính năng chưa phù hợp với C
+### 4. Cập nhật Cơ sở dữ liệu
+
+Sau khi đã cấu hình chuỗi kết nối, hãy chạy lệnh sau từ thư mục gốc của dự án để áp dụng các migrations và tạo cơ sở dữ liệu:
+
+```bash
+dotnet ef database update --project B3cBonsai.DataAccess
+```
+
+## ▶️ Cách chạy dự án
+
+Sử dụng lệnh sau để khởi động ứng dụng web:
+
+```bash
+dotnet run --project B3cBonsaiWeb
+```
+
+Sau đó, truy cập vào `https://localhost:7020` (hoặc cổng tương ứng được hiển thị trong terminal) trên trình duyệt của bạn.
+
+## 📂 Cấu trúc Dự án
+
+Dự án được tổ chức theo kiến trúc Clean Architecture với các project riêng biệt:
+
+- `B3cBonsai.DataAccess`: Chịu trách nhiệm truy cập dữ liệu, sử dụng Repository Pattern và Entity Framework Core.
+- `B3cBonsai.Models`: Chứa các data models và ViewModels.
+- `B3cBonsai.Utility`: Chứa các lớp tiện ích như gửi email, hằng số, v.v.
+- `B3cBonsaiWeb`: Dự án chính ASP.NET Core MVC, chứa Controllers, Views, và các tài nguyên frontend.
