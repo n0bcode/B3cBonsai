@@ -1,21 +1,21 @@
-﻿using B3cBonsai.DataAccess.Data;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
-using B3cBonsai.DataAccess.Repository.IRepository;
-using B3cBonsai.DataAccess.Repository;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.Google;
-using Microsoft.AspNetCore.Authentication.Facebook;
-using B3cBonsai.Models;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using System.Configuration;
+﻿using System.Configuration;
+using B3cBonsai.DataAccess.Data;
 using B3cBonsai.DataAccess.DbInitializer;
-using Microsoft.Extensions.Options;
+using B3cBonsai.DataAccess.Repository;
+using B3cBonsai.DataAccess.Repository.IRepository;
+using B3cBonsai.Models;
 using B3cBonsai.Utility;
 using B3cBonsai.Utility.Helper;
-using Microsoft.AspNetCore.Authentication.MicrosoftAccount;
-using B3cBonsaiWeb.Services;
 using B3cBonsaiWeb.Attributes;
+using B3cBonsaiWeb.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Facebook;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication.MicrosoftAccount;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace B3cBonsaiWeb
 {
@@ -32,7 +32,8 @@ namespace B3cBonsaiWeb
             {
                 options.Filters.Add<CheckUserStatusAttribute>();
             }*/
-            builder.Services.AddSession(options => {
+            builder.Services.AddSession(options =>
+            {
                 options.IdleTimeout = TimeSpan.FromMinutes(30);
             });
 
@@ -53,30 +54,33 @@ namespace B3cBonsaiWeb
                 options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
             });
 
-            // Tải secrets từ AWS Secrets Manager
-            var secretsService = new SecretsManagerService(builder.Configuration);
-            var authenticationSecrets = await secretsService.GetSecretAsync(); // Sử dụng await ở đây
+            // Tải secrets từ AWS Secrets Manager (TẠM THỜI VÔ HIỆU HÓA)
+            //var secretsService = new SecretsManagerService(builder.Configuration);
+            //var authenticationSecrets = await secretsService.GetSecretAsync(); // Sử dụng await ở đây
 
             builder.Services.AddAuthentication()
                 .AddCookie()
                 /*.AddFacebook(FacebookDefaults.AuthenticationScheme, options =>
                 {
-                    options.ClientId = authenticationSecrets["FacebookId"];
-                    options.ClientSecret = authenticationSecrets["FacebookSecret"];
+                    // Cấu hình này sẽ đọc từ appsettings.json
+                    options.ClientId = builder.Configuration["Authentication:Facebook:ClientId"];
+                    options.ClientSecret = builder.Configuration["Authentication:Facebook:ClientSecret"];
                     options.AccessDeniedPath = "/Identity/Account/Login";
-                })*/
+                })
                 .AddGoogle(GoogleDefaults.AuthenticationScheme, options =>
                 {
-                    options.ClientId = authenticationSecrets["GoogleId"];
-                    options.ClientSecret = authenticationSecrets["GoogleSecret"];
+                    // Cấu hình này sẽ đọc từ appsettings.json
+                    options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+                    options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
                     options.AccessDeniedPath = "/Identity/Account/Login";
                 })
                 .AddMicrosoftAccount(MicrosoftAccountDefaults.AuthenticationScheme, options =>
                 {
-                    options.ClientId = authenticationSecrets["MicrosoftId"];
-                    options.ClientSecret = authenticationSecrets["MicrosoftSecret"];
+                    // Cấu hình này sẽ đọc từ appsettings.json
+                    options.ClientId = builder.Configuration["Authentication:Microsoft:ClientId"];
+                    options.ClientSecret = builder.Configuration["Authentication:Microsoft:ClientSecret"];
                     options.AccessDeniedPath = "/Identity/Account/Login";
-                });
+                })*/;
 
             builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 
