@@ -154,12 +154,7 @@ namespace B3cBonsai.DataAccess.Data
                 .HasForeignKey(vs => vs.SanPhamId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            //Thiết lập quan hệ giữa GioHang và SanPham (1-1)
-            modelBuilder.Entity<GioHang>()
-                .HasOne(gh => gh.SanPham);
 
-            modelBuilder.Entity<GioHang>()
-                .HasOne(gh => gh.NguoiDungUngDung);
         }
     }
 }

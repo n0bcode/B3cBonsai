@@ -1,12 +1,13 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
 namespace B3cBonsai.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class addExtraStructureDb : Migration
+    public partial class InitialCreateForPostgre : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,10 +16,10 @@ namespace B3cBonsai.DataAccess.Migrations
                 name: "AspNetRoles",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<string>(type: "text", nullable: false),
+                    Name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    NormalizedName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -29,31 +30,31 @@ namespace B3cBonsai.DataAccess.Migrations
                 name: "AspNetUsers",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Discriminator = table.Column<string>(type: "nvarchar(21)", maxLength: 21, nullable: false),
-                    HoTen = table.Column<string>(type: "nvarchar(54)", maxLength: 54, nullable: true),
-                    NgaySinh = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    SoDienThoai = table.Column<string>(type: "nvarchar(18)", maxLength: 18, nullable: true),
-                    GioiTinh = table.Column<bool>(type: "bit", nullable: true),
-                    CCCD = table.Column<string>(type: "nvarchar(18)", maxLength: 18, nullable: true),
-                    DiaChi = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: true),
-                    LinkAnh = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    NgayTao = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    MoTa = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<string>(type: "text", nullable: false),
+                    Discriminator = table.Column<string>(type: "character varying(21)", maxLength: 21, nullable: false),
+                    HoTen = table.Column<string>(type: "character varying(54)", maxLength: 54, nullable: true),
+                    NgaySinh = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    SoDienThoai = table.Column<string>(type: "character varying(18)", maxLength: 18, nullable: true),
+                    GioiTinh = table.Column<bool>(type: "boolean", nullable: true),
+                    CCCD = table.Column<string>(type: "character varying(18)", maxLength: 18, nullable: true),
+                    DiaChi = table.Column<string>(type: "character varying(1024)", maxLength: 1024, nullable: true),
+                    LinkAnh = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: true),
+                    NgayTao = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    MoTa = table.Column<string>(type: "text", nullable: true),
+                    UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "boolean", nullable: false),
+                    PasswordHash = table.Column<string>(type: "text", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "text", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "text", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "text", nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "boolean", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "boolean", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "boolean", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -64,15 +65,15 @@ namespace B3cBonsai.DataAccess.Migrations
                 name: "ComboSanPhams",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    TenCombo = table.Column<string>(type: "nvarchar(54)", maxLength: 54, nullable: false),
-                    MoTa = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LinkAnh = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    GiamGia = table.Column<int>(type: "int", nullable: false),
-                    SoLuong = table.Column<int>(type: "int", nullable: false),
-                    TongGia = table.Column<int>(type: "int", nullable: false),
-                    TrangThai = table.Column<bool>(type: "bit", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    TenCombo = table.Column<string>(type: "character varying(54)", maxLength: 54, nullable: false),
+                    MoTa = table.Column<string>(type: "text", nullable: false),
+                    LinkAnh = table.Column<string>(type: "text", nullable: true),
+                    GiamGia = table.Column<int>(type: "integer", nullable: false),
+                    SoLuong = table.Column<int>(type: "integer", nullable: false),
+                    TongGia = table.Column<int>(type: "integer", nullable: false),
+                    TrangThai = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -83,9 +84,9 @@ namespace B3cBonsai.DataAccess.Migrations
                 name: "DanhMucSanPhams",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    TenDanhMuc = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    TenDanhMuc = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -96,11 +97,11 @@ namespace B3cBonsai.DataAccess.Migrations
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    RoleId = table.Column<string>(type: "text", nullable: false),
+                    ClaimType = table.Column<string>(type: "text", nullable: true),
+                    ClaimValue = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -117,11 +118,11 @@ namespace B3cBonsai.DataAccess.Migrations
                 name: "AspNetUserClaims",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UserId = table.Column<string>(type: "text", nullable: false),
+                    ClaimType = table.Column<string>(type: "text", nullable: true),
+                    ClaimValue = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -138,10 +139,10 @@ namespace B3cBonsai.DataAccess.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    LoginProvider = table.Column<string>(type: "text", nullable: false),
+                    ProviderKey = table.Column<string>(type: "text", nullable: false),
+                    ProviderDisplayName = table.Column<string>(type: "text", nullable: true),
+                    UserId = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -158,8 +159,8 @@ namespace B3cBonsai.DataAccess.Migrations
                 name: "AspNetUserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    UserId = table.Column<string>(type: "text", nullable: false),
+                    RoleId = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -182,10 +183,10 @@ namespace B3cBonsai.DataAccess.Migrations
                 name: "AspNetUserTokens",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    UserId = table.Column<string>(type: "text", nullable: false),
+                    LoginProvider = table.Column<string>(type: "text", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Value = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -202,28 +203,28 @@ namespace B3cBonsai.DataAccess.Migrations
                 name: "DonHangs",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    NguoiDungId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    NhanVienId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    NgayDatHang = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    NgayNhanHang = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    TongTienDonHang = table.Column<double>(type: "float", nullable: false),
-                    TrangThaiDonHang = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TrangThaiThanhToan = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SoTheoDoi = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NhaVanChuyen = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NgayThanhToan = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    NgayHetHanThanhToan = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    MaPhienThanhToan = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    MaYeuCauThanhToan = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SoDienThoai = table.Column<string>(type: "nvarchar(18)", maxLength: 18, nullable: false),
-                    Duong = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    ThanhPho = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Tinh = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    MaBuuDien = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    TenNguoiNhan = table.Column<string>(type: "nvarchar(54)", maxLength: 54, nullable: false),
-                    LyDoHuyDonHang = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    NguoiDungId = table.Column<string>(type: "text", nullable: false),
+                    NhanVienId = table.Column<string>(type: "text", nullable: true),
+                    NgayDatHang = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    NgayNhanHang = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    TongTienDonHang = table.Column<double>(type: "double precision", nullable: false),
+                    TrangThaiDonHang = table.Column<string>(type: "text", nullable: true),
+                    TrangThaiThanhToan = table.Column<string>(type: "text", nullable: true),
+                    SoTheoDoi = table.Column<string>(type: "text", nullable: true),
+                    NhaVanChuyen = table.Column<string>(type: "text", nullable: true),
+                    NgayThanhToan = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    NgayHetHanThanhToan = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    MaPhienThanhToan = table.Column<string>(type: "text", nullable: true),
+                    MaYeuCauThanhToan = table.Column<string>(type: "text", nullable: true),
+                    SoDienThoai = table.Column<string>(type: "character varying(18)", maxLength: 18, nullable: false),
+                    Duong = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    ThanhPho = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Tinh = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    MaBuuDien = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
+                    TenNguoiNhan = table.Column<string>(type: "character varying(54)", maxLength: 54, nullable: false),
+                    LyDoHuyDonHang = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -245,16 +246,16 @@ namespace B3cBonsai.DataAccess.Migrations
                 name: "SanPhams",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    TenSanPham = table.Column<string>(type: "nvarchar(54)", maxLength: 54, nullable: false),
-                    DanhMucId = table.Column<int>(type: "int", nullable: false),
-                    MoTa = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SoLuong = table.Column<int>(type: "int", nullable: false),
-                    Gia = table.Column<int>(type: "int", nullable: false),
-                    NgayTao = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    NgaySuaDoi = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TrangThai = table.Column<bool>(type: "bit", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    TenSanPham = table.Column<string>(type: "character varying(54)", maxLength: 54, nullable: false),
+                    DanhMucId = table.Column<int>(type: "integer", nullable: false),
+                    MoTa = table.Column<string>(type: "text", nullable: false),
+                    SoLuong = table.Column<int>(type: "integer", nullable: false),
+                    Gia = table.Column<int>(type: "integer", nullable: false),
+                    NgayTao = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    NgaySuaDoi = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    TrangThai = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -271,13 +272,13 @@ namespace B3cBonsai.DataAccess.Migrations
                 name: "BinhLuans",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    NoiDungBinhLuan = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    NguoiDungId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    SanPhamId = table.Column<int>(type: "int", nullable: false),
-                    NgayBinhLuan = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TinhTrang = table.Column<bool>(type: "bit", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    NoiDungBinhLuan = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
+                    NguoiDungId = table.Column<string>(type: "text", nullable: false),
+                    SanPhamId = table.Column<int>(type: "integer", nullable: false),
+                    NgayBinhLuan = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    TinhTrang = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -300,11 +301,11 @@ namespace B3cBonsai.DataAccess.Migrations
                 name: "ChiTietCombos",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ComboId = table.Column<int>(type: "int", nullable: false),
-                    SanPhamId = table.Column<int>(type: "int", nullable: false),
-                    SoLuong = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    ComboId = table.Column<int>(type: "integer", nullable: false),
+                    SanPhamId = table.Column<int>(type: "integer", nullable: false),
+                    SoLuong = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -327,14 +328,14 @@ namespace B3cBonsai.DataAccess.Migrations
                 name: "ChiTietDonHangs",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    DonHangId = table.Column<int>(type: "int", nullable: false),
-                    SanPhamId = table.Column<int>(type: "int", nullable: true),
-                    ComboId = table.Column<int>(type: "int", nullable: true),
-                    LoaiDoiTuong = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
-                    SoLuong = table.Column<int>(type: "int", nullable: false),
-                    Gia = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    DonHangId = table.Column<int>(type: "integer", nullable: false),
+                    SanPhamId = table.Column<int>(type: "integer", nullable: true),
+                    ComboId = table.Column<int>(type: "integer", nullable: true),
+                    LoaiDoiTuong = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
+                    SoLuong = table.Column<int>(type: "integer", nullable: false),
+                    Gia = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -362,14 +363,14 @@ namespace B3cBonsai.DataAccess.Migrations
                 name: "GioHangs",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    MaSanPham = table.Column<int>(type: "int", nullable: true),
-                    MaCombo = table.Column<int>(type: "int", nullable: true),
-                    SoLuong = table.Column<int>(type: "int", nullable: false),
-                    MaKhachHang = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    LoaiDoiTuong = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LinkAnh = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    MaSanPham = table.Column<int>(type: "integer", nullable: true),
+                    MaCombo = table.Column<int>(type: "integer", nullable: true),
+                    SoLuong = table.Column<int>(type: "integer", nullable: false),
+                    MaKhachHang = table.Column<string>(type: "text", nullable: false),
+                    LoaiDoiTuong = table.Column<string>(type: "text", nullable: false),
+                    LinkAnh = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -396,10 +397,10 @@ namespace B3cBonsai.DataAccess.Migrations
                 name: "HinhAnhSanPhams",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    LinkAnh = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SanPhamId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    LinkAnh = table.Column<string>(type: "text", nullable: false),
+                    SanPhamId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -416,11 +417,11 @@ namespace B3cBonsai.DataAccess.Migrations
                 name: "VideoSanPhams",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    TenVideo = table.Column<string>(type: "nvarchar(54)", maxLength: 54, nullable: false),
-                    LinkVideo = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SanPhamId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    TenVideo = table.Column<string>(type: "character varying(54)", maxLength: 54, nullable: false),
+                    LinkVideo = table.Column<string>(type: "text", nullable: false),
+                    SanPhamId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -437,14 +438,14 @@ namespace B3cBonsai.DataAccess.Migrations
                 name: "DanhSachYeuThichs",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    SanPhamId = table.Column<int>(type: "int", nullable: true),
-                    ComboId = table.Column<int>(type: "int", nullable: true),
-                    BinhLuanId = table.Column<int>(type: "int", nullable: true),
-                    NguoiDungId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    LoaiDoiTuong = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
-                    NgayYeuThich = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    SanPhamId = table.Column<int>(type: "integer", nullable: true),
+                    ComboId = table.Column<int>(type: "integer", nullable: true),
+                    BinhLuanId = table.Column<int>(type: "integer", nullable: true),
+                    NguoiDungId = table.Column<string>(type: "text", nullable: false),
+                    LoaiDoiTuong = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
+                    NgayYeuThich = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -482,8 +483,7 @@ namespace B3cBonsai.DataAccess.Migrations
                 name: "RoleNameIndex",
                 table: "AspNetRoles",
                 column: "NormalizedName",
-                unique: true,
-                filter: "[NormalizedName] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUserClaims_UserId",
@@ -509,8 +509,7 @@ namespace B3cBonsai.DataAccess.Migrations
                 name: "UserNameIndex",
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
-                unique: true,
-                filter: "[NormalizedUserName] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_BinhLuans_NguoiDungId",

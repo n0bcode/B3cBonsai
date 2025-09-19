@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
+
 namespace B3cBonsaiWeb
 {
     public class Program
@@ -37,10 +38,17 @@ namespace B3cBonsaiWeb
                 options.IdleTimeout = TimeSpan.FromMinutes(30);
             });
 
-            // Add DbContext
+            // Add DbContext with provider switching
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
             {
-                options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectString"));
+                if (builder.Configuration.GetValue<bool>("UsePostgreSql"))
+                {
+                    options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreConnectString"));
+                }
+                else
+                {
+                    options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectString"));
+                }
             });
 
             builder.Services.AddIdentity<IdentityUser, IdentityRole>()
