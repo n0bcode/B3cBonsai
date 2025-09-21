@@ -365,3 +365,4 @@ FodyWeavers.xsd
 .vscode
 PROJECT*
 GEMINI.md
+*appsettings.json

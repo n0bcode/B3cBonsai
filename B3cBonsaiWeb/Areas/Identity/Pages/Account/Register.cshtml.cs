@@ -22,6 +22,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using NuGet.Common;
 
 namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
 {
@@ -114,7 +115,7 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
             [StringLength(54, ErrorMessage = "Họ tên không được vượt quá 54 ký tự.")]
             [Display(Name = "Họ Tên")]
             [RegularExpression(SD.ValidateStringName, ErrorMessage = "Họ tên chỉ được chứa chữ cái và khoảng trắng.")]
-            public string HoTen {  get; set; }
+            public string HoTen { get; set; }
 
 
             [Display(Name = "Giới tính")]
@@ -127,7 +128,7 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
 
             [DataType(DataType.Date)]
             [Display(Name = "Ngày sinh")]
-            public DateTime NgaySinh { get; set; }
+            public DateTime NgaySinh { get; set; } = DateTime.UtcNow.ToUniversalTime();
 
             public string? Role { get; set; }
             [ValidateNever]
@@ -165,10 +166,10 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
                 user.HoTen = Input.HoTen;
                 user.GioiTinh = Input.GioiTinh;
                 user.SoDienThoai = Input.SoDienThoai;
-                user.NgaySinh = Input.NgaySinh;
+                user.SetNgaySinh(Input.NgaySinh);
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
-                
+
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
@@ -185,7 +186,7 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
                     {
                         TempData["successToastr"] = "Đăng ký thành công thành nhân viên.";
                         await _userManager.AddToRoleAsync(user, SD.Role_Staff);
-                        user.LockoutEnd = DateTimeOffset.UtcNow.AddYears(1);
+                        user.LockoutEnd = DateTimeOffset.UtcNow;
                     }
 
                     var userId = await _userManager.GetUserIdAsync(user);

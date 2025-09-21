@@ -1,17 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using B3cBonsai.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using System.Globalization;
+using System.Security.Claims;
+using System.Text;
 using B3cBonsai.DataAccess.Data;
 using B3cBonsai.DataAccess.Repository.IRepository;
-using X.PagedList;
-using X.PagedList.Extensions;
-using Microsoft.AspNetCore.Identity;
-using System.Security.Claims;
-using System.Globalization;
-using System.Text;
-using NuGet.ProjectModel;
+using B3cBonsai.Models;
 using B3cBonsai.Models.ViewModels;
 using B3cBonsai.Utility;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using NuGet.ProjectModel;
+using X.PagedList;
+using X.PagedList.Extensions;
 
 namespace B3cBonsaiWeb.Areas.Customer.Controllers
 {
@@ -183,11 +183,11 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
                     break;
 
                 case "created-ascending":
-                    sanPhamOrComboVMs = sanPhamOrComboVMs.OrderBy(item => item.SanPham?.NgayTao ?? DateTime.MinValue).ToList();
+                    sanPhamOrComboVMs = sanPhamOrComboVMs.OrderBy(item => item.SanPham?.NgayTao ?? DateTime.UtcNow).ToList();
                     break;
 
                 case "created-descending":
-                    sanPhamOrComboVMs = sanPhamOrComboVMs.OrderByDescending(item => item.SanPham?.NgayTao ?? DateTime.MinValue).ToList();
+                    sanPhamOrComboVMs = sanPhamOrComboVMs.OrderByDescending(item => item.SanPham?.NgayTao ?? DateTime.UtcNow).ToList();
                     break;
 
                 default:
