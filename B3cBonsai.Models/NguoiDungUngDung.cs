@@ -14,7 +14,7 @@ namespace B3cBonsai.Models
         [StringLength(54, ErrorMessage = "Họ tên không được vượt quá 54 ký tự.")]
         [Display(Name = "Họ Tên")]
         [RegularExpression(SD.ValidateStringName, ErrorMessage = "Họ tên chỉ được chứa chữ cái và khoảng trắng.")]
-        public string HoTen { get; set; }
+        public string HoTen { get; set; } = string.Empty;
 
         [Display(Name = "Ngày Sinh")]
         public DateTime? NgaySinh { get; set; }
@@ -36,7 +36,7 @@ namespace B3cBonsai.Models
         [Display(Name = "Địa Chỉ")]
         [RegularExpression(SD.ValidateString, ErrorMessage = "Địa chỉ chỉ được chứa chữ cái, số và khoảng trắng.")]
         [Required(ErrorMessage = "Vui lòng nhập thông tin địa chỉ người dùng.")]
-        public string DiaChi { get; set; }
+        public string DiaChi { get; set; } = string.Empty;
 
         [StringLength(255, ErrorMessage = "Link ảnh không được vượt quá 255 ký tự.")]
         [ValidateNever]
@@ -52,13 +52,13 @@ namespace B3cBonsai.Models
 
 
         [ValidateNever]
-        public virtual ICollection<DonHang> DonHangs { get; set; }
+        public virtual ICollection<DonHang>? DonHangs { get; set; }
 
         [ValidateNever]
-        public virtual ICollection<BinhLuan> BinhLuans { get; set; }
+        public virtual ICollection<BinhLuan>? BinhLuans { get; set; }
 
         [ValidateNever]
-        public virtual ICollection<DanhSachYeuThich> DanhSachYeuThichs { get; set; }
+        public virtual ICollection<DanhSachYeuThich>? DanhSachYeuThichs { get; set; }
 
         [NotMapped]
         [Display(Name = "Vai Trò")]
@@ -70,6 +70,6 @@ namespace B3cBonsai.Models
         [StringLength(100, MinimumLength = 6, ErrorMessage = "Mật khẩu phải có từ 6 đến 100 ký tự.")]
         [RegularExpression(@"^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{6,100}$",
         ErrorMessage = "Mật khẩu phải chứa ít nhất 1 ký tự số, 1 ký tự chữ thường, 1 ký tự chữ hoa và 1 ký tự đặc biệt.")]
-        public string DatMatKhau { get; set; }
+        public string DatMatKhau { get; set; } = string.Empty;
     }
 }

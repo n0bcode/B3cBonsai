@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace B3cBonsai.Models
 {
@@ -16,10 +16,10 @@ namespace B3cBonsai.Models
         [Required(ErrorMessage = "Tên combo không được để trống.")]
         [StringLength(54, ErrorMessage = "Tên combo không được vượt quá 54 ký tự.")]
         [Display(Name = "Tên Combo")]
-        public string TenCombo { get; set; }
+        public string TenCombo { get; set; } = string.Empty;
 
         [Display(Name = "Mô Tả")]
-        public string MoTa { get; set; }
+        public string MoTa { get; set; } = string.Empty;
 
         [Display(Name = "Hình ảnh Combo")]
         public string? LinkAnh { get; set; }
@@ -42,6 +42,6 @@ namespace B3cBonsai.Models
 
         [ValidateNever]
         [Display(Name = "Chi Tiết Combo")]
-        public virtual ICollection<ChiTietCombo> ChiTietCombos { get; set; } // Khai báo quan hệ 1-n với chi tiết combo
+        public virtual ICollection<ChiTietCombo>? ChiTietCombos { get; set; } = []; // Khai báo quan hệ 1-n với chi tiết combo
     }
 }

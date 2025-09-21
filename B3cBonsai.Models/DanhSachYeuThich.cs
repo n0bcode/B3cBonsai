@@ -24,7 +24,7 @@ namespace B3cBonsai.Models
 
         [Required(ErrorMessage = "ID người dùng không được để trống.")]
         [Display(Name = "ID Người Dùng")]
-        public string NguoiDungId { get; set; }
+        public string NguoiDungId { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Loại đối tượng không được để trống.")]
         [StringLength(10, ErrorMessage = "Loại đối tượng không được vượt quá 10 ký tự.")]

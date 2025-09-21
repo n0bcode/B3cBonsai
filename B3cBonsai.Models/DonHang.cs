@@ -16,12 +16,12 @@ namespace B3cBonsai.Models
 
         [Required(ErrorMessage = "ID người dùng không được để trống.")]
         [Display(Name = "ID Người Dùng")]
-        public string NguoiDungId { get; set; }
+        public string NguoiDungId { get; set; } = string.Empty;
 
         [ForeignKey("NguoiDungId")]
         [ValidateNever]
         [Display(Name = "Người Dùng")]
-        public virtual NguoiDungUngDung NguoiDungUngDung { get; set; } // Khai báo quan hệ với người dùng
+        public virtual NguoiDungUngDung? NguoiDungUngDung { get; set; } // Khai báo quan hệ với người dùng
 
         [Display(Name = "ID Nhân Viên")]
         public string? NhanVienId { get; set; }
@@ -29,7 +29,7 @@ namespace B3cBonsai.Models
         [ValidateNever]
         [ForeignKey("NhanVienId")]
         [Display(Name = "Nhân Viên")]
-        public virtual NguoiDungUngDung NhanVien { get; set; } // Khai báo quan hệ với nhân viên
+        public virtual NguoiDungUngDung? NhanVien { get; set; } // Khai báo quan hệ với nhân viên
 
         [Display(Name = "Ngày Đặt Hàng")]
         public DateTime NgayDatHang { get; set; }
@@ -41,16 +41,16 @@ namespace B3cBonsai.Models
         public double TongTienDonHang { get; set; }
 
         [Display(Name = "Trạng Thái Đơn Hàng")]
-        public string? TrangThaiDonHang { get; set; } // OrderStatus từ `OrderHeader`
+        public string? TrangThaiDonHang { get; set; } = string.Empty;// OrderStatus từ `OrderHeader`
 
         [Display(Name = "Trạng Thái Thanh Toán")]
         public string? TrangThaiThanhToan { get; set; } = SD.PaymentStatusPending; // PaymentStatus từ `OrderHeader`
 
         [Display(Name = "Số Theo Dõi")]
-        public string? SoTheoDoi { get; set; } // TrackingNumber từ `OrderHeader`
+        public string? SoTheoDoi { get; set; } = string.Empty;// TrackingNumber từ `OrderHeader`
 
         [Display(Name = "Nhà Vận Chuyển")]
-        public string? NhaVanChuyen { get; set; } // Carrier từ `OrderHeader`
+        public string? NhaVanChuyen { get; set; } = string.Empty;// Carrier từ `OrderHeader`
 
         [Display(Name = "Ngày Thanh Toán")]
         public DateTime? NgayThanhToan { get; set; } // PaymentDate
@@ -59,45 +59,45 @@ namespace B3cBonsai.Models
         public DateTime? NgayHetHanThanhToan { get; set; } // PaymentDueDate
 
         [Display(Name = "Mã Phiên Thanh Toán")]
-        public string? MaPhienThanhToan { get; set; } // SessionId
+        public string? MaPhienThanhToan { get; set; } = string.Empty;// SessionId
 
         [Display(Name = "Mã Yêu Cầu Thanh Toán")]
-        public string? MaYeuCauThanhToan { get; set; } // PaymentIntentId
+        public string? MaYeuCauThanhToan { get; set; } = string.Empty;// PaymentIntentId
 
         [Required(ErrorMessage = "Số điện thoại không được để trống.")]
         [StringLength(18, ErrorMessage = "Số điện thoại không được vượt quá 18 ký tự.")]
         [Display(Name = "Số Điện Thoại")]
-        public string SoDienThoai { get; set; } // PhoneNumber từ `OrderHeader`
+        public string SoDienThoai { get; set; } = string.Empty;// PhoneNumber từ `OrderHeader`
 
         [Required(ErrorMessage = "Đường không được để trống.")]
         [StringLength(255, ErrorMessage = "Đường không được vượt quá 255 ký tự.")]
         [Display(Name = "Đường")]
-        public string Duong { get; set; } // StreetAddress từ `OrderHeader`
+        public string Duong { get; set; } = string.Empty;// StreetAddress từ `OrderHeader`
 
         [Required(ErrorMessage = "Thành phố không được để trống.")]
         [StringLength(100, ErrorMessage = "Thành phố không được vượt quá 100 ký tự.")]
         [Display(Name = "Thành Phố")]
-        public string ThanhPho { get; set; } // City từ `OrderHeader`
+        public string ThanhPho { get; set; } = string.Empty;// City từ `OrderHeader`
 
         [Required(ErrorMessage = "Tỉnh không được để trống.")]
         [StringLength(100, ErrorMessage = "Tỉnh không được vượt quá 100 ký tự.")]
         [Display(Name = "Tỉnh")]
-        public string Tinh { get; set; } // State từ `OrderHeader`
+        public string Tinh { get; set; } = string.Empty;// State từ `OrderHeader`
 
         [Required(ErrorMessage = "Mã bưu điện không được để trống.")]
         [StringLength(20, ErrorMessage = "Mã bưu điện không được vượt quá 20 ký tự.")]
         [Display(Name = "Mã Bưu Điện")]
-        public string MaBuuDien { get; set; } // PostalCode từ `OrderHeader`
+        public string MaBuuDien { get; set; } = string.Empty;// PostalCode từ `OrderHeader`
 
         [Required(ErrorMessage = "Tên người nhận không được để trống.")]
         [StringLength(54, ErrorMessage = "Tên người nhận không được vượt quá 54 ký tự.")]
         [Display(Name = "Tên Người Nhận")]
-        public string TenNguoiNhan { get; set; } // Name từ `OrderHeader`
+        public string TenNguoiNhan { get; set; } = string.Empty;// Name từ `OrderHeader`
 
         [Display(Name = "Lý do hủy đơn hàng")]
         public string? LyDoHuyDonHang { get; set; }
 
         [ValidateNever]
-        public virtual ICollection<ChiTietDonHang> ChiTietDonHangs { get; set; } // Khai báo quan hệ 1-n với chi tiết đơn hàng
+        public virtual ICollection<ChiTietDonHang>? ChiTietDonHangs { get; set; } = []; // Khai báo quan hệ 1-n với chi tiết đơn hàng
     }
 }

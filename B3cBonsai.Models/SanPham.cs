@@ -18,14 +18,14 @@ namespace B3cBonsai.Models
         [StringLength(54, ErrorMessage = "Tên sản phẩm không được vượt quá 54 ký tự.")]
         [Display(Name = "Tên Sản Phẩm")]
         [RegularExpression(SD.ValidateStringName, ErrorMessage = "Tên sản phẩm chỉ được chứa chữ cái, số và khoảng trắng.")]
-        public string TenSanPham { get; set; }
+        public string TenSanPham { get; set; } = string.Empty;
 
         [Display(Name = "Danh Mục")]
         public int DanhMucId { get; set; }
 
         [Display(Name = "Mô Tả")]
         //[RegularExpression(SD.ValidateString, ErrorMessage = "Mô tả chỉ được chứa chữ cái, số và khoảng trắng.")]
-        public string MoTa { get; set; }
+        public string? MoTa { get; set; }
 
         [Range(0, int.MaxValue, ErrorMessage = "Số lượng phải là số nguyên không âm.")]
         [Display(Name = "Số Lượng")]
@@ -47,25 +47,25 @@ namespace B3cBonsai.Models
 
         [ValidateNever]
         [ForeignKey("DanhMucId")]
-        public virtual DanhMucSanPham DanhMuc { get; set; } // Khai báo quan hệ với danh mục
+        public virtual DanhMucSanPham? DanhMuc { get; set; } // Khai báo quan hệ với danh mục
 
         [ValidateNever]
         [JsonIgnore]
-        public virtual ICollection<HinhAnhSanPham> HinhAnhs { get; set; } // Khai báo quan hệ 1-n với hình ảnh
+        public virtual ICollection<HinhAnhSanPham>? HinhAnhs { get; set; } // Khai báo quan hệ 1-n với hình ảnh
 
         [ValidateNever]
-        public virtual ICollection<ChiTietDonHang> ChiTietDonHangs { get; set; } // Khai báo quan hệ 1-n với chi tiết đơn hàng
+        public virtual ICollection<ChiTietDonHang>? ChiTietDonHangs { get; set; } // Khai báo quan hệ 1-n với chi tiết đơn hàng
 
         [ValidateNever]
-        public virtual ICollection<BinhLuan> BinhLuans { get; set; } // Khai báo quan hệ 1-n với bình luận
+        public virtual ICollection<BinhLuan>? BinhLuans { get; set; } // Khai báo quan hệ 1-n với bình luận
 
         [ValidateNever]
-        public virtual ICollection<DanhSachYeuThich> DanhSachYeuThichs { get; set; } // Khai báo quan hệ 1-n với danh sách yêu thích
+        public virtual ICollection<DanhSachYeuThich>? DanhSachYeuThichs { get; set; } // Khai báo quan hệ 1-n với danh sách yêu thích
 
         [ValidateNever]
-        public virtual ICollection<ChiTietCombo> ChiTietCombos { get; set; } // Khai báo quan hệ 1-n với chi tiết combo
+        public virtual ICollection<ChiTietCombo>? ChiTietCombos { get; set; } // Khai báo quan hệ 1-n với chi tiết combo
 
         [ValidateNever]
-        public virtual ICollection<VideoSanPham> Videos { get; set; } // Khai báo quan hệ 1-n với video
+        public virtual ICollection<VideoSanPham>? Videos { get; set; } // Khai báo quan hệ 1-n với video
     }
 }
