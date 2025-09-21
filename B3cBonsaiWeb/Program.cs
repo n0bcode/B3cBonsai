@@ -3,11 +3,10 @@ using B3cBonsai.DataAccess.Data;
 using B3cBonsai.DataAccess.DbInitializer;
 using B3cBonsai.DataAccess.Repository;
 using B3cBonsai.DataAccess.Repository.IRepository;
-using B3cBonsai.Models;
 using B3cBonsai.Utility;
 using B3cBonsai.Utility.Helper;
+using B3cBonsai.Utility.Services;
 using B3cBonsaiWeb.Attributes;
-using B3cBonsaiWeb.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Facebook;
 using Microsoft.AspNetCore.Authentication.Google;
@@ -94,6 +93,15 @@ namespace B3cBonsaiWeb
 
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<IEmailSender, EmailSender>();
+
+            if (builder.Configuration.GetValue<bool>("UseCloudinaryStorage"))
+            {
+                builder.Services.AddScoped<IImageStorageService, CloudinaryImageStorageService>();
+            }
+            else
+            {
+                builder.Services.AddScoped<IImageStorageService, LocalImageStorageService>();
+            }
 
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddScoped<IVnPayService, VnPayService>();

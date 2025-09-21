@@ -1,17 +1,15 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using B3cBonsai.DataAccess.Data;
 using B3cBonsai.Models;
-using B3cBonsai.Utility.Extentions;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Hosting;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using B3cBonsai.Models.ViewModels;
-using B3cBonsai.Utility;
+using B3cBonsai.Utility.Extentions;
+using B3cBonsai.Utility.Services;
 using ClosedXML.Excel;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
 {
@@ -19,12 +17,12 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
     public class ManagerProductController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IImageStorageService _imageStorageService;
 
-        public ManagerProductController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
+        public ManagerProductController(ApplicationDbContext context, IImageStorageService imageStorageService)
         {
             _context = context;
-            _webHostEnvironment = webHostEnvironment;
+            _imageStorageService = imageStorageService;
         }
 
         [Authorize(Roles = $"{SD.Role_Admin},{SD.Role_Staff}")]
@@ -71,23 +69,15 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
 
                     if (HinhAnhs != null && HinhAnhs.Any())
                     {
-                        foreach (var file in HinhAnhs)
+                        var imageUrls = await _imageStorageService.StoreImagesAsync(HinhAnhs, "product");
+                        foreach (var imageUrl in imageUrls)
                         {
-                            if (file.Length > 0)
+                            var image = new HinhAnhSanPham
                             {
-                                var filePath = Path.Combine(_webHostEnvironment.WebRootPath, "images", "product", file.FileName);
-                                using (var stream = new FileStream(filePath, FileMode.Create))
-                                {
-                                    await file.CopyToAsync(stream);
-                                }
-
-                                var image = new HinhAnhSanPham
-                                {
-                                    SanPhamId = model.SanPham.Id,
-                                    LinkAnh = "/images/product/" + file.FileName
-                                };
-                                _context.HinhAnhSanPhams.Add(image);
-                            }
+                                SanPhamId = model.SanPham.Id,
+                                LinkAnh = imageUrl
+                            };
+                            _context.HinhAnhSanPhams.Add(image);
                         }
                         await _context.SaveChangesAsync();
                     }
@@ -120,33 +110,21 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
                             // Xóa những hình ảnh cũ (xóa cả trong cơ sở dữ liệu và file system)
                             foreach (var image in existingImages)
                             {
-                                var filePath = Path.Combine(_webHostEnvironment.WebRootPath, image.LinkAnh.TrimStart('/'));
-                                if (System.IO.File.Exists(filePath))
-                                {
-                                    System.IO.File.Delete(filePath); // Xóa hình ảnh khỏi file system
-                                }
+                                await _imageStorageService.DeleteImageAsync(image.LinkAnh);
                                 _context.HinhAnhSanPhams.Remove(image); // Xóa hình ảnh khỏi cơ sở dữ liệu
                             }
                             await _context.SaveChangesAsync();
 
                             // Xử lý hình ảnh mới mà người dùng đã tải lên
-                            foreach (var file in HinhAnhs)
+                            var newImageUrls = await _imageStorageService.StoreImagesAsync(HinhAnhs, "product");
+                            foreach (var imageUrl in newImageUrls)
                             {
-                                if (file.Length > 0)
+                                var newImage = new HinhAnhSanPham
                                 {
-                                    var filePath = Path.Combine(_webHostEnvironment.WebRootPath, "images", "product", file.FileName);
-                                    using (var stream = new FileStream(filePath, FileMode.Create))
-                                    {
-                                        await file.CopyToAsync(stream);
-                                    }
-
-                                    var newImage = new HinhAnhSanPham
-                                    {
-                                        SanPhamId = model.SanPham.Id,
-                                        LinkAnh = "/images/product/" + file.FileName
-                                    };
-                                    _context.HinhAnhSanPhams.Add(newImage); // Thêm hình ảnh mới vào cơ sở dữ liệu
-                                }
+                                    SanPhamId = model.SanPham.Id,
+                                    LinkAnh = imageUrl
+                                };
+                                _context.HinhAnhSanPhams.Add(newImage); // Thêm hình ảnh mới vào cơ sở dữ liệu
                             }
                             await _context.SaveChangesAsync();
 
@@ -163,7 +141,7 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
             }
             model.DanhMucSanPham = await DanhMucSanPham();
             viewHtml = await this.RenderViewAsync("Upsert", model, true);
-            
+
             return Json(new { success = false, data = viewHtml });
         }
 
@@ -264,7 +242,7 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
         }
         [NonAction]
         private async Task<List<SelectListItem>> DanhMucSanPham()
-        { 
+        {
             return await _context.DanhMucSanPhams
                 .Select(d => new SelectListItem
                 {

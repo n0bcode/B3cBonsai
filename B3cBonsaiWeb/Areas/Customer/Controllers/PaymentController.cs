@@ -1,23 +1,22 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using B3cBonsai.DataAccess.Repository.IRepository;
-using System.Security.Claims;
-using B3cBonsai.Models;
-using B3cBonsai.Utility;
-using B3cBonsai.Utility.Extentions;
-using B3cBonsaiWeb.Services;
-using B3cBonsai.Models.ViewModels;
-using System.Text.RegularExpressions;
+﻿using System.Security.Claims;
 using System.Text;
+using System.Text.RegularExpressions;
+using B3cBonsai.DataAccess.Repository.IRepository;
+using B3cBonsai.Models;
+using B3cBonsai.Models.ViewModels;
+using B3cBonsai.Utility.Extentions;
+using B3cBonsai.Utility.Services;
+using iText.IO.Font;
+using iText.IO.Image;
+using iText.Kernel.Font;
 using iText.Kernel.Pdf;
 using iText.Layout;
 using iText.Layout.Element;
 using iText.Layout.Properties;
-using iText.IO.Image;
-using iText.IO.Font;
-using iText.Kernel.Font;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace B3cBonsaiWeb.Areas.Customer.Controllers
 {
@@ -30,7 +29,7 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
         private readonly IVnPayService _vnPayService;
         private readonly IEmailSender _emailSender;
 
-        public PaymentController(SignInManager<IdentityUser> signInManager,IUnitOfWork unitOfWork, TelegramService telegramService, IVnPayService vnPayService, IEmailSender emailSender)
+        public PaymentController(SignInManager<IdentityUser> signInManager, IUnitOfWork unitOfWork, TelegramService telegramService, IVnPayService vnPayService, IEmailSender emailSender)
         {
             _signInManager = signInManager;
             _unitOfWork = unitOfWork;

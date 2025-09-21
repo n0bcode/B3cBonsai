@@ -36,7 +36,6 @@
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	  </PackageReference>
 	  <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
-	  <PackageReference Include="Telegram.Bot" Version="22.1.1" />
 	  <PackageReference Include="X.PagedList.Mvc.Core" Version="10.5.7" />
   </ItemGroup>
 
@@ -44,7 +43,6 @@
     <ProjectReference Include="..\B3cBonsai.DataAccess\B3cBonsai.DataAccess.csproj" />
     <ProjectReference Include="..\B3cBonsai.Models\B3cBonsai.Models.csproj" />
     <ProjectReference Include="..\B3cBonsai.Utility\B3cBonsai.Utility.csproj" />
-
   </ItemGroup>
 
   <ItemGroup>

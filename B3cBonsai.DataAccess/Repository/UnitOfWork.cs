@@ -1,19 +1,13 @@
 ﻿using B3cBonsai.DataAccess.Data;
 using B3cBonsai.DataAccess.Repository.IRepository;
 using B3cBonsai.Models;
-using Microsoft.AspNetCore.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using B3cBonsai.Utility.Services;
 
 namespace B3cBonsai.DataAccess.Repository
 {
     public class UnitOfWork : IUnitOfWork
     {
         private ApplicationDbContext _db;
-        private IWebHostEnvironment _webHostEnvironment;
         public IBinhLuanRepository BinhLuan { get; private set; }
 
         public IChiTietComboRepository ChiTietCombo { get; private set; }
@@ -35,10 +29,9 @@ namespace B3cBonsai.DataAccess.Repository
         public ISanPhamRepository SanPham { get; private set; }
 
         public IVideoSanPhamRepository VideoSanPham { get; private set; }
-        public UnitOfWork(ApplicationDbContext db, IWebHostEnvironment webHostEnvironment)
+        public UnitOfWork(ApplicationDbContext db, IImageStorageService imageStorageService)
         {
             _db = db;
-            _webHostEnvironment = webHostEnvironment;
             BinhLuan = new BinhLuanRepository(_db);
             ChiTietCombo = new ChiTietComboRepository(_db);
             ChiTietDonHang = new ChiTietDonHangRepository(_db);
@@ -47,8 +40,8 @@ namespace B3cBonsai.DataAccess.Repository
             DanhSachYeuThich = new DanhSachYeuThichRepository(_db);
             DonHang = new DonHangRepository(_db);
             HinhAnhSanPham = new HinhAnhSanPhamRepository(_db);
-            NguoiDungUngDung = new NguoiDungUngDungRepository(_db, _webHostEnvironment);
-            SanPham = new SanPhamRepository(_db, _webHostEnvironment);
+            NguoiDungUngDung = new NguoiDungUngDungRepository(_db, imageStorageService);
+            SanPham = new SanPhamRepository(_db);
             VideoSanPham = new VideoSanPhamRepository(_db);
 
         }

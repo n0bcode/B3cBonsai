@@ -1,6 +1,7 @@
 ﻿using B3cBonsai.Models.ViewModels;
+using Microsoft.AspNetCore.Http;
 
-namespace B3cBonsaiWeb.Services
+namespace B3cBonsai.Utility.Services
 {
     public interface IVnPayService
     {

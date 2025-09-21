@@ -1,9 +1,9 @@
-﻿using B3cBonsai.Utility;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using B3cBonsai.Models;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace B3cBonsai.Models
 {

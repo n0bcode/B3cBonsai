@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using System.Security.Claims;
 using ClosedXML.Excel;
 using ClosedXML;
+using B3cBonsai.Utility.Services;
 
 namespace B3cBonsaiWeb.Areas.Employee.Controllers.Admin
 {
@@ -19,14 +20,14 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Admin
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IImageStorageService _imageStorageService;
         private readonly IUserStore<IdentityUser> _userStore;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ILogger<ManagerUserController> _logger;
         private readonly IEmailSender _emailSender;
         public ManagerUserController(UserManager<IdentityUser> userManager,
                                          IUnitOfWork unitOfWork,
-                                         IWebHostEnvironment webHostEnvironment,
+                                         IImageStorageService imageStorageService,
                                          IUserStore<IdentityUser> userStore,
                                          RoleManager<IdentityRole> roleManager,
                                          ILogger<ManagerUserController> logger,
@@ -36,7 +37,7 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Admin
             _roleManager = roleManager;
             _unitOfWork = unitOfWork;
             _userStore = userStore;
-            _webHostEnvironment = webHostEnvironment;
+            _imageStorageService = imageStorageService;
             _logger = logger;
             _emailSender = emailSender;
         }
@@ -187,19 +188,10 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Admin
                 return Json(new { success = false, message = "Bạn không thể xóa thông tin người dùng này." });
             }
 
-            // Xóa thư mục chứa hình ảnh người dùng
-            string userPath = Path.Combine("images", "user", $"user-{id}");
-            string finalPath = Path.Combine(_webHostEnvironment.WebRootPath, userPath);
-
-            if (Directory.Exists(finalPath))
+            // Xóa hình ảnh người dùng
+            if (!string.IsNullOrEmpty(user.LinkAnh))
             {
-                var filePaths = Directory.GetFiles(finalPath);
-                foreach (var filePath in filePaths)
-                {
-                    System.IO.File.Delete(filePath);
-                }
-
-                Directory.Delete(finalPath);
+                await _imageStorageService.DeleteImageAsync(user.LinkAnh);
             }
 
             var result = await _userManager.DeleteAsync(user);
@@ -279,7 +271,7 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Admin
             {
                 // Mở khóa tài khoản
                 user.LockoutEnd = null;
-                await _emailSender.SendEmailAsync(user.Email, "Đổi quyền truy cập", "<p>Tài khoản của bạn đã được mở.</p>");
+                await _emailSender.SendEmailAsync(user.Email, "Đổi quyền truy-cập", "<p>Tài khoản của bạn đã được mở.</p>");
             }
 
             var updateResult = await _userManager.UpdateAsync(user);
