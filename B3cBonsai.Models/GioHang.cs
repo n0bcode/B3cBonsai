@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace B3cBonsai.Models
 {
@@ -28,12 +28,12 @@ namespace B3cBonsai.Models
         [Range(1, 1000, ErrorMessage = "Vui lòng nhập số lương trong phạm vi từ 1 -> 1000")]
         public int SoLuong { get; set; }
 
-        public string MaKhachHang { get; set; }
+        public string MaKhachHang { get; set; } = string.Empty;
         [ForeignKey("MaKhachHang")]
         [ValidateNever]
-        public NguoiDungUngDung NguoiDungUngDung{ get; set; }
+        public NguoiDungUngDung? NguoiDungUngDung { get; set; }
 
-        public string LoaiDoiTuong { get; set; }
+        public string LoaiDoiTuong { get; set; } = string.Empty;
         public string? LinkAnh { get; set; }
 
         [NotMapped]

@@ -1,12 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using Newtonsoft.Json;
 
 namespace B3cBonsai.Models
 {
@@ -18,13 +18,13 @@ namespace B3cBonsai.Models
         public int Id { get; set; }
 
         [Required]
-        public string LinkAnh { get; set; }
+        public string? LinkAnh { get; set; } = string.Empty;
 
         public int SanPhamId { get; set; }
 
         [JsonIgnore]
         [ValidateNever]
         [ForeignKey("SanPhamId")]
-        public virtual SanPham SanPham { get; set; } // Khai báo quan hệ với sản phẩm
+        public virtual SanPham? SanPham { get; set; } // Khai báo quan hệ với sản phẩm
     }
 }

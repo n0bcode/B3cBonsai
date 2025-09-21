@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace B3cBonsai.Models
 {
@@ -22,10 +22,10 @@ namespace B3cBonsai.Models
 
         [ValidateNever]
         [ForeignKey("ComboId")]
-        public virtual ComboSanPham Combo { get; set; } // Khai báo quan hệ với combo
+        public virtual ComboSanPham? Combo { get; set; } // Khai báo quan hệ với combo
 
         [ValidateNever]
         [ForeignKey("SanPhamId")]
-        public virtual SanPham SanPham { get; set; } // Khai báo quan hệ với sản phẩm
+        public virtual SanPham? SanPham { get; set; } // Khai báo quan hệ với sản phẩm
     }
 }

@@ -32,14 +32,14 @@ namespace B3cBonsai.Models
 
         [ValidateNever]
         [ForeignKey("DonHangId")]
-        public virtual DonHang DonHang { get; set; } // Khai báo quan hệ với đơn hàng
+        public virtual DonHang? DonHang { get; set; } // Khai báo quan hệ với đơn hàng
 
         [ValidateNever]
         [ForeignKey("SanPhamId")]
-        public virtual SanPham SanPham { get; set; } // Khai báo quan hệ với sản phẩm
+        public virtual SanPham? SanPham { get; set; } // Khai báo quan hệ với sản phẩm
 
         [ValidateNever]
         [ForeignKey("ComboId")]
-        public virtual ComboSanPham Combo { get; set; } // Khai báo quan hệ với combo
+        public virtual ComboSanPham? Combo { get; set; } // Khai báo quan hệ với combo
     }
 }

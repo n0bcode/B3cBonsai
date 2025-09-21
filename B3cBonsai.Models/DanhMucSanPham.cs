@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace B3cBonsai.Models
 {
@@ -15,10 +15,10 @@ namespace B3cBonsai.Models
         [Required(ErrorMessage = "Tên danh mục không được để trống.")]
         [StringLength(50, ErrorMessage = "Tên danh mục không được vượt quá 50 ký tự.")]
         [Display(Name = "Tên Danh Mục")]
-        public string TenDanhMuc { get; set; }
+        public string TenDanhMuc { get; set; } = string.Empty;
 
         [ValidateNever]
         [Display(Name = "Sản Phẩm")]
-        public virtual ICollection<SanPham> SanPhams { get; set; } // Khai báo quan hệ 1-n với sản phẩm
+        public virtual ICollection<SanPham>? SanPhams { get; set; } = []; // Khai báo quan hệ 1-n với sản phẩm
     }
 }
