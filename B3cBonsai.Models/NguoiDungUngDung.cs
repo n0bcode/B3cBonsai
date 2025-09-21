@@ -17,7 +17,7 @@ namespace B3cBonsai.Models
         public string HoTen { get; set; } = string.Empty;
 
         [Display(Name = "Ngày Sinh")]
-        public DateTime? NgaySinh { get; set; }
+        public DateTimeOffset? NgaySinh { get; set; }
 
         [StringLength(18, ErrorMessage = "Số điện thoại không được vượt quá 18 ký tự.")]
         [Display(Name = "Số Điện Thoại")]
@@ -44,7 +44,7 @@ namespace B3cBonsai.Models
         public string? LinkAnh { get; set; }
 
         [Display(Name = "Ngày Tạo")]
-        public DateTime NgayTao { get; set; } = DateTime.UtcNow;
+        public DateTimeOffset NgayTao { get; set; } = DateTimeOffset.UtcNow;
 
         [Display(Name = "Mô Tả")]
         [RegularExpression(SD.ValidateString, ErrorMessage = "Mô tả chỉ được chứa chữ cái, số và khoảng trắng.")]

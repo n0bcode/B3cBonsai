@@ -32,10 +32,10 @@ namespace B3cBonsai.Models
         public virtual NguoiDungUngDung? NhanVien { get; set; } // Khai báo quan hệ với nhân viên
 
         [Display(Name = "Ngày Đặt Hàng")]
-        public DateTime NgayDatHang { get; set; }
+        public DateTimeOffset NgayDatHang { get; set; } = DateTimeOffset.UtcNow;
 
         [Display(Name = "Ngày Nhận Hàng")]
-        public DateTime? NgayNhanHang { get; set; }
+        public DateTimeOffset? NgayNhanHang { get; set; }
 
         [Display(Name = "Tổng Tiền Đơn Hàng")]
         public double TongTienDonHang { get; set; }
@@ -53,10 +53,10 @@ namespace B3cBonsai.Models
         public string? NhaVanChuyen { get; set; } = string.Empty;// Carrier từ `OrderHeader`
 
         [Display(Name = "Ngày Thanh Toán")]
-        public DateTime? NgayThanhToan { get; set; } // PaymentDate
+        public DateTimeOffset? NgayThanhToan { get; set; } // PaymentDate
 
         [Display(Name = "Ngày Hết Hạn Thanh Toán")]
-        public DateTime? NgayHetHanThanhToan { get; set; } // PaymentDueDate
+        public DateTimeOffset? NgayHetHanThanhToan { get; set; } // PaymentDueDate
 
         [Display(Name = "Mã Phiên Thanh Toán")]
         public string? MaPhienThanhToan { get; set; } = string.Empty;// SessionId

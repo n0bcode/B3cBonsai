@@ -50,6 +50,6 @@ namespace B3cBonsai.Models
         [Display(Name = "Người Dùng")]
         public virtual NguoiDungUngDung? NguoiDungUngDung { get; set; } // Khai báo quan hệ với người dùng
 
-        public DateTime NgayYeuThich { get; set; } = DateTime.UtcNow;
+        public DateTimeOffset NgayYeuThich { get; set; } = DateTimeOffset.UtcNow;
     }
 }
