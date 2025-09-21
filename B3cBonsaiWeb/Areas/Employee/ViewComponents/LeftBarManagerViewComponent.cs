@@ -1,4 +1,4 @@
-﻿using B3cBonsai.Utility;
+﻿using B3cBonsai.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace B3cBonsaiWeb.Areas.Employee.ViewComponents
@@ -10,7 +10,7 @@ namespace B3cBonsaiWeb.Areas.Employee.ViewComponents
             if (User.IsInRole(SD.Role_Admin))
             {
                 return View("AdminRightBar");
-            } 
+            }
             return View("StaffRightBar");
         }
     }

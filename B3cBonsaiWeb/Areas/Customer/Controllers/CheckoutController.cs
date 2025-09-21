@@ -1,7 +1,7 @@
-﻿using B3cBonsai.Utility;
+﻿using B3cBonsai.DataAccess.Repository.IRepository;
+using B3cBonsai.Models;
+using B3cBonsai.Utility.Services;
 using Microsoft.AspNetCore.Mvc;
-using B3cBonsai.DataAccess.Repository.IRepository;
-using B3cBonsaiWeb.Services;
 
 namespace B3cBonsaiWeb.Areas.Customer.Controllers
 {

@@ -23,6 +23,7 @@
   - **Thanh toán:** VnPay
   - **Thông báo:** Telegram Bot
   - **Email:** SMTP (Gmail)
+  - **Lưu trữ ảnh:** Local Storage hoặc Cloudinary
 
 ## ⚙️ Hướng dẫn Cài đặt và Vận hành
 
@@ -44,6 +45,24 @@ Cả hai phương pháp đều yêu cầu bạn cấu hình các khóa API và t
     ```
 2.  **Điền các khóa API:**
     Dự án yêu cầu một số khóa API cho các dịch vụ bên thứ ba (Google, Facebook, VnPay, v.v.). Hãy làm theo hướng dẫn chi tiết tại file `docs/api_keys_guide.md` để lấy và điền các giá trị này vào file `B3cBonsaiWeb/appsettings.json`.
+
+3.  **Cấu hình Lưu trữ Ảnh:**
+    Bạn có thể chọn giữa lưu trữ ảnh trên máy cục bộ hoặc sử dụng dịch vụ Cloudinary.
+
+    - Mở file `B3cBonsaiWeb/appsettings.json`.
+    - Để sử dụng **lưu trữ cục bộ**, đặt cờ `UseCloudinaryStorage` thành `false`:
+      ```json
+      "UseCloudinaryStorage": false,
+      ```
+    - Để sử dụng **Cloudinary**, đặt cờ `UseCloudinaryStorage` thành `true` và điền thông tin tài khoản của bạn vào mục `CloudinarySettings`:
+      ```json
+      "UseCloudinaryStorage": true,
+      "CloudinarySettings": {
+        "CloudName": "YOUR_CLOUD_NAME",
+        "ApiKey": "YOUR_API_KEY",
+        "ApiSecret": "YOUR_API_SECRET"
+      }
+      ```
 
 ---
 

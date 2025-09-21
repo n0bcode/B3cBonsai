@@ -2,7 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using B3cBonsai.Utility;
+using B3cBonsai.Models;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace B3cBonsaiWeb.Areas.Identity.Pages.Account

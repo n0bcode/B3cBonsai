@@ -1,12 +1,11 @@
-﻿using B3cBonsai.DataAccess.Data;
-using B3cBonsai.Models;
-using B3cBonsai.Utility;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using B3cBonsai.DataAccess.Data;
+using B3cBonsai.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace B3cBonsai.DataAccess.DbInitializer
 {
@@ -290,7 +289,7 @@ namespace B3cBonsai.DataAccess.DbInitializer
                         NoiDungBinhLuan = "Bình luận " + i + " của " + userRD.HoTen,
                         NguoiDungId = userRD.Id,
                         SanPhamId = sanPhams[new Random().Next(sanPhams.Count)].Id,
-                        NgayBinhLuan = (DateTime.Now.AddDays(- rd.Next(3,10)))
+                        NgayBinhLuan = (DateTime.Now.AddDays(-rd.Next(3, 10)))
                     });
                 }
             }

@@ -1,8 +1,9 @@
 ﻿using B3cBonsai.Models.ViewModels;
 using B3cBonsai.Utility.Helper;
-using DocumentFormat.OpenXml.Drawing;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 
-namespace B3cBonsaiWeb.Services
+namespace B3cBonsai.Utility.Services
 {
     public class VnPayService : IVnPayService
     {
@@ -84,4 +85,3 @@ namespace B3cBonsaiWeb.Services
         }
     }
 }
-

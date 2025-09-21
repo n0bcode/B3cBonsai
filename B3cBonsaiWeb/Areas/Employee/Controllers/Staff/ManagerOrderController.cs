@@ -2,7 +2,7 @@
 using B3cBonsai.DataAccess.Repository.IRepository;
 using B3cBonsai.Models;
 using B3cBonsai.Utility;
-using B3cBonsaiWeb.Services;
+using B3cBonsai.Utility.Services;
 using ClosedXML.Excel;
 using MailKit.Search;
 using Microsoft.AspNetCore.Authorization;
@@ -91,7 +91,7 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
             };
 
 
-            return PartialView( takeDataOrder ); // Return the constructed object
+            return PartialView(takeDataOrder); // Return the constructed object
         }
 
 

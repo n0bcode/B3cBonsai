@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace B3cBonsai.Utility
+namespace B3cBonsai.Models
 {
     public class SD
     {
@@ -50,7 +50,7 @@ namespace B3cBonsai.Utility
         public const string ObjectLike_Comment = "Comment";
         public const string ObjectLike_Combo = "Combo";
 
-        //Loại đối tượng thanh toán cho "ChiTietDonHang" 
+        //Loại đối tượng thanh toán cho "ChiTietDonHang"
         public const string ObjectDetailOrder_SanPham = "SanPham";
         public const string ObjectDetailOrder_Combo = "Combo";
 

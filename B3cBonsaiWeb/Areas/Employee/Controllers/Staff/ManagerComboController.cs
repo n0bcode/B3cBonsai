@@ -4,7 +4,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using B3cBonsai.Utility.Extentions;
-using B3cBonsai.Utility; //Chứa lớp ControllerExtentions để tải lại dữ liệu hiển thị
+using B3cBonsai.Utility;
+using B3cBonsai.Utility.Services; //Chứa lớp ControllerExtentions để tải lại dữ liệu hiển thị
 
 namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
 {
@@ -12,10 +13,10 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
     public class ManagerComboController : Controller
     {
         private readonly ApplicationDbContext _db;
-        private readonly IWebHostEnvironment _webEnvironment;
-        public ManagerComboController(ApplicationDbContext db, IWebHostEnvironment webHostEnvironment) { 
+        private readonly IImageStorageService _imageStorageService;
+        public ManagerComboController(ApplicationDbContext db, IImageStorageService imageStorageService) { 
             _db = db;
-            _webEnvironment = webHostEnvironment;
+            _imageStorageService = imageStorageService;
         }
         [Authorize(Roles = $"{SD.Role_Admin},{SD.Role_Staff}")]
         public IActionResult Index()
@@ -57,57 +58,14 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
                 {
                     if (file != null) // Cập nhật hình ảnh
                     {
-                        string wwwRootPath = _webEnvironment.WebRootPath;
-
-                        // Tạo tên tệp mới với GUID
-                        string fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
-
-                        // Tạo thư mục lưu trữ
-                        string comboFolder = Path.Combine("images", "combo");
-                        string finalFolder = Path.Combine(wwwRootPath, comboFolder);
-
-                        // Tạo thư mục nếu chưa tồn tại
-                        if (!Directory.Exists(finalFolder))
-                        {
-                            Directory.CreateDirectory(finalFolder);
-                        }
-
                         // Xóa hình ảnh cũ nếu có
                         if (!string.IsNullOrEmpty(obj.LinkAnh))
                         {
-                            string oldImagePath = Path.Combine(wwwRootPath, obj.LinkAnh.TrimStart('/', '\\'));
-                            if (System.IO.File.Exists(oldImagePath))
-                            {
-                                try
-                                {
-                                    System.IO.File.Delete(oldImagePath);
-                                }
-                                catch (Exception ex)
-                                {
-                                    // Ghi log hoặc xử lý lỗi nếu cần
-                                    Console.WriteLine($"Không thể xóa tệp: {oldImagePath}. Lỗi: {ex.Message}");
-                                }
-                            }
+                            await _imageStorageService.DeleteImageAsync(obj.LinkAnh);
                         }
 
                         // Lưu hình ảnh mới
-                        string finalFilePath = Path.Combine(finalFolder, fileName);
-                        try
-                        {
-                            using (var fileStream = new FileStream(finalFilePath, FileMode.Create))
-                            {
-                                await file.CopyToAsync(fileStream);
-                            }
-
-                            // Cập nhật đường dẫn mới cho LinkAnh
-                            obj.LinkAnh = $"\\{Path.Combine(comboFolder, fileName).Replace("\\", "/")}";
-                        }
-                        catch (Exception ex)
-                        {
-                            // Ghi log hoặc xử lý lỗi lưu tệp nếu cần
-                            Console.WriteLine($"Không thể lưu tệp: {finalFilePath}. Lỗi: {ex.Message}");
-                            throw;
-                        }
+                        obj.LinkAnh = await _imageStorageService.StoreImageAsync(file, "combo");
                     }
 
                     if (obj.Id == 0) // Thêm mới nếu Id là 0

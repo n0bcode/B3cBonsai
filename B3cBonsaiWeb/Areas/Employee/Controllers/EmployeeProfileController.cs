@@ -2,7 +2,6 @@
 using B3cBonsai.DataAccess.Repository.IRepository;
 using B3cBonsai.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -16,18 +15,15 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly ApplicationDbContext _db;
         private readonly IHttpContextAccessor _contextAccessor;
         public EmployeeProfileController(UserManager<IdentityUser> userManager,
                                          IUnitOfWork unitOfWork,
-                                         IWebHostEnvironment webHostEnvironment,
                                          ApplicationDbContext db,
                                          IHttpContextAccessor httpContextAccessor)
         {
             _userManager = userManager;
             _unitOfWork = unitOfWork;
-            _webHostEnvironment = webHostEnvironment;
             _db = db;
             _contextAccessor = httpContextAccessor;
         }
@@ -89,11 +85,9 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers
                     return Json(new { success = false, content = "Lỗi nhận nhận dữ liệu hình ảnh!" });
                 }
 
-                string wwwRootPath = _webHostEnvironment.WebRootPath;
-
                 var nguoi = await _unitOfWork.NguoiDungUngDung.Get(x => x.Id == User.FindFirstValue(ClaimTypes.NameIdentifier));
 
-                _unitOfWork.NguoiDungUngDung.UpdateUserInfoAndImage(nguoi, file);
+                await _unitOfWork.NguoiDungUngDung.UpdateUserInfoAndImage(nguoi, file);
                 _unitOfWork.Save();
                 return Json(new { success = true });
             }
