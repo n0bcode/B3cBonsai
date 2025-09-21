@@ -36,10 +36,10 @@ namespace B3cBonsai.Models
         public int Gia { get; set; }
 
         [Display(Name = "Ngày Tạo")]
-        public DateTime NgayTao { get; set; } = DateTime.UtcNow;
+        public DateTimeOffset NgayTao { get; set; } = DateTimeOffset.UtcNow;
 
         [Display(Name = "Ngày Sửa Đổi")]
-        public DateTime NgaySuaDoi { get; set; } = DateTime.UtcNow;
+        public DateTimeOffset NgaySuaDoi { get; set; } = DateTimeOffset.UtcNow;
 
         [Required(ErrorMessage = "Trạng thái không được để trống.")]
         [Display(Name = "Trạng Thái")]

@@ -22,7 +22,7 @@ namespace B3cBonsai.Models
 
         [Required(ErrorMessage = "ID sản phẩm không được để trống.")]
         public int SanPhamId { get; set; }
-        public DateTime NgayBinhLuan { get; set; } = DateTime.UtcNow;
+        public DateTimeOffset NgayBinhLuan { get; set; } = DateTimeOffset.UtcNow;
         public bool TinhTrang { get; set; } = true;
 
         [ValidateNever]

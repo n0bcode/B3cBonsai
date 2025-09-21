@@ -73,7 +73,7 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account.Manage
             public string HoTen { get; set; }
 
             [Display(Name = "Ngày Sinh")]
-            public DateTime? NgaySinh { get; set; }
+            public DateTimeOffset? NgaySinh { get; set; }
 
             [Display(Name = "Giới Tính")]
             public bool? GioiTinh { get; set; }

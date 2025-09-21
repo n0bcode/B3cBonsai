@@ -166,7 +166,7 @@ namespace B3cBonsaiWeb.Areas.Identity.Pages.Account
                 user.HoTen = Input.HoTen;
                 user.GioiTinh = Input.GioiTinh;
                 user.SoDienThoai = Input.SoDienThoai;
-                user.SetNgaySinh(Input.NgaySinh);
+                user.NgaySinh = Input.NgaySinh;
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
 

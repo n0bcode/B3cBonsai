@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace B3cBonsai.Models.ViewModels
 {
-   public class VnPaymentResponseModel
+    public class VnPaymentResponseModel
     {
         public bool Success { get; set; }
 
