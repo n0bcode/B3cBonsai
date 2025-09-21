@@ -1,14 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using B3cBonsai.Models;
-using Microsoft.EntityFrameworkCore.Diagnostics;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
-using B3cBonsai.Utility;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+
 
 namespace B3cBonsai.DataAccess.Data
 {
@@ -27,9 +28,23 @@ namespace B3cBonsai.DataAccess.Data
         public DbSet<DanhSachYeuThich> DanhSachYeuThichs { get; set; }
         public DbSet<BinhLuan> BinhLuans { get; set; }
         public DbSet<ChiTietDonHang> ChiTietDonHangs { get; set; }
-        public DbSet<GioHang> GioHangs { get; set; }    
+        public DbSet<GioHang> GioHangs { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+            {
+                foreach (var property in entityType.GetProperties()
+                    .Where(p => p.ClrType == typeof(DateTime) || p.ClrType == typeof(DateTime?)))
+                {
+                    property.SetValueConverter(
+                        new ValueConverter<DateTime, DateTime>(
+                            v => v.Kind == DateTimeKind.Utc ? v : v.ToUniversalTime(),
+                            v => DateTime.SpecifyKind(v, DateTimeKind.Utc)
+                        )
+                    );
+                }
+            }
+
             base.OnModelCreating(modelBuilder);
 
 
@@ -66,10 +81,10 @@ namespace B3cBonsai.DataAccess.Data
                 e.ToTable(name: "TokenDangNhap", schema: "identity"); // Đổi tên bảng thành "TokenDangNhap"
             });*/
             #endregion
-/*
-            // Thiết lập quan hệ giữa NguoiDungUngDung với IdentityUser
-            modelBuilder.Entity<NguoiDungUngDung>()
-                .HasOne(n => n.NguoiDungUngDung);*/
+            /*
+                        // Thiết lập quan hệ giữa NguoiDungUngDung với IdentityUser
+                        modelBuilder.Entity<NguoiDungUngDung>()
+                            .HasOne(n => n.NguoiDungUngDung);*/
 
             // Thiết lập quan hệ giữa DonHang và NguoiDung (1-nhiều)
             modelBuilder.Entity<DonHang>()
