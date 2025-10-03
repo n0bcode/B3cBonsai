@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "B3cBonsai.Models", "B3cBons
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "B3cBonsai.Utility", "B3cBonsai.Utility\B3cBonsai.Utility.csproj", "{AEFCCB39-443A-4C3C-AC11-C1202906435D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "B3cBonsai.Tests", "B3cBonsai.Tests\B3cBonsai.Tests.csproj", "{626598CB-8A70-42EB-82F7-EC16F6402C47}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{AEFCCB39-443A-4C3C-AC11-C1202906435D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AEFCCB39-443A-4C3C-AC11-C1202906435D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AEFCCB39-443A-4C3C-AC11-C1202906435D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{626598CB-8A70-42EB-82F7-EC16F6402C47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{626598CB-8A70-42EB-82F7-EC16F6402C47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{626598CB-8A70-42EB-82F7-EC16F6402C47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{626598CB-8A70-42EB-82F7-EC16F6402C47}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
