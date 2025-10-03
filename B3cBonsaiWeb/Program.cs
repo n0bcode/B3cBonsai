@@ -7,6 +7,8 @@ using B3cBonsai.Utility;
 using B3cBonsai.Utility.Helper;
 using B3cBonsai.Utility.Services;
 using B3cBonsaiWeb.Attributes;
+using B3cBonsai.Utility.Services.Email;
+using B3cBonsai.Utility.Services.Email.Abstractions;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Facebook;
 using Microsoft.AspNetCore.Authentication.Google;
@@ -93,6 +95,8 @@ namespace B3cBonsaiWeb
 
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<IEmailSender, EmailSender>();
+            builder.Services.AddScoped<IEmailTemplateReader, FileSystemEmailTemplateReader>();
+            builder.Services.AddScoped<ISmtpClientFactory, SmtpClientFactory>();
 
             if (builder.Configuration.GetValue<bool>("UseCloudinaryStorage"))
             {
