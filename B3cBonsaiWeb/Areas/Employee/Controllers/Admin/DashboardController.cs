@@ -65,12 +65,18 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Admin
 				.Take(soLuongSanPham)
 				.ToList();
 
-			var topSanPhams = sanPhams
-				.Where(sp => sanPhamBanChay.Select(x => x.SanPhamId).Contains(sp.Id))
+			var topSanPhams = sanPhamBanChay
+				.Select(s =>
+				{
+					var sanPham = sanPhams.FirstOrDefault(sp => sp.Id == s.SanPhamId);
+					if (sanPham != null)
+					{
+						sanPham.SoLuong = s.TongSoLuongBan;
+					}
+					return sanPham;
+				})
+				.Where(sp => sp != null)
 				.ToList();
-
-			topSanPhams.ForEach(sp =>
-				sp.SoLuong = sanPhamBanChay.First(x => x.SanPhamId == sp.Id).TongSoLuongBan);
 
 			return Json(new { data = topSanPhams });
 		}
