@@ -1,4 +1,4 @@
-﻿using B3cBonsai.DataAccess.Repository.IRepository;
+using B3cBonsai.DataAccess.Repository.IRepository;
 using B3cBonsai.Models;
 using B3cBonsai.Utility;
 using DocumentFormat.OpenXml.VariantTypes;
@@ -28,18 +28,18 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
             }
 
             var wishlistSanPhams = (await _unitOfWork.DanhSachYeuThich.GetAll(
-                filter: yt => yt.NguoiDungId == userId && yt.LoaiDoiTuong == SD.ObjectLike_SanPham,
-                includeProperties: "SanPham.HinhAnhs"
+                yt => yt.NguoiDungId == userId && yt.LoaiDoiTuong == SD.ObjectLike_SanPham,
+                "SanPham.HinhAnhs"
             )).ToList();
 
             var wishlistComments = (await _unitOfWork.DanhSachYeuThich.GetAll(
-                filter: yt => yt.NguoiDungId == userId && yt.LoaiDoiTuong == SD.ObjectLike_Comment,
-                includeProperties: "BinhLuan,BinhLuan.SanPham,BinhLuan.SanPham.HinhAnhs"
+                yt => yt.NguoiDungId == userId && yt.LoaiDoiTuong == SD.ObjectLike_Comment,
+                "BinhLuan,BinhLuan.SanPham,BinhLuan.SanPham.HinhAnhs"
             )).ToList();
 
             var wishlistCombos = (await _unitOfWork.DanhSachYeuThich.GetAll(
-                filter: yt => yt.NguoiDungId == userId && yt.LoaiDoiTuong == SD.ObjectLike_Combo,
-                includeProperties: "ComboSanPham"
+                yt => yt.NguoiDungId == userId && yt.LoaiDoiTuong == SD.ObjectLike_Combo,
+                "ComboSanPham"
             )).ToList();
 
             IEnumerable<DanhSachYeuThich> danhSachYeuThiches = wishlistCombos.Concat(wishlistComments).Concat(wishlistSanPhams).OrderBy(yt => yt.NgayYeuThich).AsEnumerable();
@@ -60,7 +60,7 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
                 return Json(new { success = false, message = "Dữ liệu không hợp lệ." });
             }
 
-            var isAlreadyLiked = await _unitOfWork.DanhSachYeuThich.Get(filter:yt =>
+            var isAlreadyLiked = await _unitOfWork.DanhSachYeuThich.Get(yt =>
                 yt.NguoiDungId == userId &&
                 yt.LoaiDoiTuong == loaiDoiTuong &&
                 ((loaiDoiTuong == SD.ObjectLike_SanPham && yt.SanPhamId == objectId) ||
@@ -81,7 +81,7 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
 
             if (loaiDoiTuong == SD.ObjectLike_SanPham)
             {
-                var sanPham = await _unitOfWork.SanPham.Get(filter: sp => sp.Id == objectId);
+                var sanPham = await _unitOfWork.SanPham.Get(sp => sp.Id == objectId);
                 if (sanPham == null)
                 {
                     return Json(new { success = false, message = "Không tìm thấy sản phẩm." });
@@ -90,7 +90,7 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
             }
             else if (loaiDoiTuong == SD.ObjectLike_Comment)
             {
-                var binhLuan = await _unitOfWork.BinhLuan.Get(filter: bl => bl.Id == objectId);
+                var binhLuan = await _unitOfWork.BinhLuan.Get(bl => bl.Id == objectId);
                 if (binhLuan == null)
                 {
                     return Json(new { success = false, message = "Không tìm thấy bình luận." });
@@ -99,7 +99,7 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
             }
             else if (loaiDoiTuong == SD.ObjectLike_Combo)
             {
-                var comboSanPham = await _unitOfWork.ComboSanPham.Get(filter: bl => bl.Id == objectId);
+                var comboSanPham = await _unitOfWork.ComboSanPham.Get(bl => bl.Id == objectId);
                 if (comboSanPham == null)
                 {
                     return Json(new { success = false, message = "Không tìm thấy bình luận." });
