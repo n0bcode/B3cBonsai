@@ -1,4 +1,4 @@
-﻿using System.Globalization;
+using System.Globalization;
 using System.Security.Claims;
 using System.Text;
 using B3cBonsai.DataAccess.Data;
@@ -41,8 +41,8 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
 
             // Lấy danh sách sản phẩm khớp với từ khóa
             var products = await _unitOfWork.SanPham.GetAll(
-                filter: x => x.TrangThai == true && x.TenSanPham.Contains(q),
-                includeProperties: "DanhMuc,HinhAnhs"
+                x => x.TrangThai == true && x.TenSanPham.Contains(q),
+                "DanhMuc,HinhAnhs"
             );
 
             // Trả về danh sách sản phẩm (có thể chỉ lấy một số thông tin cần thiết)
@@ -67,8 +67,8 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
         {
             // Lấy tất cả sản phẩm, bao gồm thông tin danh mục và hình ảnh liên quan
             var products = await _unitOfWork.SanPham.GetAll(
-                includeProperties: "DanhMuc,HinhAnhs",
-                filter: x => x.TrangThai == true // Chỉ lấy sản phẩm có trạng thái là active
+                x => x.TrangThai, // Chỉ lấy sản phẩm có trạng thái là active
+                "DanhMuc,HinhAnhs"
             );
 
             // Lấy 6 sản phẩm mới nhất
@@ -104,14 +104,14 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
 
             // Truy vấn sản phẩm
             var productQuery = await _unitOfWork.SanPham.GetAll(
-                includeProperties: "DanhMuc,HinhAnhs",
-                filter: x => x.TrangThai
+                x => x.TrangThai,
+                "DanhMuc,HinhAnhs"
             );
 
             // Truy vấn sản phẩm combo
             var comboQuery = await _unitOfWork.ComboSanPham.GetAll(
-                includeProperties: "ChiTietCombos",
-                filter: x => x.TrangThai
+                x => x.TrangThai,
+                "ChiTietCombos"
             );
 
             // Áp dụng bộ lọc
@@ -240,8 +240,8 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
             {
                 // Lấy sản phẩm và các thông tin liên quan như danh mục, hình ảnh, bình luận, yêu thích
                 var product = await _unitOfWork.SanPham.Get(
-                    includeProperties: "DanhMuc,HinhAnhs,BinhLuans,DanhSachYeuThichs",
-                    filter: x => x.TrangThai && x.Id == id
+                    x => x.TrangThai && x.Id == id,
+                    "DanhMuc,HinhAnhs,BinhLuans,DanhSachYeuThichs"
                 );
 
                 if (product == null)
@@ -255,8 +255,8 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
             {
                 // Lấy sản phẩm và các thông tin liên quan như danh mục, hình ảnh, bình luận, yêu thích
                 var combo = await _unitOfWork.ComboSanPham.Get(
-                    includeProperties: "ChiTietCombos.SanPham",
-                    filter: x => x.TrangThai && x.Id == id
+                    x => x.TrangThai && x.Id == id,
+                    "ChiTietCombos.SanPham"
                 );
 
                 if (combo == null)
@@ -273,7 +273,7 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
         // Xem nhanh thông tin sản phẩm
         public async Task<IActionResult> QuickView(int? id)
         {
-            return PartialView(await _unitOfWork.SanPham.Get(filter: sp => sp.Id == id, includeProperties: "DanhMuc,HinhAnhs"));
+            return PartialView(await _unitOfWork.SanPham.Get(sp => sp.Id == id, "DanhMuc,HinhAnhs"));
         }
 
         // Xem nhanh thông tin ComBo sản phẩm
@@ -283,8 +283,8 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
             if (id == null) return NotFound();
 
             var combo = await _unitOfWork.ComboSanPham.Get(
-                filter: sp => sp.Id == id,
-                includeProperties: "ChiTietCombos.SanPham"
+                sp => sp.Id == id,
+                "ChiTietCombos.SanPham"
             );
 
             if (combo == null) return NotFound();

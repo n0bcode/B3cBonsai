@@ -1,4 +1,4 @@
-﻿using B3cBonsai.DataAccess.Data;
+using B3cBonsai.DataAccess.Data;
 using B3cBonsai.DataAccess.Repository.IRepository;
 using B3cBonsai.Models;
 using B3cBonsai.Utility;
@@ -50,12 +50,10 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
         public async Task<IActionResult> Detail(int id)
         {
             // Fetching the order including related products and images
-            var order = await _context.DonHangs
-                .Include(dh => dh.ChiTietDonHangs)
-                    .ThenInclude(ctdh => ctdh.SanPham)
-                        .ThenInclude(sp => sp.HinhAnhs)
-                .AsNoTracking()
-                .FirstOrDefaultAsync(dh => dh.Id == id);
+            var order = await _unit.DonHang.Get(
+                dh => dh.Id == id,
+                "ChiTietDonHangs.SanPham.HinhAnhs"
+            );
 
             // Check if the order is null, return NotFound if so
             if (order == null)
@@ -104,14 +102,12 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
         }
 
         [NonAction]
-        private List<DonHang> TakeAllOrders()
+        private async Task<List<DonHang>> TakeAllOrders()
         {
-            var ordersQuery = _context.DonHangs
-                .Include(dh => dh.ChiTietDonHangs)
-                .ThenInclude(ctdh => ctdh.SanPham)
-                .ThenInclude(sp => sp.HinhAnhs)
-                .AsNoTracking()
-                .AsQueryable();
+            var ordersQuery = await _unit.DonHang.GetAll(
+                null,
+                "ChiTietDonHangs.SanPham.HinhAnhs"
+            );
 
             var orders = ordersQuery
                 .Select(dh => new DonHang
@@ -145,7 +141,7 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
         #region//GET API
         public async Task<IActionResult> GetAll(string? orderStatus)
         {
-            var orders = TakeAllOrders();
+            var orders = await TakeAllOrders();
             if (!string.IsNullOrEmpty(orderStatus))
                 orders = orders.Where(or => or.TrangThaiDonHang == orderStatus).ToList();
             return Json(new { data = orders });
@@ -255,7 +251,7 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
                 worksheet.Cell(currentRow, 8).Value = "Tổng Tiền Đơn Hàng";   // TongTienDonHang
 
                 // Thêm các dòng cho từng đơn hàng
-                foreach (var order in TakeAllOrders())
+                foreach (var order in await TakeAllOrders())
                 {
                     currentRow++;
                     worksheet.Cell(currentRow, 1).Value = order.Id;
@@ -293,6 +289,3 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
         #endregion
     }
 }
-
-
-
