@@ -12,9 +12,10 @@ namespace B3cBonsaiWeb.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IUnitOfWork _unitOfWork;
 
-        public HomeController(IUnitOfWork context)
+        public HomeController(IUnitOfWork context, ILogger<HomeController> logger)
         {
             _unitOfWork = context;
+            _logger = logger;
         }
 
         // Hiển thị danh sách sản phẩm

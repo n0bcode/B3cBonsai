@@ -34,11 +34,11 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
             {
                 if (item.LoaiDoiTuong == SD.ObjectDetailOrder_Combo)
                 {
-                    item.ComboSanPham = await _unitOfWork.ComboSanPham.Get(cbo => cbo.Id == item.MaCombo);
+                    item.ComboSanPham = await _unitOfWork.ComboSanPham.Get(cbo => cbo.Id == item.MaCombo, null, false);
                 }
                 else
                 {
-                    item.SanPham = await _unitOfWork.SanPham.Get(cbo => cbo.Id == item.MaSanPham);
+                    item.SanPham = await _unitOfWork.SanPham.Get(cbo => cbo.Id == item.MaSanPham, null, false);
                 }
             }
             return View(cartItems);
@@ -162,7 +162,7 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
                     return Json(new { success = false, message = "Không tìm thấy sản phẩm trong hệ thống." });
                 }
 
-                SanPham? sanPham = await _unitOfWork.SanPham.Get(sp => sp.Id == sanPhamId);
+                SanPham? sanPham = await _unitOfWork.SanPham.Get(sp => sp.Id == sanPhamId, null, false);
                 if (sanPham == null)
                 {
                     return Json(new { success = false, message = "Không tìm thấy sản phẩm trong hệ thống." });
@@ -187,7 +187,7 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
                     SanPham = sanPham,
                     Gia = sanPham.Gia,
                     LoaiDoiTuong = loaiDoiTuong,
-                    LinkAnh = (await _unitOfWork.HinhAnhSanPham.Get(ha => ha.SanPhamId == sanPhamId)).LinkAnh
+                    LinkAnh = (await _unitOfWork.HinhAnhSanPham.Get(ha => ha.SanPhamId == sanPhamId, null, false)).LinkAnh
                 });
             }
             // Xử lý combo sản phẩm
@@ -198,7 +198,7 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
                     return Json(new { success = false, message = "Không tìm thấy combo sản phẩm trong hệ thống." });
                 }
 
-                ComboSanPham? comboSanPham = await _unitOfWork.ComboSanPham.Get(sp => sp.Id == comboId);
+                ComboSanPham? comboSanPham = await _unitOfWork.ComboSanPham.Get(sp => sp.Id == comboId, null, false);
                 if (comboSanPham == null)
                 {
                     return Json(new { success = false, message = "Không tìm thấy combo sản phẩm trong hệ thống." });
