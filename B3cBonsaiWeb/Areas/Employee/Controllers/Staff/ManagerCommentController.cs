@@ -1,4 +1,4 @@
-﻿using B3cBonsai.DataAccess.Repository.IRepository;
+using B3cBonsai.DataAccess.Repository.IRepository;
 using B3cBonsai.Models;
 using B3cBonsai.Utility;
 using Microsoft.AspNetCore.Authorization;
@@ -23,9 +23,7 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
         #region//GET APIS
         public async Task<IActionResult> GetAll()
         {
-            var listComments = await _unitOfWork.BinhLuan.GetAll(
-                includeProperties: "SanPham.HinhAnhs"
-            );
+            var listComments = await _unitOfWork.BinhLuan.GetAll(null, "SanPham.HinhAnhs");
 
             if (listComments == null || !listComments.Any())
             {

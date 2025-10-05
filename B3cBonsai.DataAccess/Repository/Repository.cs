@@ -1,4 +1,4 @@
-﻿using B3cBonsai.DataAccess.Repository.IRepository;
+using B3cBonsai.DataAccess.Repository.IRepository;
 using B3cBonsai.DataAccess.Data;
 using System;
 using System.Collections.Generic;

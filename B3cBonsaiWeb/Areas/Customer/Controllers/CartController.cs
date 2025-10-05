@@ -1,4 +1,5 @@
-﻿using B3cBonsai.DataAccess.Repository;
+using System.Security.Claims;
+using B3cBonsai.DataAccess.Repository;
 using B3cBonsai.DataAccess.Repository.IRepository;
 using B3cBonsai.Models;
 using B3cBonsai.Utility;
@@ -7,7 +8,6 @@ using DocumentFormat.OpenXml.Presentation;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace B3cBonsaiWeb.Areas.Customer.Controllers
@@ -34,10 +34,11 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
             {
                 if (item.LoaiDoiTuong == SD.ObjectDetailOrder_Combo)
                 {
-                    item.ComboSanPham = await _unitOfWork.ComboSanPham.Get(filter: cbo => cbo.Id == item.MaCombo);
-                } else
+                    item.ComboSanPham = await _unitOfWork.ComboSanPham.Get(cbo => cbo.Id == item.MaCombo);
+                }
+                else
                 {
-                    item.SanPham = await _unitOfWork.SanPham.Get(filter: cbo => cbo.Id == item.MaSanPham);
+                    item.SanPham = await _unitOfWork.SanPham.Get(cbo => cbo.Id == item.MaSanPham);
                 }
             }
             return View(cartItems);
@@ -51,11 +52,12 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
                 {
                     string? maKhachHang = User.FindFirstValue(ClaimTypes.NameIdentifier);
                     var cartItems = GetCartItems(maKhachHang);
-                    if (cartItems != null) 
+                    if (cartItems != null)
                     {
                         return PartialView(cartItems);
                     }
-                } else
+                }
+                else
                 {
                     return PartialView("YouAreNotCustomer");
                 }
@@ -82,7 +84,8 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
                 if (item.LoaiDoiTuong == SD.ObjectDetailOrder_SanPham && item.SoLuong == item.SanPham.SoLuong)
                 {
                     return Json(new { success = false, message = "Bạn không thể tăng thêm số lượng cho sản phẩm này." });
-                } else if (item.LoaiDoiTuong == SD.ObjectDetailOrder_Combo && item.SoLuong == item.ComboSanPham.SoLuong)
+                }
+                else if (item.LoaiDoiTuong == SD.ObjectDetailOrder_Combo && item.SoLuong == item.ComboSanPham.SoLuong)
                 {
                     return Json(new { success = false, message = "Bạn không thể tăng thêm số lượng cho combo sản phẩm này." });
                 }
@@ -141,7 +144,9 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
                 {
                     return Json(new { success = false, message = "Sản phẩm đã thêm vào giỏ hàng." });
                 }
-            } else if(loaiDoiTuong == SD.ObjectDetailOrder_Combo) {
+            }
+            else if (loaiDoiTuong == SD.ObjectDetailOrder_Combo)
+            {
                 var checkCbo = cartItems.FirstOrDefault(ci => ci.MaCombo == comboId);
                 if (checkCbo != null)
                 {
@@ -149,7 +154,7 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
                 }
             }
 
-                // Xử lý sản phẩm
+            // Xử lý sản phẩm
             if (loaiDoiTuong == SD.ObjectDetailOrder_SanPham)
             {
                 if (sanPhamId == null)
@@ -157,7 +162,7 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
                     return Json(new { success = false, message = "Không tìm thấy sản phẩm trong hệ thống." });
                 }
 
-                SanPham? sanPham = await _unitOfWork.SanPham.Get(filter: sp => sp.Id == sanPhamId);
+                SanPham? sanPham = await _unitOfWork.SanPham.Get(sp => sp.Id == sanPhamId);
                 if (sanPham == null)
                 {
                     return Json(new { success = false, message = "Không tìm thấy sản phẩm trong hệ thống." });
@@ -182,7 +187,7 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
                     SanPham = sanPham,
                     Gia = sanPham.Gia,
                     LoaiDoiTuong = loaiDoiTuong,
-                    LinkAnh = (await _unitOfWork.HinhAnhSanPham.Get(filter: ha => ha.SanPhamId == sanPhamId)).LinkAnh
+                    LinkAnh = (await _unitOfWork.HinhAnhSanPham.Get(ha => ha.SanPhamId == sanPhamId)).LinkAnh
                 });
             }
             // Xử lý combo sản phẩm
@@ -193,7 +198,7 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
                     return Json(new { success = false, message = "Không tìm thấy combo sản phẩm trong hệ thống." });
                 }
 
-                ComboSanPham? comboSanPham = await _unitOfWork.ComboSanPham.Get(filter: sp => sp.Id == comboId);
+                ComboSanPham? comboSanPham = await _unitOfWork.ComboSanPham.Get(sp => sp.Id == comboId);
                 if (comboSanPham == null)
                 {
                     return Json(new { success = false, message = "Không tìm thấy combo sản phẩm trong hệ thống." });

@@ -1,4 +1,4 @@
-﻿using B3cBonsai.DataAccess.Repository.IRepository;
+using B3cBonsai.DataAccess.Repository.IRepository;
 using B3cBonsai.Models;
 using B3cBonsai.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +18,7 @@ namespace B3cBonsaiWeb.Areas.Customer.ViewComponents
         {
             var filterValueProduct = new FilterValueVM();
             var sanPhams = await _unit.SanPham.GetAll(x => x.TrangThai);
-            filterValueProduct.Categories = (await _unit.DanhMucSanPham.GetAll(includeProperties: "SanPhams")).Select(X => new DanhMucSanPham
+            filterValueProduct.Categories = (await _unit.DanhMucSanPham.GetAll(null, "SanPhams")).Select(X => new DanhMucSanPham
             {
                 Id = X.Id,
                 TenDanhMuc = X.TenDanhMuc,
