@@ -29,6 +29,7 @@ namespace B3cBonsai.DataAccess.Data
         public DbSet<BinhLuan> BinhLuans { get; set; }
         public DbSet<ChiTietDonHang> ChiTietDonHangs { get; set; }
         public DbSet<GioHang> GioHangs { get; set; }
+        public DbSet<ThongBao> ThongBaos { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             foreach (var entityType in modelBuilder.Model.GetEntityTypes())
@@ -167,6 +168,13 @@ namespace B3cBonsai.DataAccess.Data
                 .HasOne(vs => vs.SanPham)
                 .WithMany(sp => sp.Videos)
                 .HasForeignKey(vs => vs.SanPhamId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Thiết lập quan hệ giữa ThongBao và NguoiDung (1-nhiều)
+            modelBuilder.Entity<ThongBao>()
+                .HasOne(tb => tb.NguoiDungUngDung)
+                .WithMany(nd => nd.ThongBaos)
+                .HasForeignKey(tb => tb.NguoiDungId)
                 .OnDelete(DeleteBehavior.Cascade);
 
 

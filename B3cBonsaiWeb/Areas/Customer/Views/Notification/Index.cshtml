@@ -1,0 +1,212 @@
+@model X.PagedList.IPagedList<ThongBao>
+
+@{
+    ViewData["Title"] = "Thông báo";
+}
+
+<div class="container-fluid mt-3">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Danh sách thông báo</h4>
+                </div>
+                <div class="card-body">
+                    @if (Model.Any())
+                    {
+                        <div class="mb-3">
+                            <button id="markAllReadBtn" class="btn btn-outline-primary">
+                                <i class="feather-check-square"></i> Đánh dấu tất cả đã đọc
+                            </button>
+                        </div>
+
+                        <div class="notifications-list">
+                            @foreach (var notification in Model)
+                            {
+                                <div class="notification-item @(!notification.DaDoc ? "unread" : "")" data-notification-id="@notification.Id">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div class="notification-content flex-grow-1">
+                                            <h6 class="notification-title mb-1">
+                                                @notification.TieuDe
+                                                @if (!notification.DaDoc)
+                                                {
+                                                    <span class="badge bg-danger ms-2">Mới</span>
+                                                }
+                                            </h6>
+                                            <p class="notification-message mb-1">@TruncateText(notification.NoiDung, 200)</p>
+                                            <small class="text-muted">
+                                                @notification.NgayTao.ToString("dd/MM/yyyy HH:mm")
+                                                @if (notification.DaDoc && notification.NgayDoc.HasValue)
+                                                {
+                                                    <span>• Đã đọc @notification.NgayDoc.Value.ToString("dd/MM/yyyy HH:mm")</span>
+                                                }
+                                            </small>
+                                        </div>
+                                        <div class="notification-actions">
+                                            @if (!notification.DaDoc)
+                                            {
+                                                <button class="btn btn-sm btn-outline-primary mark-read-btn" data-notification-id="@notification.Id">
+                                                    <i class="feather-check"></i>
+                                                </button>
+                                            }
+                                            <div class="dropdown">
+                                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                                    <i class="feather-more-vertical"></i>
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                    <li><a class="dropdown-item" href="@Url.Action("Details", "Notification", new { id = notification.Id })"><i class="feather-eye"></i> Xem chi tiết</a></li>
+                                                    <li><a class="dropdown-item delete-notification" href="#" data-notification-id="@notification.Id"><i class="feather-trash-2"></i> Xóa</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+
+                        <!-- Pagination -->
+                        @if (Model.PageCount > 1)
+                        {
+                            <div class="d-flex justify-content-center mt-3">
+                                <nav aria-label="Notifications pagination">
+                                    <ul class="pagination">
+                                        @if (Model.HasPreviousPage)
+                                        {
+                                            <li class="page-item">
+                                                <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber - 1 })">Trước</a>
+                                            </li>
+                                        }
+
+                                        @for (int i = 1; i <= Model.PageCount; i++)
+                                        {
+                                            if (Math.Abs(i - Model.PageNumber) <= 2 || i == 1 || i == Model.PageCount)
+                                            {
+                                                <li class="page-item @(i == Model.PageNumber ? "active" : "")">
+                                                    <a class="page-link" href="@Url.Action("Index", new { page = i })">@i</a>
+                                                </li>
+                                            }
+                                            else if (i == Model.PageNumber - 3 || i == Model.PageNumber + 3)
+                                            {
+                                                <li class="page-item disabled">
+                                                    <span class="page-link">...</span>
+                                                </li>
+                                            }
+                                        }
+
+                                        @if (Model.HasNextPage)
+                                        {
+                                            <li class="page-item">
+                                                <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber + 1 })">Sau</a>
+                                            </li>
+                                        }
+                                    </ul>
+                                </nav>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="text-center py-5">
+                            <i class="feather-bell display-1 text-muted mb-3"></i>
+                            <h5>Không có thông báo nào</h5>
+                            <p class="text-muted">Bạn chưa có thông báo nào.</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Mark single notification as read
+            $('.mark-read-btn').on('click', function (e) {
+                e.preventDefault();
+                var notificationId = $(this).data('notification-id');
+                var item = $(this).closest('.notification-item');
+
+                $.post('@Url.Action("MarkAsRead", "Notification")', { id: notificationId }, function (response) {
+                    if (response.success) {
+                        toastr.success('Đã đánh dấu đã đọc');
+                        location.reload(); // Refresh to update UI
+                    } else {
+                        toastr.error('Có lỗi xảy ra: ' + response.message);
+                    }
+                });
+            });
+
+            // Mark all notifications as read
+            $('#markAllReadBtn').on('click', function () {
+                $.post('@Url.Action("MarkAllAsRead", "Notification")', function (response) {
+                    if (response.success) {
+                        toastr.success('Đã đánh dấu ' + response.markedCount + ' thông báo đã đọc');
+                        location.reload(); // Refresh to update UI
+                    } else {
+                        toastr.error('Có lỗi xảy ra: ' + response.message);
+                    }
+                });
+            });
+
+            // Delete notification
+            $('.delete-notification').on('click', function (e) {
+                e.preventDefault();
+                var notificationId = $(this).data('notification-id');
+
+                if (confirm('Bạn có chắc chắn muốn xóa thông báo này?')) {
+                    // Redirect to delete action
+                    window.location.href = '@Url.Action("Delete", "Notification")/' + notificationId;
+                }
+            });
+        });
+    </script>
+}
+
+@functions {
+    private string TruncateText(string text, int maxLength)
+    {
+        if (string.IsNullOrEmpty(text))
+            return string.Empty;
+
+        return text.Length <= maxLength ? text : text.Substring(0, maxLength) + "...";
+    }
+}
+
+<style>
+    .notification-item {
+        padding: 15px;
+        border: 1px solid #dee2e6;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        background-color: #ffffff;
+        transition: all 0.2s;
+    }
+
+    .notification-item.unread {
+        background-color: #f8f9fa;
+        border-left: 4px solid #007bff;
+    }
+
+    .notification-item:hover {
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .notification-title {
+        margin-bottom: 0.5rem;
+    }
+
+    .notification-message {
+        color: #6c757d;
+        margin-bottom: 0.25rem;
+    }
+
+    .mark-read-btn {
+        margin-right: 5px;
+    }
+
+    .badge {
+        font-size: 0.75em;
+        padding: 0.25em 0.5em;
+    }
+</style>

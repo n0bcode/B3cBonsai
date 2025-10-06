@@ -44,6 +44,21 @@ namespace B3cBonsai.DataAccess.DbInitializer
 
         private void CreateRolesAndAdminUser()
         {
+            if (!_db.NguoiDungUngDungs.Any(x => x.Email == "customer@dotnetmastery.com"))
+            {
+                _userManager.CreateAsync(new NguoiDungUngDung
+                {
+                    UserName = "customer@dotnetmastery.com",
+                    Email = "customer@dotnetmastery.com",
+                    HoTen = "Nguyễn Văn Khách",
+                    GioiTinh = true,
+                    PhoneNumber = "0987654321",
+                    DiaChi = "123 Đường ABC, Quận 1, TP.HCM",
+                    LinkAnh = "https://i.pinimg.com/control/564x/6a/9c/77/6a9c77e0b1c7e5571ea5b5a350af0248.jpg",
+                }, "Customer123*@").GetAwaiter().GetResult();
+
+                _db.SaveChanges();
+            }
             if (!_roleManager.RoleExistsAsync(SD.Role_Customer).GetAwaiter().GetResult())
             {
                 _roleManager.CreateAsync(new IdentityRole(SD.Role_Customer)).GetAwaiter().GetResult();
@@ -64,6 +79,20 @@ namespace B3cBonsai.DataAccess.DbInitializer
                 var user = _db.NguoiDungUngDungs.FirstOrDefault(u => u.Email == "admin@dotnetmastery.com");
                 _userManager.AddToRoleAsync(user, SD.Role_Admin).GetAwaiter().GetResult();
 
+                // Create regular test user for customer testing
+                _userManager.CreateAsync(new NguoiDungUngDung
+                {
+                    UserName = "customer@dotnetmastery.com",
+                    Email = "customer@dotnetmastery.com",
+                    HoTen = "Nguyễn Văn Customer",
+                    GioiTinh = true,
+                    PhoneNumber = "0987654321",
+                    DiaChi = "123 Đường ABC, Quận 1, TP.HCM",
+                    LinkAnh = "https://i.pinimg.com/control/564x/6a/9c/77/6a9c77e0b1c7e5571ea5b5a350af0248.jpg",
+                }, "Customer123*@").GetAwaiter().GetResult();
+
+                var customerUser = _db.NguoiDungUngDungs.FirstOrDefault(u => u.Email == "customer@dotnetmastery.com");
+                _userManager.AddToRoleAsync(customerUser, SD.Role_Customer).GetAwaiter().GetResult();
 
                 SeedUsers();
                 SeedProductCategories();
@@ -331,4 +360,3 @@ namespace B3cBonsai.DataAccess.DbInitializer
 
     }
 }
-
