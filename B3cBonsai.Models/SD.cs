@@ -63,6 +63,16 @@ namespace B3cBonsai.Models
         public const string CustomerAccess = "CustomerAccess";
         public const string StaffAccess = "StaffAccess";
 
+        // Loại thông báo
+        public const string NotificationType_CapNhatDonHang = "CapNhatDonHang";
+        public const string NotificationType_PhanHoiBinhLuan = "PhanHoiBinhLuan";
+
+        public static readonly Dictionary<string, string> NotificationTypeDictionary = new Dictionary<string, string>
+        {
+            { "CapNhatDonHang", "Cập nhật đơn hàng" },
+            { "PhanHoiBinhLuan", "Phản hồi bình luận" }
+        };
+
         //Validate tiêu chuẩn
         public const string ValidateString = @"^[a-zA-Z0-9àáạảãâầấậẩẫăđèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữýỳỹỵÀÁẠẢÃÂẦẤẬẨẪĂĐÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮÝỲỸỴ ,~!@#$%^&*()_+{}|:<>?`[\];',./\\-]*$";
         public const string ValidateStringName = @"^[a-zA-Z0-9àáạảãâầấậẩẫăđèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữýỳỹỵÀÁẠẢÃÂẦẤẬẨẪĂĐÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮÝỲỸỴ ]*$";

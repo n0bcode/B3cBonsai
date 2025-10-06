@@ -6,9 +6,10 @@ using B3cBonsai.DataAccess.Repository.IRepository;
 using B3cBonsai.Utility;
 using B3cBonsai.Utility.Helper;
 using B3cBonsai.Utility.Services;
-using B3cBonsaiWeb.Attributes;
 using B3cBonsai.Utility.Services.Email;
 using B3cBonsai.Utility.Services.Email.Abstractions;
+using B3cBonsaiWeb.Attributes;
+using B3cBonsaiWeb.Services.Notification;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Facebook;
 using Microsoft.AspNetCore.Authentication.Google;
@@ -109,6 +110,7 @@ namespace B3cBonsaiWeb
 
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddScoped<IVnPayService, VnPayService>();
+            builder.Services.AddScoped<NotificationService>();
 
             builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 

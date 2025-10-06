@@ -1,0 +1,114 @@
+@model IEnumerable<ThongBao>
+
+@if (User?.Identity?.IsAuthenticated == true)
+{
+    <li class="nav-item dropdown" id="notification-container" style="position: relative;">
+        <!-- Trigger Button -->
+        <a class="nav-link text-decoration-none d-flex align-items-center" href="#" id="notificationDropdown"
+           role="button" data-bs-toggle="dropdown" aria-expanded="false"
+           style="padding: 10px; color: rgba(0, 0, 0, 0.7);">
+            <i class="feather-bell"></i>
+            @if (Model.Any())
+            {
+                <span class="badge bg-danger ms-1" style="font-size: 10px; border: 2px solid white;">
+                    @Model.Count()
+                </span>
+            }
+        </a>
+
+        <!-- Dropdown Menu -->
+        <div class="dropdown-menu dropdown-menu-end shadow-sm" aria-labelledby="notificationDropdown"
+             style="min-width: 320px; max-width: 350px; border-radius: 4px;">
+
+            <div class="p-3 border-bottom d-flex justify-content-between align-items-center">
+                <h6 class="mb-0 fw-bold" style="font-size: 16px;">Thông báo</h6>
+                <a href="@Url.Action("Index", "Notification", new { area = "Customer" })"
+                   class="text-decoration-none small" style="font-size: 14px;">Xem tất cả</a>
+            </div>
+
+            @if (Model.Any())
+            {
+                <div class="max-height-300 overflow-auto">
+                    @foreach (var notification in Model)
+                    {
+                        <div class="p-3 border-bottom" style="background: @(notification.DaDoc ? "" : "#f8f9fa")">
+                            <div class="d-flex align-items-start">
+                                <div class="flex-grow-1">
+                                    <div class="fw-semibold mb-1" style="font-size: 14px;">@notification.TieuDe</div>
+                                    <div class="text-muted small mb-1">@TruncateText(notification.NoiDung, 100)</div>
+                                    <small class="text-muted">@FormatTime(notification.NgayTao)</small>
+                                </div>
+                                <div class="ms-2">
+                                    <button class="btn btn-outline-primary btn-sm mark-read-btn"
+                                            data-notification-id="@notification.Id"
+                                            style="font-size: 12px; padding: 2px 6px;">
+                                        <i class="feather-check" style="font-size: 12px;"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="p-3 border-top">
+                    <a href="@Url.Action("Index", "Notification", new { area = "Customer" })"
+                       class="btn btn-primary w-100 btn-sm" style="font-size: 14px;">
+                        Xem tất cả thông báo
+                    </a>
+                </div>
+            }
+            else
+            {
+                <div class="text-center p-4">
+                    <div style="font-size: 48px; color: #ddd; margin-bottom: 8px;">
+                        <i class="feather-bell"></i>
+                    </div>
+                    <div class="text-muted" style="font-size: 14px;">
+                        Không có thông báo nào
+                        <br>
+                        <small class="text-muted">Thử tạo đơn hàng để thử nghiệm</small>
+                    </div>
+                </div>
+            }
+        </div>
+    </li>
+}
+
+@functions {
+    private string TruncateText(string text, int maxLength)
+    {
+        if (string.IsNullOrEmpty(text))
+            return string.Empty;
+        return text.Length <= maxLength ? text : text.Substring(0, maxLength) + "...";
+    }
+
+    private string FormatTime(DateTimeOffset time)
+    {
+        var timeSpan = DateTimeOffset.Now - time;
+        if (timeSpan.TotalMinutes < 1) return "Vừa xong";
+        if (timeSpan.TotalMinutes < 60) return $"{(int)timeSpan.TotalMinutes} phút trước";
+        if (timeSpan.TotalHours < 24) return $"{(int)timeSpan.TotalHours} giờ trước";
+        if (timeSpan.TotalDays < 7) return $"{(int)timeSpan.TotalDays} ngày trước";
+        return time.ToString("dd/MM/yyyy");
+    }
+}
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const trigger = document.querySelector('#notificationDropdown');
+        const menu = document.querySelector('#notification-container .dropdown-menu');
+
+        trigger.addEventListener('click', function (e) {
+            e.preventDefault();
+            menu.classList.toggle('show');
+            menu.classList.add('d-block');
+        });
+
+        document.addEventListener('click', function (e) {
+            if (!document.querySelector('#notification-container').contains(e.target)) {
+                menu.classList.remove('show');
+                menu.classList.remove('d-block');
+            }
+        });
+    });
+</script>

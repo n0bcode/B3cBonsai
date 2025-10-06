@@ -3,6 +3,7 @@ using B3cBonsai.DataAccess.Repository.IRepository;
 using B3cBonsai.Models;
 using B3cBonsai.Utility;
 using B3cBonsai.Utility.Services;
+using B3cBonsaiWeb.Services.Notification;
 using ClosedXML.Excel;
 using MailKit.Search;
 using Microsoft.AspNetCore.Authorization;
@@ -18,12 +19,14 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
         private readonly ApplicationDbContext _context;
         private readonly IUnitOfWork _unit;
         private readonly TelegramService _telegramService;
+        private readonly NotificationService _notificationService;
 
-        public ManagerOrderController(ApplicationDbContext applicationDbContext, TelegramService telegramService, IUnitOfWork unitOfWork)
+        public ManagerOrderController(ApplicationDbContext applicationDbContext, TelegramService telegramService, IUnitOfWork unitOfWork, NotificationService notificationService)
         {
             _context = applicationDbContext;
             _telegramService = telegramService;
             _unit = unitOfWork;
+            _notificationService = notificationService;
         }
 
         [Authorize(Roles = $"{SD.Role_Admin},{SD.Role_Staff}")]
@@ -201,6 +204,12 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
             var message = $"Đơn hàng #{donHang.Id} của {donHang.TenNguoiNhan} đã thay đổi trạng thái đơn hàng thành: {statusOrder}.";
             await _telegramService.SendMessageAsync(838657228, message);
 
+            // Gửi thông báo đến người dùng
+            if (!string.IsNullOrWhiteSpace(donHang.NguoiDungId))
+            {
+                await _notificationService.CreateOrderUpdateNotification(donHang.NguoiDungId, statusOrder, donHang.Id);
+            }
+
             return Json(new { success = true });
         }
 
@@ -229,6 +238,13 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
 
             _context.Update(donHang);
             await _context.SaveChangesAsync();
+
+            // Gửi thông báo đến người dùng
+            if (!string.IsNullOrWhiteSpace(donHang.NguoiDungId))
+            {
+                await _notificationService.CreateOrderUpdateNotification(donHang.NguoiDungId, SD.StatusCancelled, donHang.Id);
+            }
+
             return Json(new { success = true, message = "Đã hủy đơn hàng thành công!" });
         }
 
