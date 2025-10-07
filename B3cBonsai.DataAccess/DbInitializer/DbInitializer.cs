@@ -26,8 +26,6 @@ namespace B3cBonsai.DataAccess.DbInitializer
         {
             ApplyMigrations();
             CreateRolesAndAdminUser();
-
-            _db.SaveChanges();
         }
 
         private void ApplyMigrations()
@@ -44,7 +42,8 @@ namespace B3cBonsai.DataAccess.DbInitializer
 
         private void CreateRolesAndAdminUser()
         {
-            if (!_db.NguoiDungUngDungs.Any(x => x.Email == "customer@dotnetmastery.com"))
+            string? idSampleCustomer = _db.NguoiDungUngDungs.FirstOrDefault(x => x.Email == "customer@dotnetmastery.com")?.Id;
+            if (string.IsNullOrEmpty(idSampleCustomer))
             {
                 _userManager.CreateAsync(new NguoiDungUngDung
                 {
@@ -57,7 +56,12 @@ namespace B3cBonsai.DataAccess.DbInitializer
                     LinkAnh = "https://i.pinimg.com/control/564x/6a/9c/77/6a9c77e0b1c7e5571ea5b5a350af0248.jpg",
                 }, "Customer123*@").GetAwaiter().GetResult();
 
-                _db.SaveChanges();
+                // Tạo số liệu đơn hàng, bình luận,.. mẫu về người dùng nếu chưa có 
+                if (_db.DonHangs.Any(x => x.NguoiDungId == idSampleCustomer))
+                {
+
+                }
+
             }
             if (!_roleManager.RoleExistsAsync(SD.Role_Customer).GetAwaiter().GetResult())
             {
@@ -94,13 +98,20 @@ namespace B3cBonsai.DataAccess.DbInitializer
                 var customerUser = _db.NguoiDungUngDungs.FirstOrDefault(u => u.Email == "customer@dotnetmastery.com");
                 _userManager.AddToRoleAsync(customerUser, SD.Role_Customer).GetAwaiter().GetResult();
 
-                SeedUsers();
                 SeedProductCategories();
                 SeedProducts();
                 SeedCombos();
                 SeedComboDetails();
                 SeedProductImages();
                 SeedProductVideos();
+
+                // Seed sample customer related data
+                if (!_db.DonHangs.Any(x => x.NguoiDungId == customerUser.Id))
+                {
+                    SeedSampleCustomerData(customerUser.Id);
+                }
+
+                SeedUsers();
                 SeedOrders();
                 SeedFavorites();
                 SeedComments();
@@ -355,6 +366,157 @@ namespace B3cBonsai.DataAccess.DbInitializer
                 });
             }
             _db.ChiTietDonHangs.AddRange(chiTietDonHangs);
+            _db.SaveChanges();
+        }
+
+        private void SeedSampleCustomerData(string customerId)
+        {
+            Random rd = new Random();
+
+            // Seed sample orders for the customer
+            var donHangs = new List<DonHang>();
+            for (int i = 1; i <= 10; i++)
+            {
+                donHangs.Add(new DonHang
+                {
+                    NguoiDungId = customerId,
+                    NhanVienId = _db.NguoiDungUngDungs.First().Id,
+                    NgayDatHang = DateTime.UtcNow.AddDays(-rd.Next(30, 365)),
+                    TrangThaiDonHang = new[] { SD.StatusInProcess, SD.StatusPending, SD.StatusCancelled, SD.StatusShipped, SD.StatusApproved }[rd.Next(5)],
+                    NgayNhanHang = DateTime.UtcNow.AddDays(rd.Next(0, 30)),
+                    TenNguoiNhan = RandomData_DB.Instance.rdName(),
+                    SoDienThoai = RandomData_DB.Instance.RandomPhone(),
+                    ThanhPho = RandomData_DB.Instance.rdAddress(),
+                    Duong = RandomData_DB.Instance.rdAddress(),
+                    Tinh = RandomData_DB.Instance.rdAddress(),
+                    MaBuuDien = rd.Next(1000, 9999).ToString(),
+                    TongTienDonHang = rd.Next(20000, 50000)
+                });
+            }
+            _db.DonHangs.AddRange(donHangs);
+            _db.SaveChanges();
+
+            // Seed order details for the sample orders
+            var chiTietDonHangs = new List<ChiTietDonHang>();
+            var sanPhamIds = _db.SanPhams.Select(sp => sp.Id).ToList();
+            var comboIds = _db.ComboSanPhams.Select(cbo => cbo.Id).ToList();
+
+            foreach (var order in donHangs)
+            {
+                for (int i = 1; i <= 3; i++)
+                {
+                    chiTietDonHangs.Add(new ChiTietDonHang
+                    {
+                        DonHangId = order.Id,
+                        SanPhamId = sanPhamIds[new Random().Next(sanPhamIds.Count)],
+                        LoaiDoiTuong = SD.ObjectDetailOrder_SanPham,
+                        SoLuong = new Random().Next(1, 5),
+                        Gia = new Random().Next(10000, 1000000)
+                    });
+                }
+                chiTietDonHangs.Add(new ChiTietDonHang
+                {
+                    DonHangId = order.Id,
+                    ComboId = comboIds[new Random().Next(comboIds.Count)],
+                    LoaiDoiTuong = SD.ObjectDetailOrder_Combo,
+                    SoLuong = 3,
+                    Gia = new Random().Next(10000, 1000000)
+                });
+            }
+            _db.ChiTietDonHangs.AddRange(chiTietDonHangs);
+            _db.SaveChanges();
+
+            // Seed sample favorites for the customer
+            var sanPhams = _db.SanPhams.ToList();
+            var danhSachYeuThichs = new List<DanhSachYeuThich>();
+            for (int i = 1; i <= 8; i++)
+            {
+                danhSachYeuThichs.Add(new DanhSachYeuThich
+                {
+                    SanPhamId = sanPhams[new Random().Next(sanPhams.Count)].Id,
+                    NguoiDungId = customerId
+                });
+            }
+            _db.DanhSachYeuThichs.AddRange(danhSachYeuThichs);
+            _db.SaveChanges();
+
+            // Seed sample comments for the customer
+            var binhLuans = new List<BinhLuan>();
+            var customer = _db.NguoiDungUngDungs.FirstOrDefault(u => u.Id == customerId);
+            for (int i = 1; i <= 15; i++)
+            {
+                binhLuans.Add(new BinhLuan
+                {
+                    NoiDungBinhLuan = "Sample comment " + i + " from " + customer.HoTen,
+                    NguoiDungId = customerId,
+                    SanPhamId = sanPhams[new Random().Next(sanPhams.Count)].Id,
+                    NgayBinhLuan = (DateTime.Now.AddDays(-rd.Next(3, 10)))
+                });
+            }
+            _db.BinhLuans.AddRange(binhLuans);
+            _db.SaveChanges();
+
+            // Seed sample notifications for the customer
+            var thongBaos = new List<ThongBao>();
+            Random rdThongBao = new Random();
+
+            // Notifications for orders
+            foreach (var order in donHangs)
+            {
+                // Order placement notification
+                thongBaos.Add(new ThongBao
+                {
+                    NguoiDungId = customerId,
+                    TieuDe = "Đơn hàng của bạn đã được đặt thành công",
+                    NoiDung = $"Đơn hàng #{order.Id} đã được tạo với tổng giá trị {order.TongTienDonHang} VND.",
+                    DaDoc = rdThongBao.NextDouble() < 0.7, // 70% chance of being read
+                    NgayTao = order.NgayDatHang,
+                    Loai = "CapNhatDonHang",
+                    LienKetId = order.Id
+                });
+
+                // Random status update notification
+                if (rdThongBao.NextDouble() < 0.8) // 80% chance
+                {
+                    string statusMessage = order.TrangThaiDonHang switch
+                    {
+                        SD.StatusInProcess => "đang được xử lý",
+                        SD.StatusPending => "đang chờ xác nhận",
+                        SD.StatusCancelled => "đã bị hủy",
+                        SD.StatusShipped => "đang được giao",
+                        SD.StatusApproved => "đã được duyệt",
+                        _ => "có cập nhật"
+                    };
+
+                    thongBaos.Add(new ThongBao
+                    {
+                        NguoiDungId = customerId,
+                        TieuDe = "Cập nhật trạng thái đơn hàng",
+                        NoiDung = $"Đơn hàng #{order.Id} của bạn hiện tại {statusMessage}.",
+                        DaDoc = rdThongBao.NextDouble() < 0.5,
+                        NgayTao = order.NgayDatHang.AddDays(rdThongBao.Next(1, 7)),
+                        Loai = "CapNhatDonHang",
+                        LienKetId = order.Id
+                    });
+                }
+            }
+
+            // Notifications for comments
+            foreach (var binhLuan in binhLuans.Take(10)) // Sample notifications for some comments
+            {
+                thongBaos.Add(new ThongBao
+                {
+                    NguoiDungId = customerId,
+                    TieuDe = "Đã đăng bình luận thành công",
+                    NoiDung = $"Bình luận của bạn trên sản phẩm giá trị đã được đăng thành công.",
+                    DaDoc = rdThongBao.NextDouble() < 0.8,
+                    NgayTao = binhLuan.NgayBinhLuan,
+                    Loai = "PhanHoiBinhLuan",
+                    LienKetId = binhLuan.Id
+                });
+            }
+
+            _db.ThongBaos.AddRange(thongBaos);
             _db.SaveChanges();
         }
 
