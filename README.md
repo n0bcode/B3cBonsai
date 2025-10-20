@@ -149,8 +149,100 @@ Dự án được tổ chức theo kiến trúc Clean Architecture với các pr
 - `B3cBonsai.Utility`: Chứa các lớp tiện ích như gửi email, hằng số, v.v.
 - `B3cBonsaiWeb`: Dự án chính ASP.NET Core MVC, chứa Controllers, Views, và các tài nguyên frontend.
 
+## 🚀 Deploy lên Heroku
+
+Quy trình này sử dụng Heroku Buildpack cho .NET, không yêu cầu `Dockerfile` hay `Procfile`.
+
+### 1. Yêu cầu
+
+- Đã cài đặt [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli).
+- Đã có tài khoản Heroku và đã đăng nhập (`heroku login`).
+
+### 2. Thiết lập ứng dụng Heroku
+
+1.  **Tạo ứng dụng Heroku (nếu bạn chưa có)**:
+
+    ```bash
+    # Tạo một ứng dụng mới với tên do bạn chọn
+    heroku create b3c
+    ```
+
+2.  **Kết nối với repo Git hiện tại:**
+    Nếu bạn đã có ứng dụng trên Heroku, hãy liên kết nó với repo của bạn:
+
+    ```bash
+    heroku git:remote -a b3c
+    ```
+
+3.  **Thêm Add-on PostgreSQL:** (Không cần nếu bạn có sẵn kết nối với bên thứ 3)
+    Heroku sẽ tự động cung cấp một database và tạo biến môi trường `DATABASE_URL`.
+    ```bash
+    heroku addons:create heroku-postgresql:hobby-dev
+    ```
+
+### 3. Cấu hình Biến Môi trường
+
+Đây là bước quan trọng nhất. Ứng dụng của bạn cần các khóa bí mật để hoạt động. Hãy vào Heroku Dashboard của bạn > `Settings` > `Config Vars`.
+
+**Bấm "Reveal Config Vars" và thêm các biến sau:**
+
+| Key                                               | Value                                                                  | Bắt buộc? |
+| ------------------------------------------------- | ---------------------------------------------------------------------- | :-------: |
+| `ASPNETCORE_ENVIRONMENT`                          | `Production`                                                           |    ✅     |
+| `ASPNETCORE_UsePostgreSql`                        | `true`                                                                 |    ✅     |
+| `ConnectionStrings__PostgreConnectString`         | `Host=link;Database=name;Username=usname;Password=pss;SslMode=Require` |    ✅     |
+| `ASPNETCORE_EmailSettings__Password`              | `your_gmail_app_password`                                              |    ✅     |
+| `ASPNETCORE_EmailSettings__Email`                 | `your_smtp_email@gmail.com`                                            |    ✅     |
+| `ASPNETCORE_Authentication__Google__ClientId`     | `your_google_client_id`                                                |    Tùy    |
+| `ASPNETCORE_Authentication__Google__ClientSecret` | `your_google_client_secret`                                            |    Tùy    |
+| `ASPNETCORE_VnPay__TmnCode`                       | `your_vnpay_tmn_code`                                                  |    Tùy    |
+| `ASPNETCORE_VnPay__HashSecret`                    | `your_vnpay_hash_secret`                                               |    Tùy    |
+| `ASPNETCORE_CloudinarySettings__CloudName`        | `your_cloudinary_cloud_name`                                           |    Tùy    |
+| `ASPNETCORE_CloudinarySettings__ApiKey`           | `your_cloudinary_api_key`                                              |    Tùy    |
+| `ASPNETCORE_CloudinarySettings__ApiSecret`        | `your_cloudinary_api_secret`                                           |    Tùy    |
+
+**Lưu ý:**
+
+- `ASPNETCORE_` là prefix Heroku dùng cho các biến môi trường. Dấu `__` (hai dấu gạch dưới) được dùng để thay thế cho dấu `:` trong file `appsettings.json`.
+- Để lấy các giá trị, hãy tham khảo file `docs/api_keys_guide.md`.
+
+### 4. Deploy ứng dụng
+
+Sau khi đã commit các thay đổi của bạn, chỉ cần đẩy branch chính lên Heroku.
+
+```bash
+# Đẩy branch 'main' của bạn lên branch 'main' của Heroku
+git push heroku main
+```
+
+Heroku sẽ tự động build và deploy ứng dụng của bạn.
+
+### 5. Chạy Database Migrations
+
+Sau khi deploy lần đầu (hoặc sau mỗi lần có thay đổi database), bạn phải chạy lệnh sau để cập nhật schema cho database trên Heroku:
+
+```bash
+heroku run dotnet ef database update --project B3cBonsai.DataAccess
+```
+
+### 6. Kiểm tra và Gỡ lỗi
+
+- **Xem log trực tiếp:**
+  ```bash
+  heroku logs --tail
+  ```
+- **Mở ứng dụng:**
+  ```bash
+  heroku open
+  ```
+- **Restart ứng dụng nếu cần:**
+  ```bash
+  heroku restart
+  ```
+
 ### Tài liệu tham khảo
 
 - [Hướng dẫn .NET của Docker] (https://docs.docker.com/langle/dotnet/)
 - [Dotnet-docker] (https://github.com/dotnet/dotnet-docker/tree/main/samples)
+- [Heroku .NET Deployment Guide](https://devcenter.heroku.com/articles/deploying-dotnet-applications)
   Kho lưu trữ có nhiều mẫu và tài liệu liên quan.

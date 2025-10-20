@@ -1,4 +1,4 @@
-﻿using System.Configuration;
+using System.Configuration;
 using B3cBonsai.DataAccess.Data;
 using B3cBonsai.DataAccess.DbInitializer;
 using B3cBonsai.DataAccess.Repository;

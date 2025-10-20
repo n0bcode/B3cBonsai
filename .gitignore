@@ -504,3 +504,7 @@ PROJECT*
 GEMINI.md
 *appsettings.json
 package-lock.json
+
+# Heroku build output
+published/
+.env.example
