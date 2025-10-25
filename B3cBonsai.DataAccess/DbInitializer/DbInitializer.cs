@@ -42,27 +42,6 @@ namespace B3cBonsai.DataAccess.DbInitializer
 
         private void CreateRolesAndAdminUser()
         {
-            string? idSampleCustomer = _db.NguoiDungUngDungs.FirstOrDefault(x => x.Email == "customer@dotnetmastery.com")?.Id;
-            if (string.IsNullOrEmpty(idSampleCustomer))
-            {
-                _userManager.CreateAsync(new NguoiDungUngDung
-                {
-                    UserName = "customer@dotnetmastery.com",
-                    Email = "customer@dotnetmastery.com",
-                    HoTen = "Nguyễn Văn Khách",
-                    GioiTinh = true,
-                    PhoneNumber = "0987654321",
-                    DiaChi = "123 Đường ABC, Quận 1, TP.HCM",
-                    LinkAnh = "https://i.pinimg.com/control/564x/6a/9c/77/6a9c77e0b1c7e5571ea5b5a350af0248.jpg",
-                }, "Customer123*@").GetAwaiter().GetResult();
-
-                // Tạo số liệu đơn hàng, bình luận,.. mẫu về người dùng nếu chưa có 
-                if (_db.DonHangs.Any(x => x.NguoiDungId == idSampleCustomer))
-                {
-
-                }
-
-            }
             if (!_roleManager.RoleExistsAsync(SD.Role_Customer).GetAwaiter().GetResult())
             {
                 _roleManager.CreateAsync(new IdentityRole(SD.Role_Customer)).GetAwaiter().GetResult();
