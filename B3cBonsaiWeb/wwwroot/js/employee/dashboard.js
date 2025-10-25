@@ -298,48 +298,6 @@ function loadDataTable() {
 }
 
 $(document).ready(function () {
-    $.ajax({
-        url: '/Employee/Dashboard/GetOrderStatusData?timeRange=day',
-        success: function (data) {
-            console.log(data);
-            var ctx = document.getElementById('projectChart').getContext('2d');
-            var projectChart = new Chart(ctx, {
-                type: 'pie',
-                data: {
-                    labels: data.labels,
-                    datasets: [{
-                        data: data.data,
-                        backgroundColor: [
-                            '#FF9F00',
-                            '#FF5E5E',
-                            '#3AC977',
-                            '#FFB8C6',
-                            '#007bff'
-                        ],
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            position: 'top',
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function (tooltipItem) {
-                                    var value = tooltipItem.raw;
-                                    return value + ' orders';
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-        },
-        error: function (error) {
-            console.error("Error loading order status data:", error);
-        }
-    });
     loadDataTable();
 });
 
