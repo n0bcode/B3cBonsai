@@ -25,6 +25,38 @@
   - **Email:** SMTP (Gmail)
   - **Lưu trữ ảnh:** Local Storage hoặc Cloudinary
 
+## 📊 Dữ liệu Mẫu
+
+Dự án bao gồm hệ thống tạo dữ liệu mẫu tự động giúp phát triển và kiểm thử dễ dàng hơn:
+
+### Cấu hình Dữ liệu Mẫu
+
+Mặc định, ứng dụng sẽ tự động tạo dữ liệu mẫu khi khởi chạy lần đầu. Bạn có thể cấu hình điều này trong `B3cBonsaiWeb/appsettings.json`:
+
+```json
+{
+  "SeedSampleData": false  // Đặt thành false để tắt việc tạo dữ liệu mẫu
+}
+```
+
+### Dữ liệu Mẫu Bao gồm
+
+Khi được bật, hệ thống sẽ tạo dữ liệu mẫu cho:
+- **Người dùng:** 30+ tài khoản người dùng ngẫu nhiên với các vai trò khác nhau (Admin, Staff, Customer)
+- **Danh mục sản phẩm:** 8 danh mục cây cảnh (lá màu, thân gỗ bonsai, hoa cảnh, xương rồng, bàn làm việc, thủy sinh, phong thủy, leo treo)
+- **Sản phẩm:** 50+ sản phẩm cây cảnh với thông tin chi tiết và hình ảnh
+- **Combo sản phẩm:** 20+ combo giá trị gia tăng
+- **Đơn hàng:** 200+ đơn hàng mẫu với các trạng thái khác nhau (đang xử lý, đã duyệt, đã giao, v.v.)
+- **Đánh giá và bình luận:** Hàng trăm đánh giá và bình luận từ người dùng
+- **Thông báo:** Hệ thống thông báo mẫu cho đơn hàng và phản hồi
+- **Danh sách yêu thích:** Dữ liệu giỏ hàng và danh sách yêu thích
+
+### Sử dụng Hệ thống Dữ liệu Mẫu
+
+- **Tự động:** Dữ liệu mẫu được tạo tự động khi chạy ứng dụng lần đầu (nếu `SeedSampleData` = true)
+- **Thủ công:** Có thể gọi phương thức `SeedSampleData()` độc lập nếu cần thiết
+- **An toàn:** Hệ thống kiểm tra dữ liệu đã tồn tại để tránh trùng lặp
+
 ## ⚙️ Hướng dẫn Cài đặt và Vận hành
 
 Dưới đây là hai phương pháp để chạy dự án. Phương pháp sử dụng Docker được khuyến khích vì tính đơn giản và đã bao gồm sẵn cơ sở dữ liệu.
@@ -46,7 +78,14 @@ Cả hai phương pháp đều yêu cầu bạn cấu hình các khóa API và t
 2.  **Điền các khóa API:**
     Dự án yêu cầu một số khóa API cho các dịch vụ bên thứ ba (Google, Facebook, VnPay, v.v.). Hãy làm theo hướng dẫn chi tiết tại file `docs/api_keys_guide.md` để lấy và điền các giá trị này vào file `B3cBonsaiWeb/appsettings.json`.
 
-3.  **Cấu hình Lưu trữ Ảnh:**
+3.  **Cấu hình Dữ liệu Mẫu:**
+    Mặc định, ứng dụng sẽ tạo dữ liệu mẫu khi khởi chạy lần đầu. Để tắt tính năng này cho môi trường production, hãy đặt:
+
+    ```json
+    "SeedSampleData": false
+    ```
+
+4.  **Cấu hình Lưu trữ Ảnh:**
     Bạn có thể chọn giữa lưu trữ ảnh trên máy cục bộ hoặc sử dụng dịch vụ Cloudinary.
 
     - Mở file `B3cBonsaiWeb/appsettings.json`.
@@ -191,6 +230,7 @@ Quy trình này sử dụng Heroku Buildpack cho .NET, không yêu cầu `Docker
 | `ASPNETCORE_ENVIRONMENT`                          | `Production`                                                           |    ✅     |
 | `ASPNETCORE_UsePostgreSql`                        | `true`                                                                 |    ✅     |
 | `ConnectionStrings__PostgreConnectString`         | `Host=link;Database=name;Username=usname;Password=pss;SslMode=Require` |    ✅     |
+| `ASPNETCORE_SeedSampleData`                       | `false`                                                                |    ✅     |
 | `ASPNETCORE_EmailSettings__Password`              | `your_gmail_app_password`                                              |    ✅     |
 | `ASPNETCORE_EmailSettings__Email`                 | `your_smtp_email@gmail.com`                                            |    ✅     |
 | `ASPNETCORE_Authentication__Google__ClientId`     | `your_google_client_id`                                                |    Tùy    |
