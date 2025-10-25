@@ -282,7 +282,9 @@ heroku run dotnet ef database update --project B3cBonsai.DataAccess
 
 ### Tài liệu tham khảo
 
-- [Hướng dẫn .NET của Docker] (https://docs.docker.com/langle/dotnet/)
-- [Dotnet-docker] (https://github.com/dotnet/dotnet-docker/tree/main/samples)
+- [Hướng dẫn .NET của Docker](https://docs.docker.com/langle/dotnet/)
+- [Dotnet-docker](https://github.com/dotnet/dotnet-docker/tree/main/samples)
 - [Heroku .NET Deployment Guide](https://devcenter.heroku.com/articles/deploying-dotnet-applications)
+- [Nền tảng hỗ trợ lưu trữ csdl dạng PostgreSQL](https://console.neon.tech)
+- [Video/Dự án tham khảo](https://youtu.be/AopeJjkcRvU?si=IjWv6F92C03zGPQk)
   Kho lưu trữ có nhiều mẫu và tài liệu liên quan.
