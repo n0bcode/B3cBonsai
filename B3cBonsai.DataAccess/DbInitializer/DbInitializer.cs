@@ -6,6 +6,7 @@ using B3cBonsai.DataAccess.Data;
 using B3cBonsai.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace B3cBonsai.DataAccess.DbInitializer
 {
@@ -14,12 +15,14 @@ namespace B3cBonsai.DataAccess.DbInitializer
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ApplicationDbContext _db;
+        private readonly IConfiguration _configuration;
 
-        public DbInitializer(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, ApplicationDbContext db)
+        public DbInitializer(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, ApplicationDbContext db, IConfiguration configuration)
         {
             _roleManager = roleManager;
             _userManager = userManager;
             _db = db;
+            _configuration = configuration;
         }
 
         public void Initialize()
@@ -77,24 +80,8 @@ namespace B3cBonsai.DataAccess.DbInitializer
                 var customerUser = _db.NguoiDungUngDungs.FirstOrDefault(u => u.Email == "customer@dotnetmastery.com");
                 _userManager.AddToRoleAsync(customerUser, SD.Role_Customer).GetAwaiter().GetResult();
 
-                SeedProductCategories();
-                SeedProducts();
-                SeedCombos();
-                SeedComboDetails();
-                SeedProductImages();
-                SeedProductVideos();
-
-                // Seed sample customer related data
-                if (!_db.DonHangs.Any(x => x.NguoiDungId == customerUser.Id))
-                {
-                    SeedSampleCustomerData(customerUser.Id);
-                }
-
-                SeedUsers();
-                SeedOrders();
-                SeedFavorites();
-                SeedComments();
-                SeedOrderDetails();
+                // Seed sample data if enabled
+                SeedSampleData();
             }
         }
 
@@ -144,26 +131,52 @@ namespace B3cBonsai.DataAccess.DbInitializer
 
         private void SeedProductCategories()
         {
-            var danhMucSanPhams = new List<DanhMucSanPham>
+            if (_db.DanhMucSanPhams.Any())
             {
-                new DanhMucSanPham { TenDanhMuc = "Cây lá màu" },
-                new DanhMucSanPham { TenDanhMuc = "Cây thân gỗ bonsai" },
-                // Add other categories here as needed...
+                return; // Already seeded
+            }
+
+            string[] categories = {
+                "Cây lá màu",
+                "Cây thân gỗ bonsai",
+                "Cây hoa cảnh",
+                "Cây xương rồng và cây mọng nước",
+                "Cây cảnh để bàn",
+                "Cây cảnh thủy sinh",
+                "Cây phong thủy",
+                "Cây leo và cây treo"
             };
+
+            var danhMucSanPhams = new List<DanhMucSanPham>();
+            foreach (var category in categories)
+            {
+                danhMucSanPhams.Add(new DanhMucSanPham
+                {
+                    TenDanhMuc = category
+                });
+            }
+
             _db.DanhMucSanPhams.AddRange(danhMucSanPhams);
             _db.SaveChanges();
         }
 
         private void SeedProducts()
         {
+            if (_db.SanPhams.Any())
+            {
+                return; // Already seeded
+            }
+
             Random random = new Random();
+            var categoryIds = _db.DanhMucSanPhams.Select(c => c.Id).ToList();
             var sanPhams = new List<SanPham>();
+
             for (int i = 1; i <= 50; i++)
             {
                 sanPhams.Add(new SanPham
                 {
                     TenSanPham = RandomData_DB.Instance.RandomProductName(),
-                    DanhMucId = random.Next(1, 3), // Assuming 2 categories
+                    DanhMucId = categoryIds[random.Next(categoryIds.Count)],
                     MoTa = RandomData_DB.Instance.RandomProductDescription(),
                     SoLuong = random.Next(1, 10),
                     Gia = random.Next(10000, 1000000),
@@ -194,14 +207,23 @@ namespace B3cBonsai.DataAccess.DbInitializer
 
         private void SeedComboDetails()
         {
+            if (_db.ChiTietCombos.Any())
+            {
+                return; // Already seeded
+            }
+
+            Random random = new Random();
+            var comboIds = _db.ComboSanPhams.Select(c => c.Id).ToList();
+            var productIds = _db.SanPhams.Select(p => p.Id).ToList();
+
             var chiTietCombos = new List<ChiTietCombo>();
             for (int i = 1; i <= 50; i++)
             {
                 chiTietCombos.Add(new ChiTietCombo
                 {
-                    ComboId = new Random().Next(1, 21),
-                    SanPhamId = new Random().Next(1, 51),
-                    SoLuong = new Random().Next(1, 10)
+                    ComboId = comboIds[random.Next(comboIds.Count)],
+                    SanPhamId = productIds[random.Next(productIds.Count)],
+                    SoLuong = random.Next(1, 10)
                 });
             }
             _db.ChiTietCombos.AddRange(chiTietCombos);
@@ -497,6 +519,44 @@ namespace B3cBonsai.DataAccess.DbInitializer
 
             _db.ThongBaos.AddRange(thongBaos);
             _db.SaveChanges();
+        }
+
+        public void SeedSampleData()
+        {
+            bool seedSampleData = _configuration.GetValue<bool>("SeedSampleData", true);
+
+            if (!seedSampleData)
+            {
+                return;
+            }
+
+            try
+            {
+                SeedProductCategories();
+                SeedProducts();
+                SeedCombos();
+                SeedComboDetails();
+                SeedProductImages();
+                SeedProductVideos();
+
+                SeedUsers();
+                SeedOrders();
+                SeedFavorites();
+                SeedComments();
+                SeedOrderDetails();
+
+                // Seed sample customer related data
+                var customerUser = _db.NguoiDungUngDungs.FirstOrDefault(u => u.Email == "customer@dotnetmastery.com");
+                if (customerUser != null)
+                {
+                    SeedSampleCustomerData(customerUser.Id);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log error if needed
+                throw new Exception($"Failed to seed sample data: {ex.Message}", ex);
+            }
         }
 
     }
