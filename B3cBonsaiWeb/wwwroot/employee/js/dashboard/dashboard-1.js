@@ -746,12 +746,12 @@
 
 		// Thêm sự kiện cho phần chọn thời gian
 		document.querySelector(".status-select").addEventListener("change", function () {
-			var timeRange = this.value.toLowerCase();
+			var timeRange = this.value;
 			projectChart(timeRange);
 		});
 
-		// Tạo biểu đồ ban đầu với giá trị "today"
-		projectChart("today");
+		// Tạo biểu đồ ban đầu với giá trị "day"
+		projectChart("day");
 
 	/*var handleWorldMap = function(trigger = 'load'){
 		var vmapSelector = $('#world-map');

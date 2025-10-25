@@ -200,6 +200,9 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Admin
 				case "year":
 					listOrders = listOrders.Where(x => x.NgayNhanHang.GetValueOrDefault().Year == DateTime.Today.Year);
 					break;
+				case "total":
+					// No filter for total
+					break;
 			}
 
 			// Đếm số lượng đơn hàng theo trạng thái
