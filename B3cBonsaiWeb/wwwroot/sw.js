@@ -49,9 +49,39 @@ self.addEventListener('fetch', event => {
         return;
     }
 
+    // Handling API/Data with Network-First strategy
+    if (url.pathname.includes('/api/') || url.pathname.includes('/GetAll')) {
+        event.respondWith(
+            fetch(event.request)
+                .then(response => {
+                    const clonedResponse = response.clone();
+                    caches.open(CACHE_NAME).then(cache => cache.put(event.request, clonedResponse));
+                    return response;
+                })
+                .catch(() => caches.match(event.request))
+        );
+        return;
+    }
+
     // Default Cache-First for assets, Network-First for others
     event.respondWith(
         caches.match(event.request)
             .then(response => response || fetch(event.request))
     );
+});
+
+self.addEventListener('push', event => {
+    const data = event.data ? event.data.json() : { title: 'B3cBonsai', body: 'Bạn có thông báo mới!' };
+    const options = {
+        body: data.body,
+        icon: '/customer/img/favicon/favicon.png',
+        badge: '/customer/img/favicon/favicon.png',
+        data: { url: data.url || '/' }
+    };
+    event.waitUntil(self.registration.showNotification(data.title, options));
+});
+
+self.addEventListener('notificationclick', event => {
+    event.notification.close();
+    event.waitUntil(clients.openWindow(event.notification.data.url));
 });

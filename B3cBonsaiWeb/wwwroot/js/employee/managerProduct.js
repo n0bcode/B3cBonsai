@@ -227,3 +227,18 @@ function DeleteDWD(id) {
         }
     });
 }
+
+function sendTestNotification() {
+    if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+        toastr.error("Trình duyệt không hỗ trợ Push Notifications");
+        return;
+    }
+
+    navigator.serviceWorker.ready.then(reg => {
+        reg.showNotification('B3cBonsai Test', {
+            body: 'Đây là thông báo kiểm tra từ hệ thống quản lý.',
+            icon: '/customer/img/favicon/favicon.png'
+        });
+        toastr.success("Đã gửi thông báo kiểm tra!");
+    });
+}

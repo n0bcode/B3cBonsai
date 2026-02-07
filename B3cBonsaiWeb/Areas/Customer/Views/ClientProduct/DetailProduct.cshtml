@@ -123,31 +123,42 @@
                                             hotspots.forEach(h => h.style.display = h.style.display === 'none' ? 'block' : 'none');
                                         }
 
-                                        // Load Hotspots from Metadata
-                                        document.addEventListener('DOMContentLoaded', () => {
-                                            const metadataRaw = '@Html.Raw(Model.Model3DMetadata)';
-                                            if (metadataRaw) {
-                                                try {
-                                                    const metadata = JSON.parse(metadataRaw);
-                                                    if (metadata.hotspots) {
-                                                        metadata.hotspots.forEach((hs, index) => {
-                                                            const button = document.createElement('button');
-                                                            button.className = 'hotspot';
-                                                            button.slot = `hotspot-${index}`;
-                                                            button.dataset.position = hs.position;
-                                                            button.dataset.normal = hs.normal;
-                                                            
-                                                            const annotation = document.createElement('div');
-                                                            annotation.className = 'hotspot-annotation';
-                                                            annotation.textContent = hs.text;
-                                                            
-                                                            button.appendChild(annotation);
-                                                            viewer.appendChild(button);
-                                                        });
-                                                    }
-                                                } catch (e) { console.error('Error parsing 3D metadata', e); }
+                                            // Load Hotspots from Metadata
+                                            document.addEventListener('DOMContentLoaded', () => {
+                                                const metadataRaw = '@Html.Raw(Model.Model3DMetadata)';
+                                                if (metadataRaw) {
+                                                    try {
+                                                        const metadata = JSON.parse(metadataRaw);
+                                                        if (metadata.hotspots) {
+                                                            metadata.hotspots.forEach((hs, index) => {
+                                                                const button = document.createElement('button');
+                                                                button.className = 'hotspot';
+                                                                button.slot = `hotspot-${index}`;
+                                                                button.dataset.position = hs.position;
+                                                                button.dataset.normal = hs.normal;
+                                                                
+                                                                const annotation = document.createElement('div');
+                                                                annotation.className = 'hotspot-annotation';
+                                                                annotation.textContent = hs.text;
+                                                                
+                                                                button.appendChild(annotation);
+                                                                viewer.appendChild(button);
+                                                            });
+                                                        }
+                                                    } catch (e) { console.error('Error parsing 3D metadata', e); }
+                                                }
+                                            });
+
+                                            function showARQRCode() {
+                                                const modal = new bootstrap.Modal(document.getElementById('qrARModal'));
+                                                document.getElementById('qrcode-canvas').innerHTML = "";
+                                                new QRCode(document.getElementById('qrcode-canvas'), {
+                                                    text: "@currentUrl",
+                                                    width: 256,
+                                                    height: 256
+                                                });
+                                                modal.show();
                                             }
-                                        });
                                     </script>
                                 }
 
@@ -411,6 +422,15 @@
                                             </a>
                                         </li>
 
+                                        @if (!string.IsNullOrEmpty(Model.Model3DPath))
+                                        {
+                                            <li>
+                                                <a href="javascript:void(0)" onclick="showARQRCode()" class="qr-code-ar" title="Xem AR trên điện thoại">
+                                                    <i class="fa fa-qrcode"></i>
+                                                </a>
+                                            </li>
+                                        }
+
 
 
                                         <li>
@@ -454,7 +474,27 @@
 <!-- pro-detail-page end -->
 @await Component.InvokeAsync("PopularProducts")
 
+<!-- AR QR Modal -->
+<div class="modal fade" id="qrARModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Xem AR trên điện thoại</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <p>Quét mã QR dưới đây để xem cây <strong>@Model.TenSanPham</strong> trực tiếp trong không gian của bạn qua thực tế tăng cường (AR).</p>
+                <div id="qrcode-canvas" class="my-4"></div>
+                <div class="alert alert-info py-2 small">
+                    <i class="fa fa-info-circle"></i> Sử dụng camera điện thoại (iOS) hoặc Google Lens (Android).
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="~/js//customer/comment.js" asp-append-version="true" ></script>
     <script>loadContainerComments('@Model.Id')</script>
     
@@ -550,6 +590,28 @@
 
         .hotspot:hover .hotspot-annotation {
             opacity: 1;
+        }
+
+        .qr-code-ar {
+            color: #2c5e1a;
+            font-size: 20px;
+            padding: 10px;
+            border: 1px solid #eee;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .qr-code-ar:hover {
+            background: #2c5e1a;
+            color: white;
+            border-color: #2c5e1a;
+        }
+
+        #qrcode-canvas img {
+            margin: 0 auto;
         }
 
         .control-btn.active {
