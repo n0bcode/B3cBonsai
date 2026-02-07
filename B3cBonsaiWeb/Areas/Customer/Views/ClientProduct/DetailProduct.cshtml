@@ -50,6 +50,107 @@
                             <!-- top slick-slider start -->
                             <div class="product-img-top">
                                 <button class="full-view"><i class="bi bi-arrows-fullscreen"></i></button>
+                                
+                                @if (!string.IsNullOrEmpty(Model.Model3DPath))
+                                {
+                                    <div class="product-3d-view" style="width: 100%; height: 400px; background: #f8f9fa; border-radius: 8px; margin-bottom: 15px;">
+                                        <model-viewer id="bonsai-viewer"
+                                                      src="@Model.Model3DPath"
+                                                      poster="@(Model.HinhAnhs?.FirstOrDefault()?.LinkAnh)"
+                                                      alt="A 3D model of @Model.TenSanPham"
+                                                      shadow-intensity="1"
+                                                      camera-controls
+                                                      auto-rotate
+                                                      ar="@(Model.IsARReady ? "true" : "false")"
+                                                      style="width: 100%; height: 100%;">
+                                            
+                                            <div class="controls-3d">
+                                                <button class="control-btn" onclick="toggleRotation()" title="Bật/Tắt xoay">
+                                                    <i class="feather-rotate-cw"></i>
+                                                </button>
+                                                <button class="control-btn" onclick="takeSnapshot()" title="Chụp ảnh">
+                                                    <i class="feather-camera"></i>
+                                                </button>
+                                                <button class="control-btn" onclick="toggleEnvironment()" title="Đổi ánh sáng">
+                                                    <i class="feather-sun"></i>
+                                                </button>
+                                                <button class="control-btn" onclick="toggleAnnotations()" title="Bật/Tắt chú thích">
+                                                    <i class="feather-info"></i>
+                                                </button>
+                                            </div>
+
+                                            @if (Model.IsARReady)
+                                            {
+                                                <button slot="ar-button" style="background-color: white; border-radius: 4px; border: none; position: absolute; top: 16px; right: 16px; padding: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.25);">
+                                                    👋 Xem trong AR
+                                                </button>
+                                            }
+
+                                            @* Hotspots from Metadata *@
+                                            <div id="hotspot-container"></div>
+                                        </model-viewer>
+                                    </div>
+
+                                    <script>
+                                        const viewer = document.getElementById('bonsai-viewer');
+                                        
+                                        function toggleRotation() {
+                                            viewer.autoRotate = !viewer.autoRotate;
+                                            event.currentTarget.classList.toggle('active', viewer.autoRotate);
+                                        }
+
+                                        async function takeSnapshot() {
+                                            const url = viewer.toDataURL();
+                                            const link = document.createElement('a');
+                                            link.download = 'B3cBonsai-Snapshot-@Model.TenSanPham.Replace(" ", "-")' + '.png';
+                                            link.href = url;
+                                            link.click();
+                                        }
+
+                                        let currentEnv = 'default';
+                                        function toggleEnvironment() {
+                                            if (currentEnv === 'default') {
+                                                viewer.environmentImage = 'neutral';
+                                                currentEnv = 'neutral';
+                                            } else {
+                                                viewer.environmentImage = '';
+                                                currentEnv = 'default';
+                                            }
+                                        }
+
+                                        function toggleAnnotations() {
+                                            const hotspots = document.querySelectorAll('.hotspot');
+                                            hotspots.forEach(h => h.style.display = h.style.display === 'none' ? 'block' : 'none');
+                                        }
+
+                                        // Load Hotspots from Metadata
+                                        document.addEventListener('DOMContentLoaded', () => {
+                                            const metadataRaw = '@Html.Raw(Model.Model3DMetadata)';
+                                            if (metadataRaw) {
+                                                try {
+                                                    const metadata = JSON.parse(metadataRaw);
+                                                    if (metadata.hotspots) {
+                                                        metadata.hotspots.forEach((hs, index) => {
+                                                            const button = document.createElement('button');
+                                                            button.className = 'hotspot';
+                                                            button.slot = `hotspot-${index}`;
+                                                            button.dataset.position = hs.position;
+                                                            button.dataset.normal = hs.normal;
+                                                            
+                                                            const annotation = document.createElement('div');
+                                                            annotation.className = 'hotspot-annotation';
+                                                            annotation.textContent = hs.text;
+                                                            
+                                                            button.appendChild(annotation);
+                                                            viewer.appendChild(button);
+                                                        });
+                                                    }
+                                                } catch (e) { console.error('Error parsing 3D metadata', e); }
+                                            }
+                                        });
+                                    </script>
+                                }
+
                                 <div class="slider-big slick-slider">
                                     @foreach (var image in Model.HinhAnhs)
                                     {
@@ -356,4 +457,104 @@
 @section Scripts {
     <script src="~/js//customer/comment.js" asp-append-version="true" ></script>
     <script>loadContainerComments('@Model.Id')</script>
+    
+    <style>
+        .product-3d-view {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .controls-3d {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 8px 15px;
+            border-radius: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            backdrop-filter: blur(5px);
+            z-index: 10;
+        }
+
+        .control-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+            color: #2c5e1a;
+            font-size: 18px;
+            transition: transform 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .control-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .hotspot {
+            display: block;
+            width: 20px;
+            height: 20px;
+            border-radius: 10px;
+            border: none;
+            background-color: #2c5e1a;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .hotspot::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: inherit;
+            transform: translate(-50%, -50%);
+            animation: pulse 2s infinite;
+        }
+
+        @@keyframes pulse {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+            100% { transform: translate(-50%, -50%) scale(2.5); opacity: 0; }
+        }
+
+        .hotspot-annotation {
+            background: #fff;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+            color: rgba(0, 0, 0, 0.8);
+            display: block;
+            font-family: Futura, Helvetica Neue, sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            left: calc(100% + 1em);
+            max-width: 128px;
+            overflow-wrap: break-word;
+            padding: 0.5em 1em;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: max-content;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .hotspot:hover .hotspot-annotation {
+            opacity: 1;
+        }
+
+        .control-btn.active {
+            color: #557e30;
+            filter: drop-shadow(0 0 5px rgba(85, 126, 48, 0.5));
+        }
+    </style>
 }

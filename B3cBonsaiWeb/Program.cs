@@ -102,11 +102,10 @@ namespace B3cBonsaiWeb
 
             if (builder.Configuration.GetValue<bool>("UseCloudinaryStorage"))
             {
-                builder.Services.AddScoped<IImageStorageService, CloudinaryImageStorageService>();
             }
             else
             {
-                builder.Services.AddScoped<IImageStorageService, LocalImageStorageService>();
+                builder.Services.AddScoped<IFileStorageService, LocalFileStorageService>();
             }
 
             builder.Services.AddHttpContextAccessor();

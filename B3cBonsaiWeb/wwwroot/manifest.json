@@ -1,0 +1,21 @@
+{
+  "name": "B3cBonsai - Premium Bonsai Store",
+  "short_name": "B3cBonsai",
+  "description": "Cửa hàng cây cảnh Bonsai cao cấp.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2c5e1a",
+  "icons": [
+    {
+      "src": "/customer/img/favicon/favicon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/customer/img/favicon/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

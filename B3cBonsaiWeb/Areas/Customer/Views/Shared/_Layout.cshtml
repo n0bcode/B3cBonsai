@@ -118,6 +118,13 @@
     </style>
 
 
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#2c5e1a">
+
+    <!-- model-viewer -->
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
+
 </head>
 <body>
     <partial name="_Notification" />
@@ -1441,6 +1448,7 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     <partial name="_ChatWidget" model="ViewBag.ProductId as int?" />
+    <partial name="_ServiceWorkerRegistration" />
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

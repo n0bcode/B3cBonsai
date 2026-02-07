@@ -67,5 +67,14 @@ namespace B3cBonsai.Models
 
         [ValidateNever]
         public virtual ICollection<VideoSanPham>? Videos { get; set; } // Khai báo quan hệ 1-n với video
+
+        [Display(Name = "Đường dẫn Model 3D")]
+        public string? Model3DPath { get; set; }
+
+        [Display(Name = "Sẵn sàng AR")]
+        public bool IsARReady { get; set; } = false;
+
+        [Display(Name = "Metadata 3D (JSON)")]
+        public string? Model3DMetadata { get; set; }
     }
 }

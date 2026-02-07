@@ -20,14 +20,14 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Admin
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IImageStorageService _imageStorageService;
+        private readonly IFileStorageService _fileStorageService;
         private readonly IUserStore<IdentityUser> _userStore;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ILogger<ManagerUserController> _logger;
         private readonly IEmailSender _emailSender;
         public ManagerUserController(UserManager<IdentityUser> userManager,
                                          IUnitOfWork unitOfWork,
-                                         IImageStorageService imageStorageService,
+                                         IFileStorageService fileStorageService,
                                          IUserStore<IdentityUser> userStore,
                                          RoleManager<IdentityRole> roleManager,
                                          ILogger<ManagerUserController> logger,
@@ -37,7 +37,7 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Admin
             _roleManager = roleManager;
             _unitOfWork = unitOfWork;
             _userStore = userStore;
-            _imageStorageService = imageStorageService;
+            _fileStorageService = fileStorageService;
             _logger = logger;
             _emailSender = emailSender;
         }
@@ -191,7 +191,7 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Admin
             // Xóa hình ảnh người dùng
             if (!string.IsNullOrEmpty(user.LinkAnh))
             {
-                await _imageStorageService.DeleteImageAsync(user.LinkAnh);
+                await _fileStorageService.DeleteFileAsync(user.LinkAnh);
             }
 
             var result = await _userManager.DeleteAsync(user);

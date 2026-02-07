@@ -84,6 +84,41 @@
                     <textarea asp-for="SanPham.MoTa" rows="4" class="form-control tinymce" required id="ckeditor"></textarea>
                     <span asp-validation-for="SanPham.MoTa" class="text-danger"></span>
                 </div>
+
+                <!-- 3D & AR Management -->
+                <div class="col-xl-6 mb-3">
+                    <label class="form-label">Tải lên Model 3D (.glb)</label>
+                    <input type="file" name="Model3DFile" class="form-control" accept=".glb" />
+                    @if (!string.IsNullOrEmpty(Model.SanPham.Model3DPath))
+                    {
+                        <div class="mt-2 text-success">
+                            <i class="fa fa-check"></i> Đã có Model 3D: @Model.SanPham.Model3DPath
+                        </div>
+                    }
+                </div>
+
+                <div class="col-xl-6 mb-3">
+                    <label asp-for="SanPham.IsARReady" class="form-label">Sẵn sàng AR</label>
+                    <div class="form-check form-switch mt-2">
+                        <input asp-for="SanPham.IsARReady" class="form-check-input" type="checkbox" role="switch">
+                        <label class="form-check-label" for="SanPham_IsARReady">Cho phép xem trong AR</label>
+                    </div>
+                </div>
+
+                <div class="col-xl-12 mb-3">
+                    <label class="form-label">Điểm chú thích 3D (Hotspots)</label>
+                    <div id="hotspot-editor" class="border p-3 rounded bg-light">
+                        <div id="hotspot-list" class="mb-2">
+                            <!-- Hotspots will be added here -->
+                        </div>
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="addHotspotRow()">
+                            <i class="fa fa-plus"></i> Thêm điểm chú thích
+                        </button>
+                    </div>
+                    <input type="hidden" asp-for="SanPham.Model3DMetadata" id="Model3DMetadataInput" />
+                    <small class="text-muted">Thêm các điểm chú thích để hiển thị trên model 3D.</small>
+                    <span asp-validation-for="SanPham.Model3DMetadata" class="text-danger"></span>
+                </div>
             </div>
             <div class="d-flex justify-content-between">
                 <button type="button" class="btn btn-danger light" data-bs-dismiss="offcanvas">Hủy</button>
@@ -95,9 +130,73 @@
 
 
 <script>
+    // Hotspot Editor Logic
+    let hotspots = [];
+
+    function initHotspotEditor() {
+        const metadataRaw = $('#Model3DMetadataInput').val();
+        if (metadataRaw) {
+            try {
+                const data = JSON.parse(metadataRaw);
+                hotspots = data.hotspots || [];
+            } catch (e) { hotspots = []; }
+        }
+        renderHotspots();
+    }
+
+    function renderHotspots() {
+        const container = $('#hotspot-list');
+        container.empty();
+        hotspots.forEach((hs, index) => {
+            const row = $(`
+                <div class="row g-2 mb-2 align-items-center hotspot-row">
+                    <div class="col-md-5">
+                        <input type="text" class="form-control form-control-sm hs-pos" placeholder="Vị trí (vd: 0m 1m 0m)" value="${hs.position}">
+                    </div>
+                    <div class="col-md-5">
+                        <input type="text" class="form-control form-control-sm hs-text" placeholder="Nội dung chú thích" value="${hs.text}">
+                    </div>
+                    <div class="col-md-2 text-end">
+                        <button type="button" class="btn btn-danger btn-sm" onclick="removeHotspot(${index})">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            `);
+            container.append(row);
+        });
+        updateMetadata();
+    }
+
+    function addHotspotRow() {
+        hotspots.push({ position: "0m 0m 0m", text: "New Hotspot" });
+        renderHotspots();
+    }
+
+    function removeHotspot(index) {
+        hotspots.splice(index, 1);
+        renderHotspots();
+    }
+
+    function updateMetadata() {
+        const currentData = [];
+        $('.hotspot-row').each(function() {
+            currentData.push({
+                position: $(this).find('.hs-pos').val(),
+                text: $(this).find('.hs-text').val()
+            });
+        });
+        $('#Model3DMetadataInput').val(JSON.stringify({ hotspots: currentData }));
+    }
+
+    $(document).on('change', '.hs-pos, .hs-text', updateMetadata);
+    
+    initHotspotEditor();
+
     // Xử lý khi form được submit
     $("#upsertForm").on("submit", function(e) {
-        e.preventDefault(); // Ngăn không cho form submit thông thường
+        updateMetadata(); // Ensure metadata is fresh
+        e.preventDefault(); 
 
         // Lấy dữ liệu từ form
         var formData = new FormData(this);

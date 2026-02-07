@@ -18,12 +18,12 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
     public class ManagerProductController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IImageStorageService _imageStorageService;
+        private readonly IFileStorageService _fileStorageService;
 
-        public ManagerProductController(IUnitOfWork unitOfWork, IImageStorageService imageStorageService)
+        public ManagerProductController(IUnitOfWork unitOfWork, IFileStorageService fileStorageService)
         {
             _unitOfWork = unitOfWork;
-            _imageStorageService = imageStorageService;
+            _fileStorageService = fileStorageService;
         }
 
         [Authorize(Roles = $"{SD.Role_Admin},{SD.Role_Staff}")]
@@ -57,7 +57,7 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Upsert(SanPhamVM model, IFormFile[] HinhAnhs)
+        public async Task<IActionResult> Upsert(SanPhamVM model, IFormFile[] HinhAnhs, IFormFile Model3DFile)
         {
             string viewHtml = null;
             if (ModelState.IsValid)
@@ -70,7 +70,7 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
 
                     if (HinhAnhs != null && HinhAnhs.Any())
                     {
-                        var imageUrls = await _imageStorageService.StoreImagesAsync(HinhAnhs, "product");
+                        var imageUrls = await _fileStorageService.StoreFilesAsync(HinhAnhs, "product");
                         foreach (var imageUrl in imageUrls)
                         {
                             var image = new HinhAnhSanPham
@@ -80,6 +80,22 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
                             };
                             _unitOfWork.HinhAnhSanPham.Add(image);
                         }
+                        _unitOfWork.Save();
+                    }
+
+                    // Handle 3D Model
+                    if (Model3DFile != null)
+                    {
+                        // Validation: Max 50MB
+                        if (Model3DFile.Length > 50 * 1024 * 1024)
+                        {
+                            ModelState.AddModelError("Model3DFile", "Kích thước model 3D không được vượt quá 50MB.");
+                            model.DanhMucSanPham = await DanhMucSanPham();
+                            return Json(new { success = false, data = await this.RenderViewAsync("Upsert", model, true) });
+                        }
+                        var modelPath = await _fileStorageService.StoreFileAsync(Model3DFile, "product", "models");
+                        model.SanPham.Model3DPath = modelPath;
+                        _unitOfWork.SanPham.Update(model.SanPham);
                         _unitOfWork.Save();
                     }
                 }
@@ -94,6 +110,27 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
                         existingProduct.SoLuong = model.SanPham.SoLuong;
                         existingProduct.Gia = model.SanPham.Gia;
                         existingProduct.MoTa = model.SanPham.MoTa;
+                        existingProduct.IsARReady = model.SanPham.IsARReady;
+                        existingProduct.Model3DMetadata = model.SanPham.Model3DMetadata;
+
+                        // Handle 3D Model Upload
+                        if (Model3DFile != null)
+                        {
+                            // Validation: Max 50MB
+                            if (Model3DFile.Length > 50 * 1024 * 1024)
+                            {
+                                ModelState.AddModelError("Model3DFile", "Kích thước model 3D không được vượt quá 50MB.");
+                                model.DanhMucSanPham = await DanhMucSanPham();
+                                return Json(new { success = false, data = await this.RenderViewAsync("Upsert", model, true) });
+                            }
+
+                            // Delete old model if exists
+                            if (!string.IsNullOrEmpty(existingProduct.Model3DPath))
+                            {
+                                await _fileStorageService.DeleteFileAsync(existingProduct.Model3DPath);
+                            }
+                            existingProduct.Model3DPath = await _fileStorageService.StoreFileAsync(Model3DFile, "product", "models");
+                        }
 
                         // Cập nhật sản phẩm vào cơ sở dữ liệu
                         _unitOfWork.SanPham.Update(existingProduct);
@@ -111,13 +148,13 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
                             // Xóa những hình ảnh cũ (xóa cả trong cơ sở dữ liệu và file system)
                             foreach (var image in existingImages)
                             {
-                                await _imageStorageService.DeleteImageAsync(image.LinkAnh);
+                                await _fileStorageService.DeleteFileAsync(image.LinkAnh);
                                 _unitOfWork.HinhAnhSanPham.Remove(image); // Xóa hình ảnh khỏi cơ sở dữ liệu
                             }
                             _unitOfWork.Save();
 
                             // Xử lý hình ảnh mới mà người dùng đã tải lên
-                            var newImageUrls = await _imageStorageService.StoreImagesAsync(HinhAnhs, "product");
+                            var newImageUrls = await _fileStorageService.StoreFilesAsync(HinhAnhs, "product");
                             foreach (var imageUrl in newImageUrls)
                             {
                                 var newImage = new HinhAnhSanPham
