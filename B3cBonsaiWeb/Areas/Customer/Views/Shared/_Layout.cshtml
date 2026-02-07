@@ -1440,6 +1440,7 @@
     <script src="~/js/customer/notification.js" asp-append-version="true"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
+    <partial name="_ChatWidget" model="ViewBag.ProductId as int?" />
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

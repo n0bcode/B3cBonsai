@@ -249,6 +249,7 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
                     return NotFound(); // Sản phẩm không tìm thấy
                 }
 
+                ViewBag.ProductId = id;
                 return View("DetailProduct", product);
             }
             else
@@ -264,6 +265,7 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
                     return NotFound(); // Sản phẩm không tìm thấy
                 }
 
+                ViewBag.ProductId = id;
                 return View("DetailCombo", combo);
 
             }
