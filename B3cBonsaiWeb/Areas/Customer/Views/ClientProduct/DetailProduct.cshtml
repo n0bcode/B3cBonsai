@@ -1,13 +1,25 @@
-﻿@model B3cBonsai.Models.SanPham
+@model B3cBonsai.Models.SanPham
 
 @using System.Net
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
+@{
+    var currentUrl = $"{HttpContextAccessor?.HttpContext?.Request.Scheme}://{HttpContextAccessor?.HttpContext?.Request.Host}{HttpContextAccessor?.HttpContext?.Request.Path}{HttpContextAccessor?.HttpContext?.Request.QueryString}";
 
+    // Đảm bảo currentUrl không bị null
+    if (string.IsNullOrEmpty(currentUrl))
+    {
+        currentUrl = "https://default-url.com";  // Thay thế URL mặc định nếu currentUrl không hợp lệ
+    }
 
+    var encodedUrl = WebUtility.UrlEncode(currentUrl);
 
-
+    // Kiểm tra các giá trị model có hợp lệ
+    var productTitle = Model?.TenSanPham ?? "Tên sản phẩm mặc định";  // Nếu không có tên, sử dụng tên mặc định
+    var productDescription = Model?.MoTa ?? "Mô tả sản phẩm mặc định";  // Nếu không có mô tả, sử dụng mô tả mặc định
+    var productImage = Model?.HinhAnhs?.FirstOrDefault()?.LinkAnh ?? "https://default-image-url.com/image.jpg";  // Hình ảnh mặc định nếu không có
+}
 
 <!-- breadcrumb start -->
 <section class="breadcrumb-area">
@@ -392,23 +404,6 @@
                                 <div class="pro-social">
                                     <ul class="social-icon">
                                         <li>
-                                            @{
-                                                var currentUrl = $"{HttpContextAccessor?.HttpContext?.Request.Scheme}://{HttpContextAccessor?.HttpContext?.Request.Host}{HttpContextAccessor?.HttpContext?.Request.Path}{HttpContextAccessor?.HttpContext?.Request.QueryString}";
-
-                                                // Đảm bảo currentUrl không bị null
-                                                if (string.IsNullOrEmpty(currentUrl))
-                                                {
-                                                    currentUrl = "https://default-url.com";  // Thay thế URL mặc định nếu currentUrl không hợp lệ
-                                                }
-
-                                                var encodedUrl = WebUtility.UrlEncode(currentUrl);
-
-                                                // Kiểm tra các giá trị model có hợp lệ
-                                                var productTitle = Model?.TenSanPham ?? "Tên sản phẩm mặc định";  // Nếu không có tên, sử dụng tên mặc định
-                                                var productDescription = Model?.MoTa ?? "Mô tả sản phẩm mặc định";  // Nếu không có mô tả, sử dụng mô tả mặc định
-                                                var productImage = Model?.HinhAnhs?.FirstOrDefault()?.LinkAnh ?? "https://default-image-url.com/image.jpg";  // Hình ảnh mặc định nếu không có
-                                            }
-
                                             <!-- Open Graph Meta Tags -->
                                             <meta property="og:url" content="@currentUrl" />
                                             <meta property="og:title" content="@productTitle" />
