@@ -80,7 +80,12 @@
                 </div>
 
                 <div class="col-xl-12 mb-3 custom-ekeditor">
-                    <label asp-for="SanPham.MoTa" class="form-label">Mô tả</label>
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <label asp-for="SanPham.MoTa" class="form-label mb-0">Mô tả</label>
+                        <button type="button" class="btn btn-info btn-xs" onclick="generateAIDescription()">
+                            <i class="fa fa-magic"></i> AI Gợi ý mô tả
+                        </button>
+                    </div>
                     <textarea asp-for="SanPham.MoTa" rows="4" class="form-control tinymce" required id="ckeditor"></textarea>
                     <span asp-validation-for="SanPham.MoTa" class="text-danger"></span>
                 </div>
@@ -88,7 +93,12 @@
                 <!-- 3D & AR Management -->
                 <div class="col-xl-6 mb-3">
                     <label class="form-label">Tải lên Model 3D (.glb)</label>
-                    <input type="file" name="Model3DFile" class="form-control" accept=".glb" />
+                    <div class="input-group">
+                        <input type="file" name="Model3DFile" class="form-control" accept=".glb" />
+                        <button type="button" class="btn btn-info btn-sm" onclick="requestAI3DGeneration()">
+                            <i class="fa fa-cube"></i> AI Tạo 3D
+                        </button>
+                    </div>
                     @if (!string.IsNullOrEmpty(Model.SanPham.Model3DPath))
                     {
                         <div class="mt-2 text-success">
@@ -107,16 +117,52 @@
 
                 <div class="col-xl-12 mb-3">
                     <label class="form-label">Điểm chú thích 3D (Hotspots)</label>
-                    <div id="hotspot-editor" class="border p-3 rounded bg-light">
-                        <div id="hotspot-list" class="mb-2">
-                            <!-- Hotspots will be added here -->
+                    <div class="row">
+                        <!-- 3D Preview Column -->
+                        <div class="col-md-6 mb-3">
+                            <div class="border rounded bg-dark position-relative" style="height: 400px; overflow: hidden;">
+                                @if (!string.IsNullOrEmpty(Model.SanPham.Model3DPath))
+                                {
+                                    <model-viewer id="hotspot-previewer"
+                                                  src="@Model.SanPham.Model3DPath"
+                                                  camera-controls
+                                                  touch-action="none"
+                                                  style="width: 100%; height: 100%; background-color: #eee;">
+                                        <div slot="hotspot-template" class="hotspot-template d-none">
+                                            <div class="hotspot-dot"></div>
+                                        </div>
+                                    </model-viewer>
+                                    <div class="position-absolute bottom-0 start-0 p-2 bg-dark text-white opacity-75 small w-100">
+                                        <i class="fa fa-mouse-pointer"></i> Click vào Model để thêm chú thích
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="d-flex align-items-center justify-content-center h-100 text-muted">
+                                        Vui lòng tải lên model (.glb) để xem bản xem trước
+                                    </div>
+                                }
+                            </div>
                         </div>
-                        <button type="button" class="btn btn-secondary btn-sm" onclick="addHotspotRow()">
-                            <i class="fa fa-plus"></i> Thêm điểm chú thích
-                        </button>
+                        <!-- List Editor Column -->
+                        <div class="col-md-6">
+                            <div id="hotspot-editor" class="border p-3 rounded bg-light h-100" style="max-height: 400px; overflow-y: auto;">
+                                <div id="hotspot-list" class="mb-2">
+                                    <!-- Hotspots will be added here -->
+                                </div>
+                                <div class="d-flex gap-2">
+                                    <button type="button" class="btn btn-secondary btn-sm" onclick="addHotspotRow()">
+                                        <i class="fa fa-plus"></i> Thêm điểm
+                                    </button>
+                                    <button type="button" class="btn btn-info btn-sm" onclick="suggestAIHotspots()">
+                                        <i class="fa fa-magic"></i> AI Gợi ý điểm & nội dung
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <input type="hidden" asp-for="SanPham.Model3DMetadata" id="Model3DMetadataInput" />
-                    <small class="text-muted">Thêm các điểm chú thích để hiển thị trên model 3D.</small>
+                    <small class="text-muted">Admin: Click vào mô hình 3D bên trái để lấy vị trí chính xác.</small>
                     <span asp-validation-for="SanPham.Model3DMetadata" class="text-danger"></span>
                 </div>
             </div>
@@ -129,6 +175,7 @@
 </div>
 
 
+<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"></script>
 <script>
     // Hotspot Editor Logic
     let hotspots = [];
@@ -142,19 +189,51 @@
             } catch (e) { hotspots = []; }
         }
         renderHotspots();
+        setupModelClick();
+    }
+
+    function setupModelClick() {
+        const viewer = document.querySelector('#hotspot-previewer');
+        if (!viewer) return;
+
+        viewer.addEventListener('click', (event) => {
+            const rect = viewer.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+
+            const hit = viewer.positionAndNormalFromPoint(x, y);
+            if (hit) {
+                const pos = `${hit.position.x}m ${hit.position.y}m ${hit.position.z}m`;
+                const norm = `${hit.normal.x}m ${hit.normal.y}m ${hit.normal.z}m`; // Optional if needed
+                
+                hotspots.push({ 
+                    position: pos, 
+                    text: "New Point " + (hotspots.length + 1)
+                });
+                renderHotspots();
+                toastr.info("Đã thêm điểm chú thích tại vị trí vừa click");
+            }
+        });
     }
 
     function renderHotspots() {
         const container = $('#hotspot-list');
         container.empty();
+        
+        // Clear old hotspots from viewer
+        const viewer = document.querySelector('#hotspot-previewer');
+        if (viewer) {
+            $(viewer).find('button.hotspot-preview-dot').remove();
+        }
+
         hotspots.forEach((hs, index) => {
             const row = $(`
                 <div class="row g-2 mb-2 align-items-center hotspot-row">
                     <div class="col-md-5">
-                        <input type="text" class="form-control form-control-sm hs-pos" placeholder="Vị trí (vd: 0m 1m 0m)" value="${hs.position}">
+                        <input type="text" class="form-control form-control-sm hs-pos" placeholder="Vị trí" value="${hs.position}">
                     </div>
                     <div class="col-md-5">
-                        <input type="text" class="form-control form-control-sm hs-text" placeholder="Nội dung chú thích" value="${hs.text}">
+                        <input type="text" class="form-control form-control-sm hs-text" placeholder="Nội dung" value="${hs.text}">
                     </div>
                     <div class="col-md-2 text-end">
                         <button type="button" class="btn btn-danger btn-sm" onclick="removeHotspot(${index})">
@@ -164,6 +243,16 @@
                 </div>
             `);
             container.append(row);
+
+            // Add preview dot to model
+            if (viewer) {
+                const dot = document.createElement('button');
+                dot.classList.add('hotspot-preview-dot');
+                dot.slot = `hotspot-item-${index}`;
+                dot.dataset.position = hs.position;
+                dot.style.cssText = "width: 15px; height: 15px; border-radius: 50%; background: #f00; border: 2px solid #fff; cursor: pointer;";
+                viewer.appendChild(dot);
+            }
         });
         updateMetadata();
     }
@@ -192,6 +281,58 @@
     $(document).on('change', '.hs-pos, .hs-text', updateMetadata);
     
     initHotspotEditor();
+
+    function requestAI3DGeneration() {
+        toastr.info("Tính năng đang được phát triển: Kết nối với Meshy.ai / Luma AI để tạo mô hình từ ảnh.");
+        // Workflow: Check if images exist -> Send to API -> Long polling for result -> Save GLB
+    }
+
+    function generateAIDescription() {
+        const name = $('#SanPham_TenSanPham').val();
+        const category = $('#SanPham_DanhMucId option:selected').text();
+        
+        if (!name || !category || category === "Chọn danh mục") {
+            toastr.warning("Vui lòng nhập tên và chọn danh mục trước khi dùng AI.");
+            return;
+        }
+
+        toastr.info("Đang khởi tạo mô tả bằng AI...");
+        $.post('/Employee/ManagerProduct/GenerateDescription', { name, category, features: "" }, function(res) {
+            if (res.success) {
+                tinymce.get('ckeditor').setContent(res.description);
+                toastr.success("Đã tạo mô tả thành công!");
+            }
+        });
+    }
+
+    function suggestAIHotspots() {
+        const name = $('#SanPham_TenSanPham').val();
+        const description = tinymce.get('ckeditor').getContent({format: 'text'});
+
+        if (!name || !description) {
+            toastr.warning("Vui lòng nhập tên và mô tả trước khi dùng AI gợi ý Hotspots.");
+            return;
+        }
+
+        toastr.info("AI đang phân tích và gợi ý các điểm chú thích...");
+        $.post('/Employee/ManagerProduct/SuggestHotspots', { name, description }, function(res) {
+            if (res.success) {
+                try {
+                    const suggested = JSON.parse(res.hotspots);
+                    // Add AI suggested hotspots as unpositioned points if model not clicked yet
+                    // or just fill the text for existing ones? Let's add new ones.
+                    suggested.forEach(item => {
+                        hotspots.push({ 
+                            position: "0m 1m 0m", 
+                            text: `[AI] ${item.title}: ${item.description}` 
+                        });
+                    });
+                    renderHotspots();
+                    toastr.success("Đã nhận gợi ý điểm chú thích từ AI!");
+                } catch(e) { console.error(e); }
+            }
+        });
+    }
 
     // Xử lý khi form được submit
     $("#upsertForm").on("submit", function(e) {
