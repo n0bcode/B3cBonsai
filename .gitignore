@@ -508,3 +508,8 @@ package-lock.json
 # Heroku build output
 published/
 .env.example
+.kilocodemodes
+.clinerules/*
+.gemini/*
+.opencode/*
+.cursor/*
