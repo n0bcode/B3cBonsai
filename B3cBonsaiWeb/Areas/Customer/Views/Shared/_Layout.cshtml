@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title> Trang Chủ</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <!-- <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" /> -->
     <!-- favicon -->
     <link rel="icon" type="image/x-icon" href="~/customer/img/favicon/favicon.png" asp-append-version="true" />
     <!-- bootstrap css -->
@@ -117,6 +117,13 @@
         }
     </style>
 
+
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#2c5e1a">
+
+    <!-- model-viewer -->
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
 
 </head>
 <body>
@@ -1388,11 +1395,11 @@
     </div>
     <!-- bottom-menu end -->
     @* đây là code của boxchat *@
-    <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+    @* <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
     <df-messenger intent="WELCOME"
                   chat-title="Burn🔥Bug🔥Burn🔥Code"
                   agent-id="d429dc9b-7731-49cd-b0c3-0a382d3b8ebb"
-                  language-code="vi"></df-messenger>
+                  language-code="vi"></df-messenger> *@
 
 
     <style>
@@ -1404,16 +1411,14 @@
 
 
 
-    <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js" asp-append-version="true"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" asp-append-version="true"></script>
 
     <!-- jquery js -->
     <script src="~/customer/js/jquery-3.6.3.min.js" asp-append-version="true"></script>
     <!-- bootstrap js -->
-    <script src="~/customer/js/popper.min.js" asp-append-version="true"></script>
-    <script src="~/customer/js/bootstrap.min.js" asp-append-version="true"></script>
+    <!-- <script src="~/customer/js/popper.min.js" asp-append-version="true"></script> -->
+    <!-- <script src="~/customer/js/bootstrap.min.js" asp-append-version="true"></script> -->
     <!-- magnific-popup js -->
     <script src="~/customer/js/jquery.magnific-popup.min.js" asp-append-version="true"></script>
     <!-- owl-carousel js -->
@@ -1440,6 +1445,8 @@
     <script src="~/js/customer/notification.js" asp-append-version="true"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
+    <partial name="_ChatWidget" model="ViewBag.ProductId as int?" />
+    <partial name="_ServiceWorkerRegistration" />
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

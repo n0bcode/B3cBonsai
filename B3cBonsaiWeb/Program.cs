@@ -8,12 +8,14 @@ using B3cBonsai.Utility.Helper;
 using B3cBonsai.Utility.Services;
 using B3cBonsai.Utility.Services.Email;
 using B3cBonsai.Utility.Services.Email.Abstractions;
+using B3cBonsai.Utility.Services.AI;
 using B3cBonsaiWeb.Attributes;
 using B3cBonsaiWeb.Services.Notification;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Facebook;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.MicrosoftAccount;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
@@ -39,6 +41,11 @@ namespace B3cBonsaiWeb
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(30);
             });
+
+            // Config Data Protection to persist keys (fixes warning on restart)
+            builder.Services.AddDataProtection()
+                .PersistKeysToFileSystem(new DirectoryInfo(Path.Combine(builder.Environment.ContentRootPath, "DataProtection-Keys")))
+                .SetApplicationName("B3cBonsai");
 
             // Add DbContext with provider switching
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -101,15 +108,15 @@ namespace B3cBonsaiWeb
 
             if (builder.Configuration.GetValue<bool>("UseCloudinaryStorage"))
             {
-                builder.Services.AddScoped<IImageStorageService, CloudinaryImageStorageService>();
             }
             else
             {
-                builder.Services.AddScoped<IImageStorageService, LocalImageStorageService>();
+                builder.Services.AddScoped<IFileStorageService, LocalFileStorageService>();
             }
 
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddScoped<IVnPayService, VnPayService>();
+            builder.Services.AddScoped<IAIService, GeminiAIService>();
             builder.Services.AddScoped<NotificationService>();
 
             builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
@@ -117,7 +124,14 @@ namespace B3cBonsaiWeb
             builder.Services.AddSingleton<TelegramService>(sp =>
             {
                 var token = builder.Configuration["TelegramBot:Token"];
-                return new TelegramService(token);
+                var logger = sp.GetRequiredService<ILogger<TelegramService>>();
+
+                if (string.IsNullOrEmpty(token))
+                {
+                     // Return service with dummy token and logger
+                     return new TelegramService("dummy_token_to_prevent_crash_check_appsettings", logger);
+                }
+                return new TelegramService(token, logger);
             });
 
             var app = builder.Build();
@@ -126,10 +140,21 @@ namespace B3cBonsaiWeb
             {
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
+                app.UseHttpsRedirection();
             }
 
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
+            // app.UseHttpsRedirection();
+            
+            // Set up custom content types - associating file extension to MIME type
+            var provider = new Microsoft.AspNetCore.StaticFiles.FileExtensionContentTypeProvider();
+            // Add or overwrite 3D model mappings
+            provider.Mappings[".glb"] = "model/gltf-binary";
+            provider.Mappings[".gltf"] = "model/gltf+json";
+
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                ContentTypeProvider = provider
+            });
 
             app.UseRouting();
 

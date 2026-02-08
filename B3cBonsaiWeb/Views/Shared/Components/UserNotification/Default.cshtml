@@ -71,6 +71,27 @@
             }
         </div>
     </li>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const trigger = document.getElementById('notificationDropdown');
+            const menu = document.querySelector('#notification-container .dropdown-menu');
+
+            if (trigger && menu) {
+                trigger.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    menu.classList.toggle('show');
+                    menu.classList.add('d-block');
+                });
+
+                document.addEventListener('click', function (e) {
+                    if (!document.getElementById('notification-container').contains(e.target)) {
+                        menu.classList.remove('show');
+                        menu.classList.remove('d-block');
+                    }
+                });
+            }
+        });
+    </script>
 }
 
 @functions {
@@ -91,24 +112,3 @@
         return time.ToString("dd/MM/yyyy");
     }
 }
-
-
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const trigger = document.querySelector('#notificationDropdown');
-        const menu = document.querySelector('#notification-container .dropdown-menu');
-
-        trigger.addEventListener('click', function (e) {
-            e.preventDefault();
-            menu.classList.toggle('show');
-            menu.classList.add('d-block');
-        });
-
-        document.addEventListener('click', function (e) {
-            if (!document.querySelector('#notification-container').contains(e.target)) {
-                menu.classList.remove('show');
-                menu.classList.remove('d-block');
-            }
-        });
-    });
-</script>

@@ -1,4 +1,4 @@
-﻿var dataTable;
+var dataTable;
 
 function loadDataTable() {
     dataTable = $('#products-table').DataTable({
@@ -107,29 +107,7 @@ $(document).ready(function () {
 
 
     $('#upsertObject').on('shown.bs.offcanvas', function () {
-        tinymce.init({
-            selector: 'textarea.tinymce',
-            plugins: [
-                // Core editing features
-                'anchor', 'autolink', 'charmap', 'codesample', 'emoticons', 'image', 'lists', 'table', 'visualblocks', 'wordcount',
-                // Your account includes a free trial of TinyMCE premium features
-                // Try the most popular premium features until Nov 7, 2024:
-                'checklist', 'mediaembed', 'casechange', 'export', 'formatpainter', 'pageembed', 'a11ychecker', 'tinymcespellchecker', 'permanentpen', 'powerpaste', 'advtable', 'advcode', 'editimage', 'advtemplate', 'ai', 'mentions', 'tinycomments', 'tableofcontents', 'footnotes', 'mergetags', 'autocorrect', 'typography', 'inlinecss', 'markdown',
-                // Early access to document converters
-                'importword', 'exportword', 'exportpdf'
-            ],
-            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | align lineheight | checklist numlist bullist indent outdent',
-            tinycomments_mode: 'embedded',
-            tinycomments_author: 'Author name',
-            mergetags_list: [
-                { value: 'First.Name', title: 'First Name' },
-                { value: 'Email', title: 'Email' },
-            ],
-            ai_request: (request, respondWith) => respondWith.string(() => Promise.reject('See docs to implement AI Assistant')),
-            exportpdf_converter_options: { 'format': 'Letter', 'margin_top': '1in', 'margin_right': '1in', 'margin_bottom': '1in', 'margin_left': '1in' },
-            exportword_converter_options: { 'document': { 'size': 'Letter' } },
-            importword_converter_options: { 'formatting': { 'styles': 'inline', 'resets': 'inline', 'defaults': 'inline', } },
-        });
+       // Logic cũ đã được chuyển vào initUpsertForm()
     });
 });
 
@@ -158,11 +136,61 @@ const loadViewUpsert = (id) => {
         method: 'GET',
         success: (data) => {
             $('#upsertObject').html(data);
+            initUpsertForm(); // Khởi tạo form và các sự kiện
         },
         error: (xhr) => {
             toastr.error("Lỗi tạo form tạo đối tượng người dùng.")
         }
     })
+}
+
+function initUpsertForm() {
+    // 1. Init TinyMCE
+    if (tinymce.get('ckeditor')) {
+        tinymce.get('ckeditor').remove();
+    }
+    tinymce.init({
+        selector: 'textarea.tinymce',
+        plugins: [
+            'anchor', 'autolink', 'charmap', 'codesample', 'emoticons', 'image', 'link', 'lists', 'media', 'searchreplace', 'table', 'visualblocks', 'wordcount'
+        ],
+        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+    });
+
+    // 2. Init Instant 3D Preview
+    const fileInput = document.querySelector('input[name="Model3DFile"]');
+    if (fileInput) {
+        fileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                if (!file.name.toLowerCase().endsWith('.glb')) {
+                    toastr.warning("Vui lòng chọn file định dạng .glb");
+                    this.value = '';
+                    return;
+                }
+
+                const objectUrl = URL.createObjectURL(file);
+                const viewer = document.querySelector('#hotspot-previewer');
+                const placeholder = document.querySelector('#no-model-text');
+                const hint = document.querySelector('#click-hint');
+
+                if (viewer) {
+                    viewer.src = objectUrl;
+                    viewer.classList.remove('d-none');
+                    if (placeholder) placeholder.classList.add('d-none');
+                    if (hint) hint.classList.remove('d-none');
+                    
+                    // Reset hotspots
+                    if (typeof hotspots !== 'undefined') {
+                        hotspots = [];
+                        updateMetadata();
+                        renderHotspots();
+                    }
+                    toastr.info("Đã tải bản xem trước. Bạn có thể thêm điểm chú thích ngay bây giờ.");
+                }
+            }
+        });
+    }
 }
 
 
@@ -225,5 +253,20 @@ function DeleteDWD(id) {
                 }
             });
         }
+    });
+}
+
+function sendTestNotification() {
+    if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+        toastr.error("Trình duyệt không hỗ trợ Push Notifications");
+        return;
+    }
+
+    navigator.serviceWorker.ready.then(reg => {
+        reg.showNotification('B3cBonsai Test', {
+            body: 'Đây là thông báo kiểm tra từ hệ thống quản lý.',
+            icon: '/customer/img/favicon/favicon.png'
+        });
+        toastr.success("Đã gửi thông báo kiểm tra!");
     });
 }

@@ -160,23 +160,28 @@ function loadRightBarCart() {
 // Lấy phần tử giỏ hàng
 const cartDrawer = document.getElementById('cart-drawer');
 
-// Hàm kiểm tra class và gọi hàm khi có sự thay đổi
-function checkCartDrawer() {
-    if (cartDrawer.classList.contains('active')) {
-        loadRightBarCart();
+if (cartDrawer) {
+    // Hàm kiểm tra class và gọi hàm khi có sự thay đổi
+    function checkCartDrawer() {
+        if (cartDrawer.classList.contains('active')) {
+            loadRightBarCart();
+        }
+    }
+
+    // Theo dõi sự thay đổi class
+    const observer = new MutationObserver(checkCartDrawer);
+
+    // Bắt đầu theo dõi sự thay đổi class
+    observer.observe(cartDrawer, { attributes: true });
+
+    // Ví dụ về cách thêm class "active" (bạn có thể thay đổi theo cách bạn làm)
+    const drawerCloseBtn = document.querySelector('.drawer-close-btn');
+    if (drawerCloseBtn) {
+        drawerCloseBtn.addEventListener('click', () => {
+            cartDrawer.classList.toggle('active');
+        });
     }
 }
-
-// Theo dõi sự thay đổi class
-const observer = new MutationObserver(checkCartDrawer);
-
-// Bắt đầu theo dõi sự thay đổi class
-observer.observe(cartDrawer, { attributes: true });
-
-// Ví dụ về cách thêm class "active" (bạn có thể thay đổi theo cách bạn làm)
-document.querySelector('.drawer-close-btn').addEventListener('click', () => {
-    cartDrawer.classList.toggle('active');
-});
 
 
 // Tăng số lượng sản phẩm trong giỏ hàng

@@ -10,11 +10,11 @@ namespace B3cBonsai.DataAccess.Repository
     public class NguoiDungUngDungRepository : Repository<NguoiDungUngDung>, INguoiDungUngDungRepository
     {
         private ApplicationDbContext _db;
-        private readonly IImageStorageService _imageStorageService;
-        public NguoiDungUngDungRepository(ApplicationDbContext db, IImageStorageService imageStorageService) : base(db)
+        private readonly IFileStorageService _fileStorageService;
+        public NguoiDungUngDungRepository(ApplicationDbContext db, IFileStorageService fileStorageService) : base(db)
         {
             _db = db;
-            _imageStorageService = imageStorageService;
+            _fileStorageService = fileStorageService;
         }
         public async Task UpdateUserInfoAndImage(NguoiDungUngDung obj, IFormFile? file = null)
         {
@@ -37,12 +37,12 @@ namespace B3cBonsai.DataAccess.Repository
                     // Delete the old image if it exists
                     if (!string.IsNullOrEmpty(nguoiDungUngDung.LinkAnh))
                     {
-                        await _imageStorageService.DeleteImageAsync(nguoiDungUngDung.LinkAnh);
+                        await _fileStorageService.DeleteFileAsync(nguoiDungUngDung.LinkAnh);
                     }
 
                     // Save the new image
                     string subfolder = $"user/user-{obj.Id}";
-                    nguoiDungUngDung.LinkAnh = await _imageStorageService.StoreImageAsync(file, subfolder);
+                    nguoiDungUngDung.LinkAnh = await _fileStorageService.StoreFileAsync(file, subfolder);
                 }
 
                 // Update the user details in database

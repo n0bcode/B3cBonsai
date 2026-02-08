@@ -1,4 +1,4 @@
-﻿using B3cBonsai.DataAccess.Data;
+using B3cBonsai.DataAccess.Data;
 using B3cBonsai.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,10 +13,10 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
     public class ManagerComboController : Controller
     {
         private readonly ApplicationDbContext _db;
-        private readonly IImageStorageService _imageStorageService;
-        public ManagerComboController(ApplicationDbContext db, IImageStorageService imageStorageService) { 
+        private readonly IFileStorageService _fileStorageService;
+        public ManagerComboController(ApplicationDbContext db, IFileStorageService fileStorageService) { 
             _db = db;
-            _imageStorageService = imageStorageService;
+            _fileStorageService = fileStorageService;
         }
         [Authorize(Roles = $"{SD.Role_Admin},{SD.Role_Staff}")]
         public IActionResult Index()
@@ -61,11 +61,11 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
                         // Xóa hình ảnh cũ nếu có
                         if (!string.IsNullOrEmpty(obj.LinkAnh))
                         {
-                            await _imageStorageService.DeleteImageAsync(obj.LinkAnh);
+                            await _fileStorageService.DeleteFileAsync(obj.LinkAnh);
                         }
 
                         // Lưu hình ảnh mới
-                        obj.LinkAnh = await _imageStorageService.StoreImageAsync(file, "combo");
+                        obj.LinkAnh = await _fileStorageService.StoreFileAsync(file, "combo");
                     }
 
                     if (obj.Id == 0) // Thêm mới nếu Id là 0
@@ -175,8 +175,11 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
 					ChiTietCombos = cbo.ChiTietCombos.Select(ct => new
 					{
 						ct.Id,
-						ct.SanPham,
-						// Include other fields you need, but avoid nested `Combo` references
+						SanPham = new {
+                            ct.SanPham.Id,
+                            ct.SanPham.TenSanPham,
+                            ct.SanPham.Gia
+                        }
 					})
 				})
 				.ToListAsync();

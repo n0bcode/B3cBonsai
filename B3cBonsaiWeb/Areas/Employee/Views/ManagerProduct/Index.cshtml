@@ -1,4 +1,4 @@
-﻿@{
+@{
     ViewData["Title"] = "Danh mục sản phẩm";
     Layout = "~/Areas/Employee/Views/Shared/_Layout.cshtml";
 }
@@ -28,6 +28,9 @@
                             <div class="tbl-caption">
                                 <h4 class="heading mb-0">Sản phẩm</h4>
                                 <div>
+                                    <button onclick="sendTestNotification()" class="btn btn-info btn-sm me-2">
+                                        <i class="fa fa-bell"></i> Test Thử Thông Báo
+                                    </button>
                                     <a onclick="loadViewUpsert('')" class="btn btn-primary btn-sm"
                                         data-bs-toggle="offcanvas" href="#upsertObject" role="button"
                                         aria-controls="upsertObject">+ Thêm sản phẩm</a>
@@ -91,7 +94,7 @@
 
 
 @section Scripts {
-    <script src="~/js/employee/ManagerProduct.js" asp-append-version="true"></script>
+    <script src="~/js/employee/managerProduct.js" asp-append-version="true"></script>
 }
 
 

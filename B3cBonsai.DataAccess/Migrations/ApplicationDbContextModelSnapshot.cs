@@ -384,7 +384,16 @@ namespace B3cBonsai.DataAccess.Migrations
                     b.Property<int>("Gia")
                         .HasColumnType("integer");
 
+                    b.Property<bool>("IsARReady")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("MoTa")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Model3DMetadata")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Model3DPath")
                         .HasColumnType("text");
 
                     b.Property<DateTimeOffset>("NgaySuaDoi")

@@ -1,17 +1,10 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="wwwroot\js\customer\**" />
-    <Content Remove="wwwroot\js\customer\**" />
-    <EmbeddedResource Remove="wwwroot\js\customer\**" />
-    <None Remove="wwwroot\js\customer\**" />
-  </ItemGroup>
 
   <ItemGroup>
     <None Remove="Areas\Employee\Views\Shared\_Layout.cshtml~RFeb5e55.TMP" />
@@ -45,13 +38,6 @@
     <ProjectReference Include="..\B3cBonsai.Utility\B3cBonsai.Utility.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Include="wwwroot\js\customer\searchHeader.js" />
-    <None Include="wwwroot\js\customer\comment.js" />
-    <None Include="wwwroot\js\customer\cart.js" />
-    <None Include="wwwroot\js\customer\clientProduct.js" />
-    <None Include="wwwroot\js\customer\wishlist.js" />
-  </ItemGroup>
 
   <ItemGroup>
     <Content Update="Areas\Customer\Views\Shared\_ValidationScriptsPartial.cshtml">

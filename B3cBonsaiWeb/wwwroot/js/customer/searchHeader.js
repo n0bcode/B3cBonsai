@@ -21,67 +21,68 @@ function removeVietnameseTones(str) {
     return str;
 }
 
-document.getElementById('search-input').addEventListener('input', function () {
-    const query = this.value.trim();
-    const suggestionsBox = document.getElementById('suggestions');
+const searchInput = document.getElementById('search-input');
+const suggestionsBox = document.getElementById('suggestions');
 
-    // Xóa các gợi ý cũ
-    suggestionsBox.innerHTML = '';
+if (searchInput && suggestionsBox) {
+    searchInput.addEventListener('input', function () {
+        const query = this.value.trim();
 
-    if (query.length > 2) {
-        // Loại bỏ dấu từ từ khóa tìm kiếm
-        const normalizedQuery = removeVietnameseTones(query.toLowerCase());
+        // Xóa các gợi ý cũ
+        suggestionsBox.innerHTML = '';
 
-        fetch(`/api/products?q=${encodeURIComponent(query)}`)
-            .then(response => response.json())
-            .then(data => {
-                if (data.length === 0) {
-                    suggestionsBox.innerHTML = '<div>Không tìm thấy sản phẩm nào.</div>';
-                } else {
-                    let hasResults = false;
-                    console.log(data);
-                    // Hiển thị danh sách gợi ý
-                    data.forEach(product => {
-                        // Loại bỏ dấu từ tên sản phẩm
-                        const normalizedProductName = removeVietnameseTones(product.tenSanPham.toLowerCase());
+        if (query.length > 2) {
+            // Loại bỏ dấu từ từ khóa tìm kiếm
+            const normalizedQuery = removeVietnameseTones(query.toLowerCase());
 
-                        // Kiểm tra nếu tên sản phẩm khớp với từ khóa tìm kiếm
-                        if (normalizedProductName.includes(normalizedQuery)) {
-                            hasResults = true;
-                            const suggestionItem = document.createElement('div');
-                            suggestionItem.innerHTML = `<a href="/customer/clientproduct/detail?id=${product.id}" class="d-flex" style="width: 30rem;">
-            <img src="${product.hinhAnhs.length > 0 ? product.hinhAnhs[0] : '/images/product/default.jpg'}" class="card-img-left" style="width: 110px; height: 110px; object-fit: cover;" alt="${product.tenSanPham}">
-                    <div class="card-body d-flex" style="padding-left: 15px;">
-            <!-- Cột trái: Tên sản phẩm và giá -->
-            <div class="d-flex flex-column me-3">
-                        <h5 class="card-title">${product.tenSanPham} (Kho: ${product.soLuong})</h5>
-                <p class="card-text">${"Giá: " + product.gia}</p>
+            fetch(`/api/products?q=${encodeURIComponent(query)}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.length === 0) {
+                        suggestionsBox.innerHTML = '<div>Không tìm thấy sản phẩm nào.</div>';
+                    } else {
+                        let hasResults = false;
+                        console.log(data);
+                        // Hiển thị danh sách gợi ý
+                        data.forEach(product => {
+                            // Loại bỏ dấu từ tên sản phẩm
+                            const normalizedProductName = removeVietnameseTones(product.tenSanPham.toLowerCase());
+
+                            // Kiểm tra nếu tên sản phẩm khớp với từ khóa tìm kiếm
+                            if (normalizedProductName.includes(normalizedQuery)) {
+                                hasResults = true;
+                                const suggestionItem = document.createElement('div');
+                                suggestionItem.innerHTML = `<a href="/customer/clientproduct/detail?id=${product.id}" class="d-flex" style="width: 30rem;">
+                <img src="${product.hinhAnhs.length > 0 ? product.hinhAnhs[0] : '/images/product/default.jpg'}" class="card-img-left" style="width: 110px; height: 110px; object-fit: cover;" alt="${product.tenSanPham}">
+                        <div class="card-body d-flex" style="padding-left: 15px;">
+                <!-- Cột trái: Tên sản phẩm và giá -->
+                <div class="d-flex flex-column me-3">
+                            <h5 class="card-title">${product.tenSanPham} (Kho: ${product.soLuong})</h5>
+                    <p class="card-text">${"Giá: " + product.gia}</p>
+                </div>
             </div>
-        </div>
 
-        </a>
+            </a>
+                                                                `;
+                                suggestionItem.addEventListener('click', () => {
+                                    // Xử lý khi người dùng chọn sản phẩm
+                                    searchInput.value = product.tenSanPham;
+                                    suggestionsBox.innerHTML = ''; // Ẩn gợi ý
+                                });
+                                suggestionsBox.appendChild(suggestionItem);
+                            }
+                        });
 
-
-
-                                                            `;
-                            suggestionItem.addEventListener('click', () => {
-                                // Xử lý khi người dùng chọn sản phẩm
-                                document.getElementById('search-input').value = product.tenSanPham;
-                                suggestionsBox.innerHTML = ''; // Ẩn gợi ý
-                            });
-                            suggestionsBox.appendChild(suggestionItem);
+                        // Nếu không có kết quả nào khớp
+                        if (!hasResults) {
+                            suggestionsBox.innerHTML = '<div>Không có sản phẩm phù hợp với tìm kiếm.</div>';
                         }
-                    });
-
-                    // Nếu không có kết quả nào khớp
-                    if (!hasResults) {
-                        suggestionsBox.innerHTML = '<div>Không có sản phẩm phù hợp với tìm kiếm.</div>';
                     }
-                }
-            })
-            .catch(error => {
-                console.error('Lỗi khi tải gợi ý:', error);
-                suggestionsBox.innerHTML = '<div>Lỗi khi tải dữ liệu.</div>';
-            });
-    }
-});
+                })
+                .catch(error => {
+                    console.error('Lỗi khi tải gợi ý:', error);
+                    suggestionsBox.innerHTML = '<div>Lỗi khi tải dữ liệu.</div>';
+                });
+        }
+    });
+}

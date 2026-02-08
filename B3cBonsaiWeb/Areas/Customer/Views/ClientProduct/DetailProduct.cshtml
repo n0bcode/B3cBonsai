@@ -1,13 +1,33 @@
-﻿@model B3cBonsai.Models.SanPham
+@model B3cBonsai.Models.SanPham
 
 @using System.Net
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
+@{
+    var currentUrl = $"{HttpContextAccessor?.HttpContext?.Request.Scheme}://{HttpContextAccessor?.HttpContext?.Request.Host}{HttpContextAccessor?.HttpContext?.Request.Path}{HttpContextAccessor?.HttpContext?.Request.QueryString}";
 
+    // Đảm bảo currentUrl không bị null
+    if (string.IsNullOrEmpty(currentUrl))
+    {
+        currentUrl = "https://default-url.com"; // Thay thế URL mặc định nếu currentUrl không hợp lệ
+    }
 
+    var encodedUrl = WebUtility.UrlEncode(currentUrl);
 
+    // Kiểm tra các giá trị model có hợp lệ
+    var productTitle = Model?.TenSanPham ?? "Tên sản phẩm mặc định";  // Nếu không có tên, sử dụng tên mặc định
+    var productDescription = Model?.MoTa ?? "Mô tả sản phẩm mặc định";  // Nếu không có mô tả, sử dụng mô tả mặc định
+    var productImage = Model?.HinhAnhs?.FirstOrDefault()?.LinkAnh ?? "https://default-image-url.com/image.jpg";  // Hình ảnh mặc định nếu không có
 
+    string GetUrl(string path)
+    {
+        if (string.IsNullOrWhiteSpace(path)) return "";
+        if (path.StartsWith("http", StringComparison.OrdinalIgnoreCase)) return path;
+        return Url.Content("~/" + path.TrimStart('/'));
+    }
+
+}
 
 <!-- breadcrumb start -->
 <section class="breadcrumb-area">
@@ -18,7 +38,8 @@
                     <!-- breadcrumb-list start -->
                     <ul class="breadcrumb-ul">
                         <li class="breadcrumb-li">
-                            <a class="breadcrumb-link" asp-area="Customer" asp-controller="Home" asp-action="Index">Trang Chủ</a>
+                            <a class="breadcrumb-link" asp-area="Customer" asp-controller="Home"
+                               asp-action="Index">Trang Chủ</a>
                         </li>
                         <li class="breadcrumb-li">
                             <span class="breadcrumb-text">@Model.TenSanPham</span>
@@ -35,8 +56,9 @@
 <section class="product-details-page pro-style1 bg-color section-ptb">
     <div class="container">
         <div class="row">
-            <div class="col">
-                <div class="pro-details-pos pro-details-left-pos">
+            <div class="col-lg-6">
+                <!-- Wrapper for Left Column (Images) -->
+                <div>
                     <!-- Product slider start -->
                     <div class="product-detail-slider product-details-tb product-details">
                         <a href="product-template7.html" class="next-prev-product prev">
@@ -48,312 +70,736 @@
                         <!-- Product slider start -->
                         <div class="product-detail-img product-detail-img-bottom">
                             <!-- top slick-slider start -->
-                            <div class="product-img-top">
+                            <!-- Combined Media Gallery Container -->
+                            <div
+                                class="product-img-top media-gallery-container @(!string.IsNullOrEmpty(Model.Model3DPath) ? "has-3d" : "")">
                                 <button class="full-view"><i class="bi bi-arrows-fullscreen"></i></button>
-                                <div class="slider-big slick-slider">
+
+                                @if (!string.IsNullOrEmpty(Model.Model3DPath))
+                                {
+                                    <div class="media-toggle-wrapper">
+                                        <button type="button" class="media-toggle-btn active" onclick="switchMedia('photo')"
+                                                id="btn-show-photo">
+                                            <i class="feather-image"></i> Hình ảnh
+                                        </button>
+                                        <button type="button" class="media-toggle-btn" onclick="switchMedia('3d')"
+                                                id="btn-show-3d">
+                                            <i class="feather-box"></i> 3D Viewer
+                                        </button>
+                                    </div>
+
+                                    <div id="product-3d-container" class="product-3d-view media-item"
+                                         style="display: none;">
+                                        <model-viewer id="bonsai-viewer" src="@GetUrl(Model.Model3DPath)"
+                                                      poster="@GetUrl(Model.HinhAnhs?.FirstOrDefault()?.LinkAnh)"
+                                                      alt="A 3D model of @Model.TenSanPham" shadow-intensity="1" camera-controls
+                                                      auto-rotate ar="@(Model.IsARReady ? "true" : "false")"
+                                                      style="width: 100%; height: 500px;">
+
+                                            <div class="controls-3d">
+                                                <button type="button" class="control-btn" onclick="toggleRotation()"
+                                                        title="Bật/Tắt xoay">
+                                                    <i class="feather-rotate-cw"></i>
+                                                </button>
+                                                <button type="button" class="control-btn" onclick="takeSnapshot()"
+                                                        title="Chụp ảnh">
+                                                    <i class="feather-camera"></i>
+                                                </button>
+                                                <button type="button" class="control-btn" onclick="toggleEnvironment()"
+                                                        title="Đổi ánh sáng">
+                                                    <i class="feather-sun"></i>
+                                                </button>
+                                                <button type="button" class="control-btn" onclick="toggleAnnotations()"
+                                                        title="Bật/Tắt chú thích">
+                                                    <i class="feather-info"></i>
+                                                </button>
+                                            </div>
+
+                                            @if (Model.IsARReady)
+                                            {
+                                                <button slot="ar-button"
+                                                        style="background-color: white; border-radius: 4px; border: none; position: absolute; top: 16px; right: 16px; padding: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.25);">
+                                                    👋 Xem trong AR
+                                                </button>
+                                            }
+
+                                            <div id="hotspot-container"></div>
+                                        </model-viewer>
+                                    </div>
+                                }
+
+                                <div id="product-photo-container" class="slider-big slick-slider media-item">
                                     @foreach (var image in Model.HinhAnhs)
                                     {
                                         <div class="slick-slide ">
-                                            <a onerror="this.src='/images/product/default.jpg'" href="@image.LinkAnh" class="product-single">
+                                            <a onerror="this.src='/images/product/default.jpg'" href="@image.LinkAnh"
+                                                   class="product-single">
                                                 <figure class="zoom" onmousemove="zoom(event)"
-                                                        style="background-image: url('@Url.Content(@image.LinkAnh)');">
-                                                    <img src="@image.LinkAnh" class="img-fluid" alt="pro-1">
+                                                        style="background-image: url('@GetUrl(image.LinkAnh)');">
+                                                    <img src="@image.LinkAnh" class="img-fluid" alt="pro-1"
+                                                         style="width: 100%; height: 500px; object-fit: cover;">
                                                 </figure>
                                             </a>
                                         </div>
                                     }
                                 </div>
                             </div>
-                            <!-- top slick-slider end -->
-                            <!-- small slick-slider start -->
-                            <div class="pro-slider">
-                                <div class="slider-small pro-detail-slider small-slider">
-                                    @foreach (var image in Model.HinhAnhs)
-                                    {
-                                        <div class="slick-slide ">
-                                            <a onerror="this.src='/images/product/default.jpg'" href="javascript:void(0)" class="product-single--thumbnail">
-                                                <img src="@image.LinkAnh" class="img-fluid" alt="pro-1">
-                                            </a>
-                                        </div>
-                                    }
+                        </div>
+                        <!-- top slick-slider end -->
+                        <!-- small slick-slider start -->
+                        <div class="pro-slider">
+                            <div class="slider-small pro-detail-slider small-slider">
+                                @foreach (var image in Model.HinhAnhs)
+                                {
+                                    <div class="slick-slide ">
+                                        <a onerror="this.src='/images/product/default.jpg'" href="javascript:void(0)"
+                                               class="product-single--thumbnail">
+                                            <img src="@image.LinkAnh" class="img-fluid" alt="pro-1">
+                                        </a>
+                                    </div>
+                                }
 
+                            </div>
+                        </div>
+                        <!-- small slick-slider end -->
+                    </div>
+                    <!-- Product slider end -->
+                </div>
+            </div>
+
+            <!-- Right Column (Info) -->
+            <div class="col-lg-6">
+                <div>
+                    <!-- peoduct detail start -->
+                    <div class="product-details-info">
+                        <div class="pro-nprist">
+                            <div class="product-info info-header">
+                                <div class="product-title">
+                                    <h1 class="premium-title">@Model.TenSanPham</h1>
+                                </div>
+                                <div class="price-section mt-3">
+                                    <span class="premium-price">@String.Format("{0:0,0} đ", Model.Gia).Replace(",",
+                                                                            ".")</span>
+                                    </div>
+                                </div>
+
+                                <div class="product-info mt-4">
+                                    <div class="product-description">
+                                        <p class="description-text">@Model.MoTa</p>
+                                    </div>
+                                </div>
+
+                                <div class="product-info mt-4">
+                                    <div class="attribute-grid">
+                                        <div class="attribute-item">
+                                            <span class="attr-label">Danh mục:</span>
+                                            <span class="attr-value">@Model.DanhMuc.TenDanhMuc</span>
+                                        </div>
+                                        <div class="attribute-item">
+                                            <span class="attr-label">Sẵn có:</span>
+                                            <span class="attr-value stock-badge">@Model.SoLuong @(Model.SoLuong > 0 ? "Sản phẩm" : "Hết hàng")</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="pro-aff-che">
+                                    <a class="wishlist" data-id="@Model.Id" data-type="@SD.ObjectLike_SanPham">
+                                        <span class="pro-action-icon likeAction"><i class="feather-heart"></i></span>
+                                        <span class="ml-2 tooltip-text">Yêu thích</span>
+                                    </a>
                                 </div>
                             </div>
-                            <!-- small slick-slider end -->
                         </div>
-                        <!-- Product slider end -->
-                    </div>
-                    <!-- peoduct detail start -->
-                    <div class="product-details-wrap product-details-tb product-details">
-                        <div class="product-details-info">
-                            <div class="pro-nprist">
-                                <div class="product-info">
-                                    <!-- product-title start -->
-                                    <div class="product-title">
-                                        <h2>@Model.TenSanPham</h2>
-                                    </div>
-                                    <!-- product-title end -->
-                                </div>
-                                <div class="product-info">
-                                    <div class="pro-prlb pro-sale">
-                                        <div class="price-box">
-                                            <span style="font-size: 29px" class="new-price">@String.Format("{0:0,0} đ", Model.Gia).Replace(",", ".")</span>
 
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="product-info">
-                                    <div class="product-inventory">
-                                        <div class="stock-inventory stock-more">
-                                            <p class="text-success">
-                                                Mô tả: @Model.MoTa
-                                            </p>
-                                        </div>
-                                        <div class="stock-inventory stock-more">
-                                            <p class="text-success">
-                                                Danh mục: @Model.DanhMuc.TenDanhMuc
-                                            </p>
-                                        </div>
-                                        <div class="stock-inventory stock-more">
-                                            <p class="text-success">
-                                                Kho: @Model.SoLuong
-                                            </p>
-                                        </div>
-                                        <br />
-                                        <div class="pro-aff-che">
-                                            <a class="wishlist" data-id="@Model.Id" data-type="@SD.ObjectLike_SanPham">
-                                                <span class="pro-action-icon likeAction"><i class="feather-heart"></i></span>
-                                                <span class="ml-2 tooltip-text">Yêu thích</span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
+                        <div class="product-info mt-5">
+                            <div class="action-buttons-wrap">
+                                <a class="premium-btn btn-cart add-to-cart" href="javascript:void(0)"
+                                    onclick="window.addToCart('@Model.Id', 1, '@SD.ObjectDetailOrder_SanPham')">
+                                    <i class="feather-shopping-cart"></i> Thêm vào giỏ
+                                </a>
+                                <a class="premium-btn btn-buy" asp-area="Customer" asp-controller="ClientProduct"
+                                    asp-action="BuyNow" asp-route-id="@Model.Id">
+                                    <i class="feather-bolt"></i> Mua ngay
+                                </a>
+                            </div>
+                        </div>
 
-                                <div class="product-info">
-                                    <form method="post" class="cart">
-                                        <div class="product-quantity-action">
-                                            <h6>Số lượng:</h6>
-                                            <div class="product-quantity">
-                                                <div class="cart-plus-minus">
-                                                    <button class="dec qtybutton minus"><i class="fa-solid fa-minus"></i></button>
-                                                    <input type="text" name="quantity" value="1" min="1" max="@Model.SoLuong" id="qualityInput" />
-                                                    <button class="inc qtybutton plus"><i class="fa-solid fa-plus"></i></button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                                <div class="product-info">
-                                    <div class="product-actions">
-                                        <!-- pro-deatail button start -->
-                                        <div class="pro-detail-button">
-                                            <button type="button" onclick="addToCart(@Model.Id,null,1,'@SD.ObjectDetailOrder_SanPham')" href="#add-to-cart" class="btn add-to-cart ajax-spin-cart">
-                                                <span class="cart-title">Thêm vào giỏ</span>
-                                            </button>
-                                            <a type="button";
-                                               onclick="addToCart(@Model.Id,null,1,'@SD.ObjectDetailOrder_SanPham');navigateToPayment();"
-                                               id="checkoutButton"
-                                               class="btn btn-cart btn-theme"
-                                               role="button"
-                                               aria-label="Mua ngay">
-                                                <span>Mua Ngay</span>
-                                            </a>
-
-                                        </div>
-                                      
-                                    </div>
-                                </div>
-
-
-                                    <div id="container-comments">
-
-                                    </div>
-                                
-
-
-
-                                <div class="product-info">
-                                    <div class="form-group">
-                                        <a href="#deliver-modal" data-bs-toggle="modal">Giao hàng &amp; trở lại</a>
-                                        <a href="#que-modal" data-bs-toggle="modal">Đặt một câu hỏi</a>
-                                    </div>
-                                </div>
-                                <div class="modal fade deliver-modal" id="deliver-modal" tabindex="-1" style="display: none;"
-                                     aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered">
-                                        <div class="modal-content">
-                                            <div class="modal-body">
-                                                <button type="button" class="pop-close" data-bs-dismiss="modal" aria-label="Close">
-                                                    <i class="feather-x"></i>
-                                                </button>
-                                                <div class="delivery-block">
-                                                    <div class="space-block">
-                                                        <h4>Delivery</h4>
-                                                        <p>All orders shipped with UPS Express.</p>
-                                                        <p>Always free shipping for orders over US $250.</p>
-                                                        <p>All orders are shipped with a UPS tracking number.</p>
-                                                    </div>
-                                                    <div class="space-block">
-                                                        <h4>Returns</h4>
-                                                        <p>
-                                                            Items returned within 14 days of their original shipment date in same as new
-                                                            condition will be eligible for a full refund or store credit.
-                                                        </p>
-                                                        <p>Refunds will be charged back to the original form of payment used for purchase.</p>
-                                                        <p>
-                                                            Customer is responsible for shipping charges when making returns and
-                                                            shipping/handling fees of original purchase is non-refundable.
-                                                        </p>
-                                                        <p>All sale items are final purchases.</p>
-                                                    </div>
-                                                    <div class="space-block">
-                                                        <h4>Help</h4>
-                                                        <p>Give us a shout if you have any other questions and/or concerns.</p>
-                                                        <p>Email:<a href="mailto:contact@domain.com">demo@gmail.com</a></p>
-                                                        <p>Phone:<a href="tel:+1(23)456789">+1 (23) 456 789</a></p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- que-modal stat -->
-                                <div class="modal fade que-modal" id="que-modal" aria-modal="true" tabindex="-1" role="dialog">
-                                    <div class="modal-dialog modal-dialog-centered">
-                                        <div class="modal-content">
-                                            <div class="modal-body">
-                                                <button type="button" class="pop-close" data-bs-dismiss="modal" aria-label="Close">
-                                                    <i class="feather-x"></i>
-                                                </button>
-                                                <div class="product-form-list">
-                                                    <div class="single-product-wrap">
-                                                        <div class="product-image">
-                                                            <a class="pro-img" asp-area="Customer" asp-controller="ClientProduct" asp-action="Index">
-                                                                <img class="img-fluid img1 resp-img1" src="~/customer/img/product/home1-pro-12.jpg"
-                                                                     alt="p-1">
-                                                                <img class="img-fluid img2 resp-img2" src="~/customer/img/product/home1-pro-13.jpg"
-                                                                     alt="p-2">
-                                                            </a>
-                                                        </div>
-                                                        <div class="product-content">
-                                                            <div class="pro-title-price">
-                                                                <h6><a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail">Strelitzia nicolai</a></h6>
-                                                                <div class="product-price">
-                                                                    <div class="price-box">
-                                                                        <span class="new-price">Rs. 44.00</span>
-                                                                        <span class="old-price">Rs. 49.00</span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="ask-form">
-                                                    <h6>Ask a question</h6>
-                                                    <form method="post" class="contact-form">
-                                                        <input type="hidden" name="contact[product url]" value="">
-                                                        <div class="form-grp">
-                                                            <input type="text" name="contact[name]" required="" placeholder="Your name*">
-                                                            <input type="text" name="contact[phone]" placeholder="Your phone number">
-                                                            <input type="email" name="contact[email]" required="" placeholder="Your email*">
-                                                            <textarea name="contact[question]" rows="4" required=""
-                                                                      placeholder="Your message*"></textarea>
-                                                            <p>* Required fields</p>
-                                                            <button type="submit" class="btn-style2">Submit Now</button>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- que-modal end -->
-                                <div class="product-info">
-                                    <p><span>🚚</span> Hàng sẽ được giao vào hoặc trước <span id="ten-days-ahead">Ngày 3 tháng 3 năm 2024</span></p>
-                                </div>
-                                <div class="product-info">
-                                    @* <div class="product-sku">
-                                    <h6>SKU:</h6>
-                                    <span class="variant-sku">abccd-13</span>
-                                    </div> *@
-                                </div>
+                        <div class="product-info mt-5">
+                            <div class="social-ar-wrap">
+                                <a href="javascript:void(0)" onclick="showARQRCode()" class="qr-ar-btn"
+                                    title="Xem AR trên điện thoại">
+                                    <i class="fa fa-qrcode"></i> Xem trong AR
+                                </a>
                                 <div class="pro-social">
                                     <ul class="social-icon">
                                         <li>
-                                            @{
-                                                var currentUrl = $"{HttpContextAccessor?.HttpContext?.Request.Scheme}://{HttpContextAccessor?.HttpContext?.Request.Host}{HttpContextAccessor?.HttpContext?.Request.Path}{HttpContextAccessor?.HttpContext?.Request.QueryString}";
-
-                                                // Đảm bảo currentUrl không bị null
-                                                if (string.IsNullOrEmpty(currentUrl))
-                                                {
-                                                    currentUrl = "https://default-url.com";  // Thay thế URL mặc định nếu currentUrl không hợp lệ
-                                                }
-
-                                                var encodedUrl = WebUtility.UrlEncode(currentUrl);
-
-                                                // Kiểm tra các giá trị model có hợp lệ
-                                                var productTitle = Model?.TenSanPham ?? "Tên sản phẩm mặc định";  // Nếu không có tên, sử dụng tên mặc định
-                                                var productDescription = Model?.MoTa ?? "Mô tả sản phẩm mặc định";  // Nếu không có mô tả, sử dụng mô tả mặc định
-                                                var productImage = Model?.HinhAnhs?.FirstOrDefault()?.LinkAnh ?? "https://default-image-url.com/image.jpg";  // Hình ảnh mặc định nếu không có
-                                            }
-
-                                            <!-- Open Graph Meta Tags -->
-                                            <meta property="og:url" content="@currentUrl" />
-                                            <meta property="og:title" content="@productTitle" />
-                                            <meta property="og:description" content="@productDescription" />
-                                            <meta property="og:image" content="@productImage" />
-                                            <meta property="og:site_name" content="Tên website của bạn" />
-                                            <meta property="og:type" content="product" /> <!-- Thêm og:type cho sản phẩm -->
-
-                                            <a href="https://www.facebook.com/sharer/sharer.php?u=@encodedUrl" class="facebook" target="_blank">
+                                            <a href="https://www.facebook.com/sharer/sharer.php?u=@encodedUrl" class="facebook"
+                                                target="_blank">
                                                 <i class="fab fa-facebook-f"></i>
                                             </a>
                                         </li>
-
-
-
                                         <li>
-                                            <a href="https://twitter.com/" class="twitter" target="_blank"><i class="fab fa-twitter"></i></a>
+                                            <a href="https://twitter.com/share?url=@encodedUrl" class="twitter" target="_blank">
+                                                <i class="fab fa-twitter"></i>
+                                            </a>
                                         </li>
                                         <li>
-                                            <a href="https://web.telegram.org/" class="telegram" target="_blank"><i class="fab fa-telegram"></i></a>
-                                        </li>
-                                        <li>
-                                            <a href="https://in.pinterest.com/" class="pinterest" target="_blank"><i class="fab fa-pinterest-p"></i></a>
+                                            <a class="wishlist-btn wishlist" data-id="@Model.Id"
+                                                data-type="@SD.ObjectLike_SanPham">
+                                                <i class="feather-heart"></i>
+                                            </a>
                                         </li>
                                     </ul>
                                 </div>
-                                <div class="product-info">
-                                    <div class="product-payment-image">
-                                        <ul class="payment-icon">
-                                            <li>
-                                                <a asp-area="Customer" asp-controller="Home" asp-action="Index"><svg viewBox="0 0 38 24" xmlns="http://www.w3.org/2000/svg" role="img" width="38" height="24" aria-labelledby="pi-visa"><title id="visa">Visa</title><path opacity=".07" d="M35 0H3C1.3 0 0 1.3 0 3v18c0 1.7 1.4 3 3 3h32c1.7 0 3-1.3 3-3V3c0-1.7-1.4-3-3-3z"></path><path fill="#fff" d="M35 1c1.1 0 2 .9 2 2v18c0 1.1-.9 2-2 2H3c-1.1 0-2-.9-2-2V3c0-1.1.9-2 2-2h32"></path><path d="M28.3 10.1H28c-.4 1-.7 1.5-1 3h1.9c-.3-1.5-.3-2.2-.6-3zm2.9 5.9h-1.7c-.1 0-.1 0-.2-.1l-.2-.9-.1-.2h-2.4c-.1 0-.2 0-.2.2l-.3.9c0 .1-.1.1-.1.1h-2.1l.2-.5L27 8.7c0-.5.3-.7.8-.7h1.5c.1 0 .2 0 .2.2l1.4 6.5c.1.4.2.7.2 1.1.1.1.1.1.1.2zm-13.4-.3l.4-1.8c.1 0 .2.1.2.1.7.3 1.4.5 2.1.4.2 0 .5-.1.7-.2.5-.2.5-.7.1-1.1-.2-.2-.5-.3-.8-.5-.4-.2-.8-.4-1.1-.7-1.2-1-.8-2.4-.1-3.1.6-.4.9-.8 1.7-.8 1.2 0 2.5 0 3.1.2h.1c-.1.6-.2 1.1-.4 1.7-.5-.2-1-.4-1.5-.4-.3 0-.6 0-.9.1-.2 0-.3.1-.4.2-.2.2-.2.5 0 .7l.5.4c.4.2.8.4 1.1.6.5.3 1 .8 1.1 1.4.2.9-.1 1.7-.9 2.3-.5.4-.7.6-1.4.6-1.4 0-2.5.1-3.4-.2-.1.2-.1.2-.2.1zm-3.5.3c.1-.7.1-.7.2-1 .5-2.2 1-4.5 1.4-6.7.1-.2.1-.3.3-.3H18c-.2 1.2-.4 2.1-.7 3.2-.3 1.5-.6 3-1 4.5 0 .2-.1.2-.3.2M5 8.2c0-.1.2-.2.3-.2h3.4c.5 0 .9.3 1 .8l.9 4.4c0 .1 0 .1.1.2 0-.1.1-.1.1-.1l2.1-5.1c-.1-.1 0-.2.1-.2h2.1c0 .1 0 .1-.1.2l-3.1 7.3c-.1.2-.1.3-.2.4-.1.1-.3 0-.5 0H9.7c-.1 0-.2 0-.2-.2L7.9 9.5c-.2-.2-.5-.5-.9-.6-.6-.3-1.7-.5-1.9-.5L5 8.2z" fill="#142688"></path></svg></a>
-                                            </li>
-                                            <li>
-                                                <a asp-area="Customer" asp-controller="Home" asp-action="Index"><svg viewBox="0 0 38 24" xmlns="http://www.w3.org/2000/svg" role="img" width="38" height="24" aria-labelledby="pi-master"><title id="master">Mastercard</title><path opacity=".07" d="M35 0H3C1.3 0 0 1.3 0 3v18c0 1.7 1.4 3 3 3h32c1.7 0 3-1.3 3-3V3c0-1.7-1.4-3-3-3z"></path><path fill="#fff" d="M35 1c1.1 0 2 .9 2 2v18c0 1.1-.9 2-2 2H3c-1.1 0-2-.9-2-2V3c0-1.1.9-2 2-2h32"></path><circle fill="#EB001B" cx="15" cy="12" r="7"></circle><circle fill="#F79E1B" cx="23" cy="12" r="7"></circle><path fill="#FF5F00" d="M22 12c0-2.4-1.2-4.5-3-5.7-1.8 1.3-3 3.4-3 5.7s1.2 4.5 3 5.7c1.8-1.2 3-3.3 3-5.7z"></path></svg></a>
-                                            </li>
-                                            <li>
-                                                <a asp-area="Customer" asp-controller="Home" asp-action="Index"><svg xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="pi-american-express" viewBox="0 0 38 24" width="38" height="24"><title id="american-express">American Express</title><path fill="#000" d="M35 0H3C1.3 0 0 1.3 0 3v18c0 1.7 1.4 3 3 3h32c1.7 0 3-1.3 3-3V3c0-1.7-1.4-3-3-3Z" opacity=".07"></path><path fill="#006FCF" d="M35 1c1.1 0 2 .9 2 2v18c0 1.1-.9 2-2 2H3c-1.1 0-2-.9-2-2V3c0-1.1.9-2 2-2h32Z"></path><path fill="#FFF" d="M22.012 19.936v-8.421L37 11.528v2.326l-1.732 1.852L37 17.573v2.375h-2.766l-1.47-1.622-1.46 1.628-9.292-.02Z"></path><path fill="#006FCF" d="M23.013 19.012v-6.57h5.572v1.513h-3.768v1.028h3.678v1.488h-3.678v1.01h3.768v1.531h-5.572Z"></path><path fill="#006FCF" d="m28.557 19.012 3.083-3.289-3.083-3.282h2.386l1.884 2.083 1.89-2.082H37v.051l-3.017 3.23L37 18.92v.093h-2.307l-1.917-2.103-1.898 2.104h-2.321Z"></path><path fill="#FFF" d="M22.71 4.04h3.614l1.269 2.881V4.04h4.46l.77 2.159.771-2.159H37v8.421H19l3.71-8.421Z"></path><path fill="#006FCF" d="m23.395 4.955-2.916 6.566h2l.55-1.315h2.98l.55 1.315h2.05l-2.904-6.566h-2.31Zm.25 3.777.875-2.09.873 2.09h-1.748Z"></path><path fill="#006FCF" d="M28.581 11.52V4.953l2.811.01L32.84 9l1.456-4.046H37v6.565l-1.74.016v-4.51l-1.644 4.494h-1.59L30.35 7.01v4.51h-1.768Z"></path></svg></a>
-                                            </li>
-                                            <li>
-                                                <svg viewBox="0 0 38 24" xmlns="http://www.w3.org/2000/svg" width="38" height="24" role="img" aria-labelledby="pi-paypal"><title id="paypal">PayPal</title><path opacity=".07" d="M35 0H3C1.3 0 0 1.3 0 3v18c0 1.7 1.4 3 3 3h32c1.7 0 3-1.3 3-3V3c0-1.7-1.4-3-3-3z"></path><path fill="#fff" d="M35 1c1.1 0 2 .9 2 2v18c0 1.1-.9 2-2 2H3c-1.1 0-2-.9-2-2V3c0-1.1.9-2 2-2h32"></path><path fill="#003087" d="M23.9 8.3c.2-1 0-1.7-.6-2.3-.6-.7-1.7-1-3.1-1h-4.1c-.3 0-.5.2-.6.5L14 15.6c0 .2.1.4.3.4H17l.4-3.4 1.8-2.2 4.7-2.1z"></path><path fill="#3086C8" d="M23.9 8.3l-.2.2c-.5 2.8-2.2 3.8-4.6 3.8H18c-.3 0-.5.2-.6.5l-.6 3.9-.2 1c0 .2.1.4.3.4H19c.3 0 .5-.2.5-.4v-.1l.4-2.4v-.1c0-.2.3-.4.5-.4h.3c2.1 0 3.7-.8 4.1-3.2.2-1 .1-1.8-.4-2.4-.1-.5-.3-.7-.5-.8z"></path><path fill="#012169" d="M23.3 8.1c-.1-.1-.2-.1-.3-.1-.1 0-.2 0-.3-.1-.3-.1-.7-.1-1.1-.1h-3c-.1 0-.2 0-.2.1-.2.1-.3.2-.3.4l-.7 4.4v.1c0-.3.3-.5.6-.5h1.3c2.5 0 4.1-1 4.6-3.8v-.2c-.1-.1-.3-.2-.5-.2h-.1z"></path></svg>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
                             </div>
                         </div>
+
+                        <div class="product-info mt-4">
+                            <div class="form-group service-links">
+                                <a href="#deliver-modal" data-bs-toggle="modal"><i class="feather-truck"></i> Giao hàng &amp;
+                                    Trả hàng</a>
+                                    <a href="#que-modal" data-bs-toggle="modal"><i class="feather-help-circle"></i> Đặt câu hỏi</a>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
-                    <!-- peoduct detail end -->
                 </div>
+            </div>
+        <div class="row justify-content-center">
+            <div id="container-comments" class="mt-5 col-10">
+                <!-- Comments loaded via JS -->
             </div>
         </div>
     </div>
+
+
 </section>
-<!-- pro-detail-page end -->
-@await Component.InvokeAsync("PopularProducts")
+
+    <!-- Modals -->
+    <div class="modal fade deliver-modal" id="deliver-modal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button type="button" class="pop-close" data-bs-dismiss="modal" aria-label="Close">
+                        <i class="feather-x"></i>
+                    </button>
+                    <div class="delivery-block">
+                        <div class="space-block">
+                            <h4>Giao hàng</h4>
+                            <p>Tất cả các đơn hàng được vận chuyển qua đối tác uy tín.</p>
+                            <p>Miễn phí vận chuyển cho đơn hàng trên 2,000,000 đ.</p>
+                            <p>Tất cả các đơn hàng đều có mã theo dõi vận đơn.</p>
+                        </div>
+                        <div class="space-block">
+                            <h4>Trả hàng</h4>
+                            <p>Các mặt hàng được trả lại trong vòng 14 ngày kể từ ngày giao hàng ban đầu trong điều kiện mới
+                                như ban đầu sẽ đủ điều kiện được hoàn tiền đầy đủ hoặc tín dụng cửa hàng.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade que-modal" id="que-modal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <button type="button" class="pop-close" data-bs-dismiss="modal" aria-label="Close">
+                            <i class="feather-x"></i>
+                        </button>
+                        <div class="ask-form">
+                            <h6>Đặt câu hỏi về sản phẩm</h6>
+                            <form method="post" class="contact-form">
+                                <div class="form-grp">
+                                    <input type="text" name="name" required placeholder="Tên của bạn*">
+                                    <input type="email" name="email" required placeholder="Email*">
+                                    <textarea name="message" rows="4" required placeholder="Câu hỏi của bạn*"></textarea>
+                                    <button type="submit" class="btn btn-theme mt-3">Gửi câu hỏi</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="qrARModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header border-0">
+                        <h5 class="modal-title">Xem AR trên điện thoại</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <p>Quét mã QR để xem cây <strong>@Model.TenSanPham</strong> trong không gian của bạn.</p>
+                        <div id="qrcode-canvas" class="my-4 d-flex justify-content-center"></div>
+                        <div class="alert alert-success py-2 small">
+                            <i class="fa fa-info-circle"></i> Sử dụng Camera (iOS) hoặc Google Lens (Android).
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @await Component.InvokeAsync("PopularProducts")
+
+        <script>
+            const viewer = document.getElementById('bonsai-viewer');
+
+            function switchMedia(type) {
+                const photoCont = document.getElementById('product-photo-container');
+                const viewerCont = document.getElementById('product-3d-container');
+                const btnPhoto = document.getElementById('btn-show-photo');
+                const btn3d = document.getElementById('btn-show-3d');
+
+                if (type === '3d') {
+                    photoCont.style.display = 'none';
+                    viewerCont.style.display = 'block';
+                    btn3d.classList.add('active');
+                    btnPhoto.classList.remove('active');
+                } else {
+                    photoCont.style.display = 'block';
+                    viewerCont.style.display = 'none';
+                    btnPhoto.classList.add('active');
+                    btn3d.classList.remove('active');
+                    // Refresh slick to prevent layout issues
+                    $('.slider-big').slick('setPosition');
+                }
+            }
+
+            function toggleRotation() {
+                if (!viewer) return;
+                viewer.autoRotate = !viewer.autoRotate;
+                event.currentTarget.classList.toggle('active', viewer.autoRotate);
+            }
+
+            async function takeSnapshot() {
+                if (!viewer) return;
+                const url = viewer.toDataURL();
+                const link = document.createElement('a');
+                link.download = 'B3cBonsai-Snapshot-@Model.TenSanPham.Replace(" ", "-")' + '.png';
+                link.href = url;
+                link.click();
+            }
+
+            let currentEnv = 'default';
+            function toggleEnvironment() {
+                if (!viewer) return;
+                if (currentEnv === 'default') {
+                    viewer.environmentImage = 'neutral';
+                    currentEnv = 'neutral';
+                } else {
+                    viewer.environmentImage = '';
+                    currentEnv = 'default';
+                }
+            }
+
+            function toggleAnnotations() {
+                const hotspots = document.querySelectorAll('.hotspot');
+                hotspots.forEach(h => h.style.display = h.style.display === 'none' ? 'block' : 'none');
+            }
+
+            // Load Hotspots from Metadata
+            document.addEventListener('DOMContentLoaded', () => {
+                const metadataRaw = '@Html.Raw(Model.Model3DMetadata)';
+                if (metadataRaw && viewer) {
+                    try {
+                        const metadata = JSON.parse(metadataRaw);
+                        if (metadata.hotspots) {
+                            metadata.hotspots.forEach((hs, index) => {
+                                const button = document.createElement('button');
+                                button.className = 'hotspot';
+                                button.slot = `hotspot-${index}`;
+                                button.dataset.position = hs.position;
+                                button.dataset.normal = hs.normal;
+
+                                const annotation = document.createElement('div');
+                                annotation.className = 'hotspot-annotation';
+                                annotation.textContent = hs.text;
+
+                                button.appendChild(annotation);
+                                viewer.appendChild(button);
+                            });
+                        }
+                    } catch (e) { console.error('Error parsing 3D metadata', e); }
+                }
+            });
+
+            function showARQRCode() {
+                const modal = new bootstrap.Modal(document.getElementById('qrARModal'));
+                document.getElementById('qrcode-canvas').innerHTML = "";
+                new QRCode(document.getElementById('qrcode-canvas'), {
+                    text: "@currentUrl",
+                    width: 256,
+                    height: 256,
+                    colorDark: "#2c5e1a",
+                    colorLight: "#ffffff"
+                });
+                modal.show();
+            }
+        </script>
+
+        <!-- AR QR Modal -->
+        <div class="modal fade" id="qrARModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Xem AR trên điện thoại</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <p>Quét mã QR dưới đây để xem cây <strong>@Model.TenSanPham</strong> trực tiếp trong không gian của bạn
+                            qua thực tế tăng cường (AR).</p>
+                            <div id="qrcode-canvas" class="my-4"></div>
+                            <div class="alert alert-info py-2 small">
+                                <i class="fa fa-info-circle"></i> Sử dụng camera điện thoại (iOS) hoặc Google Lens (Android).
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
 @section Scripts {
-    <script src="~/js//customer/comment.js" asp-append-version="true" ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="~/js//customer/comment.js" asp-append-version="true"></script>
     <script>loadContainerComments('@Model.Id')</script>
+
+    <style>
+        /* Premium Media Gallery Styles */
+        .media-gallery-container {
+        position: relative;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        overflow: visible !important;
+        }
+
+        .media-toggle-wrapper {
+        position: absolute;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 100;
+        display: flex;
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(10px);
+        padding: 5px;
+        border-radius: 50px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .media-toggle-btn {
+        border: none;
+        background: none;
+        padding: 8px 20px;
+        border-radius: 40px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #666;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        }
+
+        .media-toggle-btn.active {
+        background: #2c5e1a;
+        color: #fff;
+        box-shadow: 0 4px 10px rgba(44, 94, 26, 0.3);
+        }
+
+        .media-toggle-btn i {
+        font-size: 16px;
+        }
+
+        .product-3d-view {
+        border-radius: 12px;
+        overflow: hidden;
+        background: radial-gradient(circle, #f8fcf7 0%, #e9f0e4 100%);
+        }
+
+        /* Hotspot Styling */
+        .hotspot {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        border: none;
+        background-color: #2c5e1a;
+        box-shadow: 0 0 10px rgba(44, 94, 26, 0.5);
+        cursor: pointer;
+        position: relative;
+        }
+
+        .hotspot::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background: inherit;
+        transform: translate(-50%, -50%);
+        animation: pulse 2s infinite;
+        }
+
+        @@keyframes pulse {
+        0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.8;
+        }
+
+        100% {
+        transform: translate(-50%, -50%) scale(2.5);
+        opacity: 0;
+        }
+        }
+
+        /* Info Section Typography */
+        .premium-title {
+            font-family: 'Merriweather', serif;
+            font-weight: 700;
+            font-size: 2.8rem;
+            color: #1a1a1a;
+            line-height: 1.2;
+        }
+
+        .premium-price {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 2.2rem;
+            color: #2c5e1a;
+        }
+
+        .description-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #555;
+        }
+
+        .attribute-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            background: #fdfdfd;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #f0f0f0;
+        }
+
+        .attr-label {
+            font-weight: 600;
+            color: #888;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .attr-value {
+            font-weight: 600;
+            color: #333;
+            font-size: 1.1rem;
+        }
+
+        .stock-badge {
+            color: #2c5e1a;
+            background: #e9f0e4;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        /* Action Buttons */
+        .action-buttons-wrap {
+            display: flex;
+            gap: 15px;
+        }
+
+        .premium-btn {
+            flex: 1;
+            height: 60px;
+            border-radius: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: none;
+        }
+
+        .btn-cart {
+            background: #1a1a1a;
+            color: #fff;
+        }
+
+        .btn-cart:hover {
+            background: #333;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-buy {
+            background: #2c5e1a;
+            color: #fff;
+        }
+
+        .btn-buy:hover {
+            background: #3a7a22;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(44, 94, 26, 0.25);
+        }
+
+        /* AR QR Social */
+        .social-ar-wrap {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .qr-ar-btn {
+            background: #f8fbf7;
+            border: 2px dashed #2c5e1a;
+            color: #2c5e1a;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+        }
+
+        .qr-ar-btn:hover {
+            background: #2c5e1a;
+            color: #fff;
+        }
+
+        .product-3d-view {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .controls-3d {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 8px 15px;
+            border-radius: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+            z-index: 10;
+        }
+
+        .control-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+            color: #2c5e1a;
+            font-size: 18px;
+            transition: transform 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .control-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .hotspot {
+            display: block;
+            width: 20px;
+            height: 20px;
+            border-radius: 10px;
+            border: none;
+            background-color: #2c5e1a;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .hotspot::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: inherit;
+            transform: translate(-50%, -50%);
+            animation: pulse 2s infinite;
+        }
+
+        @@keyframes pulse {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+            100% { transform: translate(-50%, -50%) scale(2.5); opacity: 0; }
+        }
+
+        .hotspot-annotation {
+            background: #fff;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+            color: rgba(0, 0, 0, 0.8);
+            display: block;
+            font-family: Futura, Helvetica Neue, sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            left: calc(100% + 1em);
+            max-width: 128px;
+            overflow-wrap: break-word;
+            padding: 0.5em 1em;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: max-content;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .hotspot:hover .hotspot-annotation {
+        opacity: 1;
+        }
+
+        .qr-code-ar {
+            color: #2c5e1a;
+            font-size: 20px;
+            padding: 10px;
+            border: 1px solid #eee;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .qr-code-ar:hover {
+            background: #2c5e1a;
+            color: white;
+            border-color: #2c5e1a;
+        }
+
+        #qrcode-canvas img {
+            margin: 0 auto;
+        }
+
+        .control-btn.active {
+            color: #557e30;
+            filter: drop-shadow(0 0 5px rgba(85, 126, 48, 0.5));
+        }
+    </style>
 }

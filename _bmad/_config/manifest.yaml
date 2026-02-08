@@ -1,0 +1,33 @@
+installation:
+  version: 6.0.0-Beta.7
+  installDate: 2026-02-07T03:34:25.403Z
+  lastUpdated: 2026-02-07T03:34:25.403Z
+modules:
+  - name: core
+    version: 6.0.0-Beta.7
+    installDate: 2026-02-07T03:34:24.847Z
+    lastUpdated: 2026-02-07T03:34:24.847Z
+    source: built-in
+    npmPackage: null
+    repoUrl: null
+  - name: bmm
+    version: 6.0.0-Beta.7
+    installDate: 2026-02-07T03:34:14.927Z
+    lastUpdated: 2026-02-07T03:34:24.847Z
+    source: built-in
+    npmPackage: null
+    repoUrl: null
+  - name: bmb
+    version: 0.1.5
+    installDate: 2026-02-07T03:34:24.585Z
+    lastUpdated: 2026-02-07T03:34:25.403Z
+    source: external
+    npmPackage: bmad-builder
+    repoUrl: https://github.com/bmad-code-org/bmad-builder
+ides:
+  - cursor
+  - cline
+  - gemini
+  - antigravity
+  - opencode
+  - kilo

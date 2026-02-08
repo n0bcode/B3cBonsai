@@ -508,3 +508,11 @@ package-lock.json
 # Heroku build output
 published/
 .env.example
+.kilocodemodes
+.clinerules/*
+.gemini/*
+.opencode/*
+.cursor/*
+B3cBonsaiWeb/DataProtection-Keys/*
+B3cBonsaiWeb/wwwroot/models/product/*
+B3cBonsaiWeb/wwwroot/images/*

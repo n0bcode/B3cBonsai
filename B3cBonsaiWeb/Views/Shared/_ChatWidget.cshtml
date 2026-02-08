@@ -1,0 +1,220 @@
+@using B3cBonsai.Utility
+@model int?
+
+<div id="ai-chat-widget" class="ai-chat-closed">
+    <div id="ai-chat-header">
+        <span class="chat-title">B3cBonsai AI Curator 🌿</span>
+        <button id="ai-chat-toggle" onclick="toggleChat()">×</button>
+    </div>
+    <div id="ai-chat-body">
+        <div id="ai-chat-messages">
+            <div class="message system">Xin chào! Tôi là trợ lý AI của B3cBonsai. Tôi có thể giúp gì cho bạn hôm nay?</div>
+        </div>
+        <div id="ai-chat-input-area">
+            <input type="text" id="ai-chat-input" placeholder="Hỏi về bonsai..." onkeypress="handleKeyPress(event)">
+            <button id="ai-chat-send" onclick="sendMessage()">Gửi</button>
+        </div>
+    </div>
+    <div id="ai-chat-bubble" onclick="toggleChat()">
+        <span>💬</span>
+    </div>
+</div>
+
+<style>
+    #ai-chat-widget {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 350px;
+        max-height: 500px;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 5px 25px rgba(0,0,0,0.2);
+        display: flex;
+        flex-direction: column;
+        z-index: 9999;
+        transition: all 0.3s ease;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    #ai-chat-widget.ai-chat-closed {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        overflow: hidden;
+    }
+
+    #ai-chat-header {
+        background: #2c5e1a;
+        color: white;
+        padding: 12px 15px;
+        border-radius: 12px 12px 0 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .ai-chat-closed #ai-chat-header, 
+    .ai-chat-closed #ai-chat-body {
+        display: none;
+    }
+
+    #ai-chat-bubble {
+        width: 60px;
+        height: 60px;
+        background: #2c5e1a;
+        display: none;
+        justify-content: center;
+        align-items: center;
+        font-size: 24px;
+        cursor: pointer;
+        border-radius: 50%;
+    }
+
+    .ai-chat-closed #ai-chat-bubble {
+        display: flex;
+    }
+
+    #ai-chat-body {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        height: 400px;
+    }
+
+    #ai-chat-messages {
+        flex: 1;
+        padding: 15px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .message {
+        padding: 8px 12px;
+        border-radius: 8px;
+        max-width: 85%;
+        font-size: 14px;
+        line-height: 1.4;
+    }
+
+    .message.system {
+        background: #f0f0f0;
+        align-self: flex-start;
+    }
+
+    .message.user {
+        background: #2c5e1a;
+        color: white;
+        align-self: flex-end;
+    }
+
+    #ai-chat-input-area {
+        padding: 10px;
+        border-top: 1px solid #eee;
+        display: flex;
+        gap: 8px;
+    }
+
+    #ai-chat-input {
+        flex: 1;
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 20px;
+        outline: none;
+    }
+
+    #ai-chat-send {
+        background: #2c5e1a;
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 20px;
+        cursor: pointer;
+    }
+
+    #ai-chat-send:disabled {
+        background: #ccc;
+    }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+<style>
+    .message.system ul, .message.system ol {
+        padding-left: 20px;
+        margin-bottom: 0;
+    }
+    .message.system p {
+        margin-bottom: 8px;
+    }
+    .message.system p:last-child {
+        margin-bottom: 0;
+    }
+</style>
+
+<script>
+    function toggleChat() {
+        const widget = document.getElementById('ai-chat-widget');
+        widget.classList.toggle('ai-chat-closed');
+    }
+
+    function handleKeyPress(event) {
+        if (event.key === 'Enter') {
+            sendMessage();
+        }
+    }
+
+    async function sendMessage() {
+        const input = document.getElementById('ai-chat-input');
+        const message = input.value.trim();
+        const productId = '@(Model)';
+
+        if (!message) return;
+
+        appendMessage('user', message);
+        input.value = '';
+        input.disabled = true;
+        document.getElementById('ai-chat-send').disabled = true;
+
+        try {
+            const response = await fetch('/api/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ message, productId: productId ? parseInt(productId) : null })
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                appendMessage('system', data.response);
+            } else {
+                appendMessage('system', 'Xin lỗi, có lỗi xảy ra. Hãy thử lại sau.');
+            }
+        } catch (error) {
+            console.error('Error sending message:', error);
+            appendMessage('system', 'Lỗi kết nối máy chủ.');
+        } finally {
+            input.disabled = false;
+            document.getElementById('ai-chat-send').disabled = false;
+            input.focus();
+        }
+    }
+
+    function appendMessage(sender, text) {
+        const messagesDiv = document.getElementById('ai-chat-messages');
+        const msgDiv = document.createElement('div');
+        msgDiv.className = `message ${sender}`;
+        
+        if (sender === 'system') {
+            msgDiv.innerHTML = marked.parse(text);
+        } else {
+            msgDiv.innerText = text;
+        }
+        
+        messagesDiv.appendChild(msgDiv);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+</script>
