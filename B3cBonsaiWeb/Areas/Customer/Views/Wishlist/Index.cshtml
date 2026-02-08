@@ -50,11 +50,19 @@
                                     <div class="wishlist-details">
                                         <div class="wishlist-all-pro">
                                             <div class="wishlist-pro">
-                                                <div class="wishlist-pro-image">
+                                                <div class="wishlist-pro-image" style="position: relative;">
                                                     <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail" asp-route-id="@(item.SanPhamId)" class="product-link">
                                                         <img style="width: 120px; height: 110px; border-radius: 5px; object-fit: cover; transition: opacity 0.5s ease-in-out; opacity: 1;"
                                                              src="@item.SanPham.HinhAnhs.FirstOrDefault().LinkAnh" class="img-fluid img-primary" alt="p-2">
                                                     </a>
+                                                    @if (!string.IsNullOrEmpty(item.SanPham.Model3DPath))
+                                                    {
+                                                        <div class="product-badge" style="position: absolute; top: 5px; right: 5px; z-index: 2;">
+                                                            <span class="badge bg-success" title="3D View Available" style="font-size: 0.7rem; padding: 3px 5px; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+                                                                <i class="feather-box"></i> 3D
+                                                            </span>
+                                                        </div>
+                                                    }
                                                 </div>
                                                 <div class="pro-details">
                                                     <h6>

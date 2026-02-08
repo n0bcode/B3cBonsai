@@ -54,6 +54,7 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
                 p.MoTa,
                 Gia = p.Gia.ToString("N0") + " VND", // Hiển thị giá dạng đẹp
                 DanhMuc = p.DanhMuc.TenDanhMuc,     // Lấy tên danh mục
+                p.Model3DPath, // Thêm đường dẫn model 3D
                 HinhAnhs = p.HinhAnhs.Select(h => h.LinkAnh).ToList()  // Lấy các hình ảnh của sản phẩm
             });
 

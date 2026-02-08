@@ -37,6 +37,14 @@
                                                                  style="width: 315px; height: 350px; border-radius: 5px; object-fit: cover;">
                                                         </div>
                                                     </a>
+                                                    @if (!string.IsNullOrEmpty(sanPham.Model3DPath))
+                                                    {
+                                                        <div class="product-badge" style="position: absolute; top: 10px; right: 10px; z-index: 2;">
+                                                            <span class="badge bg-success" title="3D View Available" style="font-size: 0.8rem; padding: 5px 8px; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+                                                                <i class="feather-box"></i> 3D
+                                                            </span>
+                                                        </div>
+                                                    }
                                                     <div class="product-action">
                                                         <a class="wishlist" data-id="@sanPham.Id" data-type="@SD.ObjectLike_SanPham">
                                                             <span class="pro-action-icon likeAction"><i class="feather-heart"></i></span>

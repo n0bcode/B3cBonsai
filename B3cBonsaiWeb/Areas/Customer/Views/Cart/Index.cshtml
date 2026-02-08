@@ -51,10 +51,18 @@
                                             <!-- cart-info start -->
                                             <li class="item-info">
                                                 <!-- cart-img start -->
-                                                <div class="item-img">
+                                                <div class="item-img" style="position: relative;">
                                                     <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail" asp-route-id="@(item.MaCombo ?? item.MaSanPham)" aria-label="Xem chi tiết @(item.SanPham?.TenSanPham ?? item.ComboSanPham?.TenCombo)">
                                                         <img style="width: 130px; height: 110px; border-radius: 5px; object-fit: cover; transition: opacity 0.5s ease-in-out; opacity: 1;" src="@item.LinkAnh" onerror="this.src='/images/product/default.jpg'" class="img-fluid" alt="@(item.SanPham?.TenSanPham ?? item.ComboSanPham?.TenCombo)">
                                                     </a>
+                                                    @if (item.SanPham != null && !string.IsNullOrEmpty(item.SanPham.Model3DPath))
+                                                    {
+                                                        <div class="product-badge" style="position: absolute; top: 5px; right: 5px; z-index: 2;">
+                                                            <span class="badge bg-success" title="3D View Available" style="font-size: 0.7rem; padding: 3px 5px; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+                                                                <i class="feather-box"></i> 3D
+                                                            </span>
+                                                        </div>
+                                                    }
 
                                                 </div>
                                                 <!-- cart-img end -->

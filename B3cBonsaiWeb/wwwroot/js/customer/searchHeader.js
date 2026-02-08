@@ -57,7 +57,9 @@ if (searchInput && suggestionsBox) {
                         <div class="card-body d-flex" style="padding-left: 15px;">
                 <!-- Cột trái: Tên sản phẩm và giá -->
                 <div class="d-flex flex-column me-3">
-                            <h5 class="card-title">${product.tenSanPham} (Kho: ${product.soLuong})</h5>
+                            <h5 class="card-title">${product.tenSanPham} (Kho: ${product.soLuong}) 
+                                ${product.model3DPath ? '<span class="badge bg-success ms-1"><i class="feather-box"></i> 3D</span>' : ''}
+                            </h5>
                     <p class="card-text">${"Giá: " + product.gia}</p>
                 </div>
             </div>
