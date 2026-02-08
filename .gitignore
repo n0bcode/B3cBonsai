@@ -513,3 +513,6 @@ published/
 .gemini/*
 .opencode/*
 .cursor/*
+B3cBonsaiWeb/DataProtection-Keys/*
+B3cBonsaiWeb/wwwroot/models/product/*
+B3cBonsaiWeb/wwwroot/images/*

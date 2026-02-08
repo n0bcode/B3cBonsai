@@ -36,7 +36,8 @@ namespace B3cBonsai.Utility.Services
                 await file.CopyToAsync(stream);
             }
 
-            return $"/{rootFolder}/{subfolder}/{uniqueFileName}";
+            var relativePath = $"/{rootFolder}/{subfolder}/{uniqueFileName}";
+            return relativePath.Replace("\\", "/");
         }
 
         public async Task<IEnumerable<string>> StoreFilesAsync(IEnumerable<IFormFile> files, string subfolder, string rootFolder = "images")

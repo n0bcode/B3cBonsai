@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Facebook;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.MicrosoftAccount;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
@@ -40,6 +41,11 @@ namespace B3cBonsaiWeb
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(30);
             });
+
+            // Config Data Protection to persist keys (fixes warning on restart)
+            builder.Services.AddDataProtection()
+                .PersistKeysToFileSystem(new DirectoryInfo(Path.Combine(builder.Environment.ContentRootPath, "DataProtection-Keys")))
+                .SetApplicationName("B3cBonsai");
 
             // Add DbContext with provider switching
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -138,7 +144,17 @@ namespace B3cBonsaiWeb
             }
 
             // app.UseHttpsRedirection();
-            app.UseStaticFiles();
+            
+            // Set up custom content types - associating file extension to MIME type
+            var provider = new Microsoft.AspNetCore.StaticFiles.FileExtensionContentTypeProvider();
+            // Add or overwrite 3D model mappings
+            provider.Mappings[".glb"] = "model/gltf-binary";
+            provider.Mappings[".gltf"] = "model/gltf+json";
+
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                ContentTypeProvider = provider
+            });
 
             app.UseRouting();
 

@@ -107,16 +107,7 @@ $(document).ready(function () {
 
 
     $('#upsertObject').on('shown.bs.offcanvas', function () {
-        if (tinymce.get('ckeditor')) {
-            tinymce.get('ckeditor').remove();
-        }
-        tinymce.init({
-            selector: 'textarea.tinymce',
-            plugins: [
-                'anchor', 'autolink', 'charmap', 'codesample', 'emoticons', 'image', 'link', 'lists', 'media', 'searchreplace', 'table', 'visualblocks', 'wordcount'
-            ],
-            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
-        });
+       // Logic cũ đã được chuyển vào initUpsertForm()
     });
 });
 
@@ -145,11 +136,61 @@ const loadViewUpsert = (id) => {
         method: 'GET',
         success: (data) => {
             $('#upsertObject').html(data);
+            initUpsertForm(); // Khởi tạo form và các sự kiện
         },
         error: (xhr) => {
             toastr.error("Lỗi tạo form tạo đối tượng người dùng.")
         }
     })
+}
+
+function initUpsertForm() {
+    // 1. Init TinyMCE
+    if (tinymce.get('ckeditor')) {
+        tinymce.get('ckeditor').remove();
+    }
+    tinymce.init({
+        selector: 'textarea.tinymce',
+        plugins: [
+            'anchor', 'autolink', 'charmap', 'codesample', 'emoticons', 'image', 'link', 'lists', 'media', 'searchreplace', 'table', 'visualblocks', 'wordcount'
+        ],
+        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+    });
+
+    // 2. Init Instant 3D Preview
+    const fileInput = document.querySelector('input[name="Model3DFile"]');
+    if (fileInput) {
+        fileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                if (!file.name.toLowerCase().endsWith('.glb')) {
+                    toastr.warning("Vui lòng chọn file định dạng .glb");
+                    this.value = '';
+                    return;
+                }
+
+                const objectUrl = URL.createObjectURL(file);
+                const viewer = document.querySelector('#hotspot-previewer');
+                const placeholder = document.querySelector('#no-model-text');
+                const hint = document.querySelector('#click-hint');
+
+                if (viewer) {
+                    viewer.src = objectUrl;
+                    viewer.classList.remove('d-none');
+                    if (placeholder) placeholder.classList.add('d-none');
+                    if (hint) hint.classList.remove('d-none');
+                    
+                    // Reset hotspots
+                    if (typeof hotspots !== 'undefined') {
+                        hotspots = [];
+                        updateMetadata();
+                        renderHotspots();
+                    }
+                    toastr.info("Đã tải bản xem trước. Bạn có thể thêm điểm chú thích ngay bây giờ.");
+                }
+            }
+        });
+    }
 }
 
 
