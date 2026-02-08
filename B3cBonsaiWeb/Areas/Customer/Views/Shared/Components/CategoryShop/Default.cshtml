@@ -18,7 +18,7 @@
                             <div class="item">
                                 <div class="category-wrap banner-hover">
                                     <a asp-area="Customer" asp-controller="ClientProduct" asp-action="Detail" asp-route-id="@sanPham.Id" class="cat-img-title banner-img">
-                                        <div class="cat-img">
+                                        <div class="cat-img" style="position: relative;">
                                             <!-- Hình ảnh đầu tiên -->
                                             <img onerror="this.src='/images/product/default.jpg'"
                                                  src="@(sanPham.HinhAnhs?.FirstOrDefault()?.LinkAnh ?? @Url.Content("~/images/product/default.jpg"))"
@@ -28,6 +28,14 @@
                                                  style="width: 315px; height: 355px; border-radius: 5px; object-fit: cover; transition: opacity 0.5s ease-in-out; opacity: 1;"
                                                  onmouseover="this.src='@(sanPham.HinhAnhs?.Skip(1).FirstOrDefault()?.LinkAnh ?? @Url.Content("~/images/product/default.jpg"))'"
                                                  onmouseout="this.src='@(sanPham.HinhAnhs?.FirstOrDefault()?.LinkAnh ?? @Url.Content("~/images/product/default.jpg"))'">
+                                            @if (!string.IsNullOrEmpty(sanPham.Model3DPath))
+                                            {
+                                                <div class="product-badge" style="position: absolute; top: 10px; right: 10px; z-index: 2;">
+                                                    <span class="badge bg-success" title="3D View Available" style="font-size: 0.8rem; padding: 5px 8px; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+                                                        <i class="feather-box"></i> 3D
+                                                    </span>
+                                                </div>
+                                            }
                                         </div>
 
                                         <div class="cat-content-info">

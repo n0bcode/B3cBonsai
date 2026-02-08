@@ -12,7 +12,7 @@
             <div class="quickview-slider">
                 <div class="quick-view-tab">
                     <div class="quick-block">
-                        <div class="quick-image">
+                        <div class="quick-image" style="position: relative;">
                             <!-- Hình ảnh đầu tiên -->
                             <img onerror="this.src='/images/product/default.jpg'"
                                  src="@(Model.HinhAnhs.FirstOrDefault()?.LinkAnh ?? @Url.Content("~/images/product/default.jpg"))"
@@ -22,6 +22,20 @@
                                  style="width: 315px; height: 355px; border-radius: 5px; object-fit: cover;  transition: opacity 0.5s ease-in-out; opacity: 1;"
                                  onmouseover="this.src='@(Model.HinhAnhs.Skip(1).FirstOrDefault()?.LinkAnh ?? @Url.Content("~/images/product/default.jpg"))'"
                                  onmouseout="this.src='@(Model.HinhAnhs.FirstOrDefault()?.LinkAnh ?? @Url.Content("~/images/product/default.jpg"))'">
+                                 
+                            @if (!string.IsNullOrEmpty(Model.Model3DPath))
+                            {
+                                <div class="product-badge" style="position: absolute; top: 10px; right: 10px; z-index: 2;">
+                                    <span class="badge bg-success" title="3D View Available" style="font-size: 0.8rem; padding: 5px 8px; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+                                        <i class="feather-box"></i> 3D
+                                    </span>
+                                </div>
+                                <div class="view-3d-link" style="position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); z-index: 2;">
+                                    <a href="/Customer/ClientProduct/Detail/@Model.Id" class="btn btn-sm btn-outline-success" style="background: rgba(255,255,255,0.9);">
+                                        <i class="feather-box"></i> Xem 3D
+                                    </a>
+                                </div>
+                            }
                         </div>
                     </div>
                 </div>
