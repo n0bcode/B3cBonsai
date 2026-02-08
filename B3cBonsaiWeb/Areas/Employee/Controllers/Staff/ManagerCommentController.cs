@@ -36,7 +36,7 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
                 {
                     Id = comment.SanPham.Id,
                     TenSanPham = comment.SanPham.TenSanPham,
-                    HinhAnhs = comment.SanPham.HinhAnhs.Select(ha => new HinhAnhSanPham { LinkAnh = ha.LinkAnh }).ToList()
+                    HinhAnhs = comment.SanPham.HinhAnhs != null ? comment.SanPham.HinhAnhs.Select(ha => new HinhAnhSanPham { LinkAnh = ha.LinkAnh }).ToList() : new List<HinhAnhSanPham>()
                 };
             }
 

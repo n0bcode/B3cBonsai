@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using B3cBonsai.DataAccess.Data;
+using B3cBonsai.DataAccess.Repository.IRepository;
 using B3cBonsai.Models;
 using B3cBonsai.Models.ViewModels;
 using B3cBonsai.Utility.Extentions;
@@ -10,7 +11,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using B3cBonsai.DataAccess.Repository.IRepository;
 
 namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
 {
@@ -209,10 +209,10 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
                 "HinhAnhs,DanhMuc,Videos"
             );
 
-                if (product == null)
-                {
-                    return NotFound();
-                }
+            if (product == null)
+            {
+                return NotFound();
+            }
 
             return PartialView(product);
         }
@@ -227,17 +227,17 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
             );
 
             var result = products.Select(sp => new
-                {
-                    sp.Id,
-                    sp.TenSanPham,
-                    sp.DanhMuc.TenDanhMuc,
-                    sp.SoLuong,
-                    sp.Gia,
-                    sp.NgayTao,
-                    sp.NgaySuaDoi,
-                    sp.TrangThai,
-                    HinhAnhs = sp.HinhAnhs.Select(ha => new { ha.LinkAnh }).ToList()
-                })
+            {
+                sp.Id,
+                sp.TenSanPham,
+                sp.DanhMuc.TenDanhMuc,
+                sp.SoLuong,
+                sp.Gia,
+                sp.NgayTao,
+                sp.NgaySuaDoi,
+                sp.TrangThai,
+                HinhAnhs = sp.HinhAnhs != null ? sp.HinhAnhs.Select(ha => new { ha.LinkAnh }).ToList() : new List<object>().Select(x => new { LinkAnh = "" }).ToList()
+            })
                 .ToList();
 
             return Json(new { data = result });

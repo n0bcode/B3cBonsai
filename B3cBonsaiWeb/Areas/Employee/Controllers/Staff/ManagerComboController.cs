@@ -1,4 +1,4 @@
-﻿using B3cBonsai.DataAccess.Data;
+using B3cBonsai.DataAccess.Data;
 using B3cBonsai.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -175,8 +175,11 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
 					ChiTietCombos = cbo.ChiTietCombos.Select(ct => new
 					{
 						ct.Id,
-						ct.SanPham,
-						// Include other fields you need, but avoid nested `Combo` references
+						SanPham = new {
+                            ct.SanPham.Id,
+                            ct.SanPham.TenSanPham,
+                            ct.SanPham.Gia
+                        }
 					})
 				})
 				.ToListAsync();

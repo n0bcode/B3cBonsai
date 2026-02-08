@@ -127,11 +127,11 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
                     {
                         Id = ctdh.Id,
                         SoLuong = ctdh.SoLuong,
-                        SanPham = new SanPham
+                        SanPham = ctdh.SanPham != null ? new SanPham
                         {
                             TenSanPham = ctdh.SanPham.TenSanPham,
-                            HinhAnhs = ctdh.SanPham.HinhAnhs.Select(ha => new HinhAnhSanPham { LinkAnh = ha.LinkAnh }).ToList()
-                        },
+                            HinhAnhs = ctdh.SanPham.HinhAnhs != null ? ctdh.SanPham.HinhAnhs.Select(ha => new HinhAnhSanPham { LinkAnh = ha.LinkAnh }).ToList() : new List<HinhAnhSanPham>()
+                        } : null,
                         LoaiDoiTuong = ctdh.LoaiDoiTuong,
                         Combo = ctdh.Combo,
                         SanPhamId = ctdh.SanPhamId,

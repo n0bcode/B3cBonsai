@@ -118,7 +118,14 @@ namespace B3cBonsaiWeb
             builder.Services.AddSingleton<TelegramService>(sp =>
             {
                 var token = builder.Configuration["TelegramBot:Token"];
-                return new TelegramService(token);
+                var logger = sp.GetRequiredService<ILogger<TelegramService>>();
+
+                if (string.IsNullOrEmpty(token))
+                {
+                     // Return service with dummy token and logger
+                     return new TelegramService("dummy_token_to_prevent_crash_check_appsettings", logger);
+                }
+                return new TelegramService(token, logger);
             });
 
             var app = builder.Build();

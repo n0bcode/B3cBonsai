@@ -1,4 +1,4 @@
-﻿var dataTable;
+var dataTable;
 var currentFilterStatus = ''; // Biến lưu trạng thái lọc hiện tại
 
 // Hàm load bảng dữ liệu
@@ -74,7 +74,7 @@ function loadOrderDataTable() {
                                         `<img src="${firstImage}" class="avatar rounded-circle" style="width: 40px; height: 40px;" alt="Product Image">` :
                                         '<span></span>';
                                 } else {
-                                    const imageCombo = sanPham.combo.linkAnh.length > 0 ? sanPham.combo.linkAnh : null;
+                                    const imageCombo = (sanPham.combo && sanPham.combo.linkAnh && sanPham.combo.linkAnh.length > 0) ? sanPham.combo.linkAnh : null;
                                     return imageCombo ?
                                         `<img src="${imageCombo}" class="avatar rounded-circle" style="width: 40px; height: 40px;" alt="Combo Image">` :
                                         '<span></span>';
