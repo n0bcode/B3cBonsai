@@ -14,7 +14,7 @@ function loadDataTable() {
                 "render": function (data) {
                     return `<a class="forum-thread" role="button" onclick="loadForumDetails('${data.id}')" data-bs-toggle="modal" data-bs-target="#exampleModalForum">
                                 <div>
-                                    <h6>${data.tieuDe}</h6>
+                                    <h6>${data.tieuDe} ${data.hasImage ? '<i class="fa fa-image text-muted ms-1" title="Có hình ảnh"></i>' : ''}</h6>
                                 </div>
                             </a>`;
                 }

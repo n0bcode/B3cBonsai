@@ -15,11 +15,13 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<ManagerForumController> _logger;
+        private readonly Microsoft.AspNetCore.Hosting.IWebHostEnvironment _webHostEnvironment;
 
-        public ManagerForumController(IUnitOfWork unitOfWork, ILogger<ManagerForumController> logger)
+        public ManagerForumController(IUnitOfWork unitOfWork, ILogger<ManagerForumController> logger, Microsoft.AspNetCore.Hosting.IWebHostEnvironment webHostEnvironment)
         {
             _unitOfWork = unitOfWork;
             _logger = logger;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         public IActionResult Index()
@@ -39,7 +41,8 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
                 NguoiTao = t.NguoiDungUngDung.HoTen,
                 t.NgayTao,
                 t.LuotXem,
-                t.TrangThai
+                t.TrangThai,
+                HasImage = !string.IsNullOrEmpty(t.LinkAnh)
             });
             return Json(new { data = result });
         }
@@ -65,9 +68,23 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
 
             try
             {
+                // Delete images if exist
+                if (!string.IsNullOrEmpty(thread.LinkAnh))
+                {
+                    string wwwRootPath = _webHostEnvironment.WebRootPath;
+                    foreach (var imgLink in thread.LinkAnh.Split(';', StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        var oldImagePath = System.IO.Path.Combine(wwwRootPath, imgLink.TrimStart('\\', '/'));
+                        if (System.IO.File.Exists(oldImagePath))
+                        {
+                            System.IO.File.Delete(oldImagePath);
+                        }
+                    }
+                }
+
                 // Delete all posts in thread first
                 _unitOfWork.BaiViet.DeleteByThreadId(id);
-                
+
                 _unitOfWork.ChuDe.Remove(thread);
                 _unitOfWork.Save();
                 return Json(new { success = true });
