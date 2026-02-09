@@ -63,6 +63,15 @@ namespace B3cBonsai.Models
         [ValidateNever]
         public virtual ICollection<ThongBao>? ThongBaos { get; set; }
 
+        [ValidateNever]
+        public virtual ICollection<CayCuaToi>? CayCuaTois { get; set; }
+
+        [ValidateNever]
+        public virtual ICollection<ChuDe>? ChuDes { get; set; }
+
+        [ValidateNever]
+        public virtual ICollection<BaiViet>? BaiViets { get; set; }
+
         [NotMapped]
         [Display(Name = "Vai Trò")]
         public string? VaiTro { get; set; }

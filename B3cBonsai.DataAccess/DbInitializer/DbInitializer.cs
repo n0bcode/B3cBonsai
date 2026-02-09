@@ -7,6 +7,7 @@ using B3cBonsai.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace B3cBonsai.DataAccess.DbInitializer
 {
@@ -16,19 +17,22 @@ namespace B3cBonsai.DataAccess.DbInitializer
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ApplicationDbContext _db;
         private readonly IConfiguration _configuration;
+        private readonly ILogger<DbInitializer> _logger;
 
-        public DbInitializer(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, ApplicationDbContext db, IConfiguration configuration)
+        public DbInitializer(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, ApplicationDbContext db, IConfiguration configuration, ILogger<DbInitializer> logger)
         {
             _roleManager = roleManager;
             _userManager = userManager;
             _db = db;
             _configuration = configuration;
+            _logger = logger;
         }
 
         public void Initialize()
         {
             ApplyMigrations();
             CreateRolesAndAdminUser();
+            SeedSampleData();
         }
 
         private void ApplyMigrations()
@@ -79,9 +83,6 @@ namespace B3cBonsai.DataAccess.DbInitializer
 
                 var customerUser = _db.NguoiDungUngDungs.FirstOrDefault(u => u.Email == "customer@dotnetmastery.com");
                 _userManager.AddToRoleAsync(customerUser, SD.Role_Customer).GetAwaiter().GetResult();
-
-                // Seed sample data if enabled
-                SeedSampleData();
             }
         }
 
@@ -266,6 +267,25 @@ namespace B3cBonsai.DataAccess.DbInitializer
             _db.SaveChanges();
         }
 
+        private void SeedForumCategories()
+        {
+            if (_db.DanhMucDienDans.Any())
+            {
+                return; // Already seeded
+            }
+
+            var categories = new List<DanhMucDienDan>
+            {
+                new DanhMucDienDan { TenDanhMuc = "Hỏi Đáp Chung", Slug = "hoi-dap-chung", MoTa = "Thảo luận chung về cây cảnh" },
+                new DanhMucDienDan { TenDanhMuc = "Kỹ Thuật Chăm Sóc", Slug = "ky-thuat-cham-soc", MoTa = "Chia sẻ kỹ thuật chăm sóc cây" },
+                new DanhMucDienDan { TenDanhMuc = "Demo/Tạo Dáng", Slug = "demo-tao-dang", MoTa = "Khoe cây và tạo dáng" },
+                new DanhMucDienDan { TenDanhMuc = "Mua Bán/Trao Đổi", Slug = "mua-ban-trao-doi", MoTa = "Giao lưu mua bán cây cảnh" }
+            };
+
+            _db.DanhMucDienDans.AddRange(categories);
+            _db.SaveChanges();
+        }
+
         private void SeedOrders()
         {
             Random rd = new Random();
@@ -330,7 +350,7 @@ namespace B3cBonsai.DataAccess.DbInitializer
                         NoiDungBinhLuan = "Bình luận " + i + " của " + userRD.HoTen,
                         NguoiDungId = userRD.Id,
                         SanPhamId = sanPhams[new Random().Next(sanPhams.Count)].Id,
-                        NgayBinhLuan = (DateTime.Now.AddDays(-rd.Next(3, 10)))
+                        NgayBinhLuan = (DateTime.UtcNow.AddDays(-rd.Next(3, 10)))
                     });
                 }
             }
@@ -451,7 +471,7 @@ namespace B3cBonsai.DataAccess.DbInitializer
                     NoiDungBinhLuan = "Sample comment " + i + " from " + customer.HoTen,
                     NguoiDungId = customerId,
                     SanPhamId = sanPhams[new Random().Next(sanPhams.Count)].Id,
-                    NgayBinhLuan = (DateTime.Now.AddDays(-rd.Next(3, 10)))
+                    NgayBinhLuan = (DateTime.UtcNow.AddDays(-rd.Next(3, 10)))
                 });
             }
             _db.BinhLuans.AddRange(binhLuans);
@@ -521,6 +541,125 @@ namespace B3cBonsai.DataAccess.DbInitializer
             _db.SaveChanges();
         }
 
+        private void SeedUserTreesAndJournals()
+        {
+            if (_db.CayCuaTois.Any())
+            {
+                return;
+            }
+
+            var users = _db.NguoiDungUngDungs.ToList();
+            if (!users.Any()) return;
+
+            var trees = new List<CayCuaToi>();
+            var random = new Random();
+
+            // Create trees for random users
+            foreach (var user in users)
+            {
+                if (random.NextDouble() > 0.7) continue; // 30% users have trees
+
+                int treeCount = random.Next(1, 4);
+                for (int i = 0; i < treeCount; i++)
+                {
+                    trees.Add(new CayCuaToi
+                    {
+                        NguoiDungId = user.Id,
+                        TenCay = $"Cây Bonsai {random.Next(100, 999)} của {user.HoTen}",
+                        NgayMua = DateTime.UtcNow.AddDays(-random.Next(30, 365)),
+                        TrangThai = random.NextDouble() > 0.2 ? "Khỏe mạnh" : "Cần chăm sóc",
+                        GhiChu = "Cây đang phát triển tốt.",
+                        HinhAnhDaiDien = RandomData_DB.Instance.RandomImageBonsai()
+                    });
+                }
+            }
+
+            _db.CayCuaTois.AddRange(trees);
+            _db.SaveChanges();
+
+            // Create journals for trees
+            var journals = new List<NhatKyCay>();
+            foreach (var tree in trees)
+            {
+                int journalCount = random.Next(2, 6);
+                for (int j = 0; j < journalCount; j++)
+                {
+                    journals.Add(new NhatKyCay
+                    {
+                        CayCuaToiId = tree.Id,
+                        NgayTao = DateTimeOffset.UtcNow.AddDays(-random.Next(1, 30) * j),
+                        NoiDung = $"Nhật ký ngày {j + 1}: Cây đã ra thêm lá mới.",
+                        HinhAnh = random.NextDouble() > 0.5 ? RandomData_DB.Instance.RandomImageBonsai() : null,
+                        GiaiDoanPhatTrien = "Phát triển"
+                    });
+                }
+            }
+
+            _db.NhatKyCays.AddRange(journals);
+            _db.SaveChanges();
+        }
+
+        private void SeedForumThreadsAndPosts()
+        {
+            if (_db.ChuDes.Any())
+            {
+                return;
+            }
+
+            var users = _db.NguoiDungUngDungs.ToList();
+            var categories = _db.DanhMucDienDans.ToList();
+
+            if (!users.Any() || !categories.Any()) return;
+
+            var threads = new List<ChuDe>();
+            var random = new Random();
+
+            // Create threads
+            for (int i = 0; i < 20; i++)
+            {
+                var user = users[random.Next(users.Count)];
+                var category = categories[random.Next(categories.Count)];
+                var title = $"Thảo luận về {category.TenDanhMuc} - {random.Next(1000)}";
+
+                threads.Add(new ChuDe
+                {
+                    NguoiDungId = user.Id,
+                    DanhMucDienDanId = category.Id,
+                    TieuDe = title,
+                    Slug = SD.GenerateSlug(title),
+                    NoiDung = $"<p>Xin chào mọi người, mình có thắc mắc về <strong>{category.TenDanhMuc}</strong>. Mong được giải đáp!</p>",
+                    LuotXem = random.Next(10, 500),
+                    NgayTao = DateTime.UtcNow.AddDays(-random.Next(1, 60)),
+                    TrangThai = true
+                });
+            }
+
+            _db.ChuDes.AddRange(threads);
+            _db.SaveChanges();
+
+            // Create posts for threads
+            var posts = new List<BaiViet>();
+            foreach (var thread in threads)
+            {
+                int postCount = random.Next(1, 8);
+                for (int k = 0; k < postCount; k++)
+                {
+                    var commenter = users[random.Next(users.Count)];
+                    posts.Add(new BaiViet
+                    {
+                        ChuDeId = thread.Id,
+                        NguoiDungId = commenter.Id,
+                        NoiDung = $"Bài viết rất hữu ích. Cảm ơn bạn {thread.NguoiDungId} đã chia sẻ!",
+                        NgayTao = thread.NgayTao.AddHours(random.Next(1, 48) * (k + 1)),
+                        LaCauTraLoiDung = k == 0 && random.NextDouble() > 0.8 // Randomly mark first reply as answer
+                    });
+                }
+            }
+
+            _db.BaiViets.AddRange(posts);
+            _db.SaveChanges();
+        }
+
         public void SeedSampleData()
         {
             bool seedSampleData = _configuration.GetValue<bool>("SeedSampleData", true);
@@ -538,12 +677,16 @@ namespace B3cBonsai.DataAccess.DbInitializer
                 SeedComboDetails();
                 SeedProductImages();
                 SeedProductVideos();
+                SeedForumCategories();
 
                 SeedUsers();
                 SeedOrders();
                 SeedFavorites();
                 SeedComments();
                 SeedOrderDetails();
+
+                SeedUserTreesAndJournals();
+                SeedForumThreadsAndPosts();
 
                 // Seed sample customer related data
                 var customerUser = _db.NguoiDungUngDungs.FirstOrDefault(u => u.Email == "customer@dotnetmastery.com");
@@ -554,10 +697,9 @@ namespace B3cBonsai.DataAccess.DbInitializer
             }
             catch (Exception ex)
             {
-                // Log error if needed
-                throw new Exception($"Failed to seed sample data: {ex.Message}", ex);
+                _logger.LogError(ex, "Failed to seed sample data.");
+                // Ensure app doesn't crash on seeding failure
             }
         }
-
     }
 }

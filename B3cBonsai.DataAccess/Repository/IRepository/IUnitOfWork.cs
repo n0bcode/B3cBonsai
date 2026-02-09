@@ -20,6 +20,11 @@ namespace B3cBonsai.DataAccess.Repository.IRepository
         ISanPhamRepository SanPham { get; }
         IVideoSanPhamRepository VideoSanPham { get; }
         IThongBaoRepository ThongBao { get; }
+        ICayCuaToiRepository CayCuaToi { get; }
+        INhatKyCayRepository NhatKyCay { get; }
+        IDanhMucDienDanRepository DanhMucDienDan { get; }
+        IChuDeRepository ChuDe { get; }
+        IBaiVietRepository BaiViet { get; }
         void Save();
     }
 }

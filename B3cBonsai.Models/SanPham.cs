@@ -68,6 +68,9 @@ namespace B3cBonsai.Models
         [ValidateNever]
         public virtual ICollection<VideoSanPham>? Videos { get; set; } // Khai báo quan hệ 1-n với video
 
+        [ValidateNever]
+        public virtual ICollection<CayCuaToi>? CayCuaTois { get; set; } // Khai báo quan hệ 1-n với cây của tôi
+
         [Display(Name = "Đường dẫn Model 3D")]
         public string? Model3DPath { get; set; }
 

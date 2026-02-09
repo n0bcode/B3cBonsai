@@ -76,5 +76,19 @@ namespace B3cBonsai.Models
         //Validate tiêu chuẩn
         public const string ValidateString = @"^[a-zA-Z0-9àáạảãâầấậẩẫăđèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữýỳỹỵÀÁẠẢÃÂẦẤẬẨẪĂĐÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮÝỲỸỴ ,~!@#$%^&*()_+{}|:<>?`[\];',./\\-]*$";
         public const string ValidateStringName = @"^[a-zA-Z0-9àáạảãâầấậẩẫăđèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữýỳỹỵÀÁẠẢÃÂẦẤẬẨẪĂĐÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮÝỲỸỴ ]*$";
+
+        public static string GenerateSlug(string phrase)
+        {
+            if (string.IsNullOrEmpty(phrase)) return "";
+            string str = phrase.ToLower();
+            // Delete invalid chars
+            str = System.Text.RegularExpressions.Regex.Replace(str, @"[^a-z0-9\s-]", "");
+            // Convert multiple spaces into one space   
+            str = System.Text.RegularExpressions.Regex.Replace(str, @"\s+", " ").Trim();
+            // Cut and trim 
+            str = str.Substring(0, str.Length <= 45 ? str.Length : 45).Trim();
+            str = System.Text.RegularExpressions.Regex.Replace(str, @"\s", "-"); // hyphens   
+            return str;
+        }
     }
 }

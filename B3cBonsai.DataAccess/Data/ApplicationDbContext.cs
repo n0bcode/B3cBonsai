@@ -30,6 +30,14 @@ namespace B3cBonsai.DataAccess.Data
         public DbSet<ChiTietDonHang> ChiTietDonHangs { get; set; }
         public DbSet<GioHang> GioHangs { get; set; }
         public DbSet<ThongBao> ThongBaos { get; set; }
+        
+        // Retention & SEO Features
+        public DbSet<CayCuaToi> CayCuaTois { get; set; }
+        public DbSet<NhatKyCay> NhatKyCays { get; set; }
+        public DbSet<DanhMucDienDan> DanhMucDienDans { get; set; }
+        public DbSet<ChuDe> ChuDes { get; set; }
+        public DbSet<BaiViet> BaiViets { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             foreach (var entityType in modelBuilder.Model.GetEntityTypes())
@@ -177,7 +185,61 @@ namespace B3cBonsai.DataAccess.Data
                 .HasForeignKey(tb => tb.NguoiDungId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            // =================================================================================
+            // CẤU HÌNH CHO TÍNH NĂNG NHẬT KÝ CÂY VÀ DIỄN ĐÀN (NEW)
+            // =================================================================================
 
+            // 1. Cây Của Tôi (User Tree)
+            modelBuilder.Entity<CayCuaToi>()
+                .HasOne(c => c.NguoiDungUngDung)
+                .WithMany(u => u.CayCuaTois)
+                .HasForeignKey(c => c.NguoiDungId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<CayCuaToi>()
+                .HasOne(c => c.SanPham)
+                .WithMany(sp => sp.CayCuaTois)
+                .HasForeignKey(c => c.SanPhamId)
+                .OnDelete(DeleteBehavior.SetNull); // Nếu sản phẩm gốc bị xóa, cây của tôi vẫn còn nhưng mất link
+
+            // 2. Nhật Ký Cây
+            modelBuilder.Entity<NhatKyCay>()
+                .HasOne(nk => nk.CayCuaToi)
+                .WithMany(c => c.NhatKyCays)
+                .HasForeignKey(nk => nk.CayCuaToiId)
+                .OnDelete(DeleteBehavior.Cascade); // Xóa cây thì xóa luôn nhật ký
+
+            // 3. Danh Mục Diễn Đàn
+            // (Thiết lập 1-n với Chủ Đề đã có trong Data Annotations, bổ sung API Fluent nếu cần)
+
+            // 4. Chủ Đề
+            modelBuilder.Entity<ChuDe>()
+                .HasOne(cd => cd.DanhMucDienDan)
+                .WithMany(dm => dm.ChuDes)
+                .HasForeignKey(cd => cd.DanhMucDienDanId)
+                .OnDelete(DeleteBehavior.Restrict); // Không xóa danh mục nếu còn chủ đề
+
+            modelBuilder.Entity<ChuDe>()
+                .HasOne(cd => cd.NguoiDungUngDung)
+                .WithMany(u => u.ChuDes)
+                .HasForeignKey(cd => cd.NguoiDungId)
+                .OnDelete(DeleteBehavior.Cascade); // Xóa user thì xóa chủ đề (hoặc SetNull tùy policy, ở đây để Cascade cho sạch data rác)
+
+            // 5. Bài Viết
+            modelBuilder.Entity<BaiViet>()
+                .HasOne(bv => bv.ChuDe)
+                .WithMany(cd => cd.BaiViets)
+                .HasForeignKey(bv => bv.ChuDeId)
+                .OnDelete(DeleteBehavior.Cascade); // Xóa chủ đề thì xóa hết bài viết
+
+            modelBuilder.Entity<BaiViet>()
+                .HasOne(bv => bv.NguoiDungUngDung)
+                .WithMany(u => u.BaiViets)
+                .HasForeignKey(bv => bv.NguoiDungId)
+                .OnDelete(DeleteBehavior.NoAction); // Tránh Cycles or Multiple Cascade Paths với User
+                // Lưu ý: User xóa thì Bài Viết có thể cần giữ lại hoặc xóa. 
+                // Nếu Cascade cả từ ChuDe và NguoiDung có thể gây lỗi SQL Server (Multiple Cascade Paths).
+                // Chọn NoAction cho User -> Bài Viết, hoặc Restrict.
         }
     }
 }

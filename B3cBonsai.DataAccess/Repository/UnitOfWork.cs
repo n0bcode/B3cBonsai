@@ -31,6 +31,13 @@ namespace B3cBonsai.DataAccess.Repository
         public IVideoSanPhamRepository VideoSanPham { get; private set; }
 
         public IThongBaoRepository ThongBao { get; private set; }
+
+        public ICayCuaToiRepository CayCuaToi { get; private set; }
+        public INhatKyCayRepository NhatKyCay { get; private set; }
+        public IDanhMucDienDanRepository DanhMucDienDan { get; private set; }
+        public IChuDeRepository ChuDe { get; private set; }
+        public IBaiVietRepository BaiViet { get; private set; }
+
         public UnitOfWork(ApplicationDbContext db, IFileStorageService fileStorageService)
         {
             _db = db;
@@ -46,6 +53,12 @@ namespace B3cBonsai.DataAccess.Repository
             SanPham = new SanPhamRepository(_db);
             VideoSanPham = new VideoSanPhamRepository(_db);
             ThongBao = new ThongBaoRepository(_db);
+
+            CayCuaToi = new CayCuaToiRepository(_db);
+            NhatKyCay = new NhatKyCayRepository(_db);
+            DanhMucDienDan = new DanhMucDienDanRepository(_db);
+            ChuDe = new ChuDeRepository(_db);
+            BaiViet = new BaiVietRepository(_db);
 
         }
 
