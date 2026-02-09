@@ -32,7 +32,6 @@ namespace B3cBonsai.DataAccess.DbInitializer
         {
             ApplyMigrations();
             CreateRolesAndAdminUser();
-            SeedSampleData();
         }
 
         private void ApplyMigrations()
@@ -83,6 +82,8 @@ namespace B3cBonsai.DataAccess.DbInitializer
 
                 var customerUser = _db.NguoiDungUngDungs.FirstOrDefault(u => u.Email == "customer@dotnetmastery.com");
                 _userManager.AddToRoleAsync(customerUser, SD.Role_Customer).GetAwaiter().GetResult();
+
+                SeedSampleData();
             }
         }
 
@@ -614,22 +615,45 @@ namespace B3cBonsai.DataAccess.DbInitializer
             var threads = new List<ChuDe>();
             var random = new Random();
 
+            // Realistic Vietnamese Titles & Content
+            var discussionTopics = new[]
+            {
+                new { Title = "Cách chăm sóc cây Sanh vào mùa đông?", Content = "<p>Chào mọi người, em mới chơi bonsai. Cho em hỏi cây Sanh vào mùa lạnh có cần chế độ chăm sóc đặc biệt nào không ạ? Em thấy lá nó rụng nhiều quá.</p>" },
+                new { Title = "Khoe cây Mai chiếu thủy mới tậu", Content = "<p>Mới rước em này về hôm qua, giá cũng hơi chát nhưng ưng cái dáng. Các bác cho em xin ít gạch đá để hoàn thiện em nó nhé!</p><p><img src='https://images.unsplash.com/photo-1613143828771-08183182512a?auto=format&fit=crop&q=80&w=600' alt='Bonsai' /></p>" },
+                new { Title = "Tư vấn kỹ thuật uốn cành", Content = "<p>Em đang tập uốn cành cho cây Tùng La Hán. Có bác nào có tài liệu hay video hướng dẫn chi tiết cho người mới bắt đầu không ạ? Em cảm ơn.</p>" },
+                new { Title = "Phân bón nào tốt cho cây lá kim?", Content = "<p>Các bác thường dùng loại phân bón nào cho dòng cây lá kim vậy ạ? Em dùng NPK thường thấy không hiệu quả lắm.</p>" },
+                new { Title = "Giao lưu anh em khu vực TP.HCM", Content = "<p>Cuối tuần này có anh em nào rảnh cafe giao lưu chia sẻ kinh nghiệm không ạ? Em ở khu vực Thủ Đức.</p>" },
+                new { Title = "Cây bị vàng lá, cứu em với!", Content = "<p>Cây của em tự nhiên bị vàng lá hàng loạt, không biết có phải do tưới nước nhiều quá không. Bác nào bắt bệnh giúp em với :(.</p>" },
+                new { Title = "Địa chỉ mua chậu bonsai đẹp giá rẻ", Content = "<p>Em đang cần tìm mua ít chậu gốm cho dàn cây mini. Bác nào biết chỗ bán uy tín ở Hà Nội chỉ em với ạ.</p>" }
+            };
+
+            var replyContents = new[]
+            {
+                "Cây đẹp quá bác ơi, chúc mừng bác!",
+                "Theo kinh nghiệm của mình thì nên hạn chế tưới nước vào mùa đông nhé.",
+                "Bác thử dùng phân hữu cơ xem, mình thấy tốt hơn NPK hóa học.",
+                "Hóng cao nhân vào chỉ giáo, em cũng đang gặp vấn đề tương tự.",
+                "Cuối tuần này em bận mất rồi, hẹn bác dịp khác nhé.",
+                "Ra tiệm thuốc bảo vệ thực vật hỏi thuốc trị nấm xem sao bác.",
+                "Chậu này mình hay mua ở chợ Bưởi, giá cũng phải chăng lắm."
+            };
+
             // Create threads
-            for (int i = 0; i < 20; i++)
+            foreach (var topic in discussionTopics)
             {
                 var user = users[random.Next(users.Count)];
-                var category = categories[random.Next(categories.Count)];
-                var title = $"Thảo luận về {category.TenDanhMuc} - {random.Next(1000)}";
+                var category = categories[random.Next(categories.Count)]; // Assign distinct if valid, random for now
 
+                // Override category for specific topics if needed, but random is fine for demo
                 threads.Add(new ChuDe
                 {
                     NguoiDungId = user.Id,
                     DanhMucDienDanId = category.Id,
-                    TieuDe = title,
-                    Slug = SD.GenerateSlug(title),
-                    NoiDung = $"<p>Xin chào mọi người, mình có thắc mắc về <strong>{category.TenDanhMuc}</strong>. Mong được giải đáp!</p>",
-                    LuotXem = random.Next(10, 500),
-                    NgayTao = DateTime.UtcNow.AddDays(-random.Next(1, 60)),
+                    TieuDe = topic.Title,
+                    Slug = SD.GenerateSlug(topic.Title),
+                    NoiDung = topic.Content,
+                    LuotXem = random.Next(50, 1000),
+                    NgayTao = DateTime.UtcNow.AddDays(-random.Next(1, 30)), // Fixed UtcNow
                     TrangThai = true
                 });
             }
@@ -641,7 +665,7 @@ namespace B3cBonsai.DataAccess.DbInitializer
             var posts = new List<BaiViet>();
             foreach (var thread in threads)
             {
-                int postCount = random.Next(1, 8);
+                int postCount = random.Next(2, 6);
                 for (int k = 0; k < postCount; k++)
                 {
                     var commenter = users[random.Next(users.Count)];
@@ -649,9 +673,9 @@ namespace B3cBonsai.DataAccess.DbInitializer
                     {
                         ChuDeId = thread.Id,
                         NguoiDungId = commenter.Id,
-                        NoiDung = $"Bài viết rất hữu ích. Cảm ơn bạn {thread.NguoiDungId} đã chia sẻ!",
+                        NoiDung = $"<p>{replyContents[random.Next(replyContents.Length)]}</p>",
                         NgayTao = thread.NgayTao.AddHours(random.Next(1, 48) * (k + 1)),
-                        LaCauTraLoiDung = k == 0 && random.NextDouble() > 0.8 // Randomly mark first reply as answer
+                        LaCauTraLoiDung = k == 0 && random.NextDouble() > 0.9 // Rare accepted answer
                     });
                 }
             }

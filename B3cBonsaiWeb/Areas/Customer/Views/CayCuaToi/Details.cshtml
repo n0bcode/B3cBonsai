@@ -1,0 +1,121 @@
+@model B3cBonsai.Models.CayCuaToi
+
+@{
+    ViewData["Title"] = "Nhật Ký: " + Model.TenCay;
+}
+
+<section class="breadcrumb-area">
+    <div class="container">
+        <ul class="breadcrumb-ul">
+            <li class="breadcrumb-li"><a asp-action="Index">Vườn Cây Của Tôi</a></li>
+            <li class="breadcrumb-li"><span class="breadcrumb-text">@Model.TenCay</span></li>
+        </ul>
+    </div>
+</section>
+
+<section class="section-ptb">
+    <div class="container">
+        <div class="row">
+            <!-- Left Column: Tree Info -->
+            <div class="col-md-4">
+                <div class="card shadow-sm sticky-top" style="top: 20px;">
+                    <div class="card-body text-center">
+                         @if (!string.IsNullOrEmpty(Model.HinhAnhDaiDien))
+                         {
+                            <img src="@Model.HinhAnhDaiDien" class="img-fluid rounded mb-3" style="max-height: 300px; object-fit: cover;" />
+                         }
+                         else
+                         {
+                            <img src="https://placehold.co/400x400?text=Tree" class="img-fluid rounded mb-3" />
+                         }
+                         <h3 class="card-title">@Model.TenCay</h3>
+                         <span class="badge bg-success">@Model.TrangThai</span>
+                         <hr/>
+                         <p class="text-start">
+                             <strong><i class="fa fa-calendar"></i> Ngày Mua:</strong> @(Model.NgayMua.HasValue ? Model.NgayMua.Value.ToString("dd/MM/yyyy") : "Chưa cập nhật") <br/>
+                             @if (Model.SanPham != null)
+                             {
+                                 <strong><i class="fa fa-tag"></i> Giống:</strong> <a asp-controller="ClientProduct" asp-action="Detail" asp-route-id="@Model.SanPhamId">@Model.SanPham.TenSanPham</a> <br/>
+                             }
+                             <strong><i class="fa fa-sticky-note"></i> Ghi Chú:</strong> <br/>
+                             @Model.GhiChu
+                         </p>
+                         <a asp-action="Upsert" asp-route-id="@Model.Id" class="btn btn-outline-primary btn-sm w-100">Chỉnh Sửa Thông Tin</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Journal Timeline -->
+            <div class="col-md-8">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0 text-white"><i class="fa fa-plus-circle"></i> Thêm Nhật Ký Mới</h5>
+                    </div>
+                    <div class="card-body">
+                         <form asp-action="AddJournalEntry" method="post" enctype="multipart/form-data">
+                             <input type="hidden" name="CayCuaToiId" value="@Model.Id" />
+                             <div class="row">
+                                 <div class="col-md-12 mb-2">
+                                     <textarea name="NoiDung" class="form-control" rows="3" placeholder="Hôm nay cây thế nào? (Tưới nước, bón phân, ra lá mới...)" required></textarea>
+                                 </div>
+                                 <div class="col-md-6 mb-2">
+                                     <select name="GiaiDoanPhatTrien" class="form-control">
+                                         <option value="">-- Giai Đoạn (Tùy chọn) --</option>
+                                         <option value="Nảy mầm">Nảy mầm</option>
+                                         <option value="Phát triển lá">Phát triển lá</option>
+                                         <option value="Ra hoa">Ra hoa</option>
+                                         <option value="Kết trái">Kết trái</option>
+                                         <option value="Ngủ đông">Ngủ đông</option>
+                                         <option value="Bệnh">Bệnh</option>
+                                     </select>
+                                 </div>
+                                 <div class="col-md-6 mb-2">
+                                     <input type="file" name="journalFile" class="form-control" accept="image/*" />
+                                 </div>
+                             </div>
+                             <div class="text-end">
+                                 <button type="submit" class="btn btn-primary">Đăng Nhật Ký</button>
+                             </div>
+                         </form>
+                    </div>
+                </div>
+
+                <h4 class="mb-3"><i class="fa fa-history"></i> Dòng Thời Gian</h4>
+                
+                @if (Model.NhatKyCays != null && Model.NhatKyCays.Count() > 0)
+                {
+                    <div class="timeline">
+                        @foreach (var entry in Model.NhatKyCays)
+                        {
+                            <div class="card mb-3 border-left-primary shadow-sm" style="border-left: 5px solid #007bff;">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <h6 class="text-primary fw-bold mb-0">
+                                            <i class="fa fa-clock-o"></i> @entry.NgayTao.ToString("dd/MM/yyyy HH:mm")
+                                            @if (!string.IsNullOrEmpty(entry.GiaiDoanPhatTrien)) {
+                                                <span class="badge bg-info ms-2">@entry.GiaiDoanPhatTrien</span>
+                                            }
+                                        </h6>
+                                    </div>
+                                    <p class="card-text">@entry.NoiDung</p>
+                                    @if (!string.IsNullOrEmpty(entry.HinhAnh))
+                                    {
+                                        <div class="mt-2 text-center">
+                                            <img src="@entry.HinhAnh" class="img-fluid rounded" style="max-height: 400px;" />
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-info text-center">
+                        Chưa có nhật ký nào. Hãy viết dòng nhật ký đầu tiên!
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>

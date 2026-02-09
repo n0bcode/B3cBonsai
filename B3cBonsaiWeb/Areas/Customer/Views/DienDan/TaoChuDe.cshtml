@@ -1,0 +1,81 @@
+@model B3cBonsai.Models.ChuDe
+
+@{
+    ViewData["Title"] = "Tạo Chủ Đề Mới";
+}
+
+<section class="breadcrumb-area">
+    <div class="container">
+        <div class="col">
+            <div class="row">
+                <div class="breadcrumb-index">
+                    <ul class="breadcrumb-ul">
+                        <li class="breadcrumb-li">
+                            <a class="breadcrumb-link" asp-area="Customer" asp-controller="Home"
+                                asp-action="Index">Trang Chủ</a>
+                        </li>
+                        <li class="breadcrumb-li">
+                            <a class="breadcrumb-link" asp-action="Index">Diễn Đàn</a>
+                        </li>
+                        <li class="breadcrumb-li">
+                            <span class="breadcrumb-text">Đăng Bài Mới</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section-ptb">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <!-- Header -->
+                <div class="section-capture mb-5 text-center">
+                    <div class="section-title">
+                        <h2>Tạo Chủ Đề Thảo Luận Mới</h2>
+                        <p class="text-muted">Chia sẻ kiến thức, đặt câu hỏi hoặc thảo luận cùng cộng đồng.</p>
+                    </div>
+                </div>
+
+                <!-- Form -->
+                <div class="single-product-wrap p-5 border rounded">
+                    <form method="post">
+                        <div class="mb-4">
+                            <label asp-for="TieuDe" class="form-label fw-bold">Tiêu Đề</label>
+                            <input asp-for="TieuDe" class="form-control form-control-lg"
+                                placeholder="Nhập tiêu đề ngắn gọn, rõ ràng..." />
+                            <span asp-validation-for="TieuDe" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="DanhMucDienDanId" class="form-label fw-bold">Danh Mục</label>
+                            <select asp-for="DanhMucDienDanId" asp-items="@ViewBag.Categories"
+                                class="form-select form-select-lg">
+                                <option value="">-- Chọn Danh Mục --</option>
+                            </select>
+                            <span asp-validation-for="DanhMucDienDanId" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="NoiDung" class="form-label fw-bold">Nội Dung</label>
+                            <textarea asp-for="NoiDung" class="form-control" rows="10"
+                                placeholder="Viết nội dung chi tiết..."></textarea>
+                            <span asp-validation-for="NoiDung" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-grid gap-3 d-md-block text-center mt-5">
+                            <button type="submit" class="btn btn-style btn-lg px-5 me-md-2">Đăng Bài</button>
+                            <a asp-action="Index" class="btn btn-style2 btn-lg px-5">Hủy Bỏ</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

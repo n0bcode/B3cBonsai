@@ -9,6 +9,7 @@
   <ItemGroup>
     <PackageReference Include="AWSSDK.SecretsManager" Version="3.7.400.48" />
     <PackageReference Include="CloudinaryDotNet" Version="1.27.7" />
+    <PackageReference Include="HtmlSanitizer" Version="9.0.892" />
     <PackageReference Include="MailKit" Version="4.8.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.10" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />

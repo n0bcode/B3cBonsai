@@ -1,0 +1,30 @@
+@model B3cBonsai.Models.NhatKyCay
+
+<div class="card shadow-sm">
+    <div class="card-header bg-success text-white">
+        <h5 class="mb-0 text-white">Nhật Ký: @Model.CayCuaToi.TenCay</h5>
+    </div>
+    <div class="card-body">
+         <div class="row mb-3">
+             <div class="col-md-6">
+                 <strong>Người dùng:</strong> @(Model.CayCuaToi.NguoiDungUngDung?.HoTen ?? "N/A") <br/>
+                 <strong>Ngày tạo:</strong> @Model.NgayTao.ToString("dd/MM/yyyy HH:mm")
+             </div>
+             <div class="col-md-6 text-end">
+                 <strong>Giai đoạn:</strong> <span class="badge bg-info">@(Model.GiaiDoanPhatTrien ?? "Không xác định")</span>
+             </div>
+         </div>
+         
+         @if (!string.IsNullOrEmpty(Model.HinhAnh))
+         {
+             <div class="text-center mb-3">
+                 <img src="@Model.HinhAnh" class="img-fluid rounded" style="max-height: 300px;" alt="Hình ảnh nhật ký"/>
+             </div>
+         }
+
+         <hr/>
+         <div class="journal-content p-3 bg-light rounded">
+             <p>@Model.NoiDung</p>
+         </div>
+    </div>
+</div>

@@ -118,6 +118,7 @@ namespace B3cBonsaiWeb
             builder.Services.AddScoped<IVnPayService, VnPayService>();
             builder.Services.AddScoped<IAIService, GeminiAIService>();
             builder.Services.AddScoped<NotificationService>();
+            builder.Services.AddScoped<IHtmlSanitizerService, HtmlSanitizerService>();
 
             builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 

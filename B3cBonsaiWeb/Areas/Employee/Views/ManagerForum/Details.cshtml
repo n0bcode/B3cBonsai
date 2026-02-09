@@ -1,0 +1,41 @@
+@model B3cBonsai.Models.ChuDe
+
+<div class="card shadow-sm">
+    <div class="card-header bg-primary text-white">
+        <h5 class="mb-0 text-white">@Model.TieuDe</h5>
+    </div>
+    <div class="card-body">
+         <div class="row mb-3">
+             <div class="col-md-6">
+                 <strong>Người tạo:</strong> @(Model.NguoiDungUngDung?.HoTen ?? "N/A") <br/>
+                 <strong>Email:</strong> @(Model.NguoiDungUngDung?.Email ?? "N/A")
+             </div>
+             <div class="col-md-6 text-end">
+                 <strong>Ngày tạo:</strong> @Model.NgayTao.ToString("dd/MM/yyyy HH:mm") <br/>
+                 <strong>Danh mục:</strong> @Model.DanhMucDienDan.TenDanhMuc
+             </div>
+         </div>
+         <hr/>
+         <div class="post-content p-3 bg-light rounded">
+             @Html.Raw(Model.NoiDung.Replace("\n", "<br/>"))
+         </div>
+    </div>
+    <div class="card-footer">
+        <h6>Bình luận (@(Model.BaiViets?.Count() ?? 0))</h6>
+        <div style="max-height: 400px; overflow-y: auto;">
+             @if (Model.BaiViets != null)
+             {
+                 foreach (var post in Model.BaiViets.OrderBy(p => p.NgayTao))
+                 {
+                     <div class="border-bottom p-2">
+                         <div class="d-flex justify-content-between">
+                             <span class="fw-bold">@(post.NguoiDungUngDung?.HoTen ?? "N/A")</span>
+                             <small class="text-muted">@post.NgayTao.ToString("dd/MM/yyyy HH:mm")</small>
+                         </div>
+                         <p class="mb-1">@post.NoiDung</p>
+                     </div>
+                 }
+             }
+        </div>
+    </div>
+</div>

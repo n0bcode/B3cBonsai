@@ -252,6 +252,33 @@
                                                 </div>
                                             </li>
 
+                                            <li class="menu-link">
+                                                <a asp-area="Customer" asp-controller="CayCuaToi" asp-action="Index" class="link-title">
+                                                    <span class="sp-link-title">Vườn Của Tôi</span>
+                                                </a>
+                                            </li>
+
+                                            <li class="menu-link">
+                                                <a asp-area="Customer" asp-controller="DienDan" asp-action="Index" class="link-title">
+                                                    <span class="sp-link-title">Diễn Đàn</span>
+                                                    <span class="menu-arrow"><i class="fa fa-angle-down"></i></span>
+                                                </a>
+                                                  <div class="menu-dropdown menu-single collapse" id="forum-dropdown">
+                                                    <ul class="ul">
+                                                        <li class="menusingle-li">
+                                                            <a asp-area="Customer" asp-controller="DienDan" asp-action="Index" class="menusingle-title">
+                                                                <span class="sp-link-title">Trang chủ diễn đàn</span>
+                                                            </a>
+                                                        </li>
+                                                        <li class="menusingle-li">
+                                                            <a asp-area="Customer" asp-controller="DienDan" asp-action="TaoChuDe" class="menusingle-title">
+                                                                <span class="sp-link-title">Đăng bài mới</span>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </li>
+
                                             <!-- <li class="menu-link">
                                                 <a href="blog-grid.html" class="link-title">
                                                     <span class="sp-link-title">Blogs</span>

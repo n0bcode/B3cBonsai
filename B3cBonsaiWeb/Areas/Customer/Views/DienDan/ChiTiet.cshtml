@@ -1,0 +1,137 @@
+@model B3cBonsai.Models.ChuDe
+
+@{
+    ViewData["Title"] = Model.TieuDe + " - Diễn Đàn Bonsai";
+    ViewData["Description"] = Model.NoiDung.Length > 150 ? Model.NoiDung.Substring(0, 150) + "..." : Model.NoiDung;
+}
+
+<section class="breadcrumb-area">
+    <div class="container">
+        <div class="col">
+            <div class="row">
+                <div class="breadcrumb-index">
+                    <ul class="breadcrumb-ul">
+                        <li class="breadcrumb-li">
+                            <a class="breadcrumb-link" asp-area="Customer" asp-controller="Home"
+                                asp-action="Index">Trang Chủ</a>
+                        </li>
+                        <li class="breadcrumb-li">
+                            <a class="breadcrumb-link" asp-action="Index">Diễn Đàn</a>
+                        </li>
+                        <li class="breadcrumb-li">
+                            <span class="breadcrumb-text">@Model.TieuDe</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section-ptb">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-9">
+                <!-- Thread Title & Meta -->
+                <div class="section-capture mb-4">
+                    <div class="section-title text-start">
+                        <h2 class="mb-2">@Model.TieuDe</h2>
+                        <div class="d-flex align-items-center flex-wrap text-muted small">
+                            <span class="me-3"><i class="fa fa-user me-1"></i> @(Model.NguoiDungUngDung?.HoTen ?? "Thành viên")</span>
+                            <span class="me-3"><i class="fa fa-clock-o me-1"></i> @Model.NgayTao.ToString("dd/MM/yyyy HH:mm")</span>
+                            <span class="me-3"><i class="fa fa-folder-open me-1"></i>
+                                @(Model.DanhMucDienDan?.TenDanhMuc)</span>
+                            @if (Model.TrangThai)
+                            {
+                                <span class="badge bg-success">Mở</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">Đóng</span>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Thread Content -->
+                <div class="single-product-wrap p-4 mb-5 border rounded">
+                    <div class="thread-content" style="font-size: 1.1rem; line-height: 1.8;">
+                        @Html.Raw(Model.NoiDung)
+                    </div>
+                    <div class="mt-4 pt-3 border-top text-muted small">
+                        <i class="fa fa-eye me-1"></i> @Model.LuotXem lượt xem
+                    </div>
+                </div>
+
+                <!-- Replies -->
+                <h4 class="mb-4">Thảo Luận (@(Model.BaiViets?.Count() ?? 0))</h4>
+
+                @if (Model.BaiViets != null && Model.BaiViets.Count() > 0)
+                {
+                    <div class="reply-list mb-5">
+                        @foreach (var reply in Model.BaiViets.OrderBy(p => p.NgayTao))
+                        {
+                            <div
+                                class="single-product-wrap p-4 mb-3 border rounded @(reply.LaCauTraLoiDung ? "border-success border-2 shadow-sm" : "")">
+                                <div class="d-flex justify-content-between mb-3">
+                                    <div>
+                                        <strong class="text-primary me-2">@(reply.NguoiDungUngDung?.HoTen ?? "Thành viên")</strong>
+                                        <small class="text-muted">@reply.NgayTao.ToString("dd/MM/yyyy HH:mm")</small>
+                                    </div>
+                                    @if (reply.LaCauTraLoiDung)
+                                    {
+                                        <div class="text-success fw-bold">
+                                            <i class="fa fa-check-circle"></i> Đã chấp nhận
+                                        </div>
+                                    }
+                                </div>
+                                <div class="reply-content">
+                                    @Html.Raw(reply.NoiDung)
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-light text-center border mb-5">
+                        <i class="fa fa-comment-o me-2"></i> Chưa có câu trả lời nào. Hãy là người đầu tiên!
+                    </div>
+                }
+
+                <!-- Reply Form -->
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <div class="single-product-wrap p-4 border rounded bg-light">
+                        <h5 class="mb-3">Gửi câu trả lời của bạn</h5>
+                        <form asp-action="TraLoi" method="post">
+                            <input type="hidden" name="ChuDeId" value="@Model.Id" />
+                            <div class="form-group mb-3">
+                                <textarea name="NoiDung" class="form-control" rows="5" placeholder="Viết câu trả lời..."
+                                required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-style px-4"><i class="fa fa-paper-plane me-2"></i> Gửi Trả
+                                Lời</button>
+                        </form>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-info text-center">
+                        <a href="/Identity/Account/Login" class="alert-link">Đăng nhập</a> để tham gia thảo luận.
+                    </div>
+                }
+
+            </div>
+
+            <div class="col-lg-3">
+                <div class="d-grid gap-2">
+                    <a asp-action="TaoChuDe" class="btn btn-style w-100"><i class="fa fa-plus me-2"></i> Đặt Câu Hỏi
+                        Mới</a>
+                    <a asp-action="Index" class="btn btn-style2 w-100 mt-2"><i class="fa fa-arrow-left me-2"></i> Quay
+                        Lại</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
