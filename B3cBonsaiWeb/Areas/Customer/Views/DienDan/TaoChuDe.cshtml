@@ -41,7 +41,7 @@
 
                 <!-- Form -->
                 <div class="single-product-wrap p-5 border rounded">
-                    <form method="post">
+                    <form method="post" enctype="multipart/form-data">
                         <div asp-validation-summary="All" class="text-danger mb-3"></div>
                         <div class="mb-4">
                             <label asp-for="TieuDe" class="form-label fw-bold">Tiêu Đề</label>
@@ -57,6 +57,14 @@
                                 <option value="">-- Chọn Danh Mục --</option>
                             </select>
                             <span asp-validation-for="DanhMucDienDanId" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="ImageFiles" class="form-label fw-bold">Hình Ảnh Đính Kèm</label>
+                            <input asp-for="ImageFiles" type="file" multiple class="form-control" accept="image/*" />
+                            <div class="form-text text-muted">Bạn có thể chọn nhiều ảnh. Tổng dung lượng tối đa 10MB.
+                            </div>
+                            <span asp-validation-for="ImageFiles" class="text-danger"></span>
                         </div>
 
                         <div class="mb-4">

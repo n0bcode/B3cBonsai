@@ -19,11 +19,13 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IHtmlSanitizerService _sanitizer;
+        private readonly Microsoft.AspNetCore.Hosting.IWebHostEnvironment _webHostEnvironment;
 
-        public DienDanController(IUnitOfWork unitOfWork, IHtmlSanitizerService sanitizer)
+        public DienDanController(IUnitOfWork unitOfWork, IHtmlSanitizerService sanitizer, Microsoft.AspNetCore.Hosting.IWebHostEnvironment webHostEnvironment)
         {
             _unitOfWork = unitOfWork;
             _sanitizer = sanitizer;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         public async Task<IActionResult> Index(int? page)
@@ -78,6 +80,41 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
                 chuDe.NgayTao = DateTimeOffset.UtcNow;
                 chuDe.LuotXem = 0;
                 chuDe.TrangThai = true;
+
+                // Handle Image Uploads
+                string wwwRootPath = _webHostEnvironment.WebRootPath;
+                if (chuDe.ImageFiles != null && chuDe.ImageFiles.Count > 0)
+                {
+                    long totalSize = chuDe.ImageFiles.Sum(f => f.Length);
+                    if (totalSize > 10 * 1024 * 1024) // 10MB
+                    {
+                        ModelState.AddModelError("ImageFiles", "Tổng dung lượng ảnh không được vượt quá 10MB.");
+                        ViewBag.Categories = (await _unitOfWork.DanhMucDienDan.GetAll())
+                            .Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.TenDanhMuc });
+                        return View(chuDe);
+                    }
+
+                    List<string> imageLinks = new List<string>();
+                    string uploadPath = System.IO.Path.Combine(wwwRootPath, "images", "forum");
+
+                    if (!System.IO.Directory.Exists(uploadPath))
+                    {
+                        System.IO.Directory.CreateDirectory(uploadPath);
+                    }
+
+                    foreach (var file in chuDe.ImageFiles)
+                    {
+                        string fileName = Guid.NewGuid().ToString() + System.IO.Path.GetExtension(file.FileName);
+                        string filePath = System.IO.Path.Combine(uploadPath, fileName);
+
+                        using (var fileStream = new System.IO.FileStream(filePath, System.IO.FileMode.Create))
+                        {
+                            await file.CopyToAsync(fileStream);
+                        }
+                        imageLinks.Add(System.IO.Path.Combine("images", "forum", fileName).Replace("\\", "/")); // Normalize path
+                    }
+                    chuDe.LinkAnh = string.Join(";", imageLinks);
+                }
 
                 // Sanitize content and title to prevent stored XSS
                 chuDe.TieuDe = _sanitizer.Sanitize(chuDe.TieuDe);

@@ -37,6 +37,13 @@ namespace B3cBonsai.Models
         [StringLength(250)]
         public string Slug { get; set; } // SEO friendly URL part
 
+        [Display(Name = "Hình Ảnh")]
+        [ValidateNever]
+        public string LinkAnh { get; set; } // Stores multiple image links separated by semicolon
+
+        [NotMapped]
+        public List<Microsoft.AspNetCore.Http.IFormFile> ImageFiles { get; set; }
+
         [Display(Name = "Trạng Thái")]
         public bool TrangThai { get; set; } = true; // Open/Closed
 

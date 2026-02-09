@@ -37,8 +37,8 @@
                     <div class="section-title text-start">
                         <h2 class="mb-2">@Model.TieuDe</h2>
                         <div class="d-flex align-items-center flex-wrap text-muted small">
-                            <span class="me-3"><i class="fa fa-user me-1"></i> @(Model.NguoiDungUngDung?.HoTen ?? "Thành viên")</span>
-                            <span class="me-3"><i class="fa fa-clock-o me-1"></i> @Model.NgayTao.ToString("dd/MM/yyyy HH:mm")</span>
+                            <span class="me-3"><i class="fa fa-user me-1"></i> @(Model.NguoiDungUngDung?.HoTen ?? "Thành          viên")</span>
+                            <span class="me-3"><i class="fa fa-clock-o me-1"></i> @Model.NgayTao.ToString("dd/MM/yyyy            HH:mm")</span>
                             <span class="me-3"><i class="fa fa-folder-open me-1"></i>
                                 @(Model.DanhMucDienDan?.TenDanhMuc)</span>
                             @if (Model.TrangThai)
@@ -58,6 +58,24 @@
                     <div class="thread-content" style="font-size: 1.1rem; line-height: 1.8;">
                         @Html.Raw(Model.NoiDung)
                     </div>
+
+                    @if (!string.IsNullOrEmpty(Model.LinkAnh))
+                    {
+                        <div class="thread-images mt-4">
+                            <div class="row g-3">
+                                @foreach (var img in Model.LinkAnh.Split(';', StringSplitOptions.RemoveEmptyEntries))
+                                {
+                                    <div class="col-md-6 col-lg-4">
+                                        <a href="~/@img" target="_blank">
+                                            <img src="~/@img" class="img-fluid rounded border shadow-sm" alt="Ảnh đính kèm"
+                                                style="max-height: 200px; object-fit: cover; width: 100%;">
+                                        </a>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+
                     <div class="mt-4 pt-3 border-top text-muted small">
                         <i class="fa fa-eye me-1"></i> @Model.LuotXem lượt xem
                     </div>
@@ -75,7 +93,7 @@
                                 class="single-product-wrap p-4 mb-3 border rounded @(reply.LaCauTraLoiDung ? "border-success border-2 shadow-sm" : "")">
                                 <div class="d-flex justify-content-between mb-3">
                                     <div>
-                                        <strong class="text-primary me-2">@(reply.NguoiDungUngDung?.HoTen ?? "Thành viên")</strong>
+                                        <strong class="text-primary me-2">@(reply.NguoiDungUngDung?.HoTen ?? "Thành                      viên")</strong>
                                         <small class="text-muted">@reply.NgayTao.ToString("dd/MM/yyyy HH:mm")</small>
                                     </div>
                                     @if (reply.LaCauTraLoiDung)
