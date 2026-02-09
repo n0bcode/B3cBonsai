@@ -12,7 +12,7 @@ namespace B3cBonsai.Models
         [Key]
         public int Id { get; set; }
 
-        [Required]
+        [ValidateNever]
         public string NguoiDungId { get; set; }
 
         [Required]
@@ -33,7 +33,7 @@ namespace B3cBonsai.Models
         [Display(Name = "Ngày Tạo")]
         public DateTimeOffset NgayTao { get; set; } = DateTimeOffset.UtcNow;
 
-        [Required]
+        [ValidateNever]
         [StringLength(250)]
         public string Slug { get; set; } // SEO friendly URL part
 

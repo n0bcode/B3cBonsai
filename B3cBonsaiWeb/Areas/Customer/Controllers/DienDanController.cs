@@ -87,6 +87,7 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
                 _unitOfWork.Save();
                 return RedirectToAction(nameof(ChiTiet), new { id = chuDe.Id, slug = chuDe.Slug });
             }
+
             ViewBag.Categories = (await _unitOfWork.DanhMucDienDan.GetAll())
                 .Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.TenDanhMuc });
             return View(chuDe);
