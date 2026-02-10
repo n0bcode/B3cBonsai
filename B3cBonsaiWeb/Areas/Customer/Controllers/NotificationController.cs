@@ -70,10 +70,26 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
             if (!thongBao.DaDoc)
             {
                 thongBao.DaDoc = true;
+                thongBao.NgayDoc = DateTimeOffset.Now;
                 _unitOfWork.ThongBao.Update(thongBao);
                 _unitOfWork.Save();
             }
 
+            // Redirection logic based on notification type
+            if (thongBao.Loai == SD.NotificationType_CapNhatDonHang && thongBao.LienKetId.HasValue)
+            {
+                return RedirectToAction("Details", "Order", new { area = "Customer", id = thongBao.LienKetId });
+            }
+            else if (thongBao.Loai == SD.NotificationType_PhanHoiBinhLuan && thongBao.LienKetId.HasValue)
+            {
+                var comment = await _unitOfWork.BinhLuan.Get(u => u.Id == thongBao.LienKetId);
+                if (comment != null)
+                {
+                    return RedirectToAction("Details", "Home", new { area = "Customer", productId = comment.SanPhamId });
+                }
+            }
+
+            // Default fallback if no specific redirection
             return View(thongBao);
         }
 

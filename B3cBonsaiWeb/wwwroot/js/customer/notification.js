@@ -49,14 +49,4 @@ $(document).ready(function () {
             $('.notification-dropdown').removeClass('show');
         }
     });
-
-    // Refresh notifications every 30 seconds for real-time updates
-    setInterval(function () {
-        // Only update if the dropdown is not currently open to avoid interrupting user interaction
-        if (!$('.notification-dropdown').hasClass('show')) {
-            // Here you could make an AJAX call to update the notification list
-            // For now, we'll just refresh the component
-            location.reload(); // Simple refresh - can be optimized later
-        }
-    }, 30000); // 30 seconds
 });
