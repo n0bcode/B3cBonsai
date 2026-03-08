@@ -102,8 +102,9 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
                     // Handle 3D Model
                     if (Model3DFile != null)
                     {
+                        const long MaxModelFileSize = 50 * 1024 * 1024;
                         // Validation: Max 50MB
-                        if (Model3DFile.Length > 50 * 1024 * 1024)
+                        if (Model3DFile.Length > MaxModelFileSize)
                         {
                             ModelState.AddModelError("Model3DFile", "Kích thước model 3D không được vượt quá 50MB.");
                             model.DanhMucSanPham = await DanhMucSanPham();
@@ -132,8 +133,9 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
                         // Handle 3D Model Upload
                         if (Model3DFile != null)
                         {
-                            // Validation: Max 50MB
-                            if (Model3DFile.Length > 50 * 1024 * 1024)
+                        // Validation: Max 50MB
+                        const long MaxModelFileSize = 50 * 1024 * 1024;
+                        if (Model3DFile.Length > MaxModelFileSize)
                             {
                                 ModelState.AddModelError("Model3DFile", "Kích thước model 3D không được vượt quá 50MB.");
                                 model.DanhMucSanPham = await DanhMucSanPham();
@@ -271,7 +273,7 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, message = "Bạn không thể xóa sản phẩm này." });
+                return Json(new { success = false, message = $"Bạn không thể xóa sản phẩm này. Chi tiết: {ex.Message}" });
             }
         }
         [HttpPost]
@@ -307,7 +309,8 @@ namespace B3cBonsaiWeb.Areas.Employee.Controllers.Staff
         #endregion
         public async Task<IActionResult> ExportProductsToExcel()
         {
-            var products = (await _unitOfWork.SanPham.GetAll(null, "DanhMuc")).ToList(); // Lấy danh sách sản phẩm từ cơ sở dữ liệu
+            var productsQuery = _unitOfWork.SanPham.GetQueryable().Include("DanhMuc").AsNoTracking();
+            var products = await productsQuery.ToListAsync(); // Lấy danh sách sản phẩm từ cơ sở dữ liệu
 
             using (var workbook = new XLWorkbook())
             {

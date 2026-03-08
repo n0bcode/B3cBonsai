@@ -9,6 +9,7 @@ namespace B3cBonsai.DataAccess.Repository.IRepository
 {
     public interface IRepository<T> where T : class
     {
+        IQueryable<T> GetQueryable();
         Task <IEnumerable<T>> GetAll(Expression<Func<T, bool>>? filter = null, string? includeProperties = null);
         Task <T> Get(Expression<Func<T, bool>> filter, string? includeProperties = null, bool tracked = false);
         void Add(T entity);

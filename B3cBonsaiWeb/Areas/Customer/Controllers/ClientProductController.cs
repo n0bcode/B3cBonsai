@@ -104,24 +104,16 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
             int pageSize = 12;
 
             // Truy vấn sản phẩm
-            var productQuery = await _unitOfWork.SanPham.GetAll(
-                x => x.TrangThai,
-                "DanhMuc,HinhAnhs"
-            );
+            IQueryable<SanPham> productQuery = _unitOfWork.SanPham.GetQueryable()
+                .Where(x => x.TrangThai)
+                .Include(x => x.DanhMuc)
+                .Include(x => x.HinhAnhs);
 
             // Truy vấn sản phẩm combo
-            var comboQuery = await _unitOfWork.ComboSanPham.GetAll(
-                x => x.TrangThai,
-                "ChiTietCombos"
-            );
-
-            // Áp dụng bộ lọc
-            if (!string.IsNullOrEmpty(findText))
-            {
-                var normalizedFindText = RemoveDiacritics(findText.ToLower());
-                productQuery = productQuery.Where(x => RemoveDiacritics(x.TenSanPham.ToLower()).Contains(normalizedFindText));
-                comboQuery = comboQuery.Where(x => RemoveDiacritics(x.TenCombo.ToLower()).Contains(normalizedFindText));
-            }
+            IQueryable<ComboSanPham> comboQuery = _unitOfWork.ComboSanPham.GetQueryable()
+                .Where(x => x.TrangThai)
+                .Include(x => x.ChiTietCombos)
+                .ThenInclude(x => x.SanPham);
 
             if (selectedCategories != null && selectedCategories.Any())
             {
@@ -149,14 +141,23 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
                     : comboQuery.Where(x => x.SoLuong <= 0);
             }
 
+            // Execute SQL query and bring data into memory for text filtering and combining
+            var products = await productQuery.ToListAsync();
+            var combos = await comboQuery.ToListAsync();
 
-
+            // Áp dụng bộ lọc
+            if (!string.IsNullOrEmpty(findText))
+            {
+                var normalizedFindText = RemoveDiacritics(findText.ToLower());
+                products = products.Where(x => RemoveDiacritics(x.TenSanPham.ToLower()).Contains(normalizedFindText)).ToList();
+                combos = combos.Where(x => RemoveDiacritics(x.TenCombo.ToLower()).Contains(normalizedFindText)).ToList();
+            }
 
             // Kết hợp và phân trang kết quả
-            var sanPhamOrComboVMs = productQuery.Select(p => new SanPhamOrComboVM
+            var sanPhamOrComboVMs = products.Select(p => new SanPhamOrComboVM
             { SanPham = p, LoaiDoiTuong = SD.ObjectDetailOrder_SanPham }).ToList();
 
-            sanPhamOrComboVMs.AddRange(comboQuery.Select(c => new SanPhamOrComboVM
+            sanPhamOrComboVMs.AddRange(combos.Select(c => new SanPhamOrComboVM
             { ComboSanPham = c, LoaiDoiTuong = SD.ObjectDetailOrder_Combo }));
 
 
@@ -198,22 +199,6 @@ namespace B3cBonsaiWeb.Areas.Customer.Controllers
 
             var pagedList = sanPhamOrComboVMs.ToPagedList(pageNumber, pageSize);
             return PartialView(pagedList);
-        }
-
-        // Áp dụng logic sắp xếp
-        private IQueryable<T> ApplySorting<T>(IQueryable<T> query, string? sortBy) where T : class
-        {
-            return sortBy switch
-            {
-                "best-selling" => query.OrderByDescending(x => EF.Property<int>(x, "SoLuong")),
-                "title-ascending" => query.OrderBy(x => EF.Property<string>(x, "TenCombo")),
-                "title-descending" => query.OrderByDescending(x => EF.Property<string>(x, "TenCombo")),
-                "price-ascending" => query.OrderBy(x => EF.Property<int>(x, "Gia")),
-                "price-descending" => query.OrderByDescending(x => EF.Property<int>(x, "Gia")),
-                "created-ascending" => query.OrderBy(x => EF.Property<DateTime>(x, "NgayTao")),
-                "created-descending" => query.OrderByDescending(x => EF.Property<DateTime>(x, "NgayTao")),
-                _ => query.OrderBy(x => EF.Property<int>(x, "Id"))
-            };
         }
 
         // Bỏ dấu cho văn bản tiếng Việt

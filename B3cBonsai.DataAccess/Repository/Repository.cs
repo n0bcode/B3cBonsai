@@ -60,6 +60,11 @@ namespace B3cBonsai.DataAccess.Repository
             return query.FirstOrDefault();
         }
 
+        public IQueryable<T> GetQueryable()
+        {
+            return dbSet.AsQueryable();
+        }
+
         //category,CoverType
         public async Task<IEnumerable<T>> GetAll(Expression<Func<T, bool>>? filter, string? includeProperties = null)
         {
